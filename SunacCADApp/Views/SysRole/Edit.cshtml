@@ -1,0 +1,218 @@
+﻿@using SunacCADApp.Entity
+@{
+    IList<Sys_Model> ModelList = ViewBag.Models;
+    Sys_Role sysRole = ViewBag.Sys_Role;
+    IList<Sys_Model> myModelList = ViewBag.listModel;
+}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>机构添加</title>
+    <link href="~/Content/Plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Css/site.css" rel="stylesheet" />
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="~/Content/Js/jquery.form.js"></script>
+    <script src="~/Content/Js/goyeer.validation.js"></script>
+    <script src="~/Content/Plugins/layer/layer.js"></script>
+    <script src="~/Content/Plugins/laydate/laydate.js"></script>
+</head>
+<body id="sunac">
+    <div class="container-fluid">
+        <form name="myform" id="myform">
+            <div class="row sunacrow">
+                <div class="form-group col-title">
+                    <label><i>*</i>角色名称：</label>
+                    <input type="text" class="form-control required" name="txt_role_name" data-error="角色名称不能为空"  value="@sysRole.Role_Name"/>
+
+                </div>
+                <div class="form-group ">
+                    <label>角色备注：</label>
+                    <textarea class="form-control" rows="3" name="area_role_remark">@sysRole.Role_Remark</textarea>
+                </div>
+                <div class="form-group">
+                    <table class="table panel-table">
+                        <thead>
+                            <tr>
+                                <th width="120" class="text-center">权限分类</th>
+                                <th class="text-center">权限</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center tr-row" valign="middle">
+                                    模块管理
+                                </td>
+                                <td class="text-left handle">
+                                    <div class="input-group">
+                                        <div class="checkbox-inline">
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="0" name="all" />全部
+                                            </label>
+                                        </div>
+                                        @foreach (Sys_Model model in ModelList)
+                                        {
+                                            var modelId = model.Id;
+                                            var modelName = model.Model_Name;
+                                            var check_ed = string.Empty;
+                                            if (model.Parent_ID == 1 || model.Parent_ID == 2)
+                                            {
+                                                <div class="checkbox-inline">
+                                                    <label class="checkbox">
+                                                        @foreach (Sys_Model myMode in myModelList)
+                                                        {
+                                                            if (myMode.Id == modelId)
+                                                            {
+                                                                check_ed = "checked=\"checked\"";
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        <input type="checkbox" value="@modelId" class="checkbox" @check_ed />@modelName
+                                                    </label>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center tr-row" valign="middle">原型管理</td>
+                                <td class="text-left handle">
+                                    <div class="input-group">
+                                        <div class="checkbox-inline">
+                                            <label class="checkbox">
+                                                <input type="checkbox" value="0" name="all" />全部
+                                            </label>
+                                        </div>
+                                        @foreach (Sys_Model model in ModelList)
+                                        {
+                                            var modelId = model.Id;
+                                            var modelName = model.Model_Name;
+                                            var check_ed=string.Empty;
+                                            if (model.Parent_ID == 16)
+                                            {
+                                                <div class="checkbox-inline">
+                                                    <label class="checkbox">
+ 
+                                                        @foreach (Sys_Model myMode in myModelList)
+                                                        {
+                                                            if (myMode.Id == modelId)
+                                                            {
+                                                                check_ed = "checked=\"checked\"";
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        <input type="checkbox" value="@modelId" class="checkbox"  @check_ed />@modelName
+
+                                                    </label>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center tr-row" valign="middle">后台管理</td>
+                                <td class="text-left handle">
+                                    <div class="checkbox-inline">
+                                        <label class="checkbox">
+                                            <input type="checkbox" value="0" name="all" />全部
+                                        </label>
+                                    </div>
+                                    @foreach (Sys_Model model in ModelList)
+                                    {
+                                        var modelId = model.Id;
+                                        var modelName = model.Model_Name;
+                                        var check_ed = string.Empty;
+                                        if (model.Parent_ID == 4 || model.Id == 3)
+                                        {
+                                            <div class="checkbox-inline">
+                                                <label class="checkbox">
+                                                    @foreach (Sys_Model myMode in myModelList)
+                                                    {
+                                                        if (myMode.Id == modelId)
+                                                        {
+                                                            check_ed = "checked=\"checked\"";
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    <input type="checkbox" value="@modelId" class="checkbox" @check_ed />@modelName
+                                                </label>
+                                            </div>
+                                        }
+                                    }
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <input type="hidden" name="hid_power" />
+                    <input type="hidden" name="hid_id" value="@sysRole.Id" />
+                </div>
+                <div class="form-group line-text-align " style="text-align:center">
+                    <button type="button" class="btn btn-sunac" style="width:120px;" id="btn_save">确定</button>
+                    <button type="button" class="btn btn-sunac" style="width:120px;" id="btn_cancel">取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    var options = {
+        url: '/sysrole/edithandle',
+        type: 'post',
+        data: $("#myform").serialize(),
+        dataType: 'json',
+        beforeSerialize: function () {
+            var rtv = $("#myform").ValidationInput();
+            var arr_modelid = new Array();
+            $(".checkbox").each(function (i, v) {
+                let checked = $(this).prop("checked");
+
+                if (checked == true)
+                {
+                    console.log(checked);
+                    let modelid = $(this).val();
+                    console.log(modelid);
+                    arr_modelid.push(modelid);
+                }
+
+            });
+            $("input[name='hid_power']").val(arr_modelid.join(','));
+            return rtv;
+        },
+        success: function (data) {
+            if (data.code == 100) {
+                layer.msg(data.message, { icon: 6, time: 2000 }, function () {
+                    parent.window.location.reload();
+                });
+            } else {
+                layer.alert(data.message, { icon: 5, shade: false });
+            }
+        }
+    };
+    $(function () {
+        $("#btn_save").on('click', function () {
+            $("#myform").ajaxSubmit(options);
+        });
+
+        $("#btn_cancel").on('click', function () {
+            $("#myform").resetForm();
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index); //再执行关闭
+        });
+
+        $("input[name='all']").on('click', function () {
+
+            $(this).parent().parent().parent().find('.checkbox').prop('checked', $(this).prop('checked'));
+        });
+    });
+</script>
+

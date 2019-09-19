@@ -1,0 +1,121 @@
+﻿@using SunacCADApp.Entity
+@using Common.Utility.Extender
+@{
+    BaseCompanyInfo companyInfo=ViewBag.BaseCompanyInfo;
+}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>机构添加</title>
+    <link href="~/Content/Plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Css/site.css" rel="stylesheet" />
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="~/Content/Js/jquery.form.js"></script>
+    <script src="~/Content/Js/goyeer.validation.js"></script>
+    <script src="~/Content/Plugins/layer/layer.js"></script>
+    <script src="~/Content/Plugins/laydate/laydate.js"></script>
+</head>
+<body id="sunac">
+    <div class="container-fluid">
+        <form name="myform" id="myform">
+            <div class="row sunacrow">
+                <div class="form-group">
+                    <label>机构名称：</label>
+                    <select class="form-control" name="select_companyname">
+                        <option value="">选择机构</option>
+                        @foreach (DataSourceMember member in ViewBag.companynameSource)
+                        {
+                            if (member.ValueMember.ConvertToInt32(-1) == companyInfo.CompanyID)
+                            {
+                                <option value="@member.ValueMember" selected>@member.DisplayMember</option>
+                            }
+
+                            else
+                            {
+                                <option value="@member.ValueMember">@member.DisplayMember</option>
+                            }
+
+                        }
+                    </select>
+                    <input type="hidden" name="hid_companyname" />
+                </div>
+                <div class="form-group ">
+                    <label>机构名称：</label>
+                    <textarea class="form-control" rows="7" name="area_companyremark">@companyInfo.CompanyRemark</textarea>
+                </div>
+                <div class="form-group ">
+                    <label for="zhanghao">机构状态：</label>
+                    @if (companyInfo.Enabled == 1)
+                    {
+                        <div class="radio-inline">
+                            <span class="radio">
+                                <input type="radio" name="select_enabled" value="1" checked="checked" />启用
+                            </span>
+                        </div>
+
+                        <div class="radio-inline">
+                            <span class="radio">
+                                <input type="radio" name="select_enabled" value="0" />禁用
+                            </span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="radio-inline">
+                            <span class="radio">
+                                <input type="radio" name="select_enabled" value="1" />启用
+                            </span>
+                        </div>
+
+                        <div class="radio-inline">
+                            <span class="radio">
+                                <input type="radio" name="select_enabled" value="0" checked="checked" />禁用
+                            </span>
+                        </div>
+                    }
+                   
+                    <input type="hidden" name="hid_id" value="@companyInfo.Id" />
+                </div>
+                <div class="form-group line-text-align " style="text-align:center">
+                    <button type="button" class="btn btn-sunac" style="width:120px;">查看机构人员</button>
+                    <button type="button" class="btn btn-sunac" style="width:120px;" id="btn_save">确定</button>
+                    <button type="button" class="btn btn-sunac" style="width:120px;" id="btn_cancel">取消</button>
+                </div>
+        </form>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    var options = {
+        url: '/companyinfo/edithandle',
+        type: 'post',
+        data: $("#myform").serialize(),
+        dataType: 'json',
+        beforeSerialize: function () {
+            var rtv = $("#myform").ValidationInput();
+            let companyname = $("select[name='select_companyname']").find("option:selected").text()
+            $("input[name='hid_companyname']").val(companyname);
+            return rtv;
+        },
+        success: function (data) {
+            if (data.code == 100) {
+                layer.msg(data.message, { icon: 6, time: 2000 }, function () {
+                    parent.window.location.reload();
+                });
+            } else {
+                layer.alert(data.message, { icon: 5, shade: false });
+            }
+        }
+    };
+    $(function () {
+        $("#btn_save").on('click', function () {
+            $("#myform").ajaxSubmit(options);
+        });
+
+        $("#btn_cancel").on('click', function () {
+            $("#myform").resetForm();
+        });
+    });
+</script>
+

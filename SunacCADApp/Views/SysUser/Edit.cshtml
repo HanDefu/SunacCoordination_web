@@ -1,0 +1,293 @@
+﻿@using SunacCADApp.Entity
+@using SunacCADApp.Data
+@{
+    Sys_User user = ViewBag.Sys_User;
+}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>用户新增</title>
+    <link href="~/Content/Plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Plugins/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" />
+    <link href="~/Content/Css/site.css" rel="stylesheet" />
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="~/Content/Plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Content/Plugins/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+    <script src="~/Content/Js/jquery.form.js"></script>
+    <script src="~/Content/Js/goyeer.validation.js"></script>
+    <script src="~/Content/Plugins/layer/layer.js"></script>
+    <script src="~/Content/Plugins/laydate/laydate.js"></script>
+
+</head>
+<body id="sunac">
+    <div class="container-fluid">
+        <form name="myform" id="myform">
+            <div class="row sunacrow">
+                <div class="col-lg-12 col-md-12">
+                    <div class="input-control-group">
+                         <dl>
+                             <dt class="lbl-title"><i>*</i>账户：</dt>
+                             <dd>
+                                 <input type="text" class="form-control required" name="txt_user_name" data-error="用户名不能为空" value="@user.User_Name" />
+                             </dd>
+                             <dd class="explain">
+                                 默认密码为:123456
+                             </dd>
+                         </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="row sunacrow">
+                <div class="col-lg-12 col-md-12">
+                    <div class="input-control-group">
+                        <dl>
+                            <dt class="lbl-title"><i>*</i>姓名：</dt>
+                            <dd>
+                                <input type="text" class="form-control required" name="txt_true_name" data-error="真实姓名不能为空" value="@user.True_Name" />
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="row sunacrow">
+                <div class="col-lg-12 col-md-12">
+                    <div class="input-control-group">
+                        <dl>
+                            <dt class="lbl-title"><i>*</i>电话：</dt>
+                            <dd>
+                                <input type="text" class="form-control required" name="txt_telephone" data-error="手机号不能为空" value="@user.Telephone" />
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="row sunacrow">
+                <div class="col-lg-12 col-md-12">
+                    <div class="input-control-group">
+                        <dl>
+                            <dt class="lbl-title">邮箱：</dt>
+                            <dd>
+                                <input type="text" class="form-control" name="txt_email" value="@user.Email" />
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="row sunacrow">
+                <div class="col-lg-12 col-md-12">
+                    <div class="input-control-group">
+                        <dl>
+                            <dt class="lbl-title"><i>*</i>机构：</dt>
+                            <dd>
+                                <select class="form-control required" name="select_companyid" data-error="机构不能为空">
+                                    <option value="">选择机构</option>
+                                    @foreach (BaseCompanyInfo companyInfo in ViewBag.CompanyInfoList)
+                                    {
+                                        if (companyInfo.Id == user.CompanyID)
+                                        {
+                                            <option value="@companyInfo.Id" selected>@companyInfo.CompanyName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@companyInfo.Id">@companyInfo.CompanyName</option>
+                                        }
+
+                                    }
+                                </select>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="row sunacrow">
+                <div class="col-lg-12 col-md-12">
+                    <div class="input-control-group">
+                        <dl>
+                            <dt class="lbl-title">区域：</dt>
+                            <dd>
+                                <select class="form-control multiselect" multiple="multiple" id="example-getting-started" data-error="区域不能为空" name="select_areaid">
+                                    @foreach (BasArgumentSetting argumentSetting in ViewBag.ArgumentSettingList)
+                                    {
+                                        <option value="@argumentSetting.Id">@argumentSetting.ArgumentText</option>
+                                    }
+
+
+                                </select>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="row sunacrow">
+                <div class="col-lg-12 col-md-12">
+                    <div class="input-control-group">
+                        <dl>
+                            <dt class="lbl-title"><i>*</i>角色：</dt>
+                            <dd>
+                                <select class="form-control" name="select_roleid">
+                                    <option value="">选择角色</option>
+                                    @foreach (Sys_Role Role in ViewBag.SysRoleList)
+                                    {
+                                        if (Role.Id == user.RoleID)
+                                        {
+                                            <option value="@Role.Id" selected>@Role.Role_Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@Role.Id">@Role.Role_Name</option>
+                                        }
+
+                                    }
+                                </select>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="row sunacrow">
+                <div class="col-lg-12 col-md-12">
+                    <div class="input-control-group">
+                        <dl>
+                            <dt class="lbl-title">账户有效期：</dt>
+                            <dd>
+                                <input type="text"  name="datetime_used_begin_datetime" class=" form-control datetime_used_begin_datetime icon-layer-date">
+                                
+                            </dd>
+                            <dd class="tips" style="font-size:18px;">-</dd>
+                            <dd><input type="text" name="datetime_used_end_datetime" class=" form-control datetime_used_end_datetime icon-layer-date"></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="row sunacrow">
+                <div class="col-lg-12 col-md-12">
+                    <div class="input-control-group">
+                        <dl>
+                            <dt class="lbl-title">项目：</dt>
+                            <dd>
+                                <button type="button" class="btn  btn-sunac btn-add-project">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
+                                </button>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="row sunacrow panel-table">
+                <table class="table" id="product-table">
+                    <thead>
+                        <tr>
+                            <th>项目名称</th>
+                            <th width="120" class="text-center">区域</th>
+                            <th width="120" class="text-center">城市公司</th>
+                            <th width="120" class="text-center">创建时间</th>
+                            <th width="60"  class="text-center">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="tr_record_not">
+                            <td class="not-record-num" colspan="5">暂未有项目信息</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </form>
+        <div class="row sunacrow text-center" >
+            <button type="button" class="btn btn-sunac" id="btn_save" style="width:120px;margin-right:20px;">确定</button>
+            <button type="button" class="btn btn-sunac" id="btn_cancel" style="width:120px;">取消</button>
+        </div>
+        </div>
+</body>
+</html>
+<script type="text/javascript">
+    laydate.render({
+        elem: '.datetime_used_begin_datetime'
+      , type: 'date'
+    });
+
+    laydate.render({
+        elem: '.datetime_used_end_datetime'
+  , type: 'date'
+    });
+    
+
+  
+    var options = {
+        url: '/sysuser/addhandle',
+        type: 'post',
+        data: $("#myform").serialize(),
+        dataType: 'json',
+        beforeSerialize: function () {
+            var rtv = $("#myform").ValidationInput();
+            return rtv;
+        },
+        success: function (data) {
+            if (data.code == 100) {
+                layer.msg(data.message, { icon: 6, time: 2000 }, function () {
+                    parent.window.location.reload();
+                });
+            } else {
+                layer.alert(data.message, { icon: 5, shade: false });
+            }
+        }
+    };
+    $(function () {
+        $('#example-getting-started').multiselect({
+            buttonWidth: 300,
+            buttonText: function (options, select) {
+                if (options.length === 0) {
+                    return '请选择区域...';
+                }
+                else if (options.length > 8) {
+                    return '多于 8 区域被选择!';
+                }
+                else {
+                    var labels = [];
+                    options.each(function () {
+                        if ($(this).attr('label') !== undefined) {
+                            labels.push($(this).attr('label'));
+                        }
+                        else {
+                            labels.push($(this).html());
+                        }
+                    });
+                    return labels.join(', ') + '';
+                }
+            }
+        });
+        $("#btn_save").on('click', function () {
+            $("#myform").ajaxSubmit(options);
+        });
+
+        $("#btn_cancel").on('click', function () {
+            $("#myform").resetForm();
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index); //再执行关闭
+        });
+
+        $("input[name='all']").on('click', function () {
+
+            $(this).parent().parent().parent().find('.checkbox').prop('checked', $(this).prop('checked'));
+        });
+
+
+        $(".btn-add-project").on("click", function () {
+            var index =layer.open({
+                type: 2,
+                skin: 'layer-ext-sunacskin',
+                area: ['780px', '450px'],
+                shade:0,
+                title: '项目信息选择',
+                content: ['/sysuser/selectedprojectinfo', 'yes']
+            });
+        });
+
+        $(".btn-delete-project").on("click", "", function () {
+        })
+    });
+</script>
+
+

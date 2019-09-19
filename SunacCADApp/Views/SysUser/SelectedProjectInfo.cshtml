@@ -1,0 +1,172 @@
+﻿@using SunacCADApp.Entity
+@using SunacCADApp.Data
+@{
+
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>项目信息选择</title>
+    <link href="~/Content/Plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Css/site.css" rel="stylesheet" />
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="~/Content/Plugins/layer/layer.js"></script>
+    <script src="~/Content/Plugins/laydate/laydate.js"></script>
+    <style type="text/css">
+        #sunac .input-control-group strong {
+             width: 45px;
+              height: 34px;
+
+            }
+    </style>
+    <script type="text/javascript">
+        var ProjectInfo = null;
+        $(function () {
+            $("#select_area").on("change", function () {
+                let areaname = $(this).val();
+                $("#select_citycompany").empty();
+                $.get("/SysUser/GetJsonProjectInfoByAreaName", { AreaName: areaname }, function (data) {
+                    if (data.code == 100)
+                    {
+                        $.each(data.list, function (i, item) {
+                            $("#select_citycompany").append("<option value=\"" + item.CityCompany + "\">" + item.CityCompany + "</option>");
+                        });
+                    } else {
+                       
+                          $("#select_citycompany").append("<option value=\"\">不限制</option>");
+                    }
+                }, "json");
+            })
+
+            $(".search-control strong").on("click", function () {
+                let areaname = $("#select_area").val();
+                let citycompany = $("#select_citycompany").val();
+                let keyword = $("#keyword").val();
+                $(".table tbody").empty();
+                $.post("/SysUser/GetJsonProjectInfoBySearch", { AreaName: areaname, CityCompany: citycompany, Keyword: keyword }, function (data) {
+                    if (data.code == 100) {
+                        ProjectInfo = data.list;
+                        $.each(data.list, function (i, row) {
+                            
+                            let _html = "<tr>" +
+                                      "   <td class=\"text-center\"><input  type=\"checkbox\" name=\"productid\" value=\""+row.Id+"\"/></td>" +
+                                      "   <td>" + row.ProjectName + "</td>" +
+                                      "   <td class=\"text-center\">" + row.AreaName + "</td>" +
+                                      "   <td class=\"text-center\">" + row.CityCompany + "</td>" +
+                                      "   <td class=\"text-center\">" + row.Project_StartTime + "</td>" +
+                                     "</tr>";
+                            $(".table tbody").append(_html);
+                        })
+                    
+                    } else {
+                        ProjectInfo = null;
+                        $(".table tbody").html("<tr><td colspan=\"5\" class=\"not-record-num\"> 暂未有项目信息</td></tr>")
+                    }
+                }, "json")
+                 
+            })
+
+
+            $("#btn-close").on("click", function () {
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭
+            });
+
+            $("#btn-ok").on("click", function () {
+                if (ProjectInfo == null)
+                {
+                    layer.alert("先查询数据在添加", { icon: 2, title: "信息提示", shade: 0});
+                    return;
+                }
+
+                $("input[name='productid']:checked").each(function (index, item) {
+                    let pid = $(this).val();
+                    parent.$("#tr_record_not").empty();
+                    $.each(ProjectInfo, function (i, row) {
+                        if (row.Id == pid)
+                        {
+                            let _html = "<tr data-pid=\""+row.Id+"\">" +
+                              "   <td>" + row.ProjectName + "</td>" +
+                              "   <td class=\"text-center\">" + row.AreaName + "</td>" +
+                              "   <td class=\"text-center\">" + row.CityCompany + "</td>" +
+                              "   <td class=\"text-center\">" + row.Project_StartTime + "</td>" +
+                               "   <td class=\"text-center btn-delete-project\">删除</td>" +
+                             "</tr>";
+                            parent.$("#product-table").append(_html);
+                        }
+                    });
+                });
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index); 
+                
+
+            })
+        })
+    </script>
+</head>
+<body id="sunac">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 panel-search">
+                <div class="input-control-group float-left">
+                    <dl>
+                        <dt>区域：</dt>
+                        <dd>
+                            <select class="form-control" style="width:120px;" name="select_area" id="select_area">
+                                <option value="">选择区域</option>
+                                @foreach (BasArgumentSetting ArgumentSetting in ViewBag.ArgumentSettingList)
+                                {
+                                    <option value="@ArgumentSetting.ArgumentText">@ArgumentSetting.ArgumentText</option>
+                                }
+                            </select>
+
+                        </dd>
+                    </dl>
+                </div>
+                <div class="input-control-group float-left">
+                    <dl>
+                        <dt>城市公司：</dt>
+                        <dd>
+                            <select class="form-control" style="width:150px;" id="select_citycompany">
+                                <option value="">不限制</option>
+                            </select>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="input-control-group float-right search-control">
+                    <dl>
+                        <dt>关键字：</dt>
+                        <dd>
+                            <input type="text" class="form-control" placeholder="关键字" id="keyword" style="width:150px;float:right;clear:right;margin-right:14px; border-top-right-radius:0px;border-bottom-right-radius:0px;"/>
+                            <strong></strong>
+                        </dd>
+                    </dl>
+                </div>
+            
+            </div>
+        </div>
+        <div class="row sunacrow panel-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="50" class="text-center" >选中</th>
+                        <th>项目名称</th>
+                        <th width="160" class="text-center">区域</th>
+                        <th width="120" class="text-center">城市公司</th>
+                        <th width="120" class="text-center">创建时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr> <td colspan="5" class="not-record-num">暂未有项目信息</td></tr>
+                </tbody>
+             </table>
+         </div>
+     </div>
+    <div style="height:45px;"></div>
+    <div class="form-bottom">
+          <button type="button" class="btn btn-sunac" id="btn-ok">添加项目</button>
+          <button type="button" class="btn btn-sunac" id="btn-close">关闭</button>
+    </div>
+</body>
+</html>
