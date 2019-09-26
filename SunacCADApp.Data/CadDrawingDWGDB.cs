@@ -72,9 +72,9 @@ namespace SunacCADApp.Data
         {
 
 
-            string sql = string.Format(@"INSERT INTO dbo.caddrawingdwg(MId,DWGPath,FileClass,
+            string sql = string.Format(@"INSERT INTO dbo.caddrawingdwg(MId,DWGPath,FileClass,CADPath,
                                      Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy)  
-                                     VALUES ({0},'{1}','{2}',{3},{4},getdate(),{5},'{6}')", caddrawingdwg.MId, caddrawingdwg.DWGPath, caddrawingdwg.FileClass, caddrawingdwg.Enabled, caddrawingdwg.Reorder, caddrawingdwg.CreateUserId, caddrawingdwg.CreateBy);
+                                     VALUES ({0},'{1}','{2}','{3}',{4},{5},getdate(),{6},'{7}')", caddrawingdwg.MId, caddrawingdwg.DWGPath, caddrawingdwg.FileClass, caddrawingdwg.CADPath, caddrawingdwg.Enabled, caddrawingdwg.Reorder, caddrawingdwg.CreateUserId, caddrawingdwg.CreateBy);
             return MsSqlHelperEx.Execute(sql);
         }
         ///<summary>
@@ -86,7 +86,7 @@ namespace SunacCADApp.Data
 
 
             string _wh = string.IsNullOrEmpty(editparam) ? " and id=" + caddrawingdwg.Id : editparam;
-            string sql = "UPDATE [dbo].[CadDrawingDWG] SET [MId]=" + caddrawingdwg.MId + ",[DWGPath]='" + caddrawingdwg.DWGPath + "',[FileClass]='" + caddrawingdwg.FileClass + "',[Enabled]=" + caddrawingdwg.Enabled + ",[Reorder]=" + caddrawingdwg.Reorder + "  where 1=1 " + _wh;
+            string sql = "UPDATE [dbo].[CadDrawingDWG] SET [MId]=" + caddrawingdwg.MId + ",[DWGPath]='" + caddrawingdwg.DWGPath + "',[FileClass]='" + caddrawingdwg.FileClass + "',[CADPath]='" + caddrawingdwg.CADPath + "',[Enabled]=" + caddrawingdwg.Enabled + ",[Reorder]=" + caddrawingdwg.Reorder + "  where 1=1 " + _wh;
             return MsSqlHelperEx.Execute(sql);
         }
 

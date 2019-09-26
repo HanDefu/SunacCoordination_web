@@ -24,9 +24,18 @@ namespace SunacCADApp.Entity
         /// </summary>
         public int WindowOpenTypeId { get; set; }
         /// <summary>
+        /// 开启类型名称
+        /// </summary>
+        public string WindowOpenTypeName { get; set; }
+        /// <summary>
         /// 开启扇数量
         /// </summary>
         public int WindowOpenQtyId { get; set; }
+
+        /// <summary>
+        /// 开启扇数量名称
+        /// </summary>
+        public string WindowOpenQtyName { get; set; }
         /// <summary>
         /// 是否转角窗
         /// </summary>

@@ -45,6 +45,10 @@
       <HintPath>..\..\..\..\000_VS2013公共类库\Common.Utility.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\项目\其他项目\MyWorkPlace\ClassLib\json.net\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Net" />
     <Reference Include="System.Web.DynamicData" />

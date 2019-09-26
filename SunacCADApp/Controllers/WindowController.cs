@@ -5,8 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using Common.Utility;
 using Common.Utility.Extender;
+using Newtonsoft.Json;
 using SunacCADApp.Entity;
 using SunacCADApp.Data;
+using System.Data;
 
 namespace SunacCADApp.Controllers
 {
@@ -30,11 +32,54 @@ namespace SunacCADApp.Controllers
             _where = "TypeCode='OpenWindowNum' And ParentID!=0";
             IList<BasArgumentSetting> OpenWindowNums = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.OpenWindowNums = OpenWindowNums;
+            string _search_where = "";
+            string _url = "1";
+            int scope = HttpUtility.UrlDecode(Request.QueryString["scope"]).ConvertToInt32(-1);
+            if (scope==1)
+            {
+                _search_where += " and  a.scope='" + scope + "'";
+                _url += "&scope=" + scope;
+            }
+            ViewBag.scope = scope;
+
+            int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(-1);
+            if (area == 1)
+            {
+                _search_where += " and  a.area='" + area + "'";
+                _url += "&area=" + area;
+            }
+
+            ViewBag.area = area;
+            int action = HttpUtility.UrlDecode(Request.QueryString["action"]).ConvertToInt32(-1);
+            if (area == 1)
+            {
+                _search_where += " and  a.action='" + area + "'";
+                _url += "&action=" + area;
+            }
+            ViewBag.action = action;
+
+            int opentype = HttpUtility.UrlDecode(Request.QueryString["opentype"]).ConvertToInt32(-1);
+            if (opentype == 1)
+            {
+                _search_where += " and  a.opentype='" + opentype + "'";
+                _url += "&opentype=" + opentype;
+            }
+            ViewBag.opentype = opentype;
+
+            int openwindownum = HttpUtility.UrlDecode(Request.QueryString["openwindownum"]).ConvertToInt32(-1);
+            if (openwindownum == 1)
+            {
+                _search_where += " and  a.openwindownum='" + openwindownum + "'";
+                _url += "&openwindownum=" + openwindownum;
+            }
+            ViewBag.openwindownum = openwindownum;
+
+
             _where = string.Empty;  //查询
             string _orderby = string.Empty;  //排序
-            string _url = string.Empty;
+     
             int recordCount = 0;    //记录总数
-            int pageSize = 15;      //每页条数
+            int pageSize = 30;      //每页条数
             int currentPage = 0;    //当前页数
             int pageCount = 0;      //总页数
             int startRowNum = 0;    //开始行数
@@ -42,11 +87,11 @@ namespace SunacCADApp.Controllers
             currentPage = string.IsNullOrEmpty(Request.QueryString["page"]) ? 1 : Request.QueryString["page"].ConvertToInt32(0);
             startRowNum = ((currentPage - 1) * pageSize) + 1;
             endRowNum = currentPage * pageSize;
-            IList<CadDrawingWindowSearch> lst = CadDrawingWindowSearchDB.GetPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
-            recordCount = CadDrawingWindowSearchDB.GetPageCountByParameter(_where);
+            IList<CadDrawingWindowSearch> list = CadDrawingWindowDetailDB.GetSearchPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
+            recordCount = CadDrawingWindowDetailDB.GetSearchPageCountByParameter(_where);
             pageCount = recordCount % pageSize == 0 ? recordCount / pageSize : ((recordCount / pageSize) + 1);
             ViewBag.URL = _url;
-            ViewBag.List = lst;
+            ViewBag.List = list;
             ViewBag.RecordCount = recordCount;
             ViewBag.CurrentPage = currentPage;
             ViewBag.PageCount = pageCount;
@@ -59,15 +104,45 @@ namespace SunacCADApp.Controllers
         /// <returns></returns>
         public ActionResult LookOver(int Id=0)
         {
-            if (Id > 0) 
+            if (Id < 1) 
             {
                 Redirect("/Window/Index");
             }
+
+            string _where = string.Empty;
+            _where = "TypeCode='ActionType' And ParentID!=0";
+
+            IList<BasArgumentSetting> ActionTypes = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
+            ViewBag.ActionTypes = ActionTypes;
+
+            _where = "TypeCode='OpenType' And ParentID!=0";
+
+            IList<BasArgumentSetting> OpenTypes = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
+            ViewBag.OpenTypes = OpenTypes;
+
+            _where = "TypeCode='OpenWindowNum' And ParentID!=0";
+            IList<BasArgumentSetting> OpenWindowNums = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
+            ViewBag.OpenWindowNums = OpenWindowNums;
+            IList<DataSourceMember> Members = CommonLib.GetWindowArgument();
+            ViewBag.Members = Members;
+
             CadDrawingMaster master = CadDrawingMasterDB.GetSingleEntityById(Id);
             ViewBag.CadDrawingMaster = master;
-            IList<CadDrawingByArea> ByAreas = CadDrawingByAreaDB.GetPageInfoByParameter("  a.MId="+Id,string.Empty,0,200);
-            ViewBag.ByAreas = master;
-            
+            _where = "  a.MId=" + Id;
+            IList<CadDrawingByArea> ByAreas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
+            ViewBag.ByAreas = ByAreas;
+            _where = string.Format("  a.MId={0} and a.FileClass='JPG'", Id);
+            IList<CadDrawingDWG> Dwgs = CadDrawingDWGDB.GetPageInfoByParameter(_where, string.Empty, 0, 50);
+            ViewBag.Dwgs = Dwgs;
+            _where = "  a.MId=" + Id;
+            IList<CadDrawingFunction> Functions = CadDrawingFunctionDB.GetCadDrawingFunctionByWhereList(_where);
+            ViewBag.Functions = Functions;
+            _where = string.Format(@" a.MId={0}", Id);
+            CadDrawingWindowDetail windowDetail = CadDrawingWindowDetailDB.GetCadDrawingWindowDetailByWhere(_where);
+            ViewBag.WindowDetail = windowDetail;
+            _where=string.Format(@" a.MId={0}",Id);
+            IList<CadDrawingParameter> cadDrawingParams = CadDrawingParameterDB.GetCadDrawingParameterByWhereList(_where);
+            ViewBag.CadDrawingParams = cadDrawingParams;
             return View();
         }
         /// <summary>
@@ -124,8 +199,8 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
                 caddrawingmaster.CreateOn = DateTime.Now;
-                caddrawingmaster.Reorder = Request.Form["txt_reorder"].ConvertToInt32(0);
-                caddrawingmaster.Enabled = Request.Form["select_enabled"].ConvertToInt32(0);
+                caddrawingmaster.Reorder = 2;
+                caddrawingmaster.Enabled = 1;
                 caddrawingmaster.CreateUserId = 0;
                 caddrawingmaster.CreateBy = "admin";
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
@@ -134,28 +209,21 @@ namespace SunacCADApp.Controllers
                 string[] arr_Area = areaid.Split(',');
                 string[] arr_ActionType = actionType.Split(',');
                 CadDrawingDWG dwg = null;
+                int index = 0;
                 foreach (string cad in arr_CADFile)
                 {
                     if (!string.IsNullOrEmpty(cad))
                     {
                         dwg = new CadDrawingDWG();
                         dwg.MId = mId;
-                        dwg.DWGPath = cad;
+                        dwg.DWGPath = arr_IMGFile[index]; 
                         dwg.FileClass = "DWG";
+                        dwg.CADPath = cad;
                         CadDrawingDWGDB.AddHandle(dwg);
+                        index++;
                     }
                 }
-                foreach (string img in arr_IMGFile)
-                {
-                    if (!string.IsNullOrEmpty(img))
-                    {
-                        dwg = new CadDrawingDWG();
-                        dwg.MId = mId;
-                        dwg.DWGPath = img;
-                        dwg.FileClass = "JPG";
-                        CadDrawingDWGDB.AddHandle(dwg);
-                    }
-                }
+               
 
 
                 foreach (string area in arr_Area)
@@ -212,6 +280,28 @@ namespace SunacCADApp.Controllers
                 window.WindowPlugslotSize = WindowPlugslotSize;
                 window.WindowAuxiliaryFrame = WindowAuxiliaryFrame;
                 int detail =   CadDrawingWindowDetailDB.AddHandle(window);
+                string param = Request.Form["param"].ConventToString(string.Empty);
+                DataTable tableParam = JsonConvert.DeserializeObject<DataTable>(param);
+                if (tableParam != null) 
+                {
+                    foreach (DataRow row in tableParam.Rows) 
+                    {
+                        CadDrawingParameter cadParam = new CadDrawingParameter();
+                        cadParam.MId = mId;
+                        cadParam.SizeNo = row["SizeNo"].ConventToString(string.Empty);
+                        cadParam.ValueType = row["ValueType"].ConvertToInt32(-1);
+                        cadParam.Val = row["Val"].ConventToString(string.Empty);
+                        cadParam.MinValue = row["MinValue"].ConvertToInt32(-1);
+                        cadParam.MaxValue = row["MaxValue"].ConvertToInt32(-1);
+                        cadParam.DefaultValue = row["DefaultValue"].ConvertToInt32(-1);
+                        cadParam.Desc = row["Desc"].ConventToString(string.Empty);
+                        cadParam.CreateOn = DateTime.Now;
+                        CadDrawingParameterDB.AddHandle(cadParam);
+                    }
+                    
+
+                }
+
                 if (mId > 0 && detail>0)
                 {
                     return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
@@ -234,8 +324,48 @@ namespace SunacCADApp.Controllers
         /// </summary>
         /// <returns></returns>
         /// <url>/Window/Edit</url>
-        public ActionResult Edit()
+        public ActionResult Edit(int Id=0)
         {
+            if (Id < 1)
+            {
+                Redirect("/Window/Index");
+            }
+
+            string _where = "TypeCode='Area' And ParentID!=0";
+            IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
+            ViewBag.Settings = Settings;
+
+            _where = "TypeCode='ActionType' And ParentID!=0";
+            IList<BasArgumentSetting> ActionTypes = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
+            ViewBag.ActionTypes = ActionTypes;
+
+            _where = "TypeCode='OpenType' And ParentID!=0";
+            IList<BasArgumentSetting> OpenTypes = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
+            ViewBag.OpenTypes = OpenTypes;
+
+            _where = "TypeCode='OpenWindowNum' And ParentID!=0";
+            IList<BasArgumentSetting> OpenWindowNums = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
+            ViewBag.OpenWindowNums = OpenWindowNums;
+            IList<DataSourceMember> Members = CommonLib.GetWindowArgument();
+            ViewBag.Members = Members;
+
+            CadDrawingMaster master = CadDrawingMasterDB.GetSingleEntityById(Id);
+            ViewBag.CadDrawingMaster = master;
+            _where = "  a.MId=" + Id;
+            IList<CadDrawingByArea> ByAreas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
+            ViewBag.ByAreas = ByAreas;
+            _where = string.Format("  a.MId={0}", Id);
+            IList<CadDrawingDWG> Dwgs = CadDrawingDWGDB.GetPageInfoByParameter(_where, string.Empty, 0, 50);
+            ViewBag.Dwgs = Dwgs;
+            _where = "  a.MId=" + Id;
+            IList<CadDrawingFunction> Functions = CadDrawingFunctionDB.GetCadDrawingFunctionByWhereList(_where);
+            ViewBag.Functions = Functions;
+            _where = string.Format(@" a.MId={0}", Id);
+            CadDrawingWindowDetail windowDetail = CadDrawingWindowDetailDB.GetCadDrawingWindowDetailByWhere(_where);
+            ViewBag.WindowDetail = windowDetail;
+            _where = string.Format(@" a.MId={0}", Id);
+            IList<CadDrawingParameter> cadDrawingParams = CadDrawingParameterDB.GetCadDrawingParameterByWhereList(_where);
+            ViewBag.CadDrawingParams = cadDrawingParams;
             return View();
         }
     }

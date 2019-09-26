@@ -25,6 +25,10 @@ namespace SunacCADApp.Entity
         public int FunctionId { get; set; }
 
         /// <summary>
+        /// 功能区类型名称
+        /// </summary>
+        public string FunctionName { get; set; }
+        /// <summary>
         /// 是否有效
         ///</summary>
         public int Enabled { get; set; }

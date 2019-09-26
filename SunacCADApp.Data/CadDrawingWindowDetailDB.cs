@@ -116,5 +116,56 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.Execute(sql);
         }
 
+        ///<summary>
+        /// 外窗原型查询 分页查询
+        ///</summary>
+        public static IList<CadDrawingWindowSearch> GetSearchPageInfoByParameter(string _where, string orderby, int start, int end)
+        {
+
+            IList<CadDrawingWindowSearch> _caddrawingwindowsearchs = new List<CadDrawingWindowSearch>();
+            string sql = string.Format(@"SELECT  * FROM 
+                                                           (SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber, a.Id,
+                                                                        a.DrawingCode,a.DrawingName,d.DWGPath,a.Reorder,a.CreateOn 
+                                                             FROM  dbo.CaddrawingMaster a 
+                                                    INNER JOIN  dbo.CadDrawingWindowDetail b ON a.Id=b.MId
+													   LEFT JOIN  (SELECT MIN(Id) AS Id, MId FROM dbo.CadDrawingDWG   GROUP BY MId) c ON c.MId = a.Id
+													   LEFT JOIN  dbo.CadDrawingDWG d ON d.Id=c.Id  WHERE 1=1  {0}
+                                                    ) T
+                                                   WHERE    T.RowNumber BETWEEN {1} AND {2}  ORDER BY T.Reorder DESC,T.CreateOn DESC {3}", _where, start, end, orderby);
+            _caddrawingwindowsearchs = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<CadDrawingWindowSearch>(new CadDrawingWindowSearch());
+            return _caddrawingwindowsearchs;
+        }
+
+        ///<summary>
+        /// 外窗原型查询  分页数据总数量
+        ///<summary>
+        public static int GetSearchPageCountByParameter(string _where)
+        {
+            string sql = string.Format(@"      SELECT   COUNT(*) AS CNT   FROM dbo.CaddrawingMaster a 
+                                                       INNER JOIN  dbo.CadDrawingWindowDetail b ON a.Id=b.MId
+													     LEFT JOIN  (SELECT MIN(Id) AS Id, MId FROM dbo.CadDrawingDWG WHERE  FileClass='JPG' GROUP BY MId) c ON c.MId = a.Id
+													     LEFT JOIN  dbo.CadDrawingDWG d ON d.Id=c.Id
+                                                               WHERE  1=1  {0}", _where);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
+        }
+
+
+        public static CadDrawingWindowDetail GetCadDrawingWindowDetailByWhere(string _where)
+        {
+            CadDrawingWindowDetail _caddrawingwindow = new CadDrawingWindowDetail();
+            string sql = string.Format(@"SELECT a.Id,a.MId,a.WindowOpenTypeId,b.ArgumentText AS WindowOpenTypeName,
+                                                                    a.WindowOpenQtyId,c.ArgumentText AS WindowOpenQtyName,a.WindowHasCorner,
+                                                                    a.WindowHasSymmetry,a.WindowSizeMin,a.WindowSizeMax,a.WindowDesignFormula	,
+                                                                    a.WindowVentilationQuantity	,a.WindowPlugslotSize	,a.WindowAuxiliaryFrame  
+                                                        FROM  dbo.CadDrawingWindowDetail a 
+                                                        INNER JOIN dbo.BasArgumentSetting b ON a.WindowOpenTypeId=b.Id AND b.TypeCode='OpenType'
+                                                        INNER JOIN dbo.BasArgumentSetting c ON c.Id=a.WindowOpenQtyId AND c.TypeCode='OpenWindowNum'");
+
+
+            _caddrawingwindow = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<CadDrawingWindowDetail>(new CadDrawingWindowDetail());
+            return _caddrawingwindow;
+        }
+
+
     }
 }

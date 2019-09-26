@@ -3,40 +3,94 @@
 }
 @using SunacCADApp.Entity
 <div class="row search search-bottom">
-    <dl>
+    <dl class="dl_area">
         <dt>区域：</dt>
         <dd>
-            <a class="active">全部</a>
-            <a class="Scope" data-val="1">集团</a>
-            @foreach (BasArgumentSetting argument in ViewBag.Settings)
+            @if (ViewBag.scope == 1 || ViewBag.area>0)
             {
-                <a data-val="@argument.Id">@argument.ArgumentText</a>
+                <a>全部</a>
+            }
+            else
+            {
+                <a class="active">全部</a>
+            }
+           
+            @if (ViewBag.scope == 1)
+            {
+                <a class="Scope active" data-val="1000" >集团</a>
+            }
+            else
+            {
+                <a class="Scope" data-val="1000">集团</a>
             }
           
+            @foreach (BasArgumentSetting argument in ViewBag.Settings)
+            {
+                if (argument.Id == ViewBag.area)
+                {
+                    <a data-val="@argument.Id" class="active">@argument.ArgumentText</a>
+                }
+                else
+                {
+                    <a data-val="@argument.Id">@argument.ArgumentText</a>
+                }
+
+            }
         </dd>
     </dl>
 </div>
     <div class="row search search-bottom">
-
-    <dl>
+    <dl class="dl_action_type">
         <dt>功能区类型：</dt>
         <dd class="dd_action">
-            <a class="active">全部</a>
+            @if (ViewBag.action > 0)
+            {
+                <a >全部</a>
+            }
+            else
+            {
+                <a class="active">全部</a>
+            }
+           
             @foreach (BasArgumentSetting action in ViewBag.ActionTypes)
             {
-                <a data-val="@action.Id">@action.ArgumentText</a>
+                if (action.Id == ViewBag.action)
+                {
+                    <a data-val="@action.Id" class="active">@action.ArgumentText</a>
+                }
+                else
+                {
+                    <a data-val="@action.Id">@action.ArgumentText</a>
+                }
+
             }
         </dd>
     </dl>
 </div>
 <div class="row search search-bottom">
-    <dl>
+    <dl class="dl_open_type">
         <dt>开启类型：</dt>
         <dd class="dl_opentype">
-            <a class="active">全部</a>
+            @if (ViewBag.opentype > 0)
+            {
+                <a>全部</a>
+            }
+            else
+            {
+                <a class="active">全部</a>
+            }
             @foreach (BasArgumentSetting openType in ViewBag.OpenTypes)
             {
-                <a data-val="@openType.Id">@openType.ArgumentText</a>
+                if (ViewBag.opentype == openType.Id)
+                {
+                    <a data-val="@openType.Id" class="active">@openType.ArgumentText</a>
+                }
+                else
+                {
+                    <a data-val="@openType.Id">@openType.ArgumentText</a>
+
+                }
+
             }
         </dd>
     </dl>
@@ -45,10 +99,26 @@
     <dl class="dl_openwindow">
         <dt>开启扇数量：</dt>
         <dd>
-            <a class="active">全部</a>
+            @if (ViewBag.openwindownum > 0)
+            {
+                <a>全部</a>
+            }
+            else
+            {
+                <a class="active">全部</a>
+            }
             @foreach (BasArgumentSetting openWindowNum in ViewBag.OpenWindowNums)
             {
-                <a data-val="@openWindowNum.Id">@openWindowNum.ArgumentText 扇</a>
+                if (openWindowNum.Id == ViewBag.openwindownum)
+                {
+                    <a data-val="@openWindowNum.Id" class="active">@openWindowNum.ArgumentText 扇</a>
+                }
+                else
+                {
+                    <a data-val="@openWindowNum.Id">@openWindowNum.ArgumentText 扇</a>
+
+                }
+
             }
         </dd>
     </dl>
@@ -61,7 +131,6 @@
                 <input type="text" />
                 <em></em>
             </span>
-            
         </dd>
     </dl>
     <a class="btn-new" href="/window/add">新增</a>
@@ -80,9 +149,51 @@
                 </a>
             </li>
          }
-         
-    
-        
      </ul>
 </div>
+<script type="text/javascript">
+    $(function () {
+        $(".search a").on('click', function () {
+            let that = $(this);
+            let parent = $(this).parent();
+            parent.find("a").removeClass("active")
+            that.addClass("active");
+            let param = searchparam();
+            window.location.href = "/window?" + param
+        });
+
+        $(".sear-input em").on("click", function () {
+             
+             window.location.href="/"
+        });
+    })
+
+    var searchparam = function () {
+            let param = '1';
+            let area = parseInt($(".dl_area .active").data("val"));
+            if (area > 0 && area == 1000) {
+                param += '&scope=1';
+            }
+            console.log(area);
+            if (area > 0 && area != 1000) {
+                param += '&scope=0&area=' + area;
+            }
+
+            let action = parseInt($(".dl_action_type .active").data("val"))
+            if (action > 0) {
+                param += '&action=' + action;
+            }
+
+            let opentype = parseInt($(".dl_opentype .active").data("val"))
+            if (opentype > 0) {
+                param += '&opentype=' + opentype;
+            }
+
+            let openwindownum = parseInt($(".dl_openwindow .active").data("val"))
+            if (openwindownum > 0) {
+                param += '&openwindownum=' + openwindownum;
+            }
+            return param;
+    }
+</script>
 

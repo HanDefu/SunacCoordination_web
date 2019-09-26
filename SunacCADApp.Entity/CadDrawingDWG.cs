@@ -20,13 +20,17 @@ namespace SunacCADApp.Entity
         /// </summary>
         public int MId { get; set; }
         /// <summary>
-        /// CAD文件地址
+        /// CAD文件地址IMG
         /// </summary>
         public string DWGPath { get; set; }
         /// <summary>
         /// CAD文件类别
         /// </summary>
         public string FileClass { get; set; }
+        /// <summary>
+        /// CAD文件地址DWG
+        /// </summary>
+        public string CADPath { get; set; }
 
         /// <summary>
         /// 是否有效

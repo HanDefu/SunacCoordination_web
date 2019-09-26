@@ -72,7 +72,7 @@ namespace SunacCADApp.Data
         {
 
 
-            string sql = string.Format(@"INSERT INTO dbo.caddrawingparameter(MId,SizeNo,ValueType,Val,MinValue,MaxValue,DefaultValue,Desc,
+            string sql = string.Format(@"INSERT INTO dbo.caddrawingparameter(MId,SizeNo,ValueType,Val,MinValue,MaxValue,DefaultValue,[Desc],
                                      Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy)  
                                      VALUES ({0},'{1}',{2},'{3}',{4},{5},{6},'{7}',{8},{9},getdate(),{10},'{11}')", caddrawingparameter.MId, caddrawingparameter.SizeNo, caddrawingparameter.ValueType, caddrawingparameter.Val, caddrawingparameter.MinValue, caddrawingparameter.MaxValue, caddrawingparameter.DefaultValue, caddrawingparameter.Desc, caddrawingparameter.Enabled, caddrawingparameter.Reorder, caddrawingparameter.CreateUserId, caddrawingparameter.CreateBy);
             return MsSqlHelperEx.Execute(sql);
@@ -114,6 +114,17 @@ namespace SunacCADApp.Data
         {
             string sql = string.Format("DELETE FROM dbo.CadDrawingParameter WHERE {0} ", param);
             return MsSqlHelperEx.Execute(sql);
+        }
+
+        public static IList<CadDrawingParameter> GetCadDrawingParameterByWhereList(string _where) 
+        {
+            IList<CadDrawingParameter> _caddrawingparameters = new List<CadDrawingParameter>();
+            string sql = string.Format(@"SELECT a.*,b.StateName AS ValueTypeName 
+                                                        FROM dbo.CadDrawingParameter  a 
+                                                INNER JOIN dbo.Sys_State b ON a.ValueType=b.StateId AND b.StateFixFlag='WindowArgument'
+                                                WHERE {0}",_where);
+            _caddrawingparameters = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<CadDrawingParameter>(new CadDrawingParameter());
+            return _caddrawingparameters;
         }
 
     }

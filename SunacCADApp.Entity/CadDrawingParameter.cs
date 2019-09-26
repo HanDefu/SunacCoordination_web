@@ -27,6 +27,11 @@ namespace SunacCADApp.Entity
         /// 值类型
         /// </summary>
         public int ValueType { get; set; }
+
+        /// <summary>
+        ///  值类型名称
+        /// </summary>
+        public string ValueTypeName { get; set; }
         /// <summary>
         /// 值
         /// </summary>
