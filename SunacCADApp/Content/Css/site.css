@@ -496,10 +496,21 @@
     }
 
 
+
+
 body .layer-ext-sunacskin .layui-layer-title{background:#dbac58; color:#fff; border: none; text-align:center;font-size:18px;}
 body .layui-ext-sunacskin .layui-layer-btn{border-top:1px solid #E9E7E7}
 body .layui-ext-sunacskin .layui-layer-btn a{background:#ffffff;}
 body .layui-ext-sunacskin .layui-layer-btn .layui-layer-btn1{background:#ffffff;color:#ffffff;}
+
+
+#sunac .home {
+    width:1200px;
+    margin:-19px auto -19px auto;
+    padding:0px 0px 0px 0px;
+    background:#cf9a56;
+    min-height:500px;
+}
 
 
 

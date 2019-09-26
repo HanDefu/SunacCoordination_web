@@ -41,6 +41,18 @@
   <ItemGroup>
     <Compile Include="BasArgumentSetting.cs" />
     <Compile Include="BaseCompanyInfo.cs" />
+    <Compile Include="CadDrawingAirconditionerDetail.cs" />
+    <Compile Include="CadDrawingBathroomDetail.cs" />
+    <Compile Include="CadDrawingByArea.cs" />
+    <Compile Include="CadDrawingCostMath.cs" />
+    <Compile Include="CadDrawingDoorDetail.cs" />
+    <Compile Include="CadDrawingDWG.cs" />
+    <Compile Include="CadDrawingFunction.cs" />
+    <Compile Include="CadDrawingKitchenDetail.cs" />
+    <Compile Include="CadDrawingMaster.cs" />
+    <Compile Include="CadDrawingParameter.cs" />
+    <Compile Include="CadDrawingWindowDetail.cs" />
+    <Compile Include="CadDrawingWindowSearch.cs" />
     <Compile Include="DataSourceMember.cs" />
     <Compile Include="ProjectInfo.cs" />
     <Compile Include="Project_Information.cs" />
@@ -51,6 +63,8 @@
     <Compile Include="Sys_User.cs" />
     <Compile Include="Sys_User_Area_Relation.cs" />
     <Compile Include="Sys_User_Project_Relation.cs" />
+    <Compile Include="ArgumentSetting.cs" />
+    <Compile Include="XMLArgumentSetting.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

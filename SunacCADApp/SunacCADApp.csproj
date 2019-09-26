@@ -45,6 +45,8 @@
       <HintPath>..\..\..\..\000_VS2013公共类库\Common.Utility.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -86,6 +88,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Css\img\file-upload.png" />
+    <Content Include="Content\Css\img\icon-arrows-right.png" />
+    <Content Include="Content\Css\img\icon-background.png" />
+    <Content Include="Content\Css\img\icon-no-image.png" />
+    <Content Include="Content\Css\img\icon-project.png" />
+    <Content Include="Content\Css\img\icon-topnav-arrows.png" />
+    <Content Include="Content\Css\img\main-bg.png" />
+    <Content Include="Content\Css\img\sunac-head-logo.png" />
+    <Content Include="Content\Css\sunac.css" />
+    <Content Include="SunacCADService.asmx" />
     <Content Include="Content\Css\base.css" />
     <Content Include="Content\Css\bootstrap.css" />
     <Content Include="Content\Css\bootstrap.min.css" />
@@ -105,9 +117,10 @@
     <Content Include="Content\Css\img\inner-bg.png" />
     <Content Include="Content\Css\img\login-bg.jpg" />
     <Content Include="Content\Css\img\loginBg.png" />
-    <Content Include="Content\Css\img\sunac-logo.png" />
+    <Content Include="Content\Css\img\sunac-logo-new.png" />
     <Content Include="Content\Css\site.css" />
     <Content Include="Content\Js\goyeer.validation.js" />
+    <Content Include="Content\Js\jquery-1.12.4.min.js" />
     <Content Include="Content\Js\jquery.form.js" />
     <Content Include="Content\Plugins\bootstrap-multiselect\css\bootstrap-multiselect.css" />
     <Content Include="Content\Plugins\bootstrap-multiselect\js\bootstrap-multiselect.js" />
@@ -136,11 +149,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AirconditionerController.cs" />
+    <Compile Include="Controllers\BathroomController.cs" />
+    <Compile Include="Controllers\CommonLibController.cs" />
+    <Compile Include="Controllers\DoorController.cs" />
+    <Compile Include="Controllers\HandrailController.cs" />
+    <Compile Include="Controllers\KitchenController.cs" />
+    <Compile Include="SunacCADService.asmx.cs">
+      <DependentUpon>SunacCADService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controllers\ArgumentSettingController.cs" />
     <Compile Include="Controllers\CompanyInfoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SysRoleController.cs" />
     <Compile Include="Controllers\SysUserController.cs" />
+    <Compile Include="Controllers\WindowController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -173,6 +197,32 @@
     <Content Include="Views\SysUser\Add.cshtml" />
     <Content Include="Views\SysUser\SelectedProjectInfo.cshtml" />
     <Content Include="Views\SysUser\Edit.cshtml" />
+    <None Include="Properties\PublishProfiles\配置一.pubxml" />
+    <Content Include="Views\_LayoutPage.cshtml" />
+    <Content Include="Views\Window\Index.cshtml" />
+    <Content Include="Views\Window\Add.cshtml" />
+    <Content Include="Views\Window\LookOver.cshtml" />
+    <Content Include="Views\Window\Edit.cshtml" />
+    <Content Include="Views\Door\Add.cshtml" />
+    <Content Include="Views\Door\Edit.cshtml" />
+    <Content Include="Views\Door\Index.cshtml" />
+    <Content Include="Views\Door\LookOver.cshtml" />
+    <Content Include="Views\Kitchen\Add.cshtml" />
+    <Content Include="Views\Kitchen\Edit.cshtml" />
+    <Content Include="Views\Kitchen\Index.cshtml" />
+    <Content Include="Views\Kitchen\LookOver.cshtml" />
+    <Content Include="Views\Handrail\Add.cshtml" />
+    <Content Include="Views\Handrail\Edit.cshtml" />
+    <Content Include="Views\Handrail\Index.cshtml" />
+    <Content Include="Views\Handrail\LookOver.cshtml" />
+    <Content Include="Views\Bathroom\Add.cshtml" />
+    <Content Include="Views\Bathroom\Edit.cshtml" />
+    <Content Include="Views\Bathroom\Index.cshtml" />
+    <Content Include="Views\Bathroom\LookOver.cshtml" />
+    <Content Include="Views\Airconditioner\Add.cshtml" />
+    <Content Include="Views\Airconditioner\Edit.cshtml" />
+    <Content Include="Views\Airconditioner\Index.cshtml" />
+    <Content Include="Views\Airconditioner\LookOver.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -183,6 +233,9 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="uploader\cad\" />
+    <Folder Include="uploader\img\" />
+    <Folder Include="Views\CommonLib\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SunacCADApp.Data\SunacCADApp.Data.csproj">
@@ -192,6 +245,10 @@
     <ProjectReference Include="..\SunacCADApp.Entity\SunacCADApp.Entity.csproj">
       <Project>{a79e65f4-82df-4063-aaa1-27a2dbb69997}</Project>
       <Name>SunacCADApp.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SunacCADApp.Library\SunacCADApp.Library.csproj">
+      <Project>{3e7513e1-1863-4b37-add7-51a0167ee67a}</Project>
+      <Name>SunacCADApp.Library</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

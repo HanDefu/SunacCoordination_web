@@ -1,0 +1,88 @@
+﻿@{
+    Layout = "~/Views/_LayoutPage.cshtml";
+}
+@using SunacCADApp.Entity
+<div class="row search search-bottom">
+    <dl>
+        <dt>区域：</dt>
+        <dd>
+            <a class="active">全部</a>
+            <a class="Scope" data-val="1">集团</a>
+            @foreach (BasArgumentSetting argument in ViewBag.Settings)
+            {
+                <a data-val="@argument.Id">@argument.ArgumentText</a>
+            }
+          
+        </dd>
+    </dl>
+</div>
+    <div class="row search search-bottom">
+
+    <dl>
+        <dt>功能区类型：</dt>
+        <dd class="dd_action">
+            <a class="active">全部</a>
+            @foreach (BasArgumentSetting action in ViewBag.ActionTypes)
+            {
+                <a data-val="@action.Id">@action.ArgumentText</a>
+            }
+        </dd>
+    </dl>
+</div>
+<div class="row search search-bottom">
+    <dl>
+        <dt>开启类型：</dt>
+        <dd class="dl_opentype">
+            <a class="active">全部</a>
+            @foreach (BasArgumentSetting openType in ViewBag.OpenTypes)
+            {
+                <a data-val="@openType.Id">@openType.ArgumentText</a>
+            }
+        </dd>
+    </dl>
+</div>
+<div class="row search search-bottom">
+    <dl class="dl_openwindow">
+        <dt>开启扇数量：</dt>
+        <dd>
+            <a class="active">全部</a>
+            @foreach (BasArgumentSetting openWindowNum in ViewBag.OpenWindowNums)
+            {
+                <a data-val="@openWindowNum.Id">@openWindowNum.ArgumentText 扇</a>
+            }
+        </dd>
+    </dl>
+</div>
+<div class="row search keywords">
+    <dl>
+        <dt> 关键词搜索：</dt>
+        <dd>
+            <span class="sear-input">
+                <input type="text" />
+                <em></em>
+            </span>
+            
+        </dd>
+    </dl>
+    <a class="btn-new" href="/window/add">新增</a>
+</div>
+<div class="row list">
+     <ul>
+         @foreach (CadDrawingWindowSearch drawing in ViewBag.List)
+         {
+            <li>
+                <a href="/Window/LookOver/@drawing.Id">
+                    <figure>
+
+                        <img src="@drawing.DWGPath" />
+                        <p>@drawing.DrawingName</p>
+                    </figure>
+                </a>
+            </li>
+         }
+         
+    
+        
+     </ul>
+</div>
+

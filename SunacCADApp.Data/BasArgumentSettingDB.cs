@@ -63,6 +63,16 @@ namespace SunacCADApp.Data
             return _basargumentsettings;
         }
 
+
+        public static IList<ArgumentSetting> GetXMLBasArgumentSettingByWhere(string _where) 
+        {
+            IList<ArgumentSetting> _basargumentsettings = new List<ArgumentSetting>();
+            string _sql = string.Format(@"SELECT a.Id,a.ArgumentText,a.TypeCode,a.TypeName FROM BasArgumentSetting a inner join BasArgumentSetting b ON a.ParentID=b.Id
+                                                          where a.Enabled=1 {0}  order by a.ModifiedOn asc", _where);
+            _basargumentsettings = MsSqlHelperEx.ExecuteDataTable(_sql).ConvertListModel<ArgumentSetting>(new ArgumentSetting());
+            return _basargumentsettings;
+        }
+
         ///<summary>
         /// 参数配置表  分页数据总数量
         ///<summary>

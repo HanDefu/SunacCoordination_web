@@ -4,7 +4,10 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-
+using Common.Utility.Extender;
+using Common.Utility;
+using AFrame.DBUtility;
+using SunacCADApp.Entity;
 namespace SunacCADApp.Data
 {
     public class CommonLib
@@ -26,5 +29,17 @@ namespace SunacCADApp.Data
             }
             return pwd;
         }
+
+       public static IList<DataSourceMember> GetWindowArgument(string StateFixFlag = "WindowArgument") 
+       {
+           IList<DataSourceMember> members = new List<DataSourceMember>();
+           string sql=string.Format(@"SELECT StateId AS ValueMember,StateName AS DisplayMember
+                                                  FROM dbo.Sys_State WHERE StateFixFlag='{0}' AND Enabled=1", StateFixFlag);
+           members = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<DataSourceMember>(new DataSourceMember());
+           return members;
+       }
+
+
+        
     }
 }

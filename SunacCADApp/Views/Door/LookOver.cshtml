@@ -1,0 +1,110 @@
+﻿@{
+    Layout = "~/Views/_LayoutPage.cshtml";
+}
+<div class="row topnav">
+     <a>标准部品库</a>
+    <i></i>
+     <a>外窗</a>
+    <i></i>
+     <a>CD02X1外开双扇下</a>
+</div>
+<div class="row view">
+    <div class="left-column">
+        <figure>
+            <img src="~/uploader/windows-img.png" />
+            <p>CDA双开窗下</p>
+        </figure>
+    </div>
+    <div class="mian-column">
+        <dl>
+            <dt><i>*</i>原型编号:</dt>
+            <dd>
+                <input type="text"  style="width:450px" />
+            </dd>
+        </dl>
+        <dl>
+            <dt><i>*</i>原型dwg文件:</dt>
+            <dd>
+                <input type="text" style="width:450px" />
+            </dd>
+        </dl>
+        <dl>
+            <dt><i>*</i>使用范围:</dt>
+            <dd style="width:500px;">
+                <span style="display:block;padding-top:5px;line-height:35px;">
+                    <span class="online-checkbox">
+                        <input type="checkbox" id="all" />
+                        <label for="all">全部</label>
+                    </span>
+                    <span class="online-checkbox">
+                        <input type="checkbox" id="all" />
+                        <label for="all">集团</label>
+                    </span>
+                    <span class="online-checkbox">
+                        <input type="checkbox" id="all" />
+                        <label for="all">北京区域</label>
+                    </span>
+                    <span class="online-checkbox">
+                        <input type="checkbox" id="all" />
+                        <label for="all">华北区域</label>
+                    </span>
+                    <span class="online-checkbox">
+                        <input type="checkbox" id="all" />
+                        <label for="all">上海区域</label>
+                    </span>
+                    <span class="online-checkbox">
+                        <input type="checkbox" id="all" />
+                        <label for="all">上海区域</label>
+                    </span>
+                </span>
+                
+            </dd>
+        </dl>
+        <dl>
+            <dt><i></i>模块类型：</dt>
+            <dd>
+                <span class="online-checkbox">
+                     <input type="radio" />
+                    <label>动态模型</label>
+                </span>
+                <span class="online-checkbox">
+                    <input type="radio" />
+                    <label>静态模型</label>
+                </span>
+            </dd>
+        </dl>
+        <dl>
+            <dt><i></i>门类型：</dt>
+            <dd>动态模型
+                
+            </dd>
+        </dl>
+        
+
+        <dl>
+            <dt><i></i>宽度尺寸范围（mm）：</dt>
+            <dd>
+               100-200
+            </dd>
+        </dl>
+        <dl>
+            <dt><i></i>通风计算公式：</dt>
+            <dd>
+                
+                
+            </dd>
+        </dl>
+       
+        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
+
+            <div class="col-md-6 col-sm-6">
+                <a  class="btn btn-sunac" href="/Door/Edit">编辑</a>
+            </div>
+            <div class="col-md-6 col-sm-6 text-right">
+                <button type="button" class="btn btn-sunac">删除</button>
+                <button type="button" class="btn btn-sunac">提交审核</button>
+            </div>
+        </div>
+    </div>
+    
+</div>

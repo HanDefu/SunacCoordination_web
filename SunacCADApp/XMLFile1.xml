@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-16"?>
+<Root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Code>100</Code>
+  <Message>数据返回成功</Message>
+  <ArgumentSettings>
+    <ArgumentSetting>
+      <Id>5</Id>
+      <ArgumentText>集团</ArgumentText>
+      <TypeCode>area</TypeCode>
+      <TypeName>区域</TypeName>
+    </ArgumentSetting>
+    <ArgumentSetting>
+      <Id>8</Id>
+      <ArgumentText>北京</ArgumentText>
+      <TypeCode>area</TypeCode>
+      <TypeName>区域</TypeName>
+    </ArgumentSetting>
+    <ArgumentSetting>
+      <Id>9</Id>
+      <ArgumentText>西南</ArgumentText>
+      <TypeCode>area</TypeCode>
+      <TypeName>区域</TypeName>
+    </ArgumentSetting>
+    <ArgumentSetting>
+      <Id>24</Id>
+      <ArgumentText>东南</ArgumentText>
+      <TypeCode>area</TypeCode>
+      <TypeName>区域</TypeName>
+    </ArgumentSetting>
+    <ArgumentSetting>
+      <Id>25</Id>
+      <ArgumentText>广深</ArgumentText>
+      <TypeCode>area</TypeCode>
+      <TypeName>区域</TypeName>
+    </ArgumentSetting>
+    <ArgumentSetting>
+      <Id>26</Id>
+      <ArgumentText>华中</ArgumentText>
+      <TypeCode>area</TypeCode>
+      <TypeName>区域</TypeName>
+    </ArgumentSetting>
+  </ArgumentSettings>
+</Root>
+</string>

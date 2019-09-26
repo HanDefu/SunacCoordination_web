@@ -1,0 +1,85 @@
+﻿@{
+    Layout = "~/Views/_LayoutPage.cshtml";
+}
+@using SunacCADApp.Entity
+<div class="row search search-bottom">
+    <dl>
+        <dt>区域：</dt>
+        <dd>
+            <a class="active">全部</a>
+            <a class="Scope" data-val="1">集团</a>
+            @foreach (BasArgumentSetting argument in ViewBag.Settings)
+            {
+                <a data-val="@argument.Id">@argument.ArgumentText</a>
+            }
+
+        </dd>
+    </dl>
+</div>
+<div class="row search search-bottom">
+    <dl>
+        <dt>空调匹数：</dt>
+        <dd class="dd_action">
+            <a class="active">全部</a>
+            @foreach (BasArgumentSetting AirConditionNumber in ViewBag.AirConditionNumbers)
+            {
+                <a data-val="@AirConditionNumber.Id">@AirConditionNumber.ArgumentText</a>
+            }
+        </dd>
+    </dl>
+</div>
+<div class="row search search-bottom">
+    <dl>
+        <dt>冷凝水管：</dt>
+        <dd class="dd_action">
+            <a class="active">全部</a>
+            @foreach (BasArgumentSetting CondensatePipePosition in ViewBag.CondensatePipePositions)
+            {
+                <a data-val="@CondensatePipePosition.Id">@CondensatePipePosition.ArgumentText</a>
+            }
+        </dd>
+    </dl>
+</div>
+<div class="row search search-bottom">
+    <dl>
+        <dt>雨水管：</dt>
+        <dd class="dd_action">
+            <a class="active">全部</a>
+            <a>有雨水管</a>
+            <a>无雨水管</a>
+        </dd>
+    </dl>
+</div>
+<div class="row search keywords">
+    <dl>
+        <dt> 关键词搜索：</dt>
+        <dd>
+            <span class="sear-input">
+                <input type="text" />
+                <em></em>
+            </span>
+
+        </dd>
+    </dl>
+    <a class="btn-new" href="/airconditioner/add">新增</a>
+</div>
+<div class="row list">
+    <ul>
+        @foreach (CadDrawingWindowSearch drawing in ViewBag.List)
+        {
+            <li>
+                <a href="/Window/LookOver/@drawing.Id">
+                    <figure>
+
+                        <img src="@drawing.DWGPath" />
+                        <p>@drawing.DrawingName</p>
+                    </figure>
+                </a>
+            </li>
+        }
+
+
+
+    </ul>
+</div>
+

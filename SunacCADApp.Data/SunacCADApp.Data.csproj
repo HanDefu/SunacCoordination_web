@@ -59,6 +59,18 @@
   <ItemGroup>
     <Compile Include="BasArgumentSettingDB.cs" />
     <Compile Include="BaseCompanyInfoDB.cs" />
+    <Compile Include="CadDrawingAirconditionerDetailDB.cs" />
+    <Compile Include="CadDrawingBathroomDetailDB.cs" />
+    <Compile Include="CadDrawingByAreaDB.cs" />
+    <Compile Include="CadDrawingCostMathDB.cs" />
+    <Compile Include="CadDrawingDoorDetailDB.cs" />
+    <Compile Include="CadDrawingDWGDB.cs" />
+    <Compile Include="CadDrawingFunctionDB.cs" />
+    <Compile Include="CadDrawingKitchenDetailDB.cs" />
+    <Compile Include="CadDrawingMasterDB.cs" />
+    <Compile Include="CadDrawingParameterDB.cs" />
+    <Compile Include="CadDrawingWindowDetailDB.cs" />
+    <Compile Include="CadDrawingWindowSearchDB.cs" />
     <Compile Include="CommonLib.cs" />
     <Compile Include="MsSqlHelperEx.cs" />
     <Compile Include="Project_InformationDB.cs" />

@@ -13,6 +13,12 @@
     <script src="~/Content/Plugins/laydate/laydate.js"></script>
     <script src="~/Content/Js/goyeer.validation.js"></script>
     <script src="~/Content/Js/jquery.form.js"></script>
+     <script type="text/javascript">
+         $(function () {
+
+          
+         })
+     </script>
 </head>
 <body>
     <div id="header">
@@ -67,7 +73,7 @@
         success: function (data) {
             if (data.code == 100) {
                 layer.msg(data.message, { icon: 6, time: 2000 }, function () {
-                    window.location.href = "/home/usercenter"
+                    window.location.href = "/window"
                 });
             } else {
                 layer.alert(data.message, { icon: 5, shade: false });
