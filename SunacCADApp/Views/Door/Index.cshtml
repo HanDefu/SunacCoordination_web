@@ -3,14 +3,38 @@
 }
 @using SunacCADApp.Entity
 <div class="row search search-bottom">
-    <dl>
+    <dl class="dl_area">
         <dt>区域：</dt>
         <dd>
-            <a class="active">全部</a>
-            <a class="Scope" data-val="1">集团</a>
+            @if (ViewBag.scope == 1 || ViewBag.area > 0)
+            {
+                <a>全部</a>
+            }
+            else
+            {
+                <a class="active">全部</a>
+            }
+
+            @if (ViewBag.scope == 1)
+            {
+                <a class="Scope active" data-val="1000">集团</a>
+            }
+            else
+            {
+                <a class="Scope" data-val="1000">集团</a>
+            }
+
             @foreach (BasArgumentSetting argument in ViewBag.Settings)
             {
-                <a data-val="@argument.Id">@argument.ArgumentText</a>
+                if (argument.Id == ViewBag.area)
+                {
+                    <a data-val="@argument.Id" class="active">@argument.ArgumentText</a>
+                }
+                else
+                {
+                    <a data-val="@argument.Id">@argument.ArgumentText</a>
+                }
+
             }
 
         </dd>
@@ -18,13 +42,27 @@
 </div>
 <div class="row search search-bottom">
 
-    <dl>
+    <dl class="dl_doortype">
         <dt>门类型：</dt>
         <dd class="dd_action">
-            <a class="active">全部</a>
+            @if (ViewBag.doortype > 0)
+            {
+                <a>全部</a>
+            }
+            else
+            {
+                <a class="active">全部</a>
+            }
             @foreach (BasArgumentSetting DoorType in ViewBag.DoorTypes)
             {
-                <a data-val="@DoorType.Id">@DoorType.ArgumentText</a>
+                if (DoorType.Id == ViewBag.doortype)
+                {
+                    <a data-val="@DoorType.Id" class="active">@DoorType.ArgumentText</a>
+                }
+                else
+                {
+                    <a data-val="@DoorType.Id">@DoorType.ArgumentText</a>
+                }
             }
         </dd>
     </dl>
@@ -49,7 +87,7 @@
         @foreach (CadDrawingWindowSearch drawing in ViewBag.List)
         {
             <li>
-                <a href="/Window/LookOver/@drawing.Id">
+                <a href="/door/LookOver/@drawing.Id">
                     <figure>
 
                         <img src="@drawing.DWGPath" />
@@ -63,4 +101,36 @@
 
     </ul>
 </div>
+<script type="text/javascript">
+
+    $(".search a").on('click', function () {
+        let that = $(this);
+        let parent = $(this).parent();
+        parent.find("a").removeClass("active")
+        that.addClass("active");
+        let param = searchparam();
+        window.location.href = "/door?" + param
+    });
+
+    $(".sear-input em").on("click", function () {
+
+        window.location.href = "/"
+    });
+    var searchparam = function () {
+        let param = '1';
+        let area = parseInt($(".dl_area .active").data("val"));
+        if (area > 0 && area == 1000) {
+            param += '&scope=1';
+        }
+        if (area > 0 && area != 1000) {
+            param += '&scope=0&area=' + area;
+        }
+
+        let doortype = parseInt($(".dl_doortype .active").data("val"))
+        if (doortype > 0) {
+            param += '&doortype=' + doortype;
+        }
+        return param;
+    }
+</script>
 

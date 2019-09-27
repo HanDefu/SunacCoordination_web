@@ -54,7 +54,7 @@
            
             @foreach (BasArgumentSetting action in ViewBag.ActionTypes)
             {
-                if (action.Id == ViewBag.action)
+                if (action.Id == ViewBag.doortype)
                 {
                     <a data-val="@action.Id" class="active">@action.ArgumentText</a>
                 }

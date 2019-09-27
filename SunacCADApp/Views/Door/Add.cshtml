@@ -35,7 +35,6 @@
                 <dd>
                     <span class="upfile">
                         <input type="file" />
-                        <input type="hidden" name="cad_file" />
                     </span>
                     <span class="upfile">
                         <input type="file" />
@@ -87,7 +86,7 @@
             <dl>
                 <dt><i>*</i>门类型：</dt>
                 <dd>
-                    <select name="OpenType">
+                    <select name="selectDoorType">
                         @foreach (BasArgumentSetting DoorType in ViewBag.DoorTypes)
                         {
                             <option value="@DoorType.Id">@DoorType.ArgumentText</option>
@@ -98,20 +97,16 @@
             <dl class="dynamic_module">
                 <dt><i>*</i>宽度尺寸范围(mm)：</dt>
                 <dd>
-                    <input type="text" style="width:50px" name="txtWindowSizeMin" />
-                    <i> -- &nbsp; </i>
-                    <input type="text" style="width:50px" name="txtWindowSizeMax" />
+                    <input type="number" style="width:50px" name="txtWindowSizeMin" value="1"  />
+                    <i style="font-size:18px;"> - </i>
+                    <input type="number" style="width:50px" name="txtWindowSizeMax" value="2" />
                 </dd>
             </dl>
        
         </form>
         <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;margin-top:120px">
             <div class="col-md-6 col-sm-6">
-                <button type="button" class="btn btn-sunac" id="btn_save">编辑</button>
-            </div>
-            <div class="col-md-6 col-sm-6 text-right">
-                <button type="button" class="btn btn-sunac">删除</button>
-                <button type="button" class="btn btn-sunac">提交审核</button>
+                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
             </div>
         </div>
     </div>

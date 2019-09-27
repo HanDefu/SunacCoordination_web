@@ -2,6 +2,13 @@
     Layout = "~/Views/_LayoutPage.cshtml";
 }
 @using SunacCADApp.Entity
+@{
+    Layout = "~/Views/_LayoutPage.cshtml";
+    CadDrawingMaster dMaster = ViewBag.CadDrawingMaster;
+    CadDrawingDoorDetail doorDetail = ViewBag.Door;
+    IList<CadDrawingByArea> byAreaList = ViewBag.byAreaList;
+
+}
 <div class="row topnav">
     <a>标准部品库</a>
     <i></i>
@@ -21,31 +28,39 @@
             <dl>
                 <dt><i>*</i>原型编号:</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" />
+                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" value="@dMaster.DrawingCode" />
                 </dd>
             </dl>
             <dl>
                 <dt><i>*</i>原型名称:</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingname" class="required" />
+                    <input type="text" style="width:450px" name="txt_drawingname" class="required"  value="@dMaster.DrawingName"/>
                 </dd>
             </dl>
             <dl>
                 <dt><i>*</i>原型dwg文件:</dt>
                 <dd>
-                    <span class="upfile">
-                        <input type="file" />
-                        <input type="hidden" name="cad_file" />
-                    </span>
-                    <span class="upfile">
-                        <input type="file" />
-                    </span>
-                    <span class="upfile">
-                        <input type="file" />
-                    </span>
-                    <span class="upfile">
-                        <input type="file" />
-                    </span>
+                    @{
+                        IList<CadDrawingDWG> DwgList = ViewBag.Dwgs;
+                        int cadcount = 4 - DwgList.Count;
+                    }
+
+                    @foreach (CadDrawingDWG dwg in DwgList)
+                    {
+                        <span class="upfile">
+                            <img src="@dwg.DWGPath" /><del></del>
+                            <input type="hidden" name="cad_file" value="@dwg.CADPath" />
+                            <input type="hidden" name="img_file" value="@dwg.DWGPath" />
+                        </span>
+                    }
+                    @for (int i = 0; i < cadcount; i++)
+                    {
+                        <span class="upfile">
+                            <input type="file" />
+                        </span>
+                    }
+
+
                 </dd>
             </dl>
             <dl>
@@ -57,13 +72,24 @@
                             <label for="all">全部</label>
                         </span>
                         <span class="online-checkbox">
-                            <input type="checkbox" id="all_group" name="chekbox_group" class="single-checkbox" value="0" />
+                            @if (dMaster.Scope == 1)
+                            {
+                                <input type="checkbox" id="all_group" name="chekbox_group" class="single-checkbox" value="1" checked />
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="all_group" name="chekbox_group" class="single-checkbox" value="1" />
+                            }
+
                             <label for="all_group">集团</label>
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
+                            string str_check = string.Empty;
+                            int hasArea = byAreaList.Where(e => e.AreaID == Setting.Id).Count();
+                            str_check = hasArea > 0 ? "checked" : string.Empty;
                             <span class="online-checkbox">
-                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" />
+                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" @str_check />
                                 <label for="area_@Setting.Id">@Setting.ArgumentText</label>
                             </span>
                         }
@@ -74,14 +100,30 @@
             <dl>
                 <dt><i>*</i>模块类型：</dt>
                 <dd>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
-                        <label for="radio_dynamic_module">动态模型</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" />
-                        <label for="radio_static_module">静态模型</label>
-                    </span>
+                    @if (dMaster.DynamicType == 1)
+                    {
+                        <span class="online-checkbox">
+                            <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
+                            <label for="radio_dynamic_module">动态模型</label>
+                        </span>
+                        <span class="online-checkbox">
+                            <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" />
+                            <label for="radio_static_module">静态模型</label>
+                        </span>
+                    }
+                    else if(dMaster.DynamicType == 2)
+                    {
+                        <span class="online-checkbox">
+                            <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" data-model=".dynamic_module" />
+                            <label for="radio_dynamic_module">动态模型</label>
+                        </span>
+                        <span class="online-checkbox">
+                            <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" checked />
+                            <label for="radio_static_module">静态模型</label>
+                        </span>
+
+                    }
+
                 </dd>
             </dl>
             <dl>
@@ -90,20 +132,29 @@
                     <select name="OpenType">
                         @foreach (BasArgumentSetting DoorType in ViewBag.DoorTypes)
                         {
-                            <option value="@DoorType.Id">@DoorType.ArgumentText</option>
+                            if (DoorType.Id == doorDetail.DoorType)
+                            {
+                                <option value="@DoorType.Id" selected>@DoorType.ArgumentText</option>
+                            }
+                            else
+                            {
+                                <option value="@DoorType.Id">@DoorType.ArgumentText</option>
+                            }
                         }
+                        }
+                           
                     </select>
                 </dd>
             </dl>
             <dl class="dynamic_module">
                 <dt><i>*</i>宽度尺寸范围(mm)：</dt>
                 <dd>
-                    <input type="text" style="width:50px" name="txtWindowSizeMin" />
+                    <input type="text" style="width:50px" name="txtWindowSizeMin"  value="@doorDetail.WindowSizeMin"/>
                     <i> -- &nbsp; </i>
-                    <input type="text" style="width:50px" name="txtWindowSizeMax" />
+                    <input type="text" style="width:50px" name="txtWindowSizeMax" value="@doorDetail.WindowSizeMax" />
                 </dd>
             </dl>
-
+            <input type="hidden" name="Id"  value="@dMaster.Id"/>
         </form>
         <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
             <div class="col-md-6 col-sm-6">
@@ -119,7 +170,7 @@
 </div>
 <script type="text/javascript">
     var options = {
-        url: '/Door/Addhandle',
+        url: '/Door/Edithandle',
         type: 'post',
         data: $("#myform").serialize(),
         dataType: 'json',

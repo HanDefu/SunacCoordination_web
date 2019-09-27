@@ -1,110 +1,183 @@
 ﻿@{
     Layout = "~/Views/_LayoutPage.cshtml";
 }
+@using SunacCADApp.Entity
+@{
+    
+    CadDrawingMaster Master = ViewBag.CadDrawingMaster;
+    CadDrawingKitchenDetail Kitchen = ViewBag.Kitchen;
+}
 <div class="row topnav">
-     <a>标准部品库</a>
+    <a>标准部品库</a>
     <i></i>
-     <a>外窗</a>
+    <a>厨房</a>
     <i></i>
-     <a>CD02X1外开双扇下</a>
+    <a>@Master.DrawingName</a>
 </div>
 <div class="row view">
     <div class="left-column">
         <figure>
-            <img src="~/uploader/windows-img.png" />
-            <p>CDA双开窗下</p>
+            @{
+                IList<CadDrawingDWG> dwgs= ViewBag.Dwgs;
+                CadDrawingDWG dwg = dwgs.FirstOrDefault<CadDrawingDWG>();
+                string dwg_path = dwg == null ? "/Content/Css/img/icon-no-image.png" : dwg.DWGPath;
+                   
+            }
+            <img src="@dwg_path" width="238" heigth="320" />
+            <p>@Master.DrawingName</p>
         </figure>
     </div>
     <div class="mian-column">
-        <dl>
-            <dt><i>*</i>原型编号:</dt>
-            <dd>
-                <input type="text"  style="width:450px" />
-            </dd>
-        </dl>
-        <dl>
-            <dt><i>*</i>原型dwg文件:</dt>
-            <dd>
-                <input type="text" style="width:450px" />
-            </dd>
-        </dl>
-        <dl>
-            <dt><i>*</i>使用范围:</dt>
-            <dd style="width:500px;">
-                <span style="display:block;padding-top:5px;line-height:35px;">
-                    <span class="online-checkbox">
-                        <input type="checkbox" id="all" />
-                        <label for="all">全部</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="checkbox" id="all" />
-                        <label for="all">集团</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="checkbox" id="all" />
-                        <label for="all">北京区域</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="checkbox" id="all" />
-                        <label for="all">华北区域</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="checkbox" id="all" />
-                        <label for="all">上海区域</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="checkbox" id="all" />
-                        <label for="all">上海区域</label>
-                    </span>
-                </span>
-                
-            </dd>
-        </dl>
-        <dl>
-            <dt><i></i>模块类型：</dt>
-            <dd>
-                <span class="online-checkbox">
-                     <input type="radio" />
-                    <label>动态模型</label>
-                </span>
-                <span class="online-checkbox">
-                    <input type="radio" />
-                    <label>静态模型</label>
-                </span>
-            </dd>
-        </dl>
-        <dl>
-            <dt><i></i>门类型：</dt>
-            <dd>动态模型
-                
-            </dd>
-        </dl>
-        
+        <form name="myform" id="myform">
+            <dl>
+                <dt><i>*</i>原型编号:</dt>
+                <dd>
+                   @Master.DrawingCode
+                </dd>
+            </dl>
+            <dl>
+                <dt><i>*</i>原型名称:</dt>
+                <dd>
+                    @Master.DrawingName
+                </dd>
+            </dl>
+            <dl>
+                <dt><i>*</i>原型dwg文件:</dt>
+                <dd>
+                    @foreach (CadDrawingDWG Dwg in ViewBag.Dwgs)
+                    {
+                        <span class="upfile">
+                            <img src="@Dwg.DWGPath" />
+                        </span>
+                    }
 
-        <dl>
-            <dt><i></i>宽度尺寸范围（mm）：</dt>
-            <dd>
-               100-200
-            </dd>
-        </dl>
-        <dl>
-            <dt><i></i>通风计算公式：</dt>
-            <dd>
-                
-                
-            </dd>
-        </dl>
-       
+                </dd>
+            </dl>
+            <dl>
+                <dt><i>*</i>使用范围:</dt>
+                <dd style="width:500px;">
+                    <span style="display:block;padding-top:5px;line-height:35px;">
+                        @if (Master.Scope == 1)
+                        {
+                            <span class="online-checkbox">
+                                <label>集团</label>
+                            </span>
+                        }
+
+
+                        @foreach (CadDrawingByArea Area in ViewBag.ByAreas)
+                        {
+                            <span class="online-checkbox">
+                                <label>@Area.AreaName</label>
+                            </span>
+                        }
+                    </span>
+
+                </dd>
+            </dl>
+            <dl>
+                <dt><i>*</i>厨房类型：</dt>
+                <dd>
+                     @Kitchen.KitchenTypeName
+                </dd>
+            </dl>
+            <dl>
+                <dt><i>*</i>门窗位置：</dt>
+                <dd>
+                   @Kitchen.KitchenPositionName
+                </dd>
+            </dl>
+            <dl>
+                <dt><i>*</i>模块类型：</dt>
+                <dd>
+                    @if (Master.DynamicType == 1)
+                    {
+                        <span class="online-checkbox">
+                            <label for="radio_dynamic_module">动态模型</label>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="online-checkbox">
+
+                            <label for="radio_static_module">静态模型</label>
+                        </span>
+                    }
+                </dd>
+            </dl>
+
+            <dl class="dynamic_module">
+                <dt><i>*</i>是否包含气道：</dt>
+                <dd>
+                    @{
+                        string IsAirduct = Kitchen.KitchenIsAirduct == 1 ? "是" : "否";
+                    }
+                    @IsAirduct
+                </dd>
+            </dl>
+@if (Master.DynamicType == 1)
+                    {
+            <dl class="dynamic_module">
+                <dt><i>*</i>开间尺寸范围(mm)：</dt>
+                <dd>
+                    @Kitchen.KitchenOpenSizeMin
+                    mm
+                       -
+                    @Kitchen.KitchenOpenSizeMax
+                    mm
+                </dd>
+            </dl>
+            <dl class="dynamic_module">
+                <dt><i>*</i>进深尺寸范围(mm)：</dt>
+                <dd>
+                    @Kitchen.KitchenDepthsizeMin
+                    mm
+                    -
+                    @Kitchen.KitchenDepthsizeMax
+                    mm
+                </dd>
+            </dl>
+                    }
+else
+{
+
+    <dl class="dynamic_module">
+        <dt><i>*</i>开间进深(mm)：</dt>
+        <dd>
+            @Kitchen.KitchenOpenSizeMin
+            mm -
+            @Kitchen.KitchenOpenSizeMax
+            mm
+        </dd>
+    </dl>
+    <dl class="dynamic_module">
+        <dt><i>*</i>台盆尺寸：</dt>
+        <dd>
+            @Kitchen.KitchenBasinSizeName
+
+        </dd>
+    </dl>
+    <dl class="dynamic_module">
+        <dt><i>*</i>冰箱尺寸：</dt>
+        <dd>
+            @Kitchen.KitchenFridgSizeName
+        </dd>
+    </dl>
+    <dl class="dynamic_module">
+        <dt><i>*</i>灶台尺寸：</dt>
+        <dd>
+            @Kitchen.KitchenHearthSizeName
+
+        </dd>
+    </dl>
+}
+
+           
+        </form>
         <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
-
             <div class="col-md-6 col-sm-6">
-                <a class="btn btn-sunac" href="/Kitchen/Edit">编辑</a>
-            </div>
-            <div class="col-md-6 col-sm-6 text-right">
-                <button type="button" class="btn btn-sunac">删除</button>
-                <button type="button" class="btn btn-sunac">提交审核</button>
+                <a class="btn btn-sunac" id="btn_save" href="/Kitchen/Edit/@Master.Id">编辑</a>
             </div>
         </div>
     </div>
-    
 </div>
