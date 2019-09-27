@@ -23,6 +23,11 @@ namespace SunacCADApp.Entity
         /// 门类型
         /// </summary>
         public int DoorType { get; set; }
+
+        /// <summary>
+        /// 门类型名称
+        /// </summary>
+        public string DoorTypeName { get; set; }
         /// <summary>
         /// 宽度尺寸范围最小值
         /// </summary>

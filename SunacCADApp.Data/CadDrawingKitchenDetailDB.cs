@@ -74,8 +74,8 @@ namespace SunacCADApp.Data
 
             string sql = string.Format(@"INSERT INTO dbo.caddrawingkitchendetail(MId,KitchenType,KitchenPosition,KitchenIsAirduct,KitchenOpenSizeMin,KitchenOpenSizeMax,KitchenDepthsizeMin,KitchenDepthsizeMax,KitchenBasinSize,KitchenFridgSize,KitchenHearthSize,
                                      Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy,ModifiedOn,ModifiedUserId,ModifiedBy)
-                                     VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},getdate(),{13},'{14}',getdate(),{15},'{16}')", caddrawingkitchendetail.MId, caddrawingkitchendetail.KitchenType, caddrawingkitchendetail.KitchenPosition, caddrawingkitchendetail.KitchenIsAirduct, caddrawingkitchendetail.KitchenOpenSizeMin, caddrawingkitchendetail.KitchenOpenSizeMax, caddrawingkitchendetail.KitchenDepthsizeMin, caddrawingkitchendetail.KitchenDepthsizeMax, caddrawingkitchendetail.KitchenBasinSize, caddrawingkitchendetail.KitchenFridgSize, caddrawingkitchendetail.KitchenHearthSize, caddrawingkitchendetail.Enabled, caddrawingkitchendetail.Reorder, caddrawingkitchendetail.CreateUserId, caddrawingkitchendetail.CreateBy, caddrawingkitchendetail.ModifiedUserId, caddrawingkitchendetail.ModifiedBy);
-            return MsSqlHelperEx.Execute(sql);
+                                     VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},getdate(),{13},'{14}',getdate(),{15},'{16}');SELECT @@IDENTITY AS KitchenId", caddrawingkitchendetail.MId, caddrawingkitchendetail.KitchenType, caddrawingkitchendetail.KitchenPosition, caddrawingkitchendetail.KitchenIsAirduct, caddrawingkitchendetail.KitchenOpenSizeMin, caddrawingkitchendetail.KitchenOpenSizeMax, caddrawingkitchendetail.KitchenDepthsizeMin, caddrawingkitchendetail.KitchenDepthsizeMax, caddrawingkitchendetail.KitchenBasinSize, caddrawingkitchendetail.KitchenFridgSize, caddrawingkitchendetail.KitchenHearthSize, caddrawingkitchendetail.Enabled, caddrawingkitchendetail.Reorder, caddrawingkitchendetail.CreateUserId, caddrawingkitchendetail.CreateBy, caddrawingkitchendetail.ModifiedUserId, caddrawingkitchendetail.ModifiedBy);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(-1);
         }
         ///<summary>
         /// 厨房CAD原型属性表-修改方法
@@ -125,7 +125,7 @@ namespace SunacCADApp.Data
                                                                        a.DrawingCode,a.DrawingName,c.DWGPath,a.Reorder,a.CreateOn 
                                                              FROM dbo.CaddrawingMaster a 
                                                     INNER JOIN dbo.CadDrawingKitchenDetail b ON a.Id=b.MId
-                                                      LEFT JOIN (SELECT  Id  MId,DWGPath,FileClass FROM dbo.CadDrawingDWG  WHERE  FileClass='JPG') c ON c.MId = a.Id
+                                                      LEFT JOIN dbo.CadDrawingDWG  c ON c.MId = a.Id
                                                       WHERE 1=1  {0}
                                                     ) T
                                                    WHERE    T.RowNumber BETWEEN {1} AND {2}  ORDER BY T.Reorder DESC,T.CreateOn DESC {3}", _where, start, end, orderby);
@@ -141,9 +141,25 @@ namespace SunacCADApp.Data
         {
             string sql = string.Format(@"      SELECT   COUNT(*) AS CNT  FROM dbo.CaddrawingMaster a 
                                                         INNER JOIN   dbo.CadDrawingKitchenDetail b ON a.Id=b.MId
-                                                           LEFT JOIN   (SELECT  Id  MId,DWGPath,FileClass FROM dbo.CadDrawingDWG  WHERE  FileClass='JPG') c ON c.MId = a.Id
+                                                           LEFT JOIN   dbo.CadDrawingDWG  c ON c.MId = a.Id
                                                                WHERE  1=1  {0}", _where);
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
+        }
+
+
+        public static CadDrawingKitchenDetail GetCadDrawingKitchenDetailById(int Id) 
+        {
+            string sql = string.Format(@"SELECT TOP 1 a.*,b.ArgumentText AS KitchenTypeName,c.ArgumentText as KitchenPositionName,
+                                                                    d.ArgumentText AS KitchenBasinSizeName,e.ArgumentText AS KitchenFridgSizeName,
+                                                                    f.ArgumentText AS KitchenHearthSizeName
+                                                        FROM dbo.CadDrawingKitchenDetail a 
+                                                        LEFT JOIN dbo.BasArgumentSetting b ON a.KitchenType =b.Id AND b.TypeCode='KitchenType'
+                                                        LEFT JOIN dbo.BasArgumentSetting c ON a.KitchenPosition =c.Id AND c.TypeCode='DoorWindowPosition'
+                                                        LEFT JOIN dbo.BasArgumentSetting d ON a.KitchenBasinSize =d.Id AND d.TypeCode='KitchenBasinType'
+                                                        LEFT JOIN dbo.BasArgumentSetting e ON a.KitchenFridgSize =e.Id AND e.TypeCode='RefrigeratorType'
+                                                        LEFT JOIN dbo.BasArgumentSetting f ON a.KitchenHearthSize =f.Id AND f.TypeCode='HearthWidth'
+                                                        WHERE a.MId={0}",Id);
+            return MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<CadDrawingKitchenDetail>(new CadDrawingKitchenDetail());
         }
 
     }

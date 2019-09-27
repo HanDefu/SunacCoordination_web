@@ -59,7 +59,7 @@ namespace SunacCADApp.Data
         {
 
             CadDrawingDoorDetail caddrawingdoordetail = new CadDrawingDoorDetail();
-            string sql = string.Format("select top 1 *  from dbo.CadDrawingDoorDetail where 1=1 {0}", param);
+            string sql = string.Format("select top 1 a.*,b.ArgumentText AS DoorTypeName  from dbo.CadDrawingDoorDetail a LEFT JOIN dbo.BasArgumentSetting b ON a.DoorType=b.Id AND b.TypeCode='DoorType' where  {0}", param);
             return MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<CadDrawingDoorDetail>(new CadDrawingDoorDetail());
 
         }
@@ -74,8 +74,8 @@ namespace SunacCADApp.Data
 
             string sql = string.Format(@"INSERT INTO dbo.caddrawingdoordetail(MId,DoorType,WindowSizeMin,WindowSizeMax,
                                      Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy,ModifiedOn,ModifiedUserId,ModifiedBy)
-                                     VALUES ({0},{1},{2},{3},{4},{5},getdate(),{6},'{7}',getdate(),{8},'{9}')", caddrawingdoordetail.MId, caddrawingdoordetail.DoorType, caddrawingdoordetail.WindowSizeMin, caddrawingdoordetail.WindowSizeMax, caddrawingdoordetail.Enabled, caddrawingdoordetail.Reorder, caddrawingdoordetail.CreateUserId, caddrawingdoordetail.CreateBy, caddrawingdoordetail.ModifiedUserId, caddrawingdoordetail.ModifiedBy);
-            return MsSqlHelperEx.Execute(sql);
+                                     VALUES ({0},{1},{2},{3},{4},{5},getdate(),{6},'{7}',getdate(),{8},'{9}');SELECT @@IDENTITY as DoorID", caddrawingdoordetail.MId, caddrawingdoordetail.DoorType, caddrawingdoordetail.WindowSizeMin, caddrawingdoordetail.WindowSizeMax, caddrawingdoordetail.Enabled, caddrawingdoordetail.Reorder, caddrawingdoordetail.CreateUserId, caddrawingdoordetail.CreateBy, caddrawingdoordetail.ModifiedUserId, caddrawingdoordetail.ModifiedBy);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(-1);
         }
         ///<summary>
         /// 门CAD原型属性表-修改方法
@@ -123,11 +123,11 @@ namespace SunacCADApp.Data
             IList<CadDrawingWindowSearch> _caddrawingwindowsearchs = new List<CadDrawingWindowSearch>();
             string sql = string.Format(@"SELECT  * FROM 
                                                    (     SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber, a.Id,
-                                                                       a.DrawingCode,a.DrawingName,c.DWGPath,a.Reorder,a.CreateOn 
-                                                             FROM dbo.CaddrawingMaster a 
-                                                    INNER JOIN dbo.CadDrawingDoorDetail b ON a.Id=b.MId
-                                                      LEFT JOIN (SELECT  Id  MId,DWGPath,FileClass FROM dbo.CadDrawingDWG  WHERE  FileClass='JPG') c ON c.MId = a.Id
-                                                      WHERE 1=1  {0}
+                                                                        a.DrawingCode,a.DrawingName,d.DWGPath,a.Reorder,a.CreateOn 
+                                                             FROM  dbo.CaddrawingMaster a 
+                                                    INNER JOIN  dbo.CadDrawingDoorDetail b ON a.Id=b.MId
+													   LEFT JOIN  (SELECT MIN(Id) AS Id, MId FROM dbo.CadDrawingDWG   GROUP BY MId) c ON c.MId = a.Id
+													   LEFT JOIN  dbo.CadDrawingDWG d ON d.Id=c.Id  WHERE 1=1  {0}
                                                     ) T
                                                    WHERE    T.RowNumber BETWEEN {1} AND {2}  ORDER BY T.Reorder DESC,T.CreateOn DESC {3}", _where, start, end, orderby);
 
@@ -140,10 +140,10 @@ namespace SunacCADApp.Data
         ///<summary>
         public static int GetSearchPageCountByParameter(string _where)
         {
-            string sql = string.Format(@"      SELECT   COUNT(*) AS CNT  FROM dbo.CaddrawingMaster a 
-                                                        INNER JOIN   dbo.CadDrawingDoorDetail b ON a.Id=b.MId
-                                                           LEFT JOIN   (SELECT  Id  MId,DWGPath,FileClass FROM dbo.CadDrawingDWG  WHERE  FileClass='JPG') c ON c.MId = a.Id
-                                                               WHERE  1=1  {0}", _where);
+            string sql = string.Format(@"      SELECT   COUNT(*) AS CNT    FROM  dbo.CaddrawingMaster a 
+                                                       INNER JOIN  dbo.CadDrawingDoorDetail b ON a.Id=b.MId
+													      LEFT JOIN  (SELECT MIN(Id) AS Id, MId FROM dbo.CadDrawingDWG   GROUP BY MId) c ON c.MId = a.Id
+													      LEFT JOIN  dbo.CadDrawingDWG d ON d.Id=c.Id  WHERE 1=1  {0}", _where);
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
 
