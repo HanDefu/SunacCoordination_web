@@ -334,7 +334,8 @@
                            
                         </tbody>
                     </table>
-                    <input type="hidden" name="param" />
+                    <input type="hidden" name="Id" value="@DrawingMaster.Id" />
+                     <input type="hidden" name="param" />
                 </dd>
             </dl>
         </form>
@@ -352,7 +353,7 @@
 </div>
 <script type="text/javascript">
     var options = {
-        url: '/Window/Addhandle',
+        url: '/Window/Edithandle',
         type: 'post',
         data: $("#myform").serialize(),
         dataType: 'json',

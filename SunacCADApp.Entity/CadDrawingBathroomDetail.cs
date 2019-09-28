@@ -20,6 +20,14 @@ namespace SunacCADApp.Entity
         /// </summary>
         public string MId { get; set; }
         /// <summary>
+        /// 卫生间类型
+        /// </summary>
+        public int BathroomType { get; set; }
+        /// <summary>
+        /// 卫生间门窗位置
+        /// </summary>
+        public int BathroomDoorWindowPosition { get; set; }
+        /// <summary>
         /// 卫生间短边最小值
         /// </summary>
         public decimal BathroomShortSideMin { get; set; }

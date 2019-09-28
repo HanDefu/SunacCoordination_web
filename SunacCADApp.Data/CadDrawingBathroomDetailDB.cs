@@ -72,9 +72,9 @@ namespace SunacCADApp.Data
         {
 
 
-            string sql = string.Format(@"INSERT INTO dbo.caddrawingbathroomdetail(MId,BathroomShortSideMin,BathroomShortSideMax,BathroomLongSizeMin,BathroomLongSizeMax,BathroomCabinetSize,BathroomClosestoolSize,
+            string sql = string.Format(@"INSERT INTO dbo.caddrawingbathroomdetail(MId,BathroomType,BathroomDoorWindowPosition,BathroomShortSideMin,BathroomShortSideMax,BathroomLongSizeMin,BathroomLongSizeMax,BathroomCabinetSize,BathroomClosestoolSize,
                                      Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy)  
-                                     VALUES ('{0}',{1},{2},{3},{4},{5},{6},{7},{8},getdate(),{9},'{10}')", caddrawingbathroomdetail.MId, caddrawingbathroomdetail.BathroomShortSideMin, caddrawingbathroomdetail.BathroomShortSideMax, caddrawingbathroomdetail.BathroomLongSizeMin, caddrawingbathroomdetail.BathroomLongSizeMax, caddrawingbathroomdetail.BathroomCabinetSize, caddrawingbathroomdetail.BathroomClosestoolSize, caddrawingbathroomdetail.Enabled, caddrawingbathroomdetail.Reorder, caddrawingbathroomdetail.CreateUserId, caddrawingbathroomdetail.CreateBy);
+                                     VALUES ('{0}',{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},getdate(),{11},'{12}')", caddrawingbathroomdetail.MId, caddrawingbathroomdetail.BathroomType, caddrawingbathroomdetail.BathroomDoorWindowPosition, caddrawingbathroomdetail.BathroomShortSideMin, caddrawingbathroomdetail.BathroomShortSideMax, caddrawingbathroomdetail.BathroomLongSizeMin, caddrawingbathroomdetail.BathroomLongSizeMax, caddrawingbathroomdetail.BathroomCabinetSize, caddrawingbathroomdetail.BathroomClosestoolSize, caddrawingbathroomdetail.Enabled, caddrawingbathroomdetail.Reorder, caddrawingbathroomdetail.CreateUserId, caddrawingbathroomdetail.CreateBy);
             return MsSqlHelperEx.Execute(sql);
         }
         ///<summary>
@@ -86,7 +86,7 @@ namespace SunacCADApp.Data
 
 
             string _wh = string.IsNullOrEmpty(editparam) ? " and id=" + caddrawingbathroomdetail.Id : editparam;
-            string sql = "UPDATE [dbo].[CadDrawingBathroomDetail] SET [MId]='" + caddrawingbathroomdetail.MId + "',[BathroomShortSideMin]=" + caddrawingbathroomdetail.BathroomShortSideMin + ",[BathroomShortSideMax]=" + caddrawingbathroomdetail.BathroomShortSideMax + ",[BathroomLongSizeMin]=" + caddrawingbathroomdetail.BathroomLongSizeMin + ",[BathroomLongSizeMax]=" + caddrawingbathroomdetail.BathroomLongSizeMax + ",[BathroomCabinetSize]=" + caddrawingbathroomdetail.BathroomCabinetSize + ",[BathroomClosestoolSize]=" + caddrawingbathroomdetail.BathroomClosestoolSize + ",[Enabled]=" + caddrawingbathroomdetail.Enabled + ",[Reorder]=" + caddrawingbathroomdetail.Reorder + "  where 1=1 " + _wh;
+            string sql = "UPDATE [dbo].[CadDrawingBathroomDetail] SET [MId]='" + caddrawingbathroomdetail.MId + "',[BathroomType]=" + caddrawingbathroomdetail.BathroomType + ",[BathroomDoorWindowPosition]=" + caddrawingbathroomdetail.BathroomDoorWindowPosition + ",[BathroomShortSideMin]=" + caddrawingbathroomdetail.BathroomShortSideMin + ",[BathroomShortSideMax]=" + caddrawingbathroomdetail.BathroomShortSideMax + ",[BathroomLongSizeMin]=" + caddrawingbathroomdetail.BathroomLongSizeMin + ",[BathroomLongSizeMax]=" + caddrawingbathroomdetail.BathroomLongSizeMax + ",[BathroomCabinetSize]=" + caddrawingbathroomdetail.BathroomCabinetSize + ",[BathroomClosestoolSize]=" + caddrawingbathroomdetail.BathroomClosestoolSize + ",[Enabled]=" + caddrawingbathroomdetail.Enabled + ",[Reorder]=" + caddrawingbathroomdetail.Reorder + "  where 1=1 " + _wh;
             return MsSqlHelperEx.Execute(sql);
         }
 
@@ -114,6 +114,40 @@ namespace SunacCADApp.Data
         {
             string sql = string.Format("DELETE FROM dbo.CadDrawingBathroomDetail WHERE {0} ", param);
             return MsSqlHelperEx.Execute(sql);
+        }
+
+
+        ///<summary>
+        /// 外窗原型查询 分页查询
+        ///</summary>
+        public static IList<CadDrawingWindowSearch> GetSearchPageInfoByParameter(string _where, string orderby, int start, int end)
+        {
+
+            IList<CadDrawingWindowSearch> _caddrawingwindowsearchs = new List<CadDrawingWindowSearch>();
+            string sql = string.Format(@"SELECT  * FROM 
+                                                           (SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber, a.Id,
+                                                                        a.DrawingCode,a.DrawingName,d.DWGPath,a.Reorder,a.CreateOn 
+                                                             FROM  dbo.CaddrawingMaster a 
+                                                    INNER JOIN  dbo.CadDrawingBathroomDetail b ON a.Id=b.MId
+													   LEFT JOIN  (SELECT MIN(Id) AS Id, MId FROM dbo.CadDrawingDWG   GROUP BY MId) c ON c.MId = a.Id
+													   LEFT JOIN  dbo.CadDrawingDWG d ON d.Id=c.Id  WHERE 1=1  {0}
+                                                    ) T
+                                                   WHERE    T.RowNumber BETWEEN {1} AND {2}  ORDER BY T.Reorder DESC,T.CreateOn DESC {3}", _where, start, end, orderby);
+            _caddrawingwindowsearchs = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<CadDrawingWindowSearch>(new CadDrawingWindowSearch());
+            return _caddrawingwindowsearchs;
+        }
+
+        ///<summary>
+        /// 外窗原型查询  分页数据总数量
+        ///<summary>
+        public static int GetSearchPageCountByParameter(string _where)
+        {
+            string sql = string.Format(@"      SELECT   COUNT(*) AS CNT   FROM dbo.CaddrawingMaster a 
+                                                       INNER JOIN  dbo.CadDrawingBathroomDetail b ON a.Id=b.MId
+													     LEFT JOIN  (SELECT MIN(Id) AS Id, MId FROM dbo.CadDrawingDWG WHERE  FileClass='JPG' GROUP BY MId) c ON c.MId = a.Id
+													     LEFT JOIN  dbo.CadDrawingDWG d ON d.Id=c.Id
+                                                               WHERE  1=1  {0}", _where);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
 
     }

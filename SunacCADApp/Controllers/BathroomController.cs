@@ -40,8 +40,8 @@ namespace SunacCADApp.Controllers
             startRowNum = ((currentPage - 1) * pageSize) + 1;
             endRowNum = currentPage * pageSize;
 
-            IList<CadDrawingWindowSearch> lst = CadDrawingKitchenDetailDB.GetSearchPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
-            recordCount = CadDrawingKitchenDetailDB.GetSearchPageCountByParameter(_where);
+            IList<CadDrawingWindowSearch> lst = CadDrawingBathroomDetailDB.GetSearchPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
+            recordCount = CadDrawingBathroomDetailDB.GetSearchPageCountByParameter(_where);
             pageCount = recordCount % pageSize == 0 ? recordCount / pageSize : ((recordCount / pageSize) + 1);
             ViewBag.URL = _url;
             ViewBag.List = lst;
@@ -49,6 +49,7 @@ namespace SunacCADApp.Controllers
             ViewBag.CurrentPage = currentPage;
             ViewBag.PageCount = pageCount;
             return View();
+
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace SunacCADApp.Controllers
             _where = "TypeCode='ClosesToolWidth' And ParentID!=0";
             IList<BasArgumentSetting> ClosesToolWidths = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.ClosesToolWidths = ClosesToolWidths;
-
+         
 
             return View();
         }

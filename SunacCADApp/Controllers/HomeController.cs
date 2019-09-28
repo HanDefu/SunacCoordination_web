@@ -16,6 +16,11 @@ namespace SunacCADApp.Controllers
             return View();
         }
 
+
+        /// <summary>
+        ///  /home/usercenter
+        /// </summary>
+        /// <returns></returns>
         public ActionResult UserCenter() 
         {
 
@@ -38,13 +43,19 @@ namespace SunacCADApp.Controllers
             {
                 return Json(new { code = -100, message = "用户名不正确" }, JsonRequestBehavior.AllowGet);
             }
-
             if (user.User_Psd!= password) 
             {
                 return Json(new { code = -100, message = "密码不正确" }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { code = 100, message = "用户登陆成功" }, JsonRequestBehavior.AllowGet);
             
+        }
+
+        public ActionResult Get()
+        {
+
+       
+            return Json(new { code = 1000 });
         }
     }
 }
