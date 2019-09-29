@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,15 +17,23 @@ namespace SunacCADApp.Entity
         /// <summary>
         /// 原型主表ID
         /// </summary>
-        public string MId { get; set; }
+        public int MId { get; set; }
         /// <summary>
         /// 卫生间类型
         /// </summary>
         public int BathroomType { get; set; }
         /// <summary>
+        /// 卫生间类型名称
+        /// </summary>
+        public string BathroomTypeName { get; set; }
+        /// <summary>
         /// 卫生间门窗位置
         /// </summary>
         public int BathroomDoorWindowPosition { get; set; }
+        /// <summary>
+        /// 卫生间门窗位置名称
+        /// </summary>
+        public string BathroomDoorWindowPositionName { get; set; }
         /// <summary>
         /// 卫生间短边最小值
         /// </summary>
@@ -44,13 +51,24 @@ namespace SunacCADApp.Entity
         /// </summary>
         public decimal BathroomLongSizeMax { get; set; }
         /// <summary>
-        /// 卫生间台盆柜宽
+        /// 卫生间水盆柜宽
         /// </summary>
-        public int BathroomCabinetSize { get; set; }
+        public int BathroomBasinSize { get; set; }
+
+        /// <summary>
+        /// 卫生间水盆柜宽名称
+        /// </summary>
+        public string BathroomBasinSizeName { get; set; }
+
         /// <summary>
         /// 卫生间马桶尺寸
         /// </summary>
         public int BathroomClosestoolSize { get; set; }
+
+        /// <summary>
+        /// 卫生间马桶尺寸名称
+        /// </summary>
+        public int BathroomClosestoolSizeName { get; set; }
 
         /// <summary>
         /// 是否有效

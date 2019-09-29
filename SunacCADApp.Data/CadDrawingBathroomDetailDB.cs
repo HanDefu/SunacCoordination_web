@@ -72,9 +72,9 @@ namespace SunacCADApp.Data
         {
 
 
-            string sql = string.Format(@"INSERT INTO dbo.caddrawingbathroomdetail(MId,BathroomType,BathroomDoorWindowPosition,BathroomShortSideMin,BathroomShortSideMax,BathroomLongSizeMin,BathroomLongSizeMax,BathroomCabinetSize,BathroomClosestoolSize,
+            string sql = string.Format(@"INSERT INTO dbo.caddrawingbathroomdetail(MId,BathroomType,BathroomDoorWindowPosition,BathroomShortSideMin,BathroomShortSideMax,BathroomLongSizeMin,BathroomLongSizeMax,BathroomBasinSize,BathroomClosestoolSize,
                                      Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy)  
-                                     VALUES ('{0}',{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},getdate(),{11},'{12}')", caddrawingbathroomdetail.MId, caddrawingbathroomdetail.BathroomType, caddrawingbathroomdetail.BathroomDoorWindowPosition, caddrawingbathroomdetail.BathroomShortSideMin, caddrawingbathroomdetail.BathroomShortSideMax, caddrawingbathroomdetail.BathroomLongSizeMin, caddrawingbathroomdetail.BathroomLongSizeMax, caddrawingbathroomdetail.BathroomCabinetSize, caddrawingbathroomdetail.BathroomClosestoolSize, caddrawingbathroomdetail.Enabled, caddrawingbathroomdetail.Reorder, caddrawingbathroomdetail.CreateUserId, caddrawingbathroomdetail.CreateBy);
+                                     VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},getdate(),{11},'{12}')", caddrawingbathroomdetail.MId, caddrawingbathroomdetail.BathroomType, caddrawingbathroomdetail.BathroomDoorWindowPosition, caddrawingbathroomdetail.BathroomShortSideMin, caddrawingbathroomdetail.BathroomShortSideMax, caddrawingbathroomdetail.BathroomLongSizeMin, caddrawingbathroomdetail.BathroomLongSizeMax, caddrawingbathroomdetail.BathroomBasinSize, caddrawingbathroomdetail.BathroomClosestoolSize, caddrawingbathroomdetail.Enabled, caddrawingbathroomdetail.Reorder, caddrawingbathroomdetail.CreateUserId, caddrawingbathroomdetail.CreateBy);
             return MsSqlHelperEx.Execute(sql);
         }
         ///<summary>
@@ -86,7 +86,7 @@ namespace SunacCADApp.Data
 
 
             string _wh = string.IsNullOrEmpty(editparam) ? " and id=" + caddrawingbathroomdetail.Id : editparam;
-            string sql = "UPDATE [dbo].[CadDrawingBathroomDetail] SET [MId]='" + caddrawingbathroomdetail.MId + "',[BathroomType]=" + caddrawingbathroomdetail.BathroomType + ",[BathroomDoorWindowPosition]=" + caddrawingbathroomdetail.BathroomDoorWindowPosition + ",[BathroomShortSideMin]=" + caddrawingbathroomdetail.BathroomShortSideMin + ",[BathroomShortSideMax]=" + caddrawingbathroomdetail.BathroomShortSideMax + ",[BathroomLongSizeMin]=" + caddrawingbathroomdetail.BathroomLongSizeMin + ",[BathroomLongSizeMax]=" + caddrawingbathroomdetail.BathroomLongSizeMax + ",[BathroomCabinetSize]=" + caddrawingbathroomdetail.BathroomCabinetSize + ",[BathroomClosestoolSize]=" + caddrawingbathroomdetail.BathroomClosestoolSize + ",[Enabled]=" + caddrawingbathroomdetail.Enabled + ",[Reorder]=" + caddrawingbathroomdetail.Reorder + "  where 1=1 " + _wh;
+            string sql = "UPDATE [dbo].[CadDrawingBathroomDetail] SET [MId]=" + caddrawingbathroomdetail.MId + ",[BathroomType]=" + caddrawingbathroomdetail.BathroomType + ",[BathroomDoorWindowPosition]=" + caddrawingbathroomdetail.BathroomDoorWindowPosition + ",[BathroomShortSideMin]=" + caddrawingbathroomdetail.BathroomShortSideMin + ",[BathroomShortSideMax]=" + caddrawingbathroomdetail.BathroomShortSideMax + ",[BathroomLongSizeMin]=" + caddrawingbathroomdetail.BathroomLongSizeMin + ",[BathroomLongSizeMax]=" + caddrawingbathroomdetail.BathroomLongSizeMax + ",[BathroomBasinSize]=" + caddrawingbathroomdetail.BathroomBasinSize + ",[BathroomClosestoolSize]=" + caddrawingbathroomdetail.BathroomClosestoolSize + ",[Enabled]=" + caddrawingbathroomdetail.Enabled + ",[Reorder]=" + caddrawingbathroomdetail.Reorder + "  where 1=1 " + _wh;
             return MsSqlHelperEx.Execute(sql);
         }
 
@@ -115,8 +115,6 @@ namespace SunacCADApp.Data
             string sql = string.Format("DELETE FROM dbo.CadDrawingBathroomDetail WHERE {0} ", param);
             return MsSqlHelperEx.Execute(sql);
         }
-
-
         ///<summary>
         /// 外窗原型查询 分页查询
         ///</summary>
@@ -150,5 +148,20 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
 
+
+        public static CadDrawingBathroomDetail GetCadDrawingBathroomDetailByWhere(string _where)
+        {
+            CadDrawingBathroomDetail _caddrawingwindow = new CadDrawingBathroomDetail();
+            string bathroom_sql = string.Format(@"   SELECT  a.*,b.ArgumentText AS BathroomTypeName,ba.ArgumentText AS BathroomDoorWindowPositionName,
+                                                                                         c.ArgumentText AS BathroomBasinSizeName,d.ArgumentText AS BathroomClosestoolSizeName 
+                                                                             FROM   dbo.CadDrawingBathroomDetail a 
+                                                                        LEFT JOIN  dbo.BasArgumentSetting b ON a.BathroomType=b.Id AND b.TypeCode='ToiletType'
+                                                                        LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='BathroomDoorWindowPosition'
+                                                                        LEFT JOIN  dbo.BasArgumentSetting c ON c.Id=a.BathroomBasinSize AND c.TypeCode='ToiletBasinWidth'
+                                                                        LEFT JOIN  dbo.BasArgumentSetting d ON d.Id=a.BathroomClosestoolSize AND d.TypeCode='ClosesToolWidth'
+                                                                      WHERE {0}", _where);
+            _caddrawingwindow = MsSqlHelperEx.ExecuteDataTable(bathroom_sql).ConverToModel<CadDrawingBathroomDetail>(new CadDrawingBathroomDetail());
+            return _caddrawingwindow;
+        }
     }
 }

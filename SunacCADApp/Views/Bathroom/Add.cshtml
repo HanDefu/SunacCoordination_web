@@ -7,7 +7,7 @@
     <i></i>
     <a>卫生间</a>
     <i></i>
-    <a>CD02X1外开双扇下</a>
+    <a>新增</a>
 </div>
 <div class="row view">
     <div class="left-column">
@@ -21,13 +21,13 @@
             <dl>
                 <dt><i>*</i>原型编号:</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" />
+                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error ="原型编号不能为空"/>
                 </dd>
             </dl>
             <dl>
                 <dt><i>*</i>原型名称:</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingname" class="required" />
+                    <input type="text" style="width:450px" name="txt_drawingname" class="required" data-error="原型名称不能为空" />
                 </dd>
             </dl>
             <dl>
@@ -35,7 +35,6 @@
                 <dd>
                     <span class="upfile">
                         <input type="file" />
-                        <input type="hidden" name="cad_file" />
                     </span>
 
                 </dd>
@@ -64,12 +63,12 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>厨房类型：</dt>
+                <dt><i>*</i>卫生间类型：</dt>
                 <dd>
-                    <select name="OpenType">
-                        @foreach (BasArgumentSetting KitchenType in ViewBag.KitchenType)
+                    <select name="ToiletType" class="required">
+                        @foreach (BasArgumentSetting ToiletType in ViewBag.ToiletTypes)
                         {
-                            <option value="@KitchenType.Id">@KitchenType.ArgumentText</option>
+                            <option value="@ToiletType.Id">@ToiletType.ArgumentText</option>
                         }
                     </select>
                 </dd>
@@ -77,11 +76,11 @@
             <dl>
                 <dt><i>*</i>门窗位置：</dt>
                 <dd>
-                    <select name="OpenType">
-                       @foreach (BasArgumentSetting DoorWindowPosition in ViewBag.DoorWindowPositions)
-                       {
-                        <option value="@DoorWindowPosition.Id">@DoorWindowPosition.ArgumentText</option>
-                       }
+                    <select name="selectBathroomDoorWindowPosition" class="required">
+                        @foreach (BasArgumentSetting BathroomDoorWindowPosition in ViewBag.BathroomDoorWindowPositions)
+                        {
+                            <option value="@BathroomDoorWindowPosition.Id">@BathroomDoorWindowPosition.ArgumentText</option>
+                        }
                     </select>
                 </dd>
             </dl>
@@ -102,35 +101,35 @@
             <dl class="dynamic_module">
                 <dt><i>*</i>短边尺寸范围(mm)：</dt>
                 <dd>
-                    <input type="text" style="width:50px" name="txtWindowSizeMin" />
+                    <input type="number" style="width:50px" name="txtBathroomShortSideMin" />
                     <i> -- &nbsp; </i>
-                    <input type="text" style="width:50px" name="txtWindowSizeMax" />
+                    <input type="number" style="width:50px" name="txtBathroomShortSideMax" />
                 </dd>
             </dl>
             <dl class="dynamic_module">
                 <dt><i>*</i>长边尺寸范围(mm)：</dt>
                 <dd>
-                    <input type="text" style="width:50px" name="txtWindowSizeMin" />
+                    <input type="number" style="width:50px" name="txtBathroomLongSizeMin" />
                     <i> -- &nbsp; </i>
-                    <input type="text" style="width:50px" name="txtWindowSizeMax" />
+                    <input type="number" style="width:50px" name="txtBathroomLongSizeMax" />
                 </dd>
             </dl>
 
             <dl class="static_module">
                 <dt><i>*</i>尺寸(mm)：</dt>
                 <dd>
-                    <input type="text" style="width:50px" name="txtWindowSizeMin" />
+                    <input type="number" style="width:50px" name="txtSizeSideMin" />
                     <i> -- &nbsp; </i>
-                    <input type="text" style="width:50px" name="txtWindowSizeMax" />
+                    <input type="number" style="width:50px" name="txtSizeSideMax" />
                 </dd>
             </dl>
             <dl class="static_module">
                 <dt><i>*</i>马桶尺寸：</dt>
                 <dd>
-                    <select name="OpenType">
-                        @foreach (BasArgumentSetting KitchenBasinType in ViewBag.KitchenBasinTypes)
+                    <select name="selectClosesToolWidth">
+                        @foreach (BasArgumentSetting ClosesToolWidth in ViewBag.ClosesToolWidths)
                         {
-                            <option value="@KitchenBasinType.Id">@KitchenBasinType.ArgumentText</option>
+                            <option value="@ClosesToolWidth.Id">@ClosesToolWidth.ArgumentText</option>
                         }
                     </select>
                 </dd>
@@ -138,10 +137,10 @@
             <dl class="static_module">
                 <dt><i>*</i>水盆柜宽：</dt>
                 <dd>
-                    <select name="OpenType">
-                        @foreach (BasArgumentSetting ClosesToolWidth in ViewBag.ClosesToolWidths)
+                    <select name="selectBathroomBasinSize">
+                        @foreach (BasArgumentSetting ToiletBasinWidth in ViewBag.ToiletBasinWidths)
                         {
-                            <option value="@ClosesToolWidth.Id">@ClosesToolWidth.ArgumentText</option>
+                            <option value="@ToiletBasinWidth.Id">@ToiletBasinWidth.ArgumentText</option>
                         }
                     </select>
                 </dd>
@@ -162,18 +161,102 @@
 </div>
 <script type="text/javascript">
     var options = {
-        url: '/Kitchen/Addhandle',
+        url: '/Bathroom/Addhandle',
         type: 'post',
         data: $("#myform").serialize(),
         dataType: 'json',
         beforeSerialize: function () {
             var rtv = $("#myform").ValidationInput();
+            if (rtv == false)
+            {
+                return false;
+            }
+            var cad_file = $('input[name="cad_file"]').val();
+            if (_isNull(cad_file)) {
+                layer.msg("CAD文件不能为空");
+                return false;
+            }
+            var groupid = $('input[name="chekbox_group"]').is(':checked');
+            var areaid = $('input[name="checkbox_areaid" ]').is(':checked')
+            if (areaid == false && groupid == false) {
+                layer.msg("请选择使用范围");
+                return false;
+            }
+
+
+
+            var radiomodule = parseInt($('input[name="radio_module"]:checked').val());
+            if (radiomodule == 1) {
+                let BathroomShortSideMin = $('input[name="txtBathroomShortSideMin"]').val();
+                if (!_isNumber(BathroomShortSideMin))
+                {
+                    layer.msg("短边尺寸最小值必须为正数");
+                    $('input[name="txtBathroomShortSideMin"]').focus();
+                    return false;
+                }
+
+                let BathroomShortSideMax = $('input[name="txtBathroomShortSideMax"]').val();
+                if (!_isNumber(BathroomShortSideMax))
+                {
+                    layer.msg("短边尺寸最大值必须为正数");
+                    $('input[name="txtBathroomShortSideMax"]').focus();
+                    return false;
+                }
+                let BathroomLongSizeMin = $('input[name="txtBathroomLongSizeMin"]').val();
+                if (!_isNumber(BathroomLongSizeMin))
+                {
+                    layer.msg("长边尺寸最小值必须为正数");
+                    $('input[name="BathroomLongSizeMin"]').focus();
+                    return false;
+                }
+
+                let BathroomLongSizeMax = $('input[name="txtBathroomLongSizeMax"]').val();
+                if (!_isNumber(BathroomLongSizeMax))
+                {
+                    layer.msg("长边尺寸最大值必须为正数");
+                    $('input[name="BathroomLongSizeMax"]').focus();
+                    return false;
+                }
+
+              
+
+
+            } else if (radiomodule == 2) {
+
+                let sizeSideMin = $('input[name="txtSizeSideMin"]').val();
+                if (!_isNumber(sizeSideMin)) {
+                    layer.msg("尺寸最小值必须为正数");
+                    $('input[name="txtSizeSideMin"]').focus();
+                    return false;
+                }
+
+                let sizeSideMax = $('input[name="txtSizeSideMax"]').val();
+                if (!_isNumber(sizeSideMax)) {
+                    layer.msg("尺寸最大值必须为正数");
+                    $('input[name="txtSizeSideMax"]').focus();
+                    return false;
+                }
+
+                let BathroomClosesToolWidth = $('select[name="selectClosesToolWidth"]').val();
+                if (_isNull(BathroomClosesToolWidth)) {
+                    layer.msg("请选择马桶尺寸");
+                    $('select[name="selectClosesToolWidth"]').focus();
+                    return false;
+                }
+
+                let BathroomBasinSize = $('select[name="selectBathroomBasinSize"]').val();
+                if (_isNull(BathroomBasinSize)) {
+                    layer.msg("请选择水盆柜宽");
+                    $('select[name="selectBathroomBasinSize"]').focus();
+                    return false;
+                }
+            }
             return rtv;
         },
         success: function (data) {
             if (data.code == 100) {
                 layer.msg(data.message, { icon: 6, time: 2000 }, function () {
-                    window.location.href = "/Kitchen/Index"
+                    window.location.href = "/Bathroom/Index"
                 });
             } else {
                 layer.alert(data.message, { icon: 5, shade: false });
