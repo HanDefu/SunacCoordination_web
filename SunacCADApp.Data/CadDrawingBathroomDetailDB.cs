@@ -115,6 +115,7 @@ namespace SunacCADApp.Data
             string sql = string.Format("DELETE FROM dbo.CadDrawingBathroomDetail WHERE {0} ", param);
             return MsSqlHelperEx.Execute(sql);
         }
+
         ///<summary>
         /// 卫生间原型查询 分页查询
         ///</summary>

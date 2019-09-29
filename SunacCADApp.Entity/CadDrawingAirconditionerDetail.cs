@@ -23,6 +23,11 @@ namespace SunacCADApp.Entity
         /// 空调匹数
         /// </summary>
         public int AirconditionerPower { get; set; }
+
+        /// <summary>
+        /// 空调匹数名称
+        /// </summary>
+        public string AirconditionerPowerName { get; set; }
         /// <summary>
         /// 空调宽最小值
         /// </summary>
@@ -35,10 +40,20 @@ namespace SunacCADApp.Entity
         /// 空调冷凝管位置
         /// </summary>
         public int AirconditionerPipePosition { get; set; }
+
+        public string AirconditionerPipePositionName { get; set; }
         /// <summary>
         /// 空调是否含雨水
         /// </summary>
         public int AirconditionerIsRainPipe { get; set; }
+
+
+        /// <summary>
+        /// 空调雨水管位置
+        /// </summary>
+        public int AirconditionerRainPipePosition { get; set; }
+
+        public string AirconditionerRainPipePositionName { get; set; }
 
         /// <summary>
         /// 是否有效
@@ -75,3 +90,8 @@ namespace SunacCADApp.Entity
 
     }
 }
+
+
+
+
+
