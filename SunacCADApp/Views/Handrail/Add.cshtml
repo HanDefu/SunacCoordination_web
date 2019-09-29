@@ -5,9 +5,7 @@
 <div class="row topnav">
     <a>标准部品库</a>
     <i></i>
-    <a>外窗</a>
-    <i></i>
-    <a>CD02X1外开双扇下</a>
+    <a>栏杆</a>
 </div>
 <div class="row view">
     <div class="left-column">
@@ -35,7 +33,6 @@
                 <dd>
                     <span class="upfile">
                         <input type="file" />
-                        <input type="hidden" name="cad_file" />
                     </span>
                     
                 </dd>
@@ -63,23 +60,11 @@
 
                 </dd>
             </dl>
-            <dl>
-                <dt><i>*</i>模块类型：</dt>
-                <dd>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
-                        <label for="radio_dynamic_module">动态模型</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" />
-                        <label for="radio_static_module">静态模型</label>
-                    </span>
-                </dd>
-            </dl>
+            
             <dl>
                 <dt><i>*</i>栏杆类型：</dt>
                 <dd>
-                    <select name="OpenType">
+                    <select name="HandRailType" class="required">
                         @foreach (BasArgumentSetting HandRail in ViewBag.HandRails)
                         {
                             <option value="@HandRail.Id">@HandRail.ArgumentText</option>
@@ -87,16 +72,13 @@
                     </select>
                 </dd>
             </dl>
-           
-       
         </form>
         <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;margin-top:120px">
             <div class="col-md-6 col-sm-6">
-                <button type="button" class="btn btn-sunac" id="btn_save">编辑</button>
+                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
             </div>
             <div class="col-md-6 col-sm-6 text-right">
-                <button type="button" class="btn btn-sunac">删除</button>
-                <button type="button" class="btn btn-sunac">提交审核</button>
+               
             </div>
         </div>
     </div>
@@ -110,6 +92,20 @@
         dataType: 'json',
         beforeSerialize: function () {
             var rtv = $("#myform").ValidationInput();
+            if (rtv == false) {
+                return false;
+            }
+            var cad_file = $('input[name="cad_file"]').val();
+            if (_isNull(cad_file)) {
+                layer.msg("CAD文件不能为空");
+                return false;
+            }
+            var groupid = $('input[name="chekbox_group"]').is(':checked');
+            var areaid = $('input[name="checkbox_areaid" ]').is(':checked')
+            if (areaid == false && groupid == false) {
+                layer.msg("请选择使用范围");
+                return false;
+            }
             return rtv;
         },
         success: function (data) {

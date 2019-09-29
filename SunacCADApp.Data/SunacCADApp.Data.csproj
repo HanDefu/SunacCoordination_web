@@ -66,6 +66,7 @@
     <Compile Include="CadDrawingDoorDetailDB.cs" />
     <Compile Include="CadDrawingDWGDB.cs" />
     <Compile Include="CadDrawingFunctionDB.cs" />
+    <Compile Include="CadDrawingHandrailDetailDB.cs" />
     <Compile Include="CadDrawingKitchenDetailDB.cs" />
     <Compile Include="CadDrawingMasterDB.cs" />
     <Compile Include="CadDrawingParameterDB.cs" />

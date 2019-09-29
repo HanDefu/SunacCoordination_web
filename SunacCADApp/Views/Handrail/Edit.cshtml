@@ -1,19 +1,30 @@
-﻿@{
+﻿@using SunacCADApp.Entity
+@{
     Layout = "~/Views/_LayoutPage.cshtml";
+    CadDrawingMaster Drawing = ViewBag.CadDrawingMaster;
+    IList<CadDrawingDWG> Dwgs = ViewBag.Dwgs;
+    IList<CadDrawingByArea> ByAreas = ViewBag.ByAreas;
+    CadDrawingHandrailDetail Handrail = ViewBag.HandrailDetail;
+    string cadImg = string.Empty;
+    if (Dwgs != null)
+    {
+        CadDrawingDWG DWG = Dwgs.FirstOrDefault<CadDrawingDWG>();
+        cadImg = string.IsNullOrEmpty(DWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : DWG.DWGPath;
+    }
 }
-@using SunacCADApp.Entity
+
 <div class="row topnav">
     <a>标准部品库</a>
     <i></i>
-    <a>外窗</a>
+    <a>栏杆</a>
     <i></i>
-    <a>CD02X1外开双扇下</a>
+    <a>@Drawing.DrawingName</a>
 </div>
 <div class="row view">
     <div class="left-column">
         <figure>
-            <img src="~/Content/Css/img/icon-no-image.png" width="238" heigth="200" />
-            <p>CDA双开窗下</p>
+            <img src="@cadImg" />
+            <p>@Drawing.DrawingName</p>
         </figure>
     </div>
     <div class="mian-column">
@@ -21,23 +32,38 @@
             <dl>
                 <dt><i>*</i>原型编号:</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" />
+                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" value="@Drawing.DrawingCode" />
                 </dd>
             </dl>
             <dl>
                 <dt><i>*</i>原型名称:</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingname" class="required" />
+                    <input type="text" style="width:450px" name="txt_drawingname" class="required"  value="@Drawing.DrawingName"/>
                 </dd>
             </dl>
             <dl>
                 <dt><i>*</i>原型dwg文件:</dt>
                 <dd>
-                    <span class="upfile">
-                        <input type="file" />
-                        <input type="hidden" name="cad_file" />
-                    </span>
-                    
+                    @{
+                        IList<CadDrawingDWG> DwgList = ViewBag.Dwgs;
+                        int cadcount = 1 - DwgList.Count;
+                    }
+
+                    @foreach (CadDrawingDWG dwg in DwgList)
+                    {
+                        <span class="upfile">
+                            <img src="@dwg.DWGPath" /><del></del>
+                            <input type="hidden" name="cad_file" value="@dwg.CADPath" />
+                            <input type="hidden" name="img_file" value="@dwg.DWGPath" />
+                        </span>
+                    }
+                    @for (int i = 0; i < cadcount; i++)
+                    {
+                        <span class="upfile">
+                            <input type="file" />
+                        </span>
+                    }
+
                 </dd>
             </dl>
             <dl>
@@ -49,13 +75,24 @@
                             <label for="all">全部</label>
                         </span>
                         <span class="online-checkbox">
-                            <input type="checkbox" id="all_group" name="chekbox_group" class="single-checkbox" value="0" />
-                            <label for="all_group">集团</label>
+                            @if (Drawing.Scope == 1)
+                            {
+                                <input type="checkbox" id="all_group" name="chekbox_group" class="single-checkbox" value="1" checked />
+                                <label for="all_group">集团</label>
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="all_group" name="chekbox_group" class="single-checkbox" value="1" />
+                                <label for="all_group">集团</label>
+                            }
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
+                            string str_check = string.Empty;
+                            int hasArea = ByAreas.Where(e => e.AreaID == Setting.Id).Count();
+                            str_check = hasArea > 0 ? "checked" : string.Empty;
                             <span class="online-checkbox">
-                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" />
+                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" @str_check />
                                 <label for="area_@Setting.Id">@Setting.ArgumentText</label>
                             </span>
                         }
@@ -63,40 +100,36 @@
 
                 </dd>
             </dl>
+
             <dl>
-                <dt><i>*</i>模块类型：</dt>
+                <dt><i>*</i>栏杆类型：</dt>
                 <dd>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
-                        <label for="radio_dynamic_module">动态模型</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" />
-                        <label for="radio_static_module">静态模型</label>
-                    </span>
-                </dd>
-            </dl>
-            <dl>
-                <dt><i>*</i>门类型：</dt>
-                <dd>
-                    <select name="OpenType">
-                        @foreach (BasArgumentSetting HandRail in ViewBag.HandRails)
+                    <select name="HandRailType" class="required">
+                        @foreach (BasArgumentSetting HandRailType in ViewBag.HandRails)
                         {
-                            <option value="@HandRail.Id">@HandRail.ArgumentText</option>
+                            if (HandRailType.Id == Handrail.HandrailType)
+                            {
+                                <option value="@HandRailType.Id" selected="selected">@HandRailType.ArgumentText</option>
+                            }
+                            else
+                            {
+                                <option value="@HandRailType.Id">@HandRailType.ArgumentText</option>
+
+                            }
+
                         }
                     </select>
                 </dd>
             </dl>
-
-
+            <input  type="hidden" name="Id" value="@Drawing.Id"/>
         </form>
-        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
+        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;margin-top:120px">
             <div class="col-md-6 col-sm-6">
-                <button type="button" class="btn btn-sunac" id="btn_save">编辑</button>
+                <button type="button" class="btn btn-sunac" id="btn_save">修改</button>
             </div>
             <div class="col-md-6 col-sm-6 text-right">
-                <button type="button" class="btn btn-sunac">删除</button>
-                <button type="button" class="btn btn-sunac">提交审核</button>
+                <button type="button" class="btn btn-sunac" id="btn_deleted">删除</button>
+                <button type="button" class="btn btn-sunac" id="btn_audit">提交审核</button>
             </div>
         </div>
     </div>
@@ -104,12 +137,26 @@
 </div>
 <script type="text/javascript">
     var options = {
-        url: '/handrail/Addhandle',
+        url: '/handrail/edithandle',
         type: 'post',
         data: $("#myform").serialize(),
         dataType: 'json',
         beforeSerialize: function () {
             var rtv = $("#myform").ValidationInput();
+            if (rtv == false) {
+                return false;
+            }
+            var cad_file = $('input[name="cad_file"]').val();
+            if (_isNull(cad_file)) {
+                layer.msg("CAD文件不能为空");
+                return false;
+            }
+            var groupid = $('input[name="chekbox_group"]').is(':checked');
+            var areaid = $('input[name="checkbox_areaid" ]').is(':checked')
+            if (areaid == false && groupid == false) {
+                layer.msg("请选择使用范围");
+                return false;
+            }
             return rtv;
         },
         success: function (data) {

@@ -116,7 +116,7 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.Execute(sql);
         }
         ///<summary>
-        /// 外窗原型查询 分页查询
+        /// 卫生间原型查询 分页查询
         ///</summary>
         public static IList<CadDrawingWindowSearch> GetSearchPageInfoByParameter(string _where, string orderby, int start, int end)
         {
@@ -136,7 +136,7 @@ namespace SunacCADApp.Data
         }
 
         ///<summary>
-        /// 外窗原型查询  分页数据总数量
+        /// 卫生间原型查询  分页数据总数量
         ///<summary>
         public static int GetSearchPageCountByParameter(string _where)
         {

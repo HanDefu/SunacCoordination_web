@@ -48,6 +48,7 @@
     <Compile Include="CadDrawingDoorDetail.cs" />
     <Compile Include="CadDrawingDWG.cs" />
     <Compile Include="CadDrawingFunction.cs" />
+    <Compile Include="CadDrawingHandrailDetail.cs" />
     <Compile Include="CadDrawingKitchenDetail.cs" />
     <Compile Include="CadDrawingMaster.cs" />
     <Compile Include="CadDrawingParameter.cs" />

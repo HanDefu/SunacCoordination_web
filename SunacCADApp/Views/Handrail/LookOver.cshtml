@@ -1,109 +1,92 @@
-﻿@{
+﻿@using SunacCADApp.Entity
+@{
     Layout = "~/Views/_LayoutPage.cshtml";
+    CadDrawingMaster Drawing = ViewBag.CadDrawingMaster;
+    IList<CadDrawingDWG> Dwgs = ViewBag.Dwgs;
+    IList<CadDrawingByArea> ByAreas = ViewBag.ByAreas;
+    CadDrawingHandrailDetail Handrail = ViewBag.handrail;
+    string cadImg = string.Empty;
+    if (Dwgs != null)
+    {
+        CadDrawingDWG DWG = Dwgs.FirstOrDefault<CadDrawingDWG>();
+        cadImg = string.IsNullOrEmpty(DWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : DWG.DWGPath;
+    }
 }
 <div class="row topnav">
      <a>标准部品库</a>
     <i></i>
-     <a>外窗</a>
+    <a href="/handrail/index">栏杆</a>
     <i></i>
-     <a>CD02X1外开双扇下</a>
+     <a>@Drawing.DrawingName</a>
 </div>
 <div class="row view">
     <div class="left-column">
         <figure>
-            <img src="~/uploader/windows-img.png" />
-            <p>CDA双开窗下</p>
+            <img src="@cadImg" />
+            <p>@Drawing.DrawingName</p>
         </figure>
     </div>
     <div class="mian-column">
         <dl>
-            <dt><i>*</i>原型编号:</dt>
+            <dt><i>*</i>原型编号：</dt>
             <dd>
-                <input type="text"  style="width:450px" />
+                 @Drawing.DrawingCode
             </dd>
         </dl>
         <dl>
-            <dt><i>*</i>原型dwg文件:</dt>
+            <dt><i>*</i>原型名称：</dt>
             <dd>
-                <input type="text" style="width:450px" />
+                @Drawing.DrawingName
             </dd>
         </dl>
         <dl>
-            <dt><i>*</i>使用范围:</dt>
+            <dt><i>*</i>原型dwg文件：</dt>
+            <dd>
+                @foreach (CadDrawingDWG Dwg in Dwgs)
+                    {
+                    <span class="upfile">
+                        <img src="@Dwg.DWGPath" />
+                    </span>
+                    }
+            </dd>
+        </dl>
+        <dl>
+            <dt><i>*</i>使用范围：</dt>
             <dd style="width:500px;">
                 <span style="display:block;padding-top:5px;line-height:35px;">
-                    <span class="online-checkbox">
-                        <input type="checkbox" id="all" />
-                        <label for="all">全部</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="checkbox" id="all" />
-                        <label for="all">集团</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="checkbox" id="all" />
-                        <label for="all">北京区域</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="checkbox" id="all" />
-                        <label for="all">华北区域</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="checkbox" id="all" />
-                        <label for="all">上海区域</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="checkbox" id="all" />
-                        <label for="all">上海区域</label>
-                    </span>
-                </span>
-                
-            </dd>
-        </dl>
-        <dl>
-            <dt><i></i>模块类型：</dt>
-            <dd>
-                <span class="online-checkbox">
-                     <input type="radio" />
-                    <label>动态模型</label>
-                </span>
-                <span class="online-checkbox">
-                    <input type="radio" />
-                    <label>静态模型</label>
-                </span>
-            </dd>
-        </dl>
-        <dl>
-            <dt><i></i>门类型：</dt>
-            <dd>动态模型
-                
-            </dd>
-        </dl>
-        
+                    @if (Drawing.Scope == 1)
+                         {
+                        <span class="online-checkbox">
+                            <label>集团</label>
+                        </span>
+                         }
+                    @foreach (CadDrawingByArea Area in ByAreas)
+                        {
+                        <span class="online-checkbox">
+                            <label>@Area.AreaName</label>
+                        </span>
+                        }
 
-        <dl>
-            <dt><i></i>宽度尺寸范围（mm）：</dt>
-            <dd>
-               100-200
+                </span>
             </dd>
         </dl>
-        <dl>
-            <dt><i></i>通风计算公式：</dt>
-            <dd>
-                
-                
-            </dd>
-        </dl>
-       
+       <dl>
+           <dt><i></i>栏杆类型：</dt>
+           <dd>
+               @Handrail.HandrailTypeName
+           </dd>
+       </dl>
+      
         <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
 
             <div class="col-md-6 col-sm-6">
-                <a class="btn btn-sunac" href="/handrail/Edit">编辑</a>
+                <a class="btn btn-sunac" href="/handrail/Edit/@Drawing.Id">编辑</a>
             </div>
-            <div class="col-md-6 col-sm-6 text-right">
-                <button type="button" class="btn btn-sunac">删除</button>
-                <button type="button" class="btn btn-sunac">提交审核</button>
-            </div>
+           <div class="col-md-6 col-sm-6">
+               <a class="btn btn-sunac">删除</a>
+               <a class="btn btn-sunac">提交审核</a>
+           </div>
+              
         </div>
     </div>
     
