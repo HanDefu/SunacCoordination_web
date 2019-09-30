@@ -166,6 +166,63 @@ namespace SunacCADApp.Data
             return _caddrawingwindow;
         }
 
+        public static IList<Window> GetXMLWindow(double width=0, double height = 0, string openType = "", string openNum = "", string gongNengQu = "") 
+        {
+            string _where = string.Empty;
+            string _where2 = string.Empty;
+            if (width > 0)
+            {
+                _where += string.Format(@" and 	(a.WindowSizeMin<={0} AND a.WindowSizeMax>={0}) ", width);
+                _where2 += string.Format(@" and a.WindowSizeMin={0}", width);
+            }
+
+            if (height > 0)
+            {
+                _where2 += string.Format(@" and a.WindowSizeMax={0}", height);
+            }
+
+            if (!string.IsNullOrEmpty(openType)) 
+            {
+                _where += string.Format(@" and 	 a.	WindowOpenTypeId	='{0}' ", openType);
+                _where2 += string.Format(@" and a.	WindowOpenTypeId	 ='{0}'", openType);
+            }
+            if (!string.IsNullOrEmpty(openType))
+            {
+                _where += string.Format(@" and 	 a.	WindowOpenQtyId	='{0}' ", openNum);
+                _where2 += string.Format(@" and a.	WindowOpenQtyId	 ='{0}'", openNum);
+            }
+
+            if (!string.IsNullOrEmpty(openType))
+            {
+                _where += string.Format(@" AND EXISTS(SELECT 1 FROM dbo.CadDrawingByArea Area WHERE Area.MId=m.Id AND Area.AreaID IN ({0})) ", gongNengQu);
+                _where2 += string.Format(@" AND EXISTS(SELECT 1 FROM dbo.CadDrawingByArea Area WHERE Area.MId=m.Id AND Area.AreaID IN ({0}))", gongNengQu);
+            }
+            IList<Window> _window = new List<Window>();
+            string xmlsql = string.Format(@"SELECT  m.Id, m.DrawingCode,m.DrawingName,m.Scope,m.DrawingType,m.DynamicType, a.MId,a.WindowOpenTypeId,b.ArgumentText AS WindowOpenTypeName,
+                                                                    a.WindowOpenQtyId,c.ArgumentText AS WindowOpenQtyName,a.WindowHasCorner,
+                                                                    a.WindowHasSymmetry,a.WindowSizeMin,a.WindowSizeMax,a.WindowDesignFormula	,
+                                                                    a.WindowVentilationQuantity	,a.WindowPlugslotSize	,a.WindowAuxiliaryFrame  
+
+                                                             FROM dbo.CaddrawingMaster m 
+                                                             INNER JOIN  dbo.CadDrawingWindowDetail a ON m.Id=a.MId
+                                                             INNER JOIN dbo.BasArgumentSetting b ON a.WindowOpenTypeId=b.Id AND b.TypeCode='OpenType'
+                                                             INNER JOIN dbo.BasArgumentSetting c ON c.Id=a.WindowOpenQtyId AND c.TypeCode='OpenWindowNum'
+                                                             WHERE m.DynamicType=1 {0} ",_where);
+             xmlsql += string.Format(@"  	 UNION ALL  SELECT  m.Id, m.DrawingCode,m.DrawingName,m.Scope,m.DrawingType,m.DynamicType, a.MId,a.WindowOpenTypeId,b.ArgumentText AS WindowOpenTypeName,
+                                                                    a.WindowOpenQtyId,c.ArgumentText AS WindowOpenQtyName,a.WindowHasCorner,
+                                                                    a.WindowHasSymmetry,a.WindowSizeMin,a.WindowSizeMax,a.WindowDesignFormula	,
+                                                                    a.WindowVentilationQuantity	,a.WindowPlugslotSize	,a.WindowAuxiliaryFrame  
+
+                                                             FROM dbo.CaddrawingMaster m 
+                                                             INNER JOIN  dbo.CadDrawingWindowDetail a ON m.Id=a.MId
+                                                             INNER JOIN dbo.BasArgumentSetting b ON a.WindowOpenTypeId=b.Id AND b.TypeCode='OpenType'
+                                                             INNER JOIN dbo.BasArgumentSetting c ON c.Id=a.WindowOpenQtyId AND c.TypeCode='OpenWindowNum'
+                                                             WHERE m.DynamicType=2 {0} ", _where2);
+
+            _window = MsSqlHelperEx.ExecuteDataTable(xmlsql).ConvertListModel<Window>(new Window());
+            return _window;
+        }
+
 
     }
 }

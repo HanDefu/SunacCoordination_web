@@ -127,5 +127,17 @@ namespace SunacCADApp.Data
             return _caddrawingparameters;
         }
 
+
+        public static IList<Item> GetCadDrawingItemByWhereList(string _where)
+        {
+            IList<Item> _caddrawingparameters = new List<Item>();
+            string sql = string.Format(@"SELECT a.*,b.StateName AS ValueTypeName 
+                                                        FROM dbo.CadDrawingParameter  a 
+                                                INNER JOIN dbo.Sys_State b ON a.ValueType=b.StateId AND b.StateFixFlag='WindowArgument'
+                                                WHERE {0}", _where);
+            _caddrawingparameters = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Item>(new Item());
+            return _caddrawingparameters;
+        }
+
     }
 }

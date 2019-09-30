@@ -5,15 +5,13 @@
 <div class="row topnav">
     <a>标准部品库</a>
     <i></i>
-    <a>外窗</a>
-    <i></i>
-    <a>CD02X1外开双扇下</a>
+    <a>空调</a>
 </div>
 <div class="row view">
     <div class="left-column">
         <figure>
             <img src="~/Content/Css/img/icon-no-image.png" width="238" heigth="200" />
-            <p>CDA双开窗下</p>
+            <p>空调添加</p>
         </figure>
     </div>
     <div class="mian-column">
@@ -35,7 +33,6 @@
                 <dd>
                     <span class="upfile">
                         <input type="file" />
-                        <input type="hidden" name="cad_file" />
                     </span>
                     
                 </dd>
@@ -67,7 +64,7 @@
             <dl>
                 <dt><i>*</i>空调匹数：</dt>
                 <dd>
-                    <select name="OpenType">
+                    <select name="AirConditionNumber">
                         @foreach (BasArgumentSetting AirConditionNumber in ViewBag.AirConditionNumbers)
                         {
                             <option value="@AirConditionNumber.Id">@AirConditionNumber.ArgumentText</option>

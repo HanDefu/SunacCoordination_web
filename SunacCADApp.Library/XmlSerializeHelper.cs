@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.Net;
+using System.Web;
 
 namespace SunacCADApp.Library
 {
@@ -50,6 +52,39 @@ namespace SunacCADApp.Library
             {
                 return null;
             }
+        }
+        /// <summary>
+        /// 图片转base64
+        /// </summary>
+        /// <param name="path">图片路径</param><br>       
+        /// <returns>返回一个base64字符串</returns>
+        public static string DecodeImageToBase64(string path)
+        {
+
+            path = AppDomain.CurrentDomain.BaseDirectory + path;
+            FileStream fsForRead = new FileStream(path, FileMode.Open);
+            string base64Str = "";
+            try
+            {
+                //读写指针移到距开头10个字节处
+                fsForRead.Seek(0, SeekOrigin.Begin);
+                byte[] bs = new byte[fsForRead.Length];
+                int log = Convert.ToInt32(fsForRead.Length);
+                //从文件中读取10个字节放到数组bs中
+                fsForRead.Read(bs, 0, log);
+                base64Str = Convert.ToBase64String(bs);
+                return base64Str;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+            finally
+            {
+                fsForRead.Close();
+            }
+
+       
         }
     }
 }

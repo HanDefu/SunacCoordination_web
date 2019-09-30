@@ -81,11 +81,16 @@
     <Compile Include="Sys_ModelDB.cs" />
     <Compile Include="Sys_UserDB.cs" />
     <Compile Include="Sys_User_Area_RelationDB.cs" />
+    <Compile Include="XMLCadDrawingWindowDB.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SunacCADApp.Entity\SunacCADApp.Entity.csproj">
       <Project>{a79e65f4-82df-4063-aaa1-27a2dbb69997}</Project>
       <Name>SunacCADApp.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SunacCADApp.Library\SunacCADApp.Library.csproj">
+      <Project>{3e7513e1-1863-4b37-add7-51a0167ee67a}</Project>
+      <Name>SunacCADApp.Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

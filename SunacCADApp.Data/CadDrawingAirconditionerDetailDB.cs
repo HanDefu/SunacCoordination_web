@@ -128,7 +128,7 @@ namespace SunacCADApp.Data
                                                            (SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber, a.Id,
                                                                         a.DrawingCode,a.DrawingName,d.DWGPath,a.Reorder,a.CreateOn 
                                                              FROM  dbo.CaddrawingMaster a 
-                                                    INNER JOIN  dbo.CadDrawingBathroomDetail b ON a.Id=b.MId
+                                                    INNER JOIN  dbo.CadDrawingAirconditionerDetail b ON a.Id=b.MId
 													   LEFT JOIN  (SELECT MIN(Id) AS Id, MId FROM dbo.CadDrawingDWG   GROUP BY MId) c ON c.MId = a.Id
 													   LEFT JOIN  dbo.CadDrawingDWG d ON d.Id=c.Id  WHERE 1=1  {0}
                                                     ) T

@@ -55,6 +55,7 @@
     <Compile Include="CadDrawingWindowDetail.cs" />
     <Compile Include="CadDrawingWindowSearch.cs" />
     <Compile Include="DataSourceMember.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="ProjectInfo.cs" />
     <Compile Include="Project_Information.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,6 +67,8 @@
     <Compile Include="Sys_User_Project_Relation.cs" />
     <Compile Include="ArgumentSetting.cs" />
     <Compile Include="XMLArgumentSetting.cs" />
+    <Compile Include="XMLCadDrawingWindow.cs" />
+    <Compile Include="Window.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

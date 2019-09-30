@@ -40,8 +40,8 @@ namespace SunacCADApp.Controllers
             startRowNum = ((currentPage - 1) * pageSize) + 1;
             endRowNum = currentPage * pageSize;
 
-            IList<CadDrawingWindowSearch> lst = CadDrawingDoorDetailDB.GetSearchPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
-            recordCount = CadDrawingDoorDetailDB.GetSearchPageCountByParameter(_where);
+            IList<CadDrawingWindowSearch> lst = CadDrawingAirconditionerDetailDB.GetSearchPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
+            recordCount = CadDrawingAirconditionerDetailDB.GetSearchPageCountByParameter(_where);
             pageCount = recordCount % pageSize == 0 ? recordCount / pageSize : ((recordCount / pageSize) + 1);
             ViewBag.URL = _url;
             ViewBag.List = lst;

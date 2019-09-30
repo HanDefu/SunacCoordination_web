@@ -58,5 +58,45 @@ namespace SunacCADApp
             string xml=XmlSerializeHelper.XmlSerialize<XMLArgumentSetting>(setting);
             return xml;
         }
+
+        [WebMethod(Description = "标准部品库[外窗]所有")]
+        public string GetAllWindows()
+        {
+            string xml = string.Empty;
+            try
+            {
+               XMLCadDrawingWindow window =  XMLCadDrawingWindowDB.GetXMLCadDrawingWindow();
+               xml = XmlSerializeHelper.XmlSerialize<XMLCadDrawingWindow>(window);
+            }
+            catch (Exception ex) 
+            {
+              
+            }
+            return xml;
+             
+        }
+
+        [WebMethod(Description = "标准部品库[外窗]按条件查询")]
+        public string GetWindows(double width = 0, double height = 0, string openType = "", string openNum = "", string gongNengQu = "") 
+        {
+            string xml = string.Empty;
+            if (width < 1)
+            {
+                xml = XmlSerializeHelper.XmlSerialize<XMLCadDrawingWindow>(new XMLCadDrawingWindow() { Code = -100, Message = "外窗宽度不能为空" });
+            }
+            else
+            {
+                XMLCadDrawingWindow window = XMLCadDrawingWindowDB.GetXMLCadDrawingWindow(width, height,openType,openNum,gongNengQu);
+                xml = XmlSerializeHelper.XmlSerialize<XMLCadDrawingWindow>(window);
+            }
+            return xml;
+
+        }
+
+
+    
     }
+
+  
+
 }
