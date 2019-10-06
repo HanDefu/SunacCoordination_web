@@ -81,6 +81,11 @@
     <Compile Include="Sys_ModelDB.cs" />
     <Compile Include="Sys_UserDB.cs" />
     <Compile Include="Sys_User_Area_RelationDB.cs" />
+    <Compile Include="XMLCadDrawingAirconditionerDB.cs" />
+    <Compile Include="XMLCadDrawingBathroomDB.cs" />
+    <Compile Include="XMLCadDrawingDoorDB.cs" />
+    <Compile Include="XMLCadDrawingHandrailDB.cs" />
+    <Compile Include="XMLCadDrawingKitchenDB.cs" />
     <Compile Include="XMLCadDrawingWindowDB.cs" />
   </ItemGroup>
   <ItemGroup>

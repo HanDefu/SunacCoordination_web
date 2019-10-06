@@ -14,7 +14,11 @@ namespace SunacCADApp.Controllers
 {
     public class WindowController : Controller
     {
-        // GET: Window
+        public WindowController() 
+        {
+            ViewBag.SelectModel = 5;
+        }
+        // GET: /window/index
         public ActionResult Index()
         {
             string _where = "TypeCode='Area' And ParentID!=0";
@@ -32,7 +36,7 @@ namespace SunacCADApp.Controllers
             _where = "TypeCode='OpenWindowNum' And ParentID!=0";
             IList<BasArgumentSetting> OpenWindowNums = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.OpenWindowNums = OpenWindowNums;
-            string _search_where = "";
+            string _search_where = " 1=1 ";
             string _url = "1";
             int scope = HttpUtility.UrlDecode(Request.QueryString["scope"]).ConvertToInt32(-1);
             if (scope==1)
@@ -43,39 +47,40 @@ namespace SunacCADApp.Controllers
             ViewBag.scope = scope;
 
             int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(-1);
-            if (area == 1)
+            if (area >0)
             {
-                _search_where += " and  a.area='" + area + "'";
+                _search_where += string.Format(@" AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE pa.MId=a.Id AND pa.AreaID={0})", area);
                 _url += "&area=" + area;
             }
 
             ViewBag.area = area;
+
             int action = HttpUtility.UrlDecode(Request.QueryString["action"]).ConvertToInt32(-1);
-            if (area == 1)
+            if (action > 0)
             {
-                _search_where += " and  a.action='" + area + "'";
-                _url += "&action=" + area;
+                _search_where += string.Format(@" AND EXISTS(SELECT * FROM dbo.CadDrawingFunction pb WHERE pb.MId=a.Id AND pb.FunctionId={0})", action);
+                _url += "&action=" + action;
             }
             ViewBag.action = action;
 
             int opentype = HttpUtility.UrlDecode(Request.QueryString["opentype"]).ConvertToInt32(-1);
-            if (opentype == 1)
+            if (opentype >0)
             {
-                _search_where += " and  a.opentype='" + opentype + "'";
+                _search_where += " and  a.WindowOpenTypeId='" + opentype + "'";
                 _url += "&opentype=" + opentype;
             }
             ViewBag.opentype = opentype;
 
             int openwindownum = HttpUtility.UrlDecode(Request.QueryString["openwindownum"]).ConvertToInt32(-1);
-            if (openwindownum == 1)
+            if (openwindownum >0)
             {
-                _search_where += " and  a.openwindownum='" + openwindownum + "'";
+                _search_where += " and  a.WindowOpenQtyId='" + openwindownum + "'";
                 _url += "&openwindownum=" + openwindownum;
             }
             ViewBag.openwindownum = openwindownum;
 
 
-            _where = string.Empty;  //查询
+            _where = _search_where;  //查询
             string _orderby = string.Empty;  //排序
      
             int recordCount = 0;    //记录总数

@@ -39,8 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Airconditioner.cs" />
+    <Compile Include="Area.cs" />
     <Compile Include="BasArgumentSetting.cs" />
     <Compile Include="BaseCompanyInfo.cs" />
+    <Compile Include="Bathroom.cs" />
     <Compile Include="CadDrawingAirconditionerDetail.cs" />
     <Compile Include="CadDrawingBathroomDetail.cs" />
     <Compile Include="CadDrawingByArea.cs" />
@@ -55,7 +58,11 @@
     <Compile Include="CadDrawingWindowDetail.cs" />
     <Compile Include="CadDrawingWindowSearch.cs" />
     <Compile Include="DataSourceMember.cs" />
+    <Compile Include="Door.cs" />
+    <Compile Include="Drawing.cs" />
+    <Compile Include="Handrail.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="Kitchen.cs" />
     <Compile Include="ProjectInfo.cs" />
     <Compile Include="Project_Information.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,6 +74,7 @@
     <Compile Include="Sys_User_Project_Relation.cs" />
     <Compile Include="ArgumentSetting.cs" />
     <Compile Include="XMLArgumentSetting.cs" />
+    <Compile Include="XMLCadDrawingDoor.cs" />
     <Compile Include="XMLCadDrawingWindow.cs" />
     <Compile Include="Window.cs" />
   </ItemGroup>

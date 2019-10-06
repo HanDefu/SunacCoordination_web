@@ -116,5 +116,22 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.Execute(sql);
         }
 
+        public static IList<Drawing> GetDrawingByWhere(string where) 
+        {
+            IList<Drawing> _drawing = new  List<Drawing>();
+            string sql = string.Format(@"SELECT Id,DWGPath AS ImgPath,CADPath FROM dbo.CadDrawingDWG WHERE {0}",where);
+            _drawing = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Drawing>(new Drawing());
+            return _drawing;
+        }
+        public static Drawing GetDrawingSingeByWhere(string where)
+        {
+            Drawing _drawing = new Drawing();
+            string sql = string.Format(@"SELECT  ISNULL(Id,0) AS  Id ,ISNULL(DWGPath,'') AS ImgPath, ISNULL(CADPath,'') AS CADPath FROM dbo.CadDrawingDWG WHERE {0}", where);
+            _drawing = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<Drawing>(new Drawing());
+            return _drawing;
+        }
+
+
+
     }
 }

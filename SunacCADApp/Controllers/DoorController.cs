@@ -12,7 +12,11 @@ namespace SunacCADApp.Controllers
 {
     public class DoorController : Controller
     {
-        // GET: Door
+        public DoorController()
+        {
+            ViewBag.SelectModel = 6;
+        }
+        // GET: /Door/Index
         public ActionResult Index()
         {
             string _where = "TypeCode='Area' And ParentID!=0";

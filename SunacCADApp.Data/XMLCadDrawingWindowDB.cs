@@ -16,29 +16,9 @@ namespace SunacCADApp.Data
             foreach (Window window in xmlWindows) 
             {
                 string _where = string.Format(@" MId={0}",window.Id);
-                IList<CadDrawingDWG> dwgList = CadDrawingDWGDB.GetPageInfoByParameter(_where,string.Empty,0,10);
-                CadDrawingDWG dwg=null;
-                if (dwgList.Count > 1) 
-                {
-                    dwg = dwgList.ElementAt<CadDrawingDWG>(0);
-                    window.DrawingPathTop = XmlSerializeHelper.DecodeImageToBase64(dwg.CADPath);
-                }
-                if (dwgList.Count > 2)
-                {
-                    dwg = dwgList.ElementAt<CadDrawingDWG>(1);
-                    window.DrawingPathFront = dwg.CADPath;
-                }
-                if (dwgList.Count > 3)
-                {
-                    dwg = dwgList.ElementAt<CadDrawingDWG>(2);
-                    window.DrawingPathLeft = dwg.CADPath;
-                }
-                if (dwgList.Count > 4)
-                {
-                    dwg = dwgList.ElementAt<CadDrawingDWG>(3);
-                    window.DrawingPathExpanded = dwg.CADPath;
-                }
 
+                IList<Drawing> drawingList = CadDrawingDWGDB.GetDrawingByWhere(_where);
+                window.Drawings = drawingList.ToArray<Drawing>();
                 string function="";
                 IList<CadDrawingFunction> functions = CadDrawingFunctionDB.GetCadDrawingFunctionByWhereList(_where);
                 foreach (CadDrawingFunction fun in functions) 
@@ -70,7 +50,16 @@ namespace SunacCADApp.Data
 
             return new XMLCadDrawingWindow() { Code = 100, Message = "查询成功", Windows = xmlWindows.ToArray<Window>() };
         }
-   
-        
+
+        public static string GetCADFileDownloadByWhere(int Id) 
+        {
+            string _where = string.Format(@" Id={0}", Id);
+            Drawing drawing = CadDrawingDWGDB.GetDrawingSingeByWhere(_where);
+            if (string.IsNullOrEmpty(drawing.CADPath))
+                return string.Empty;
+            string base64Img = XmlSerializeHelper.DecodeImageToBase64(drawing.CADPath);
+            return base64Img;
+
+        }
     }
 }

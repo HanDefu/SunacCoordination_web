@@ -14,28 +14,29 @@
             {
                 <a class="active">全部</a>
             }
-           
-            @if (ViewBag.scope == 1)
-            {
-                <a class="Scope active" data-val="1000" >集团</a>
-            }
-            else
-            {
-                <a class="Scope" data-val="1000">集团</a>
-            }
-          
-            @foreach (BasArgumentSetting argument in ViewBag.Settings)
-            {
-                if (argument.Id == ViewBag.area)
+            <span>
+                @if (ViewBag.scope == 1)
                 {
-                    <a data-val="@argument.Id" class="active">@argument.ArgumentText</a>
+                    <a class="Scope active" data-val="1000">集团</a>
                 }
                 else
                 {
-                    <a data-val="@argument.Id">@argument.ArgumentText</a>
+                    <a class="Scope" data-val="1000">集团</a>
                 }
-
-            }
+            </span>
+            <span>
+                @foreach (BasArgumentSetting argument in ViewBag.Settings)
+                {
+                    if (argument.Id == ViewBag.area)
+                    {
+                        <a data-val="@argument.Id" class="active area">@argument.ArgumentText</a>
+                    }
+                    else
+                    {
+                        <a data-val="@argument.Id" class="area">@argument.ArgumentText</a>
+                    }
+                }
+            </span>
         </dd>
     </dl>
 </div>
@@ -51,10 +52,9 @@
             {
                 <a class="active">全部</a>
             }
-           
             @foreach (BasArgumentSetting action in ViewBag.ActionTypes)
             {
-                if (action.Id == ViewBag.doortype)
+                if (action.Id == ViewBag.action)
                 {
                     <a data-val="@action.Id" class="active">@action.ArgumentText</a>
                 }
@@ -62,7 +62,6 @@
                 {
                     <a data-val="@action.Id">@action.ArgumentText</a>
                 }
-
             }
         </dd>
     </dl>
@@ -71,6 +70,7 @@
     <dl class="dl_open_type">
         <dt>开启类型：</dt>
         <dd class="dl_opentype">
+
             @if (ViewBag.opentype > 0)
             {
                 <a>全部</a>
@@ -88,9 +88,7 @@
                 else
                 {
                     <a data-val="@openType.Id">@openType.ArgumentText</a>
-
                 }
-
             }
         </dd>
     </dl>
@@ -116,9 +114,7 @@
                 else
                 {
                     <a data-val="@openWindowNum.Id">@openWindowNum.ArgumentText 扇</a>
-
                 }
-
             }
         </dd>
     </dl>
@@ -170,13 +166,14 @@
 
     var searchparam = function () {
             let param = '1';
-            let area = parseInt($(".dl_area .active").data("val"));
-            if (area > 0 && area == 1000) {
+            let scope = parseInt($(".dl_area .Scope.active").data("val"));
+            if (scope == 1000) {
                 param += '&scope=1';
             }
-            console.log(area);
-            if (area > 0 && area != 1000) {
-                param += '&scope=0&area=' + area;
+
+            let area = parseInt($(".dl_area .area.active").data("val"));
+            if (area > 0) {
+                 param += '&area=' + area;
             }
 
             let action = parseInt($(".dl_action_type .active").data("val"))

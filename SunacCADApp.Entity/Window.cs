@@ -22,6 +22,8 @@ namespace SunacCADApp.Entity
         /// <summary>
         /// 原型平面图稿件地址
         /// </summary>
+
+        public Drawing[] Drawings { get; set; }
         public string DrawingPathTop { get; set; }
         /// <summary>
         /// 原型立面图稿件地址

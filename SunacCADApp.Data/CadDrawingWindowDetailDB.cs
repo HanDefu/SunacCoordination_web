@@ -129,7 +129,7 @@ namespace SunacCADApp.Data
                                                              FROM  dbo.CaddrawingMaster a 
                                                     INNER JOIN  dbo.CadDrawingWindowDetail b ON a.Id=b.MId
 													   LEFT JOIN  (SELECT MIN(Id) AS Id, MId FROM dbo.CadDrawingDWG   GROUP BY MId) c ON c.MId = a.Id
-													   LEFT JOIN  dbo.CadDrawingDWG d ON d.Id=c.Id  WHERE 1=1  {0}
+													   LEFT JOIN  dbo.CadDrawingDWG d ON d.Id=c.Id  WHERE  {0}
                                                     ) T
                                                    WHERE    T.RowNumber BETWEEN {1} AND {2}  ORDER BY T.Reorder DESC,T.CreateOn DESC {3}", _where, start, end, orderby);
             _caddrawingwindowsearchs = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<CadDrawingWindowSearch>(new CadDrawingWindowSearch());
@@ -145,7 +145,7 @@ namespace SunacCADApp.Data
                                                        INNER JOIN  dbo.CadDrawingWindowDetail b ON a.Id=b.MId
 													     LEFT JOIN  (SELECT MIN(Id) AS Id, MId FROM dbo.CadDrawingDWG WHERE  FileClass='JPG' GROUP BY MId) c ON c.MId = a.Id
 													     LEFT JOIN  dbo.CadDrawingDWG d ON d.Id=c.Id
-                                                               WHERE  1=1  {0}", _where);
+                                                               WHERE  {0}", _where);
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
 

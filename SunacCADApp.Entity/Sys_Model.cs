@@ -39,6 +39,10 @@ namespace SunacCADApp.Entity
         /// 模块链接
         /// </summary>
         public string Model_URL { get; set; }
+        /// <summary>
+        /// 模块图标
+        /// </summary>
+        public string Model_ICON { get; set; }
 
         /// <summary>
         /// 是否有效

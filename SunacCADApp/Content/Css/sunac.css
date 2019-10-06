@@ -117,6 +117,13 @@ header {
        
     }
 
+    .main .leftsidebar dl dd a.selected {
+       background-color:#e9e9de;
+       color:#b98837;
+       border-left:4px solid #e1a054;
+       padding-left:36px;
+    }
+
 
     .main .center {
       display:block;
@@ -244,7 +251,7 @@ header {
 
         }
             .main .center .list ul li:nth-child(5n+0) {
-               margin-right:0px;
+               /*margin-right:0px;*/
             }
 
             .main .center .list ul a,
@@ -464,12 +471,14 @@ header {
             .main .center .view .mian-column dl dd input[type="file"] {
                  position:absolute;
                  opacity: 0;
-                 width:auto;
+                 width:65px;
                  height:auto;
                  left:0px;
                  top:0px;
                  right:0px;
                  bottom:0px;
+                 cursor:pointer;
+
 
             }
             .main .center .view .mian-column dl dd .param td input[disabled] {
@@ -478,6 +487,33 @@ header {
             .main .center .view .mian-column dl dd .param td input:disabled {
                background:#ffffff;
             }
+
+            .main .center .view .mian-column dl dd .btn-upfile {
+                 border:#b58d59 1px solid;
+                 background:#ffffff;
+                 line-height:normal;
+                 position:relative;
+                 background:#b58d59;
+                 display:inline-block;
+                 color:#ffffff;
+                 line-height:23px;
+                 font-size:14px;
+                 padding-left:5px;
+                 padding-right:5px;
+                 border-radius:2px;
+                 outline:none;
+                 cursor:pointer;
+                 width:auto;
+
+            }
+           .main .center .view .mian-column dl dd .btn-upfile:hover,
+           .main .center .view .mian-column dl dd .btn-upfile:focus {
+              outline:none;
+           }
+
+           
+
+
 
 
 

@@ -17,7 +17,6 @@ namespace SunacCADApp.Entity
         /// 具体信息提示
         /// </summary>
         public string Message { get; set; }
-
         public Window[] Windows { get; set; }
     }
 }

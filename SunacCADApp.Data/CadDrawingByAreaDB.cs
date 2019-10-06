@@ -123,5 +123,13 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<CadDrawingByArea>(new CadDrawingByArea());
         }
 
+        public static IList<Area> GetAreaByWhere(string _wh) 
+        {
+            IList<Area> area = new List<Area>();
+            string sql = string.Format(@"SELECT a.AreaID,a.Id,b.ArgumentText AS AreaName  FROM dbo.CadDrawingByArea a
+                             INNER JOIN dbo.BasArgumentSetting b ON a.AreaID=b.Id WHERE  {0} ORDER BY a.Id ASC", _wh);
+            return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Area>(new Area());
+        }
+
     }
 }
