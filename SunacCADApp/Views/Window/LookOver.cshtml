@@ -7,23 +7,47 @@
     CadDrawingMaster master = ViewBag.CadDrawingMaster;
     CadDrawingWindowDetail windowDetail = ViewBag.WindowDetail;
     int rowindex = 0;
-    IList<CadDrawingDWG> listDrawingDWG = ViewBag.Dwgs;
-    CadDrawingDWG singleCadDrawing = listDrawingDWG.FirstOrDefault<CadDrawingDWG>();
-    string imagePath = string.IsNullOrEmpty(singleCadDrawing.DWGPath) ? "/Content/Css/img/icon-no-image.png" : singleCadDrawing.DWGPath;
-}
+    IList<CadDrawingDWG> Dwgs = ViewBag.Dwgs;
+    CadDrawingDWG ExpansionDWG = Dwgs.Where(e => e.CADType == "ExpandViewFile").SingleOrDefault<CadDrawingDWG>();
+    ExpansionDWG = ExpansionDWG == null ? new CadDrawingDWG() : ExpansionDWG;
+
+    CadDrawingDWG VerticalDWG = Dwgs.Where(e => e.CADType == "FrontViewFile").SingleOrDefault<CadDrawingDWG>();
+    VerticalDWG = VerticalDWG == null ? new CadDrawingDWG() : VerticalDWG;
+    
+    CadDrawingDWG PlanDWG = Dwgs.Where(e => e.CADType == "TopViewFile").SingleOrDefault<CadDrawingDWG>();
+    PlanDWG = PlanDWG == null ? new CadDrawingDWG() : PlanDWG;
+    
+    CadDrawingDWG SideDWG = Dwgs.Where(e => e.CADType == "LeftViewFile").SingleOrDefault<CadDrawingDWG>();
+    SideDWG = SideDWG == null ? new CadDrawingDWG() : SideDWG;
+    
+    string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
+    string cadName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? string.Empty : ExpansionDWG.FileClass;
+    }
 <div class="row topnav">
     <a>标准部品库</a>
     <i></i>
     <a href="/Window">外窗</a>
     <i></i>
     <a>@master.DrawingCode</a>
-    <span class="check-state state-unchecked">待提交</span>
+    @if (master.Enabled == 0)
+    {
+        <span class="check-state state-unchecked">草稿</span>
+    }
+    else if (master.Enabled == 1)
+    {
+        <span class="check-state state-unchecked">待审核</span>
+    }
+    else if (master.Enabled == 2)
+    {
+        <span class="check-state state-unchecked">已发布</span>
+    }
+   
 </div>
 <div class="row view">
     <div class="left-column">
         <figure class="icon-drawing-img">
             <img src="@imagePath" width="238" heigth="200" />
-            <p>@master.DrawingCode</p>
+            <p>@cadName</p>
         </figure>
     </div>
     <div class="mian-column">
@@ -33,21 +57,49 @@
                    @master.DrawingCode
                 </dd>
             </dl>
-             @foreach (CadDrawingDWG Dwg in ViewBag.Dwgs)
-             {
+        <dl>
+            <dt class="col-dt"><i></i>展开图文件：</dt>
+            <dd>
+                <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
+                <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
+                <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
+                <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
+                <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath">原型图纸下载</a>
+            </dd>
+        </dl>
 
-                 string title = (rowindex++ == 0) ? "原型dwg文件：" : "";
-               <dl>
-                   <dt class="col-dt"><i></i>@title</dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_filename" value="@Dwg.FileClass" />
-                    <input type="hidden" name="txt_drawingcad" value="@Dwg.DWGPath" />
-                    <input type="hidden" name="hid_drawing_img" value="@Dwg.DWGPath" />
-                    <button class="btn-upfile  download-upfile" data-src="@Dwg.CADPath">原型图纸下载</button>
-                 
-                 </dd>
-             </dl>
-           }
+        <dl>
+            <dt class="col-dt"><i></i>立面图文件：</dt>
+            <dd>
+                <input type="text" style="width:378px" name="txt_filename" value="@VerticalDWG.FileClass" placeholder="立面图文件" class="required" data-error="立面图文件不能为空" />
+                <input type="hidden" name="txt_drawingcad" value="@VerticalDWG.CADPath" />
+                <input type="hidden" name="hid_drawing_img" value="@VerticalDWG.DWGPath" />
+                <input type="hidden" name="hid_drawing_type" value="VerticalView" />
+                <a class="btn-upfile  download-upfile" data-src="@VerticalDWG.CADPath">原型图纸下载</a>
+            </dd>
+        </dl>
+
+        <dl>
+            <dt class="col-dt"><i></i>平面图文件：</dt>
+            <dd>
+                <input type="text" style="width:378px" name="txt_filename" value="@PlanDWG.FileClass" placeholder="平面图文件" class="required" data-error="平面图文件不能为空" />
+                <input type="hidden" name="txt_drawingcad" value="@PlanDWG.CADPath" />
+                <input type="hidden" name="hid_drawing_img" value="@PlanDWG.DWGPath" />
+                <input type="hidden" name="hid_drawing_type" value="PlanView" />
+                <a class="btn-upfile  download-upfile" data-src="@PlanDWG.CADPath">原型图纸下载</a>
+            </dd>
+        </dl>
+
+        <dl>
+            <dt class="col-dt"><i></i>侧面图文件：</dt>
+            <dd>
+                <input type="text" style="width:378px" name="txt_filename" value="@SideDWG.FileClass" placeholder="侧面图文件" />
+                <input type="hidden" name="txt_drawingcad" value="@SideDWG.CADPath" />
+                <input type="hidden" name="hid_drawing_img" value="@SideDWG.DWGPath" />
+                <input type="hidden" name="hid_drawing_type" value="SideView" />
+                <a class="btn-upfile  download-upfile" data-src="@SideDWG.CADPath">原型图纸下载</a>
+            </dd>
+        </dl>
             <dl>
                 <dt class="col-dt"><i></i>使用范围：</dt>
                 <dd style="width:500px;">
@@ -149,14 +201,14 @@
     </dl>
     <dl>
         <dd>
-            <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:620px;">
+            <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:720px;">
                 <thead>
                     <tr>
                         <th width="80" class="text-center">尺寸代码</th>
                         <th width="70" class="text-center">值类型</th>
                         <th width="70" class="text-center">最大值</th>
                         <th width="70" class="text-center">最小值</th>
-                        <th width="110" class="text-center">值</th>
+                        <th width="200" class="text-center">值</th>
                         <th width="60" class="text-center">默认值</th>
                         <th class="text-center">说明</th>
                     </tr>

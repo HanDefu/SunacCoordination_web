@@ -100,11 +100,14 @@
     <Content Include="Content\Css\img\icon-background.png" />
     <Content Include="Content\Css\img\icon-no-image.png" />
     <Content Include="Content\Css\img\icon-project.png" />
+    <Content Include="Content\Css\img\icon-tips.png" />
     <Content Include="Content\Css\img\icon-topnav-arrows.png" />
     <Content Include="Content\Css\img\main-bg.png" />
     <Content Include="Content\Css\img\sunac-head-logo.png" />
     <Content Include="Content\Css\sunac.css" />
     <None Include="Service References\ServicePQA\SI_MD_COMMON_OUT.wsdl" />
+    <Content Include="Content\Plugins\mtips\mTips.css" />
+    <Content Include="Content\Plugins\mtips\mTips.js" />
     <Content Include="Service References\ServicePQA\SunacCADApp.ServicePQA.DT_MDM_Landpublic_RESP.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>

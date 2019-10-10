@@ -360,6 +360,9 @@ header {
                 text-align:right;
                 min-width:5px;
             }
+
+    
+
         .main .center .view .mian-column dl dd {
             float:left;
              line-height:45px;
@@ -413,6 +416,15 @@ header {
            font-weight:normal;
            line-height:30px; 
        }
+      .main .center .view .mian-column dl dd .icon-tips {
+              display:inline-block;
+              width:24px;
+              background-image:url("img/icon-tips.png");
+              background-repeat:no-repeat;
+              background-position:center center;
+              background-size:24px 24px;
+
+           }
 
 
        .main .center .view .mian-column dl dd .param td.padding-01 {

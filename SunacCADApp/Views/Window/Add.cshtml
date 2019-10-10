@@ -20,14 +20,16 @@
                 <dt class="col-dt"><i>*</i>原型编号：</dt>
                 <dd>
                     <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" />
+                    <i class="icon-tips" tips="<p>外窗原型编号规则：<p>">&nbsp;</i>
                 </dd>
             </dl>
             <dl>
-                <dt class="col-dt"><i>*</i>原型dwg文件：</dt>
+                <dt class="col-dt"><i>*</i>展开图文件：</dt>
                 <dd>
-                    <input type="text" style="width:378px" name="txt_filename" placeholder="平面图稿件" />
+                    <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
                     <input type="hidden" name="txt_drawingcad" />
                     <input type="hidden" name="hid_drawing_img" value="" />
+                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
                     <a class="btn-upfile" href="javascript:void(0)">
                         文件上传
                         <input type="file" class="upload-cad" />
@@ -35,11 +37,12 @@
                 </dd>
             </dl>
             <dl>
-                <dt class="col-dt"><i></i></dt>
+                <dt class="col-dt"><i>*</i>立面图文件 </dt>
                 <dd>
-                    <input type="text" style="width:378px" name="txt_filename" placeholder="立面图稿件" />
+                    <input type="text" style="width:378px" name="txt_filename" placeholder="立面图文件" class="required" data-error="立面图文件不能为空" />
                     <input type="hidden"  name="txt_drawingcad" />
                     <input type="hidden" name="hid_drawing_img" value="" />
+                    <input type="hidden" name="hid_drawing_type" value="FrontViewFile" />
                     <a class="btn-upfile" href="javascript:void(0)">
                         文件上传
                         <input type="file" class="upload-cad" />
@@ -47,11 +50,12 @@
                 </dd>
             </dl>
             <dl>
-                <dt class="col-dt"><i></i></dt>
+                <dt class="col-dt"><i>*</i>平面图文件</dt>
                 <dd>
-                    <input type="text" style="width:378px" name="txt_filename" placeholder="侧视面图稿件" />
+                    <input type="text" style="width:378px" name="txt_filename" placeholder="平面图文件" class="required" data-error="平面图文件不能为空" />
                     <input type="hidden" name="txt_drawingcad" />
                     <input type="hidden" name="hid_drawing_img" value="" />
+                    <input type="hidden" name="hid_drawing_type" value="TopViewFile" />
                     <a class="btn-upfile" href="javascript:void(0)">
                         文件上传
                         <input type="file" class="upload-cad" />
@@ -59,11 +63,12 @@
                 </dd>
             </dl>
             <dl>
-                <dt class="col-dt"><i></i></dt>
+                <dt class="col-dt"><i></i>侧面图文件</dt>
                 <dd>
-                    <input type="text" style="width:378px" name="txt_filename" placeholder="展开图稿件" />
+                    <input type="text" style="width:378px" name="txt_filename" placeholder="侧面图文件" />
                     <input type="hidden" name="txt_drawingcad" />
                     <input type="hidden" name="hid_drawing_img" value="" />
+                    <input type="hidden" name="hid_drawing_type" value="LeftViewFile" />
                     <a class="btn-upfile" href="javascript:void(0)">
                         文件上传
                         <input type="file" class="upload-cad" />
@@ -76,7 +81,7 @@
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
                             <input type="checkbox" id="all" name="chk_area" class="select-all" />
-                            <label for="all">全部</label>
+                            <label for="all">集团</label>
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
@@ -220,17 +225,18 @@
             </dl>
             <dl class="dynamic_module">
                 <dt class="col-dt"><i></i>参数取值：</dt>
+                <dd><i class="icon-tips" tips="<p>参数取值说明：</p><p>取值类型无表示没有此尺寸代号；不限表示取值无限制；<br/>范围表示取值是在最小值、最大值范围内；<br />固定值表示只能用值一栏中的固定值；<br />值系列表示取值可有多个值选项，以逗号分隔，<br />如600,700表示此项可取600或700两个值选项。<p>">&nbsp;</i></dd>
             </dl>
             <dl class="dynamic_module">
                 <dd>
-                    <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:620px;">
+                    <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:720px;">
                         <thead>
                             <tr>
                                 <th width="80" class="text-center">尺寸代码</th>
                                 <th width="70" class="text-center">值类型</th>
                                 <th width="70" class="text-center">最大值</th>
                                 <th width="70" class="text-center">最小值</th>
-                                <th width="110" class="text-center">值</th>
+                                <th width="200" class="text-center">值</th>
                                 <th width="60" class="text-center">默认值</th>
                                 <th class="text-center">说明</th>
                             </tr>
@@ -532,6 +538,10 @@
         $("#btn_cancel").on('click', function () {
             $("#myform").resetForm();
         });
+
+  
+
+
     })
 
 </script>

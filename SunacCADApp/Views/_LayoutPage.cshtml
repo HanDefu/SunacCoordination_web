@@ -7,12 +7,14 @@
     <title>@ViewBag.Title</title>
     <link href="~/Content/Css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/Css/sunac.css" rel="stylesheet" />
+    <link href="~/Content/Plugins/mtips/mTips.css" rel="stylesheet" />
     <script src="~/Content/Js/jquery-1.12.4.min.js" type="text/javascript"></script>
     <script src="~/Content/Js/jquery.form.js" type="text/javascript"></script>
     <script src="~/Content/Js/goyeer.validation.js" type="text/javascript"></script>
     <script src="~/Content/Plugins/layer/layer.js" type="text/javascript"></script>
     <script src="~/Content/Plugins/laydate/laydate.js" type="text/javascript"></script>
     <script src="~/Content/Plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Content/Plugins/mtips/mTips.js" type="text/javascript"></script>
 
    <script type="text/javascript">
        $(function () {
@@ -74,7 +76,21 @@
 
            $('.download-upfile').on('click',function(){
                let upfile = $(this).data("src");
+               if (_isNull(upfile))
+               {
+                   layer.alert("没有你要下载的文件", {icon:5,shade:0});
+                   return;
+               }
                window.location.href="/CommonLib/DownFile?file="+upfile;
+           })
+
+           $(".icon-tips").on("mouseenter", function () {
+               let tips = $(this).attr("tips");
+               mTips.s(tips, 'sunac');
+           })
+
+           $('.icon-tips').on('mouseleave', function (e) {
+               mTips.h();
            })
        });
   </script>

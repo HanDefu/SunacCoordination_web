@@ -47,11 +47,10 @@ namespace SunacCADApp.Controllers
             }
 
             ViewBag.area = area;
-
             int action = HttpUtility.UrlDecode(Request.QueryString["action"]).ConvertToInt32(-1);
             if (action > 0)
             {
-                _search_where += string.Format(@" AND EXISTS(SELECT * FROM dbo.CadDrawingFunction pb WHERE pb.MId=a.Id AND pb.FunctionId={0})", action);
+                _search_where += string.Format(@" AND EXISTS(SELECT pa.Id FROM dbo.CadDrawingFunction pb WHERE pb.MId=a.Id AND pb.FunctionId={0})", action);
                 _url += "&action=" + action;
             }
             ViewBag.action = action;
@@ -78,7 +77,7 @@ namespace SunacCADApp.Controllers
             string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
             if (!string.IsNullOrEmpty(keyword)) 
             {
-                _where = string.Format(@" a.DrawingCode='{0}'", keyword);
+                _where = string.Format(@" a.DrawingCode like  '%{0}%'", keyword);
             }
             ViewBag.Keyword = keyword;
 
@@ -116,7 +115,6 @@ namespace SunacCADApp.Controllers
             }
 
             string _where = string.Empty;
- 
             CadDrawingMaster master = CadDrawingMasterDB.GetSingleEntityById(Id);
             ViewBag.CadDrawingMaster = master;
             _where = "  a.MId=" + Id;
@@ -136,6 +134,7 @@ namespace SunacCADApp.Controllers
             ViewBag.CadDrawingParams = cadDrawingParams;
             return View();
         }
+
         /// <summary>
         /// 外窗添加
         /// </summary>
@@ -167,6 +166,7 @@ namespace SunacCADApp.Controllers
 
             return View();
         }
+
         /// <summary>
         ///   CAD原型信息-新增方法
         /// </summary>
@@ -179,9 +179,10 @@ namespace SunacCADApp.Controllers
             try
             {
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
-                string cadFile = Request.Form["txt_drawingcad"];
-                string imgFile = Request.Form["hid_drawing_img"];
                 string filenames = Request.Form["txt_filename"];
+                string cadFile     = Request.Form["txt_drawingcad"];
+                string imgFile = Request.Form["hid_drawing_img"];
+                string drawingtype = Request.Form["hid_drawing_type"];
                 string areaid = Request.Form["checkbox_areaid"];
                 string actionType = Request.Form["ActionType"];
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
@@ -198,27 +199,27 @@ namespace SunacCADApp.Controllers
                 string[] arr_CADFile = cadFile.Split(',');
                 string[] arr_IMGFile = imgFile.Split(',');
                 string[] arr_FileName = filenames.Split(',');
-                string[] arr_Area = areaid.Split(',');
-                string[] arr_ActionType = actionType.Split(',');
+                string[] arr_DrawingType = drawingtype.Split(',');
+                
                 CadDrawingDWG dwg = null;
                 int index = 0;
                 foreach (string cad in arr_CADFile)
                 {
                     if (!string.IsNullOrEmpty(cad))
                     {
-                        string dwgFileName = System.IO.Path.GetFileName(cad);
                         dwg = new CadDrawingDWG();
                         dwg.MId = mId;
                         dwg.DWGPath = arr_IMGFile[index];
-                        dwg.FileClass   = arr_FileName[index];
-                        dwg.CADPath = cad;
+                        dwg.CADPath = arr_CADFile[index];
+                        dwg.FileClass = arr_FileName[index];
+                        dwg.CADType = arr_DrawingType[index];
                         CadDrawingDWGDB.AddHandle(dwg);
                         index++;
                     }
                 }
-               
 
 
+                string[] arr_Area = areaid.Split(',');
                 foreach (string area in arr_Area)
                 {
                     if (!string.IsNullOrEmpty(area))
@@ -231,7 +232,7 @@ namespace SunacCADApp.Controllers
 
                 }
 
-
+                string[] arr_ActionType = actionType.Split(',');
                 foreach (string action in arr_ActionType)
                 {
                     if (!string.IsNullOrEmpty(action))
@@ -375,10 +376,11 @@ namespace SunacCADApp.Controllers
             try
             {
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
+                string filenames = Request.Form["txt_filename"];
                 string cadFile = Request.Form["txt_drawingcad"];
                 string imgFile = Request.Form["hid_drawing_img"];
+                string drawingtype = Request.Form["hid_drawing_type"];
                 string areaid = Request.Form["checkbox_areaid"];
-                string filenames = Request.Form["txt_filename"];
                 string actionType = Request.Form["ActionType"];
                 int Id = Request.Form["Id"].ConvertToInt32(-1);
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
@@ -397,9 +399,8 @@ namespace SunacCADApp.Controllers
                 mId = Id;
                 string[] arr_CADFile = cadFile.Split(',');
                 string[] arr_IMGFile = imgFile.Split(',');
-                string[] arr_Area = areaid.Split(',');
-                string[] arr_ActionType = actionType.Split(',');
                 string[] arr_FileName = filenames.Split(',');
+                string[] arr_DrawingType = drawingtype.Split(',');
                 CadDrawingDWG dwg = null;
                 int index = 0;
                 CadDrawingDWGDB.DeleteHandleByParam(string.Format(@" MId={0}",mId));
@@ -410,15 +411,16 @@ namespace SunacCADApp.Controllers
                         dwg = new CadDrawingDWG();
                         dwg.MId = mId;
                         dwg.DWGPath = arr_IMGFile[index];
+                        dwg.CADPath = arr_CADFile[index];
                         dwg.FileClass = arr_FileName[index];
-                        dwg.CADPath = cad;
+                        dwg.CADType = arr_DrawingType[index];
                         CadDrawingDWGDB.AddHandle(dwg);
                         index++;
                     }
                 }
 
                 CadDrawingByAreaDB.DeleteHandleByParam(string.Format(@" MId={0}", mId));
-
+                string[] arr_Area = areaid.Split(',');
                 foreach (string area in arr_Area)
                 {
                     if (!string.IsNullOrEmpty(area))
@@ -431,6 +433,7 @@ namespace SunacCADApp.Controllers
 
                 }
 
+                string[] arr_ActionType = actionType.Split(',');
                 CadDrawingFunctionDB.DeleteHandleByParam(string.Format(@" MId={0}", mId));
                 foreach (string action in arr_ActionType)
                 {
