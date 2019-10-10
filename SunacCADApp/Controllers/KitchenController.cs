@@ -12,6 +12,10 @@ namespace SunacCADApp.Controllers
 {
     public class KitchenController : Controller
     {
+        public KitchenController()
+        {
+            ViewBag.SelectModel = 8;
+        }
         // GET: Kitchen
         public ActionResult Index()
         {
@@ -30,6 +34,40 @@ namespace SunacCADApp.Controllers
             _where = string.Empty;  //查询
             string _orderby = string.Empty;  //排序
             string _url = string.Empty;
+
+            int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(-1);
+            if (area > 0)
+            {
+                _where += string.Format(@" AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE pa.MId=a.Id AND pa.AreaID={0})", area);
+                _url += "&area=" + area;
+            }
+
+            ViewBag.area = area;
+
+            int kitchentypeid = HttpUtility.UrlDecode(Request.QueryString["kitchentype"]).ConvertToInt32(0);
+            if (kitchentypeid > 0)
+            {
+                _where += string.Format(@" And  b.KitchenType={0}", kitchentypeid);
+                _url += "&kitchentypeid=" + kitchentypeid;
+            }
+            ViewBag.kitchentypeid = kitchentypeid;
+
+            int doorwindowpostionid = HttpUtility.UrlDecode(Request.QueryString["doorwindowpostion"]).ConvertToInt32(0);
+            if (doorwindowpostionid > 0)
+            {
+                _where += string.Format(@" And  b.KitchenPosition={0}", doorwindowpostionid);
+                _url += "&doorwindowpostionid=" + kitchentypeid;
+            }
+            ViewBag.doorwindowpostionid = doorwindowpostionid;
+
+            int is_airduct = HttpUtility.UrlDecode(Request.QueryString["is_airduct"]).ConvertToInt32(-1);
+            if (is_airduct > 0)
+            {
+                _where += string.Format(@" And  b.KitchenIsAirduct={0}", is_airduct);
+                _url += "&is_airduct=" + is_airduct;
+            }
+            ViewBag.airduct = is_airduct;
+
             int recordCount = 0;    //记录总数
             int pageSize = 15;      //每页条数
             int currentPage = 0;    //当前页数
@@ -118,13 +156,15 @@ namespace SunacCADApp.Controllers
             try 
             {
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
-                string cadFile = Request.Form["cad_file"];
-                string imgFile = Request.Form["img_file"];
+                string cadFile = Request.Form["txt_drawingcad"];
+                string imgFile = Request.Form["hid_drawing_img"];
+                string filenames = Request.Form["txt_filename"];
+                string drawingtype = Request.Form["hid_drawing_type"];
                 string areaid = Request.Form["checkbox_areaid"];
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
                 caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
-                caddrawingmaster.Scope = Request.Form["chekbox_group"].ConvertToInt32(0);
+                caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
                 caddrawingmaster.CreateOn = DateTime.Now;
@@ -135,7 +175,8 @@ namespace SunacCADApp.Controllers
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
                 string[] arr_CADFile = cadFile.Split(',');
                 string[] arr_IMGFile = imgFile.Split(',');
-                string[] arr_Area = areaid.Split(',');
+                string[] arr_FileName = filenames.Split(',');
+                string[] arr_DrawingType = drawingtype.Split(',');
                 CadDrawingDWG dwg = null;
                 int index = 0;
                 foreach (string cad in arr_CADFile)
@@ -145,12 +186,14 @@ namespace SunacCADApp.Controllers
                         dwg = new CadDrawingDWG();
                         dwg.MId = mId;
                         dwg.DWGPath = arr_IMGFile[index];
-                        dwg.FileClass = "DWG";
-                        dwg.CADPath = cad;
+                        dwg.CADPath = arr_CADFile[index];
+                        dwg.FileClass = arr_FileName[index];
+                        dwg.CADType = arr_DrawingType[index];
                         CadDrawingDWGDB.AddHandle(dwg);
                         index++;
                     }
                 }
+                string[] arr_Area = areaid.Split(',');
                 foreach (string area in arr_Area)
                 {
                     if (!string.IsNullOrEmpty(area))
@@ -268,14 +311,16 @@ namespace SunacCADApp.Controllers
             try
             {
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
-                string cadFile = Request.Form["cad_file"];
-                string imgFile = Request.Form["img_file"];
+                string cadFile = Request.Form["txt_drawingcad"];
+                string imgFile = Request.Form["hid_drawing_img"];
+                string filenames = Request.Form["txt_filename"];
+                string drawingtype = Request.Form["hid_drawing_type"];
                 string areaid = Request.Form["checkbox_areaid"];
                 int Id = Request.Form["hid_id"].ConvertToInt32(0);
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
                 caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
-                caddrawingmaster.Scope = Request.Form["chekbox_group"].ConvertToInt32(0);
+                caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
                 caddrawingmaster.CreateOn = DateTime.Now;
@@ -288,7 +333,8 @@ namespace SunacCADApp.Controllers
                 mId = Id;
                 string[] arr_CADFile = cadFile.Split(',');
                 string[] arr_IMGFile = imgFile.Split(',');
-                string[] arr_Area = areaid.Split(',');
+                string[] arr_FileName = filenames.Split(',');
+                string[] arr_DrawingType = drawingtype.Split(',');
                 CadDrawingDWG dwg = null;
                 int index = 0;
                 CadDrawingDWGDB.DeleteHandleByParam(string.Format(@" MId={0}",Id));
@@ -298,14 +344,16 @@ namespace SunacCADApp.Controllers
                     {
                         dwg = new CadDrawingDWG();
                         dwg.MId = mId;
-                        dwg.DWGPath = arr_IMGFile[index];
-                        dwg.FileClass = "DWG";
-                        dwg.CADPath = cad;
+                        dwg.DWGPath  =  arr_IMGFile[index];
+                        dwg.FileClass    =  arr_FileName[index];
+                        dwg.CADPath   =  arr_CADFile[index];
+                        dwg.CADType   =  arr_DrawingType[index];
                         CadDrawingDWGDB.AddHandle(dwg);
                         index++;
                     }
                 }
                 CadDrawingByAreaDB.DeleteHandleByParam(string.Format(@" MId={0}", Id));
+                string[] arr_Area = areaid.Split(',');
                 foreach (string area in arr_Area)
                 {
                     if (!string.IsNullOrEmpty(area))
@@ -343,11 +391,11 @@ namespace SunacCADApp.Controllers
                 int kitchenid = CadDrawingKitchenDetailDB.AddHandle(kitchen);
                 if (kitchenid > 0)
                 {
-                    return Json(new { code = 100, message = "厨房原型图纸添加成功" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = 100, message = "厨房原型图纸修改成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { code = -100, message = "厨房原型图纸添加失败" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = -100, message = "厨房原型图纸修改失败" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -367,7 +415,7 @@ namespace SunacCADApp.Controllers
         /// <author>alon<84789887@qq.com></author>  
         public ActionResult DeleteHandleById()
         {
-            int Id = Request.QueryString["id"].ConvertToInt32(0);
+            int Id = Request.Form["id"].ConvertToInt32(0);
             int rtv = CadDrawingKitchenDetailDB.DeleteHandleById(Id);
             if (rtv > 0)
             {

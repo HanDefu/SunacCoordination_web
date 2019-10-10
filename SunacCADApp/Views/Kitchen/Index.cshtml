@@ -3,14 +3,29 @@
 }
 @using SunacCADApp.Entity
 <div class="row search search-bottom">
-    <dl>
+    <dl class="dl_area">
         <dt>区域：</dt>
         <dd>
-            <a class="active">全部</a>
-            <a class="Scope" data-val="1">集团</a>
+            @if (ViewBag.area == -1)
+            {
+                <a class="active" data-val="0">全部</a>
+            }
+            else
+            {
+                <a data-val="0">全部</a>
+            }
+            
             @foreach (BasArgumentSetting argument in ViewBag.Settings)
             {
-                <a data-val="@argument.Id">@argument.ArgumentText</a>
+                if (ViewBag.area == argument.Id)
+                {
+                    <a data-val="@argument.Id" class="area active">@argument.ArgumentText</a>
+                }
+                else
+                {
+                    <a data-val="@argument.Id" class="area">@argument.ArgumentText</a>
+                }
+
             }
 
         </dd>
@@ -20,11 +35,28 @@
 
     <dl>
         <dt>厨房类型：</dt>
-        <dd class="dd_action">
-            <a class="active">全部</a>
+        <dd class="dd_kitchentype">
+           
+            @if(ViewBag.kitchentypeid == 0)
+            {
+            <a class="active" data-val="0">全部</a>
+            }
+            else
+            {
+            <a data-val="0">全部</a>
+            }
+           
             @foreach (BasArgumentSetting KitchenType in ViewBag.KitchenType)
             {
-                <a data-val="@KitchenType.Id">@KitchenType.ArgumentText</a>
+                if (ViewBag.kitchentypeid == KitchenType.Id)
+                {
+                    <a data-val="@KitchenType.Id" class="active">@KitchenType.ArgumentText</a>
+                }
+                else
+                {
+                    <a data-val="@KitchenType.Id">@KitchenType.ArgumentText</a>
+                }
+
             }
         </dd>
     </dl>
@@ -33,11 +65,27 @@
 
     <dl>
         <dt>门窗位置：</dt>
-        <dd class="dd_action">
-            <a class="active">全部</a>
+        <dd class="dd_doorwindowpostion">
+            @if (ViewBag.doorwindowpostionid == 0)
+            {
+                <a class="active" data-val="0">全部</a>
+            }
+            else
+            {
+                <a data-val="0">全部</a>
+            }
+           
             @foreach (BasArgumentSetting DoorWindowPosition in ViewBag.DoorWindowPositions)
             {
-                <a data-val="@DoorWindowPosition.Id">@DoorWindowPosition.ArgumentText</a>
+                if (ViewBag.doorwindowpostionid == DoorWindowPosition.Id)
+                {
+                    <a data-val="@DoorWindowPosition.Id" class="active">@DoorWindowPosition.ArgumentText</a>
+                }
+                else
+                {
+                    <a data-val="@DoorWindowPosition.Id">@DoorWindowPosition.ArgumentText</a>
+                }
+
             }
         </dd>
     </dl>
@@ -46,10 +94,26 @@
 
     <dl>
         <dt>排气道：</dt>
-        <dd class="dd_action">
-            <a class="active">全部</a>
-            <a>含排气道</a>
-            <a>不含排气道</a>
+        <dd class="dd_is_airduct">
+            @if (ViewBag.airduct == -1)
+            {
+                <a class="active" data-val="-1">全部</a>
+                <a data-val="1">含排气道</a>
+                <a data-val="0">不含排气道</a>
+            }
+            else if (ViewBag.airduct == 1)
+            {
+                <a data-val="-1">全部</a>
+                <a data-val="1" class="active">含排气道</a>
+                <a data-val="0">不含排气道</a>
+            }
+            else if (ViewBag.airduct == 0)
+            {
+                <a data-val="-1">全部</a>
+                <a data-val="1">含排气道</a>
+                <a data-val="0" class="active">不含排气道</a>
+            }
+
         </dd>
     </dl>
 </div>
@@ -80,9 +144,49 @@
                 </a>
             </li>
         }
-
-
-
     </ul>
 </div>
+<script type="text/javascript">
+    $(function () {
+        $(".search a").on('click', function () {
+            let that = $(this);
+            let parent = $(this).parent();
+            parent.find("a").removeClass("active")
+            that.addClass("active");
+            let param = searchparam();
+            window.location.href = "/kitchen?" + param
+        });
+
+        $(".sear-input em").on("click", function () {
+
+            let keyword = $('.sear-input').find('input[type="text"]').val();
+            window.location.href = "/kitchen?keyword=" + keyword;
+        });
+    })
+
+    var searchparam = function () {
+            let param = '1';
+            let area = parseInt($(".dl_area .area.active").data("val"));
+            if (area > 0) {
+                 param += '&area=' + area;
+            }
+
+            let kitchentype = parseInt($(".dd_kitchentype .active").data("val"));
+            if (kitchentype > 0) {
+                param += '&kitchentype=' + kitchentype;
+            }
+
+            let doorwindowpostion = parseInt($(".dd_doorwindowpostion .active").data("val"));
+            if (doorwindowpostion > 0) {
+                param += '&doorwindowpostion=' + doorwindowpostion;
+            }
+
+            let is_airduct = parseInt($(".dd_is_airduct .active").data("val"));
+            if (is_airduct > -1) {
+                param += '&is_airduct=' + is_airduct;
+            }
+            return param;
+    }
+</script>
+
 

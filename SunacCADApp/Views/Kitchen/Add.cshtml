@@ -19,7 +19,7 @@
             <dl>
                 <dt class="col-dt"><i>*</i>原型编号：</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" />
+                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="厨房原型编号不能为空" />
                 </dd>
             </dl>
             <dl>
@@ -28,7 +28,7 @@
                     <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
                     <input type="hidden" name="txt_drawingcad" />
                     <input type="hidden" name="hid_drawing_img" value="" />
-                    <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
+                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
                     <a class="btn-upfile" href="javascript:void(0)">
                         文件上传
                         <input type="file" class="upload-cad" />
@@ -94,7 +94,7 @@
                 <dt class="col-dt"><i>*</i>是否包含气道：</dt>
                 <dd>
                     <span class="online-checkbox">
-                        <input type="radio" name="radio_kitchenisairduct" id="radio_static_module" value="1" />
+                        <input type="radio" name="radio_kitchenisairduct" id="radio_static_module" value="1"  checked="checked"/>
                         <label for="radio_static_module">是</label>
                     </span>
                     <span class="online-checkbox">
@@ -122,9 +122,9 @@
             <dl class="static_module">
                 <dt class="col-dt"><i>*</i>开间进深(mm)：</dt>
                 <dd>
-                    <input type="number" style="width:50px" name="txtWindowSizeMin" />
+                    <input type="number" style="width:50px" name="txtWindowSizeMin"  value="1"/>
                     <i> -- &nbsp; </i>
-                    <input type="number" style="width:50px" name="txtWindowSizeMax" />
+                    <input type="number" style="width:50px" name="txtWindowSizeMax"  value="2"/>
                 </dd>
             </dl>
             <dl class="static_module">
