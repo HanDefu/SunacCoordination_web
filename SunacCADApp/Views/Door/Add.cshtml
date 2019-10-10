@@ -5,59 +5,88 @@
 <div class="row topnav">
     <a>标准部品库</a>
     <i></i>
-    <a>外窗</a>
-    <i></i>
-    <a>CD02X1外开双扇下</a>
+    <a href="/door">门</a>
+
 </div>
 <div class="row view">
     <div class="left-column">
-        <figure>
+        <figure class="icon-drawing-img">
             <img src="~/Content/Css/img/icon-no-image.png" width="238" heigth="200" />
-            <p>CDA双开窗下</p>
+            <p></p>
         </figure>
     </div>
     <div class="mian-column">
         <form name="myform" id="myform">
             <dl>
-                <dt><i>*</i>原型编号:</dt>
+                <dt class="col-dt"><i>*</i>原型编号:</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" />
+                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="门原型编号不能为空" />
                 </dd>
             </dl>
-            <dl>
-                <dt><i>*</i>原型名称:</dt>
+           
+             <dl>
+                <dt class="col-dt"><i>*</i>展开图文件：</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingname" class="required" />
+                    <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
+                    <input type="hidden" name="txt_drawingcad" />
+                    <input type="hidden" name="hid_drawing_img" value="" />
+                    <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
+                    <a class="btn-upfile" href="javascript:void(0)">
+                        文件上传
+                        <input type="file" class="upload-cad" />
+                    </a>
                 </dd>
             </dl>
+
             <dl>
-                <dt><i>*</i>原型dwg文件:</dt>
+                <dt class="col-dt"><i>*</i>立面图文件：</dt>
                 <dd>
-                    <span class="upfile">
-                        <input type="file" />
-                    </span>
-                    <span class="upfile">
-                        <input type="file" />
-                    </span>
-                    <span class="upfile">
-                        <input type="file" />
-                    </span>
-                    <span class="upfile">
-                        <input type="file" />
-                    </span>
+                    <input type="text" style="width:378px" name="txt_filename" placeholder="立面图文件" class="required" data-error="立面图文件不能为空" />
+                    <input type="hidden" name="txt_drawingcad" />
+                    <input type="hidden" name="hid_drawing_img" value="" />
+                    <input type="hidden" name="hid_drawing_type" value="VerticalView" />
+                    <a class="btn-upfile" href="javascript:void(0)">
+                        文件上传
+                        <input type="file" class="upload-cad" />
+                    </a>
                 </dd>
             </dl>
+
             <dl>
-                <dt><i>*</i>使用范围:</dt>
+                <dt class="col-dt"><i>*</i>平面图文件：</dt>
+                <dd>
+                    <input type="text" style="width:378px" name="txt_filename" placeholder="平面图文件" class="required" data-error="平面图文件不能为空" />
+                    <input type="hidden" name="txt_drawingcad" />
+                    <input type="hidden" name="hid_drawing_img" value="" />
+                    <input type="hidden" name="hid_drawing_type" value="PlanView" />
+                    <a class="btn-upfile" href="javascript:void(0)">
+                        文件上传
+                        <input type="file" class="upload-cad" />
+                    </a>
+                </dd>
+            </dl>
+
+            <dl>
+                <dt class="col-dt"><i></i>侧面图文件：</dt>
+                <dd>
+                    <input type="text" style="width:378px" name="txt_filename" placeholder="侧面图文件" />
+                    <input type="hidden" name="txt_drawingcad" />
+                    <input type="hidden" name="hid_drawing_img" value="" />
+                    <input type="hidden" name="hid_drawing_type" value="SideView" />
+                    <a class="btn-upfile" href="javascript:void(0)">
+                        文件上传
+                        <input type="file" class="upload-cad" />
+                    </a>
+                </dd>
+            </dl>
+
+            <dl>
+                <dt class="col-dt"><i>*</i>使用范围：</dt>
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
-                            <input type="checkbox" id="all" name="chk_area" class="select-all" />
+                            <input type="checkbox" id="all" name="chk_area" class="select-all"  value="1"/>
                             <label for="all">全部</label>
-                        </span>
-                        <span class="online-checkbox">
-                            <input type="checkbox" id="all_group" name="chekbox_group" class="single-checkbox" value="0" />
-                            <label for="all_group">集团</label>
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
@@ -71,7 +100,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>模块类型：</dt>
+                <dt class="col-dt"><i>*</i>模块类型：</dt>
                 <dd>
                     <span class="online-checkbox">
                         <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
@@ -84,7 +113,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>门类型：</dt>
+                <dt class="col-dt"><i>*</i>门类型：</dt>
                 <dd>
                     <select name="selectDoorType">
                         @foreach (BasArgumentSetting DoorType in ViewBag.DoorTypes)
@@ -95,11 +124,11 @@
                 </dd>
             </dl>
             <dl class="dynamic_module">
-                <dt><i>*</i>宽度尺寸范围(mm)：</dt>
+                <dt class="col-dt"><i>*</i>宽度尺寸范围(mm)：</dt>
                 <dd>
-                    <input type="number" style="width:50px" name="txtWindowSizeMin" value="1"  />
+                    <input type="number" style="width:50px" name="txtWindowSizeMin" value="0"  />
                     <i style="font-size:18px;"> - </i>
-                    <input type="number" style="width:50px" name="txtWindowSizeMax" value="2" />
+                    <input type="number" style="width:50px" name="txtWindowSizeMax" value="0" />
                 </dd>
             </dl>
        
@@ -120,6 +149,29 @@
         dataType: 'json',
         beforeSerialize: function () {
             var rtv = $("#myform").ValidationInput();
+            if (rtv == false) {
+                return false;
+            }
+
+            let module = parseInt($('input[name="radio_module"]:checked').val());
+            if (module == 1)
+            {
+                let WindowSizeMin = $('input[name="txtWindowSizeMin"]').val();
+                if (!_isNumber(WindowSizeMin))
+                {
+                    layer.alert('宽度尺寸最小值必须为数字', { icon: 6, shade: 0 });
+                    return;
+                }
+
+                let WindowSizeMax = $('input[name="txtWindowSizeMax"]').val();
+                if (!_isNumber(WindowSizeMax))
+                {
+                    layer.alert('宽度尺寸最大值必须为数字', { icon: 6, shade: 0 });
+                    return;
+                }
+            }
+            
+
             return rtv;
         },
         success: function (data) {

@@ -15,6 +15,8 @@ namespace SunacCADApp.Controllers
         // GET: Handrail
         public ActionResult Index()
         {
+
+
             string _where = "TypeCode='Area' And ParentID!=0";
             IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.Settings = Settings;
@@ -25,8 +27,26 @@ namespace SunacCADApp.Controllers
 
 
             _where = string.Empty;  //查询
-            string _orderby = string.Empty;  //排序
             string _url = string.Empty;
+            int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(-1);
+            if (area == 1)
+            {
+                _where += string.Format(@"  AND  EXISTS(SELECT 1 FROM dbo.CadDrawingByArea ba WHERE a.Id=ba.MId AND ba.AreaID={0})", area);
+                _url += "&area=" + area;
+            }
+
+            ViewBag.Area = area;
+
+            int handrailType = HttpUtility.UrlDecode(Request.QueryString["handrailtype"]).ConvertToInt32(-1);
+            if (handrailType == 1)
+            {
+                _where += string.Format(@"  AND b.HandrailType={0}", handrailType);
+                _url += "&handrailtype=" + handrailType;
+            }
+
+            ViewBag.HandrailType = handrailType;
+
+            string _orderby = string.Empty;  //排序
             int recordCount = 0;    //记录总数
             int pageSize = 15;      //每页条数
             int currentPage = 0;    //当前页数
@@ -68,10 +88,8 @@ namespace SunacCADApp.Controllers
             _where = string.Format("  a.MId={0}", Id);
             IList<CadDrawingDWG> Dwgs = CadDrawingDWGDB.GetPageInfoByParameter(_where, string.Empty, 0, 50);
             ViewBag.Dwgs = Dwgs;
-
             CadDrawingHandrailDetail handrail = CadDrawingHandrailDetailDB.GetCadDrawingHandrailDetailByWhere(string.Format(@" MId={0}", Id));
             ViewBag.handrail = handrail;
-            
             return View();
         }
 
@@ -106,13 +124,15 @@ namespace SunacCADApp.Controllers
             try
             {
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
-                string cadFile = Request.Form["cad_file"];
-                string imgFile = Request.Form["img_file"];
+                string cadFile = Request.Form["txt_drawingcad"];
+                string imgFile = Request.Form["hid_drawing_img"];
+                string filenames = Request.Form["txt_filename"];
+                string drawingtype = Request.Form["hid_drawing_type"];
                 string areaid = Request.Form["checkbox_areaid"];
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
                 caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
-                caddrawingmaster.Scope = Request.Form["chekbox_group"].ConvertToInt32(0);
+                caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
                 caddrawingmaster.CreateOn = DateTime.Now;
@@ -121,21 +141,10 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.CreateUserId = 0;
                 caddrawingmaster.CreateBy = "admin";
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
-                string[] arr_CADFile = new string[] { };
-                if (!string.IsNullOrEmpty(cadFile))
-                {
-                    arr_CADFile = cadFile.Split(',');
-                }
-                string[] arr_IMGFile = new string[] { };
-                if (!string.IsNullOrEmpty(cadFile))
-                {
-                    arr_IMGFile = imgFile.Split(',');
-                }
-                string[] arr_Area = new string[] { };
-                if (!string.IsNullOrEmpty(areaid))
-                {
-                    arr_Area = areaid.Split(',');
-                }
+                string[] arr_CADFile = cadFile.Split(',');
+                string[] arr_IMGFile = imgFile.Split(',');
+                string[] arr_FileName = filenames.Split(',');
+                string[] arr_DrawingType = drawingtype.Split(',');
 
 
                 CadDrawingDWG dwg = null;
@@ -147,12 +156,14 @@ namespace SunacCADApp.Controllers
                         dwg = new CadDrawingDWG();
                         dwg.MId = mId;
                         dwg.DWGPath = arr_IMGFile[index];
-                        dwg.FileClass = "DWG";
-                        dwg.CADPath = cad;
+                        dwg.CADPath = arr_CADFile[index];
+                        dwg.FileClass = arr_FileName[index];
+                        dwg.CADType = arr_DrawingType[index];
                         CadDrawingDWGDB.AddHandle(dwg);
                         index++;
                     }
                 }
+                string[] arr_Area = areaid.Split(',');
                 foreach (string area in arr_Area)
                 {
                     if (!string.IsNullOrEmpty(area))
@@ -171,11 +182,11 @@ namespace SunacCADApp.Controllers
 
                 if (mId > 0 && detailId > 0)
                 {
-                    return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = 100, message = "栏杆添加成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { code = -100, message = "添加失败" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = -100, message = "栏杆添加失败" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -230,13 +241,15 @@ namespace SunacCADApp.Controllers
         {
             CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
             int Id = Request.Form["Id"].ConvertToInt32(0);
-            string cadFile = Request.Form["cad_file"];
-            string imgFile = Request.Form["img_file"];
+            string cadFile = Request.Form["txt_drawingcad"];
+            string imgFile = Request.Form["hid_drawing_img"];
+            string filenames = Request.Form["txt_filename"];
+            string drawingtype = Request.Form["hid_drawing_type"];
             string areaid = Request.Form["checkbox_areaid"];
             int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
             caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
             caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
-            caddrawingmaster.Scope = Request.Form["chekbox_group"].ConvertToInt32(0);
+            caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
             caddrawingmaster.AreaId = 0;
             caddrawingmaster.DynamicType = DynamicType;
             caddrawingmaster.CreateOn = DateTime.Now;
@@ -247,25 +260,14 @@ namespace SunacCADApp.Controllers
             caddrawingmaster.Id = Id;
             int mId = CadDrawingMasterDB.EditHandle(caddrawingmaster,string.Empty);
             mId = Id;
-            string[] arr_CADFile = new string[] { };
-            if (!string.IsNullOrEmpty(cadFile))
-            {
-                arr_CADFile = cadFile.Split(',');
-            }
-            string[] arr_IMGFile = new string[] { };
-            if (!string.IsNullOrEmpty(cadFile))
-            {
-                arr_IMGFile = imgFile.Split(',');
-            }
-            string[] arr_Area = new string[] { };
-            if (!string.IsNullOrEmpty(areaid))
-            {
-                arr_Area = areaid.Split(',');
-            }
-
+          
             CadDrawingDWGDB.DeleteHandleByParam(string.Format(@" MId={0}",mId));
             CadDrawingDWG dwg = null;
             int index = 0;
+            string[] arr_CADFile = cadFile.Split(',');
+            string[] arr_IMGFile = imgFile.Split(',');
+            string[] arr_FileName = filenames.Split(',');
+            string[] arr_DrawingType = drawingtype.Split(',');
             foreach (string cad in arr_CADFile)
             {
                 if (!string.IsNullOrEmpty(cad))
@@ -273,12 +275,14 @@ namespace SunacCADApp.Controllers
                     dwg = new CadDrawingDWG();
                     dwg.MId = mId;
                     dwg.DWGPath = arr_IMGFile[index];
-                    dwg.FileClass = "DWG";
-                    dwg.CADPath = cad;
+                    dwg.CADPath = arr_CADFile[index];
+                    dwg.FileClass = arr_FileName[index];
+                    dwg.CADType = arr_DrawingType[index];
                     CadDrawingDWGDB.AddHandle(dwg);
                     index++;
                 }
             }
+            string[] arr_Area = areaid.Split(',');
             CadDrawingByAreaDB.DeleteHandleByParam(string.Format(@" MId={0}", mId));
             foreach (string area in arr_Area)
             {
@@ -299,14 +303,52 @@ namespace SunacCADApp.Controllers
 
             if (mId > 0 && detailId > 0)
             {
-                return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = 100, message = "栏杆原型图纸修改成功" }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { code = -100, message = "添加失败" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = -100, message = "栏杆原型图纸修改失败" }, JsonRequestBehavior.AllowGet);
             }
         }
 
+        /// <summary>
+        ///   栏杆CAD原型属性表-删除根据主键
+        /// </summary>
+        /// <returns></returns>
+        /// <get>/manage/CadDrawingHandrailDetail/deleteHandlebyid</get>
+        /// <author>alon<84789887@qq.com></author>  
+        public ActionResult DeleteHandleById()
+        {
+            int Id = Request.Form["id"].ConvertToInt32(0);
+            int rtv = CadDrawingHandrailDetailDB.DeleteHandleById(Id);
+            if (rtv > 0)
+            {
+                return Json(new { code = 100, message = "删除成功" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { code = -100, message = "删除失败" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        /// <summary>
+        ///   栏杆CAD原型属性表-删除多条根据多个主键
+        /// </summary>
+        /// <returns></returns>
+        /// <get>/manage/CadDrawingHandrailDetail/deletehandlebyids</get> 
+        /// <author>alon<84789887@qq.com></author> 
+        public ActionResult DeleteHandleByIds()
+        {
+            string ids = Request.QueryString["ids"].ConventToString(string.Empty);
+            int rtv = CadDrawingHandrailDetailDB.DeleteHandleByIds(ids);
+            if (rtv > 0)
+            {
+                return Json(new { code = 100, message = "删除成功" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { code = -100, message = "删除失败" }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
     }
 }

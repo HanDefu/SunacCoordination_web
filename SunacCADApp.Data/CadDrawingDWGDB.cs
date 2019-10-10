@@ -72,9 +72,9 @@ namespace SunacCADApp.Data
         {
 
 
-            string sql = string.Format(@"INSERT INTO dbo.caddrawingdwg(MId,DWGPath,FileClass,CADPath,
+            string sql = string.Format(@"INSERT INTO dbo.caddrawingdwg(MId,DWGPath,FileClass,CADPath,CADType,
                                      Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy)  
-                                     VALUES ({0},'{1}','{2}','{3}',{4},{5},getdate(),{6},'{7}')", caddrawingdwg.MId, caddrawingdwg.DWGPath, caddrawingdwg.FileClass, caddrawingdwg.CADPath, caddrawingdwg.Enabled, caddrawingdwg.Reorder, caddrawingdwg.CreateUserId, caddrawingdwg.CreateBy);
+                                     VALUES ({0},'{1}','{2}','{3}','{4}',{5},{6},getdate(),{7},'{8}')", caddrawingdwg.MId, caddrawingdwg.DWGPath, caddrawingdwg.FileClass, caddrawingdwg.CADPath,caddrawingdwg.CADType, caddrawingdwg.Enabled, caddrawingdwg.Reorder, caddrawingdwg.CreateUserId, caddrawingdwg.CreateBy);
             return MsSqlHelperEx.Execute(sql);
         }
         ///<summary>
@@ -86,7 +86,12 @@ namespace SunacCADApp.Data
 
 
             string _wh = string.IsNullOrEmpty(editparam) ? " and id=" + caddrawingdwg.Id : editparam;
-            string sql = "UPDATE [dbo].[CadDrawingDWG] SET [MId]=" + caddrawingdwg.MId + ",[DWGPath]='" + caddrawingdwg.DWGPath + "',[FileClass]='" + caddrawingdwg.FileClass + "',[CADPath]='" + caddrawingdwg.CADPath + "',[Enabled]=" + caddrawingdwg.Enabled + ",[Reorder]=" + caddrawingdwg.Reorder + "  where 1=1 " + _wh;
+            string sql = "UPDATE [dbo].[CadDrawingDWG] SET [MId]=" + caddrawingdwg.MId + ",[DWGPath]='" + caddrawingdwg.DWGPath + 
+                              "',[FileClass]='" + caddrawingdwg.FileClass + 
+                              "',[CADPath]='" + caddrawingdwg.CADPath + 
+                              "',[CADType]='"+caddrawingdwg.CADType+
+                              "',[Enabled]=" + caddrawingdwg.Enabled + 
+                              ",[Reorder]=" + caddrawingdwg.Reorder + "  where 1=1 " + _wh;
             return MsSqlHelperEx.Execute(sql);
         }
 
@@ -119,7 +124,7 @@ namespace SunacCADApp.Data
         public static IList<Drawing> GetDrawingByWhere(string where) 
         {
             IList<Drawing> _drawing = new  List<Drawing>();
-            string sql = string.Format(@"SELECT Id,DWGPath AS ImgPath,CADPath FROM dbo.CadDrawingDWG WHERE {0}",where);
+            string sql = string.Format(@"SELECT Id,DWGPath AS ImgPath,CADPath,FileClass,CADType FROM dbo.CadDrawingDWG WHERE {0}", where);
             _drawing = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Drawing>(new Drawing());
             return _drawing;
         }

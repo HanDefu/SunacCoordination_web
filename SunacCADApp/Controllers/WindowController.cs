@@ -38,14 +38,7 @@ namespace SunacCADApp.Controllers
             ViewBag.OpenWindowNums = OpenWindowNums;
             string _search_where = " 1=1 ";
             string _url = "1";
-            int scope = HttpUtility.UrlDecode(Request.QueryString["scope"]).ConvertToInt32(-1);
-            if (scope==1)
-            {
-                _search_where += " and  a.scope='" + scope + "'";
-                _url += "&scope=" + scope;
-            }
-            ViewBag.scope = scope;
-
+     
             int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(-1);
             if (area >0)
             {
@@ -66,7 +59,7 @@ namespace SunacCADApp.Controllers
             int opentype = HttpUtility.UrlDecode(Request.QueryString["opentype"]).ConvertToInt32(-1);
             if (opentype >0)
             {
-                _search_where += " and  a.WindowOpenTypeId='" + opentype + "'";
+                _search_where += " and  b.WindowOpenTypeId='" + opentype + "'";
                 _url += "&opentype=" + opentype;
             }
             ViewBag.opentype = opentype;
@@ -74,13 +67,21 @@ namespace SunacCADApp.Controllers
             int openwindownum = HttpUtility.UrlDecode(Request.QueryString["openwindownum"]).ConvertToInt32(-1);
             if (openwindownum >0)
             {
-                _search_where += " and  a.WindowOpenQtyId='" + openwindownum + "'";
+                _search_where += " and  b.WindowOpenQtyId='" + openwindownum + "'";
                 _url += "&openwindownum=" + openwindownum;
             }
             ViewBag.openwindownum = openwindownum;
 
 
             _where = _search_where;  //查询
+
+            string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
+            if (!string.IsNullOrEmpty(keyword)) 
+            {
+                _where = string.Format(@" a.DrawingCode='{0}'", keyword);
+            }
+            ViewBag.Keyword = keyword;
+
             string _orderby = string.Empty;  //排序
      
             int recordCount = 0;    //记录总数
@@ -111,32 +112,17 @@ namespace SunacCADApp.Controllers
         {
             if (Id < 1) 
             {
-                Redirect("/Window/Index");
+               return   Redirect("/Window/Index");
             }
 
             string _where = string.Empty;
-            _where = "TypeCode='ActionType' And ParentID!=0";
-
-            IList<BasArgumentSetting> ActionTypes = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
-            ViewBag.ActionTypes = ActionTypes;
-
-            _where = "TypeCode='OpenType' And ParentID!=0";
-
-            IList<BasArgumentSetting> OpenTypes = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
-            ViewBag.OpenTypes = OpenTypes;
-
-            _where = "TypeCode='OpenWindowNum' And ParentID!=0";
-            IList<BasArgumentSetting> OpenWindowNums = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
-            ViewBag.OpenWindowNums = OpenWindowNums;
-            IList<DataSourceMember> Members = CommonLib.GetWindowArgument();
-            ViewBag.Members = Members;
-
+ 
             CadDrawingMaster master = CadDrawingMasterDB.GetSingleEntityById(Id);
             ViewBag.CadDrawingMaster = master;
             _where = "  a.MId=" + Id;
             IList<CadDrawingByArea> ByAreas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
             ViewBag.ByAreas = ByAreas;
-            _where = string.Format("  a.MId={0} and a.FileClass='JPG'", Id);
+            _where = string.Format("  a.MId={0}", Id);
             IList<CadDrawingDWG> Dwgs = CadDrawingDWGDB.GetPageInfoByParameter(_where, string.Empty, 0, 50);
             ViewBag.Dwgs = Dwgs;
             _where = "  a.MId=" + Id;
@@ -193,14 +179,14 @@ namespace SunacCADApp.Controllers
             try
             {
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
-                string cadFile = Request.Form["cad_file"];
-                string imgFile = Request.Form["img_file"];
+                string cadFile = Request.Form["txt_drawingcad"];
+                string imgFile = Request.Form["hid_drawing_img"];
+                string filenames = Request.Form["txt_filename"];
                 string areaid = Request.Form["checkbox_areaid"];
                 string actionType = Request.Form["ActionType"];
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
                 caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
-                caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
-                caddrawingmaster.Scope = Request.Form["chekbox_group"].ConvertToInt32(0);
+                caddrawingmaster.Scope = 1;
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
                 caddrawingmaster.CreateOn = DateTime.Now;
@@ -211,6 +197,7 @@ namespace SunacCADApp.Controllers
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
                 string[] arr_CADFile = cadFile.Split(',');
                 string[] arr_IMGFile = imgFile.Split(',');
+                string[] arr_FileName = filenames.Split(',');
                 string[] arr_Area = areaid.Split(',');
                 string[] arr_ActionType = actionType.Split(',');
                 CadDrawingDWG dwg = null;
@@ -219,10 +206,11 @@ namespace SunacCADApp.Controllers
                 {
                     if (!string.IsNullOrEmpty(cad))
                     {
+                        string dwgFileName = System.IO.Path.GetFileName(cad);
                         dwg = new CadDrawingDWG();
                         dwg.MId = mId;
-                        dwg.DWGPath = arr_IMGFile[index]; 
-                        dwg.FileClass = "DWG";
+                        dwg.DWGPath = arr_IMGFile[index];
+                        dwg.FileClass   = arr_FileName[index];
                         dwg.CADPath = cad;
                         CadDrawingDWGDB.AddHandle(dwg);
                         index++;
@@ -262,14 +250,14 @@ namespace SunacCADApp.Controllers
                 int WindowHasSymmetry = Request.Form["Radio_WindowHasSymmetry"].ConvertToInt32(0);
                 decimal WindowSizeMin = Request.Form["txtWindowSizeMin"].ConventToDecimal(0);
                 decimal WindowSizeMax = Request.Form["txtWindowSizeMax"].ConventToDecimal(0);
-                string WindowDesignFormula = Request.Form["WindowDesignFormula"].ConventToString(string.Empty);
+                string WindowDesignFormula = Request.Form["txtWindowDesignFormula"].ConventToString(string.Empty);
                 if (DynamicType == 2) 
                 {
                      WindowSizeMin = Request.Form["txt_Window_Width"].ConventToDecimal(0);
                      WindowSizeMax = Request.Form["txt_Window_Height"].ConventToDecimal(0);
                 }
-                int WindowVentilationQuantity = Request.Form["WindowVentilationQuantity"].ConvertToInt32(0);
-                int WindowPlugslotSize = Request.Form["WindowVentilationQuantity"].ConvertToInt32(0);
+                int WindowVentilationQuantity = Request.Form["txt_WindowVentilationQuantity"].ConvertToInt32(0);
+                int WindowPlugslotSize = Request.Form["txtWindowPlugslotSize"].ConvertToInt32(0);
                 int WindowAuxiliaryFrame = Request.Form["Checkbox_WindowAuxiliaryFrame"].ConvertToInt32(0);
 
                 CadDrawingWindowDetail window = new CadDrawingWindowDetail();
@@ -333,7 +321,7 @@ namespace SunacCADApp.Controllers
         {
             if (Id < 1)
             {
-                Redirect("/Window/Index");
+               return  Redirect("/Window/Index");
             }
 
             string _where = "TypeCode='Area' And ParentID!=0";
@@ -387,9 +375,10 @@ namespace SunacCADApp.Controllers
             try
             {
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
-                string cadFile = Request.Form["cad_file"];
-                string imgFile = Request.Form["img_file"];
+                string cadFile = Request.Form["txt_drawingcad"];
+                string imgFile = Request.Form["hid_drawing_img"];
                 string areaid = Request.Form["checkbox_areaid"];
+                string filenames = Request.Form["txt_filename"];
                 string actionType = Request.Form["ActionType"];
                 int Id = Request.Form["Id"].ConvertToInt32(-1);
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
@@ -410,6 +399,7 @@ namespace SunacCADApp.Controllers
                 string[] arr_IMGFile = imgFile.Split(',');
                 string[] arr_Area = areaid.Split(',');
                 string[] arr_ActionType = actionType.Split(',');
+                string[] arr_FileName = filenames.Split(',');
                 CadDrawingDWG dwg = null;
                 int index = 0;
                 CadDrawingDWGDB.DeleteHandleByParam(string.Format(@" MId={0}",mId));
@@ -420,7 +410,7 @@ namespace SunacCADApp.Controllers
                         dwg = new CadDrawingDWG();
                         dwg.MId = mId;
                         dwg.DWGPath = arr_IMGFile[index];
-                        dwg.FileClass = "DWG";
+                        dwg.FileClass = arr_FileName[index];
                         dwg.CADPath = cad;
                         CadDrawingDWGDB.AddHandle(dwg);
                         index++;
@@ -460,14 +450,14 @@ namespace SunacCADApp.Controllers
                 int WindowHasSymmetry = Request.Form["Radio_WindowHasSymmetry"].ConvertToInt32(0);
                 decimal WindowSizeMin = Request.Form["txtWindowSizeMin"].ConventToDecimal(0);
                 decimal WindowSizeMax = Request.Form["txtWindowSizeMax"].ConventToDecimal(0);
-                string WindowDesignFormula = Request.Form["WindowDesignFormula"].ConventToString(string.Empty);
+                string WindowDesignFormula = Request.Form["txtWindowDesignFormula"].ConventToString(string.Empty);
                 if (DynamicType == 2)
                 {
                     WindowSizeMin = Request.Form["txt_Window_Width"].ConventToDecimal(0);
                     WindowSizeMax = Request.Form["txt_Window_Height"].ConventToDecimal(0);
                 }
-                int WindowVentilationQuantity = Request.Form["WindowVentilationQuantity"].ConvertToInt32(0);
-                int WindowPlugslotSize = Request.Form["WindowVentilationQuantity"].ConvertToInt32(0);
+                int WindowVentilationQuantity = Request.Form["txt_WindowVentilationQuantity"].ConvertToInt32(0);
+                int WindowPlugslotSize = Request.Form["txtWindowPlugslotSize"].ConvertToInt32(0);
                 int WindowAuxiliaryFrame = Request.Form["Checkbox_WindowAuxiliaryFrame"].ConvertToInt32(0);
 
                 CadDrawingWindowDetailDB.DeleteHandleByParam(string.Format(@" MId={0}", mId));
@@ -485,8 +475,8 @@ namespace SunacCADApp.Controllers
                 window.WindowAuxiliaryFrame = WindowAuxiliaryFrame;
                 int detail = CadDrawingWindowDetailDB.AddHandle(window);
                 string param = Request.Form["param"].ConventToString(string.Empty);
-                DataTable tableParam = JsonConvert.DeserializeObject<DataTable>(param);
                 CadDrawingParameterDB.DeleteHandleByParam(string.Format(@" MId={0}", mId));
+                DataTable tableParam = JsonConvert.DeserializeObject<DataTable>(param);
                 if (tableParam != null)
                 {
                     foreach (DataRow row in tableParam.Rows)
@@ -494,10 +484,10 @@ namespace SunacCADApp.Controllers
                         CadDrawingParameter cadParam = new CadDrawingParameter();
                         cadParam.MId = mId;
                         cadParam.SizeNo = row["SizeNo"].ConventToString(string.Empty);
-                        cadParam.ValueType = row["ValueType"].ConvertToInt32(-1);
+                        cadParam.ValueType = Decimal.ToInt32(row["ValueType"].ConventToDecimal(0));
                         cadParam.Val = row["Val"].ConventToString(string.Empty);
-                        cadParam.MinValue = row["MinValue"].ConvertToInt32(-1);
-                        cadParam.MaxValue = row["MaxValue"].ConvertToInt32(-1);
+                        cadParam.MinValue = Decimal.ToInt32(row["MinValue"].ConventToDecimal(0));
+                        cadParam.MaxValue = Decimal.ToInt32(row["MaxValue"].ConventToDecimal(0));
                         cadParam.DefaultValue = row["DefaultValue"].ConvertToInt32(-1);
                         cadParam.Desc = row["Desc"].ConventToString(string.Empty);
                         cadParam.CreateOn = DateTime.Now;
@@ -522,6 +512,43 @@ namespace SunacCADApp.Controllers
             }
         }
 
+
+        /// <summary>
+        ///   外窗CAD原型属性表-删除根据主键
+        /// </summary>
+        /// <returns></returns>
+        /// <get>/window/deleteHandlebyid</get>
+        /// <author>alon<84789887@qq.com></author>
+        ///  [ValidateInput(false)]
+        public ActionResult DeleteHandleById()
+        {
+            int Id = Request.Form["id"].ConvertToInt32(0);
+            if (Id < 1) 
+            {
+                return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
+        
+            string _where = string.Format("  a.MId={0}", Id);
+            IList<CadDrawingDWG> Dwgs = CadDrawingDWGDB.GetPageInfoByParameter(_where, string.Empty, 0, 50);
+            foreach (CadDrawingDWG dwg in Dwgs) 
+            {
+                string cadpath = dwg.CADPath;
+                string mapCadPath = Server.MapPath(cadpath);
+                System.IO.File.Delete(mapCadPath);
+                string imgpath = dwg.DWGPath;
+                string mapImgPath = Server.MapPath(imgpath);
+                System.IO.File.Delete(mapImgPath);
+            }
+            int rtv = CadDrawingWindowDetailDB.DeleteHandleById(Id);
+            if (rtv > 0)
+            {
+                return Json(new { code = 100, message = "删除成功" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { code = -100, message = "删除失败" }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
     }
 }

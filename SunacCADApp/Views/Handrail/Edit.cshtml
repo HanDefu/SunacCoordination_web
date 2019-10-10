@@ -2,15 +2,19 @@
 @{
     Layout = "~/Views/_LayoutPage.cshtml";
     CadDrawingMaster Drawing = ViewBag.CadDrawingMaster;
-    IList<CadDrawingDWG> Dwgs = ViewBag.Dwgs;
     IList<CadDrawingByArea> ByAreas = ViewBag.ByAreas;
     CadDrawingHandrailDetail Handrail = ViewBag.HandrailDetail;
-    string cadImg = string.Empty;
-    if (Dwgs != null)
-    {
-        CadDrawingDWG DWG = Dwgs.FirstOrDefault<CadDrawingDWG>();
-        cadImg = string.IsNullOrEmpty(DWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : DWG.DWGPath;
-    }
+    IList<CadDrawingDWG> Dwgs = ViewBag.Dwgs;
+    CadDrawingDWG ExpansionDWG = Dwgs.Where(e => e.CADType == "ExpansionView").SingleOrDefault<CadDrawingDWG>();
+    ExpansionDWG = ExpansionDWG == null ? new CadDrawingDWG() : ExpansionDWG;
+    CadDrawingDWG VerticalDWG = Dwgs.Where(e => e.CADType == "VerticalView").SingleOrDefault<CadDrawingDWG>();
+    VerticalDWG = VerticalDWG == null ? new CadDrawingDWG() : VerticalDWG;
+    CadDrawingDWG PlanDWG = Dwgs.Where(e => e.CADType == "PlanView").SingleOrDefault<CadDrawingDWG>();
+    PlanDWG = PlanDWG == null ? new CadDrawingDWG() : PlanDWG;
+    CadDrawingDWG SideDWG = Dwgs.Where(e => e.CADType == "SideView").SingleOrDefault<CadDrawingDWG>();
+    SideDWG = SideDWG == null ? new CadDrawingDWG() : SideDWG;
+    string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
+    string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? string.Empty : ExpansionDWG.FileClass;
 }
 
 <div class="row topnav">
@@ -23,69 +27,41 @@
 <div class="row view">
     <div class="left-column">
         <figure>
-            <img src="@cadImg" />
-            <p>@Drawing.DrawingName</p>
+            <img src="@imagePath" />
+            <p>@imageName</p>
         </figure>
     </div>
     <div class="mian-column">
         <form name="myform" id="myform">
             <dl>
-                <dt><i>*</i>原型编号:</dt>
+                <dt class="col-dt"><i>*</i>原型编号:</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" value="@Drawing.DrawingCode" />
+                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" value="@Drawing.DrawingCode" data-error="原型编号不能为空" />
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>原型名称:</dt>
+                <dt class="col-dt"><i>*</i>展开图文件：</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingname" class="required"  value="@Drawing.DrawingName"/>
+                    <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
+                    <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
+                    <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
+                    <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
+                    <a class="btn-upfile" href="javascript:void(0)">
+                        文件上传
+                        <input type="file" class="upload-cad" />
+                    </a>
                 </dd>
             </dl>
-            <dl>
-                <dt><i>*</i>原型dwg文件:</dt>
-                <dd>
-                    @{
-                        IList<CadDrawingDWG> DwgList = ViewBag.Dwgs;
-                        int cadcount = 1 - DwgList.Count;
-                    }
 
-                    @foreach (CadDrawingDWG dwg in DwgList)
-                    {
-                        <span class="upfile">
-                            <img src="@dwg.DWGPath" /><del></del>
-                            <input type="hidden" name="cad_file" value="@dwg.CADPath" />
-                            <input type="hidden" name="img_file" value="@dwg.DWGPath" />
-                        </span>
-                    }
-                    @for (int i = 0; i < cadcount; i++)
-                    {
-                        <span class="upfile">
-                            <input type="file" />
-                        </span>
-                    }
-
-                </dd>
-            </dl>
             <dl>
-                <dt><i>*</i>使用范围:</dt>
+                <dt class="col-dt"><i>*</i>使用范围:</dt>
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
                             <input type="checkbox" id="all" name="chk_area" class="select-all" />
                             <label for="all">全部</label>
                         </span>
-                        <span class="online-checkbox">
-                            @if (Drawing.Scope == 1)
-                            {
-                                <input type="checkbox" id="all_group" name="chekbox_group" class="single-checkbox" value="1" checked />
-                                <label for="all_group">集团</label>
-                            }
-                            else
-                            {
-                                <input type="checkbox" id="all_group" name="chekbox_group" class="single-checkbox" value="1" />
-                                <label for="all_group">集团</label>
-                            }
-                        </span>
+    
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
                             string str_check = string.Empty;
@@ -102,9 +78,9 @@
             </dl>
 
             <dl>
-                <dt><i>*</i>栏杆类型：</dt>
+                <dt class="col-dt"><i>*</i>栏杆类型：</dt>
                 <dd>
-                    <select name="HandRailType" class="required">
+                    <select name="HandRailType" class="required" data-error="栏杆类型不能为空">
                         @foreach (BasArgumentSetting HandRailType in ViewBag.HandRails)
                         {
                             if (HandRailType.Id == Handrail.HandrailType)
@@ -128,7 +104,7 @@
                 <button type="button" class="btn btn-sunac" id="btn_save">修改</button>
             </div>
             <div class="col-md-6 col-sm-6 text-right">
-                <button type="button" class="btn btn-sunac" id="btn_deleted">删除</button>
+                <button type="button" class="btn btn-sunac btn-delete" data-id="@Drawing.Id">删除</button>
                 <button type="button" class="btn btn-sunac" id="btn_audit">提交审核</button>
             </div>
         </div>
@@ -144,11 +120,6 @@
         beforeSerialize: function () {
             var rtv = $("#myform").ValidationInput();
             if (rtv == false) {
-                return false;
-            }
-            var cad_file = $('input[name="cad_file"]').val();
-            if (_isNull(cad_file)) {
-                layer.msg("CAD文件不能为空");
                 return false;
             }
             var groupid = $('input[name="chekbox_group"]').is(':checked');
@@ -187,6 +158,25 @@
         $("#btn_cancel").on('click', function () {
             $("#myform").resetForm();
         });
+
+        $(".btn-delete").on("click", function () {
+            let Id = $(this).data("id");
+            layer.confirm('是否需要删除', {
+                btn: ['删除', '取消'],
+                shade: false,
+                icon: 3
+            }, function () {
+                $.post("/door/deleteHandlebyid", { Id: Id }, function (data) {
+                    if (data.code == 100) {
+                        layer.alert("删除成功", { icon: 6, shade: false }, function () {
+                            window.location.href = "/door/index";
+                        })
+                    } else {
+                        layer.alert("删除失败", { icon: 6, shade: false });
+                    }
+                }, 'json');
+            });
+        })
     })
 
 </script>

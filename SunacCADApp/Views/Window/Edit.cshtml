@@ -7,6 +7,11 @@
     CadDrawingWindowDetail windowDetail = ViewBag.WindowDetail;
     IList<CadDrawingByArea> byAreaList = ViewBag.ByAreas;
     IList<CadDrawingFunction> FunList = ViewBag.Functions;
+    IList<CadDrawingDWG> DwgList = ViewBag.Dwgs;
+    int cadcount = 4 - DwgList.Count;
+    int indexDrawingRow = 0;
+    CadDrawingDWG singleCadDrawing = DwgList.FirstOrDefault<CadDrawingDWG>();
+    string imagePath = string.IsNullOrEmpty(singleCadDrawing.DWGPath) ? "/Content/Css/img/icon-no-image.png" : singleCadDrawing.DWGPath;
 }
 <div class="row topnav">
     <a>标准部品库</a>
@@ -15,75 +20,63 @@
 </div>
 <div class="row view">
     <div class="left-column">
-        <figure>
-            <img src="~/Content/Css/img/icon-no-image.png" width="238" heigth="200" />
-            <p>CDA双开窗下</p>
+        <figure class="icon-drawing-img">
+            <img src="@imagePath" width="238" heigth="200" />
+            <p>@DrawingMaster.DrawingCode</p>
         </figure>
     </div>
     <div class="mian-column">
         <form name="myform" id="myform">
             <dl>
-                <dt><i>*</i>原型编号:</dt>
+                <dt class="col-dt"><i>*</i>原型编号：</dt>
                 <dd>
                     <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" value="@DrawingMaster.DrawingCode" />
                 </dd>
             </dl>
-            <dl>
-                <dt><i>*</i>原型名称:</dt>
-                <dd>
-                    <input type="text" style="width:450px" name="txt_drawingname" class="required" data-error="原型名称不能为空"  value="@DrawingMaster.DrawingName"/>
-                </dd>
-            </dl>
-            <dl>
-                <dt><i>*</i>原型dwg文件:</dt>
-                <dd>
-                    @{
-                        IList<CadDrawingDWG> DwgList = ViewBag.Dwgs;
-                        int cadcount =4- DwgList.Count;
-                    }
+            @foreach (CadDrawingDWG dwg in DwgList)
+            {
+                string title = indexDrawingRow++ == 0 ? "<i>*</i>原型dwg文件：" : "<i></i>";
+                <dl>
+                    <dt class="col-dt">@Html.Raw(title)</dt>
+                    <dd>
+                        <input type="text" style="width:378px" name="txt_filename" placeholder="平面图稿件" value="@dwg.FileClass" />
+                        <input type="hidden" name="txt_drawingcad" value="@dwg.CADPath" />
+                        <input type="hidden" name="hid_drawing_img" value="@dwg.DWGPath" />
+                        <a class="btn-upfile" href="javascript:void(0)">
+                            文件上传
+                            <input type="file" class="upload-cad" />
+                        </a>
+                    </dd>
+                </dl>
+            }
+            @for (int i = 0; i < cadcount; i++)
+            {
+                <dl>
+                    <dt class="col-dt"><i></i></dt>
+                    <dd>
+                        <input type="text" style="width:378px" name="txt_filename" placeholder="平面图稿件" />
+                        <input type="hidden" name="txt_drawingcad" />
+                        <input type="hidden" name="hid_drawing_img" />
+                        <a class="btn-upfile" href="javascript:void(0)">
+                            文件上传
+                            <input type="file" class="upload-cad" />
+                        </a>
+                    </dd>
+                </dl>
+            }
 
-                    @foreach (CadDrawingDWG dwg in DwgList)
-                    {
-                        <span class="upfile">
-                            <img src="@dwg.DWGPath" /><del></del>
-                            <input type="hidden" name="cad_file" value="@dwg.CADPath" />
-                            <input type="hidden" name="img_file" value="@dwg.DWGPath" />
-                        </span>
-                    }
-                    @for (int i = 0; i < cadcount; i++)
-                    {
-                        <span class="upfile">
-                            <input type="file" />
-                        </span>
-                    }
-                   
-                   
-                </dd>
-            </dl>
             <dl>
-                <dt><i>*</i>使用范围:</dt>
+                <dt class="col-dt"><i>*</i>使用范围：</dt>
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
                             <input type="checkbox" id="all" name="chk_area" class="select-all" />
                             <label for="all">全部</label>
                         </span>
-                        <span class="online-checkbox">
-                            @if (DrawingMaster.Scope == 1)
-                            {
-                                <input type="checkbox" id="all_group" name="chekbox_group" class="single-checkbox" value="1" checked />
-                            }
-                            else
-                            {
-                                <input type="checkbox" id="all_group" name="chekbox_group" class="single-checkbox" value="1"  />
-                            }
-                          
-                            <label for="all_group">集团</label>
-                        </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
-                            string str_check=string.Empty;
-                            int hasArea =  byAreaList.Where(e => e.AreaID == Setting.Id).Count();
+                            string str_check = string.Empty;
+                            int hasArea = byAreaList.Where(e => e.AreaID == Setting.Id).Count();
                             str_check = hasArea > 0 ? "checked" : string.Empty;
                             <span class="online-checkbox">
                                 <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" @str_check />
@@ -95,7 +88,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>模块类型：</dt>
+                <dt class="col-dt"><i>*</i>模块类型：</dt>
                 <dd>
                     @if (DrawingMaster.DynamicType == 1)
                     {
@@ -111,7 +104,7 @@
                     else
                     {
                         <span class="online-checkbox">
-                            <input type="radio" name="radio_module" id="radio_dynamic_module" value="1"  data-model=".dynamic_module" />
+                            <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" data-model=".dynamic_module" />
                             <label for="radio_dynamic_module">动态模型</label>
                         </span>
                         <span class="online-checkbox">
@@ -120,11 +113,11 @@
                         </span>
 
                     }
-             
+
                 </dd>
             </dl>
             <dl>
-                <dt><i></i>功能区类型：</dt>
+                <dt class="col-dt"><i></i>功能区类型：</dt>
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
@@ -136,7 +129,7 @@
                             int funcount = FunList.Where(e => e.FunctionId == ActionType.Id).Count();
                             string check = funcount > 0 ? "checked" : string.Empty;
                             <span class="online-checkbox">
-                                <input type="checkbox" id="actiontype_@ActionType.Id" name="ActionType" value="@ActionType.Id" class="single-checkbox"  @check/>
+                                <input type="checkbox" id="actiontype_@ActionType.Id" name="ActionType" value="@ActionType.Id" class="single-checkbox" @check />
                                 <label for="actiontype_@ActionType.Id">@ActionType.ArgumentText</label>
                             </span>
                         }
@@ -144,7 +137,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>开启类型：</dt>
+                <dt class="col-dt"><i>*</i>开启类型：</dt>
                 <dd>
                     <select name="OpenType" class="required">
                         @foreach (BasArgumentSetting OpenType in ViewBag.OpenTypes)
@@ -156,7 +149,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>开启扇数量：</dt>
+                <dt class="col-dt"><i>*</i>开启扇数量：</dt>
                 <dd>
                     <select name="OpenWindowNum" class="required">
                         @foreach (BasArgumentSetting OpenType in ViewBag.OpenWindowNums)
@@ -168,7 +161,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i></i>是否对称窗型：</dt>
+                <dt class="col-dt"><i></i>是否对称窗型：</dt>
                 <dd>
                     @if (windowDetail.WindowHasSymmetry == 1)
                     {
@@ -184,7 +177,7 @@
                     else
                     {
                         <span class="online-checkbox">
-                            <input type="radio" name="Radio_WindowHasCorner" id="Radio_WindowHasCorner"  value="1" />
+                            <input type="radio" name="Radio_WindowHasCorner" id="Radio_WindowHasCorner" value="1" />
                             <label for="Radio_WindowHasCorner">是</label>
                         </span>
                         <span class="online-checkbox">
@@ -192,11 +185,11 @@
                             <label for="Radio_WindowHasCorner1">否</label>
                         </span>
                     }
-                    
+
                 </dd>
             </dl>
             <dl>
-                <dt><i></i>是否转角窗型：</dt>
+                <dt class="col-dt"><i></i>是否转角窗型：</dt>
                 <dd>
                     @if (windowDetail.WindowHasCorner == 1)
                     {
@@ -216,135 +209,238 @@
                             <label for="Radio_WindowHasSymmetry">是</label>
                         </span>
                         <span class="online-checkbox">
-                            <input type="radio" name="Radio_WindowHasSymmetry" id="Radio_WindowHasSymmetry1" checked  value="0"/>
+                            <input type="radio" name="Radio_WindowHasSymmetry" id="Radio_WindowHasSymmetry1" checked value="0" />
                             <label for="Radio_WindowHasSymmetry1">否</label>
                         </span>
-                
+
                     }
                 </dd>
             </dl>
-                @if (DrawingMaster.DynamicType == 1)
-                {
-                    <dl class="dynamic_module">
-                        <dt><i>*</i>宽度尺寸范围（mm）：</dt>
-                        <dd>
-                            <input type="number" style="width:50px" name="txtWindowSizeMin" value="@windowDetail.WindowSizeMin" />mm
-                            <i> -- &nbsp; </i>
-                            <input type="number" style="width:50px" name="txtWindowSizeMax" value="@windowDetail.WindowSizeMin" />mm
-                        </dd>
-                    </dl>
-                    <dl class="dynamic_module">
-                        <dt><i>*</i>通风量计算公式：</dt>
-                        <dd>
-                            <input type="text" style="width:450px" name="txtWindowDesignFormula" value="@windowDetail.WindowDesignFormula" />
+            @if (DrawingMaster.DynamicType == 1)
+            {
+                <dl class="dynamic_module">
+                    <dt class="col-dt"><i>*</i>宽度尺寸范围（mm）：</dt>
+                    <dd>
+                        <input type="number" style="width:50px" name="txtWindowSizeMin" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" />mm
+                        <i> -&nbsp; </i>
+                        <input type="number" style="width:50px" name="txtWindowSizeMax" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" />mm
+                    </dd>
+                </dl>
+                <dl class="dynamic_module">
+                    <dt><i>*</i>通风量计算公式：</dt>
+                    <dd>
+                        <input type="text" style="width:450px" name="txtWindowDesignFormula" value="@windowDetail.WindowDesignFormula" />
 
-                        </dd>
-                    </dl>
-                }
-                else
-                {
-                    <dl class="static_module" style="display:block">
-                        <dt><i>*</i>尺寸（mm）：</dt>
-                        <dd>
-                            <em>宽</em>
-                            <input type="number" style="width:60px" value="@windowDetail.WindowSizeMin" name="txt_Window_Width" />&nbsp;
-                            <em>高 </em>
-                            <input type="number" style="width:60px" value="@windowDetail.WindowSizeMax" name="txt_Window_Height" />
-                        </dd>
-                    </dl>
-                    <dl class="static_module" style="display:block">
-                        <dt><i>*</i>通风量：</dt>
-                        <dd>
-                            <input type="number" style="width:80px" name="txt_WindowVentilationQuantity" value="@windowDetail.WindowVentilationQuantity" />
-
-                        </dd>
-                    </dl>
-                    <dl class="static_module" style="display:block">
-                        <dt><i></i>塞缝尺寸：</dt>
-                        <dd>
-                            <input type="text" style="width:80px" name="txtWindowPlugslotSize" value="@windowDetail.WindowPlugslotSize" />
-
-                        </dd>
-                    </dl>
-                    <dl class="static_module" style="display:block">
-                        <dt>&nbsp;</dt>
-                        <dd>
-                            <span class="online-checkbox">
-                                @{
-                                     string str_checked = windowDetail.WindowAuxiliaryFrame == 1 ? "checked" : string.Empty;
-                                }
-                                <input type="checkbox" name="Checkbox_WindowAuxiliaryFrame" id="Checkbox_WindowAuxiliaryFrame" value="1"  @str_checked/>
-                                <label for="Checkbox_WindowAuxiliaryFrame">是否有附框</label>
-                            </span>
-                        </dd>
-                    </dl>
-
-                }
-
-       
-            <dl>
-                <dt><i></i>参数取值：</dt>
-            </dl>
-            <dl>
-                <dd>
-                    <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:620px;">
-                        <thead>
-                            <tr>
-                                <th width="80" class="text-center">尺寸代码</th>
-                                <th width="70" class="text-center">值类型</th>
-                                <th width="110" class="text-center">值</th>
-                                <th width="70" class="text-center">最大值</th>
-                                <th width="70" class="text-center">最小值</th>
-                                <th width="60" class="text-center">默认值</th>
-                                <th class="text-center">说明</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach (CadDrawingParameter param in ViewBag.CadDrawingParams)
-                            {
-                                string minValue = param.MinValue < 1 ? string.Empty : param.MinValue.ToString();
-                                string maxValue = param.MaxValue < 1 ? string.Empty : param.MaxValue.ToString();
-                                string defaultValue=param.DefaultValue <1 ? string.Empty : param.MaxValue.ToString();
-                                <tr sizeno="@param.SizeNo">
-                                    <td class="text-center">@param.SizeNo</td>
-                                    <td valign="middle">
-                                        <select name="ValueType">
-                                            @foreach (DataSourceMember Member in ViewBag.Members)
-                                            {
-                                                if (Member.ValueMember == param.ValueType.ToString())
-                                                {
-                                                    <option value="@Member.ValueMember" selected="selected">@Member.DisplayMember</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@Member.ValueMember">@Member.DisplayMember</option>
-                                                }
-
-                                            }
-                                        </select>
-                                    </td>
-                                    <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled"  v/></td>
-                                    <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
-                                    <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
-                                    <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled"  value="@defaultValue"/></td>
-                                    <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                    </dd>
+                </dl>
+                <dl class="dynamic_module">
+                    <dt class="col-dt"><i></i>参数取值：</dt>
+                </dl>
+                <dl class="dynamic_module">
+                    <dd>
+                        <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:620px;">
+                            <thead>
+                                <tr>
+                                    <th width="80" class="text-center">尺寸代码</th>
+                                    <th width="70" class="text-center">值类型</th>
+                                    <th width="70" class="text-center">最大值</th>
+                                    <th width="70" class="text-center">最小值</th>
+                                    <th width="110" class="text-center">值</th>
+                                    <th width="60" class="text-center">默认值</th>
+                                    <th class="text-center">说明</th>
                                 </tr>
-                            }
-                           
-                        </tbody>
-                    </table>
-                    <input type="hidden" name="Id" value="@DrawingMaster.Id" />
-                     <input type="hidden" name="param" />
-                </dd>
-            </dl>
+                            </thead>
+                            <tbody>
+
+                                @foreach (CadDrawingParameter param in ViewBag.CadDrawingParams)
+                                {
+                                    string minValue = param.MinValue < 1 ? string.Empty : param.MinValue.ToString();
+                                    string maxValue = param.MaxValue < 1 ? string.Empty : param.MaxValue.ToString();
+                                    string defaultValue = param.DefaultValue < 1 ? string.Empty : param.MaxValue.ToString();
+                                    <tr sizeno="@param.SizeNo">
+                                        <td class="text-center">@param.SizeNo</td>
+                                        <td valign="middle">
+                                            <select name="ValueType">
+                                                @foreach (DataSourceMember Member in ViewBag.Members)
+                                                {
+                                                    if (Member.ValueMember == param.ValueType.ToString())
+                                                    {
+                                                        <option value="@Member.ValueMember" selected="selected">@Member.DisplayMember</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                                    }
+
+                                                }
+                                            </select>
+                                        </td>
+
+                                        <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
+                                        <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
+                                        <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                        <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" value="@defaultValue" /></td>
+                                        <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+
+                    </dd>
+                </dl>
+                <dl class="static_module">
+                    <dt class="col-dt"><i>*</i>尺寸（mm）：</dt>
+                    <dd>
+                        <em>宽：</em>
+                        <input type="number" style="width:60px" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" name="txt_Window_Width" />&nbsp;
+                        <em>高：</em>
+                        <input type="number" style="width:60px" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" name="txt_Window_Height" />
+                    </dd>
+                </dl>
+                <dl class="static_module">
+                    <dt class="col-dt"><i>*</i>通风量：</dt>
+                    <dd>
+                        <input type="number" style="width:80px" name="txt_WindowVentilationQuantity" value="@windowDetail.WindowVentilationQuantity" />
+
+                    </dd>
+                </dl>
+                <dl class="static_module">
+                    <dt class="col-dt"><i></i>塞缝尺寸：</dt>
+                    <dd>
+                        <input type="text" style="width:80px" name="txtWindowPlugslotSize" value="@windowDetail.WindowPlugslotSize" />
+
+                    </dd>
+                </dl>
+                <dl class="static_module">
+                    <dt class="col-dt">&nbsp;</dt>
+                    <dd>
+                        <span class="online-checkbox">
+                            @{ string str_checked = windowDetail.WindowAuxiliaryFrame == 1 ? "checked" : string.Empty; }
+                            <input type="checkbox" name="Checkbox_WindowAuxiliaryFrame" id="Checkbox_WindowAuxiliaryFrame" value="1" @str_checked />
+                            <label for="Checkbox_WindowAuxiliaryFrame">是否有附框</label>
+                        </span>
+                    </dd>
+                </dl>
+            }
+            else
+            {
+                <dl class="dynamic_module" style="display:none">
+                    <dt class="col-dt"><i>*</i>宽度尺寸范围（mm）：</dt>
+                    <dd>
+                        <input type="number" style="width:50px" name="txtWindowSizeMin" value="@windowDetail.WindowSizeMin" />mm
+                        <i> -&nbsp; </i>
+                        <input type="number" style="width:50px" name="txtWindowSizeMax" value="@windowDetail.WindowSizeMax" />mm
+                    </dd>
+                </dl>
+                <dl class="dynamic_module" style="display:none">
+                    <dt><i>*</i>通风量计算公式：</dt>
+                    <dd>
+                        <input type="text" style="width:450px" name="txtWindowDesignFormula" value="@windowDetail.WindowDesignFormula" />
+
+                    </dd>
+                </dl>
+                <dl class="dynamic_module" style="display:none">
+                    <dt class="col-dt"><i></i>参数取值：</dt>
+                </dl>
+                <dl class="dynamic_module" style="display:none">
+                    <dd>
+                        <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:620px;">
+                            <thead>
+                                <tr>
+                                    <th width="80" class="text-center">尺寸代码</th>
+                                    <th width="70" class="text-center">值类型</th>
+                                    <th width="70" class="text-center">最大值</th>
+                                    <th width="70" class="text-center">最小值</th>
+                                    <th width="110" class="text-center">值</th>
+                                    <th width="60" class="text-center">默认值</th>
+                                    <th class="text-center">说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (CadDrawingParameter param in ViewBag.CadDrawingParams)
+                                {
+                                    string minValue = param.MinValue < 1 ? string.Empty : param.MinValue.ToString();
+                                    string maxValue = param.MaxValue < 1 ? string.Empty : param.MaxValue.ToString();
+                                    string defaultValue = param.DefaultValue < 1 ? string.Empty : param.DefaultValue.ToString();
+                                    <tr sizeno="@param.SizeNo">
+                                        <td class="text-center">@param.SizeNo</td>
+                                        <td valign="middle">
+                                            <select name="ValueType">
+                                                @foreach (DataSourceMember Member in ViewBag.Members)
+                                                {
+                                                    if (Member.ValueMember == param.ValueType.ToString())
+                                                    {
+                                                        <option value="@Member.ValueMember" selected="selected">@Member.DisplayMember</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                                    }
+
+                                                }
+                                            </select>
+                                        </td>
+
+                                        <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
+                                        <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
+                                        <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                        <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" value="@defaultValue" /></td>
+                                        <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </dd>
+                </dl>
+                <dl class="static_module" style="display:block">
+                    <dt class="col-dt"><i>*</i>尺寸（mm）：</dt>
+                    <dd>
+                        <em>宽：</em>
+                        <input type="number" style="width:60px" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" name="txt_Window_Width" />&nbsp;
+                        <em>高：</em>
+                        <input type="number" style="width:60px" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" name="txt_Window_Height" />
+                    </dd>
+                </dl>
+                <dl class="static_module" style="display:block">
+                    <dt class="col-dt"><i>*</i>通风量：</dt>
+                    <dd>
+                        <input type="number" style="width:80px" name="txt_WindowVentilationQuantity" value="@windowDetail.WindowVentilationQuantity" />
+
+                    </dd>
+                </dl>
+                <dl class="static_module" style="display:block">
+                    <dt class="col-dt"><i></i>塞缝尺寸：</dt>
+                    <dd>
+                        <input type="text" style="width:80px" name="txtWindowPlugslotSize" value="@windowDetail.WindowPlugslotSize" />
+
+                    </dd>
+                </dl>
+                <dl class="static_module" style="display:block">
+                    <dt class="col-dt">&nbsp;</dt>
+                    <dd>
+                        <span class="online-checkbox">
+                            @{ string str_checked = windowDetail.WindowAuxiliaryFrame == 1 ? "checked" : string.Empty;}
+                            <input type="checkbox" name="Checkbox_WindowAuxiliaryFrame" id="Checkbox_WindowAuxiliaryFrame" value="1" @str_checked />
+                            <label for="Checkbox_WindowAuxiliaryFrame">是否有附框</label>
+                        </span>
+                    </dd>
+                </dl>
+
+            }
+
+
+            <input type="hidden" name="Id" value="@DrawingMaster.Id" />
+            <input type="hidden" name="param" />
         </form>
         <div class="row" style="margin-bottom:20px;padding-left:58px;padding-right:57px;">
             <div class="col-md-6 col-sm-6">
                 <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
             </div>
             <div class="col-md-6 col-sm-6 text-right">
-                <button type="button" class="btn btn-sunac">删除</button>
+                <button type="button" class="btn btn-sunac btn-delete" data-id="@DrawingMaster.Id">删除</button>
                 <button type="button" class="btn btn-sunac">提交审核</button>
             </div>
         </div>
@@ -359,32 +455,32 @@
         dataType: 'json',
         beforeSerialize: function () {
             var rtv = $("#myform").ValidationInput();
-            var cad_file = $('input[name="cad_file"]');
-            if (_isNull(cad_file))
-            {
+            if (rtv == false) {
+                return false;
+            }
+
+            var cad_file = $('input[name="txt_drawingcad"]').val();
+            if (_isNull(cad_file)) {
                 layer.msg("CAD文件不能为空");
                 return false;
             }
+
             var groupid = $('input[name="chekbox_group"]').is(':checked');
-            var areaid   = $('input[name="checkbox_areaid" ]').is(':checked')
-            if (areaid == false && groupid==false)
-            {
+            var areaid = $('input[name="checkbox_areaid" ]').is(':checked')
+            if (areaid == false && groupid == false) {
                 layer.msg("请选择使用范围");
                 return false;
             }
             var actiontype = $('input[name="ActionType"]').is(':checked');
-            if (actiontype == false)
-            {
+            if (actiontype == false) {
                 layer.msg("请选择功能区类型");
                 return false;
             }
 
             var radiomodule = parseInt($('input[name="radio_module"]:checked').val());
-            if (radiomodule == 1)
-            {
+            if (radiomodule == 1) {
                 var windowSizeMin = $('input[name="txtWindowSizeMin"]').val();
-                if (parseFloat(windowSizeMin).toString() == "NaN")
-                {
+                if (parseFloat(windowSizeMin).toString() == "NaN") {
                     layer.msg("宽度尺寸范围最小值不能为空");
                     $('input[name="txtWindowSizeMin"]').focus();
                     return false;
@@ -400,15 +496,13 @@
 
 
                 var WindowDesignFormula = $('input[name="txtWindowDesignFormula"]').val();
-                if (_isNull(WindowDesignFormula))
-                {
+                if (_isNull(WindowDesignFormula)) {
                     layer.msg("通风量计算公式不能为空");
                     $('input[name="txtWindowDesignFormula"]').focus();
                     return false;
                 }
             }
-            else if (radiomodule == 2)
-            {
+            else if (radiomodule == 2) {
                 var window_Width = $('input[name="txt_Window_Width"]').val();
                 if (parseFloat(window_Width).toString() == "NaN") {
                     layer.msg("尺寸宽不能为空");
@@ -442,7 +536,7 @@
                 let MaxValue = that.find('input[name="MaxValue"]').val();
                 let DefaultValue = that.find('input[name="DefaultValue"]').val();
                 let Desc = that.find('input[name="Desc"]').val();
-                if (SizeNo != undefined ) {
+                if (SizeNo != undefined) {
                     let _json = '{"SizeNo":"' + SizeNo + '","ValueType":"' + ValueType + '","Val":"' + Val + '","MinValue":"' + MinValue + '","MaxValue":"' + MaxValue + '","DefaultValue":"' + DefaultValue + '","Desc":"' + Desc + '"}';
                     param.push(_json);
                 }
@@ -467,17 +561,16 @@
             let model = $(this).data("model");
             $(".dynamic_module").css("display", "none");
             $(".static_module").css("display", "none");
-            $(model).css("display","block");
+            $(model).css("display", "block");
         })
         $('.param tr select[name="ValueType"]').on("change", function () {
-            let value_type =parseInt($(this).val());
+            let value_type = parseInt($(this).val());
             let that = $(this).parent().parent();
             that.find('.input-val').attr("disabled", true);
             that.find('.input-minvalue').attr("disabled", true);
             that.find('.input-maxvalue').attr("disabled", true);
-            that.find('.input-defaultvalue').attr("disabled",true);
-            switch (value_type)
-            {
+            that.find('.input-defaultvalue').attr("disabled", true);
+            switch (value_type) {
                 case 1:
                     console.log(value_type);
 
@@ -498,10 +591,12 @@
                     that.find('.input-minvalue').focus();
                     break;
                 case 5:
+                    that.find('.input-val').removeAttr('disabled');
                     that.find('.input-defaultvalue').removeAttr('disabled');
                     that.find('.input-defaultvalue').focus();
                     break;
                 case 6:
+                    that.find('.input-val').removeAttr('disabled');
                     that.find('.input-defaultvalue').removeAttr('disabled');
                     that.find('.input-defaultvalue').focus();
                     break;
@@ -516,9 +611,26 @@
         $("#btn_cancel").on('click', function () {
             $("#myform").resetForm();
         });
+        $(".btn-delete").on("click", function () {
+            let Id = $(this).data("id");
+            layer.confirm('是否需要删除', {
+                btn: ['删除', '取消'],
+                shade: false,
+                icon: 3
+            }, function () {
+                $.post("/window/deleteHandlebyid", { Id: Id }, function (data) {
+                    if (data.code == 100) {
+                        layer.alert("删除成功", { icon: 6, shade: false }, function () {
+                            window.location.href = "/window/index";
+                        })
+                    } else {
+                        layer.alert("删除失败", { icon: 6, shade: false });
+                    }
+                }, 'json');
+            });
+
+        })
+
     })
 
 </script>
-
-
-

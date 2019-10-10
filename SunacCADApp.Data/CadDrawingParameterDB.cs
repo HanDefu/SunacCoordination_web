@@ -119,10 +119,11 @@ namespace SunacCADApp.Data
         public static IList<CadDrawingParameter> GetCadDrawingParameterByWhereList(string _where) 
         {
             IList<CadDrawingParameter> _caddrawingparameters = new List<CadDrawingParameter>();
-            string sql = string.Format(@"SELECT a.*,b.StateName AS ValueTypeName 
-                                                        FROM dbo.CadDrawingParameter  a 
-                                                INNER JOIN dbo.Sys_State b ON a.ValueType=b.StateId AND b.StateFixFlag='WindowArgument'
-                                                WHERE {0}",_where);
+            string sql = string.Format(@"    SELECT a.SizeNo,a.ValueType,b.StateName AS ValueTypeName,
+                                                                         a.Val, a.MinValue,a.MaxValue,a.DefaultValue, a.[Desc]
+                                                             FROM dbo.CadDrawingParameter a
+                                                    INNER JOIN dbo.Sys_State b ON a.ValueType = b.StateId  AND b.StateFixFlag = 'WindowArgument'
+                                                          WHERE {0} ORDER BY a.Id ASC", _where);
             _caddrawingparameters = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<CadDrawingParameter>(new CadDrawingParameter());
             return _caddrawingparameters;
         }

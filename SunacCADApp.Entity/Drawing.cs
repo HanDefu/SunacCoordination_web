@@ -20,5 +20,13 @@ namespace SunacCADApp.Entity
         /// CAD图纸地址
         /// </summary>
         public string CADPath { get; set; }
+        /// <summary>
+        /// 图纸名称
+        /// </summary>
+        public string FileClass { get; set; }
+        /// <summary>
+        /// 图纸类别
+        /// </summary>
+        public string CADType { get; set; }
     }
 }

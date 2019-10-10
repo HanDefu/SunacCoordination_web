@@ -200,6 +200,7 @@ header {
         outline:none;
         border:solid 1px #e3e2e2;
         line-height:24px;
+        height:29px;
         width:200px;
         border-radius:20px;
         padding-left:10px;
@@ -215,7 +216,6 @@ header {
          height:27px;
          border-top-right-radius:20px;
          border-bottom-right-radius:20px;
-        
          background:#b58d59 url("img/icon-search.png") center center no-repeat;
           background-size:16px 16px;
      }
@@ -244,9 +244,10 @@ header {
 
         .main .center .list ul li {
           float:left;
-          width:180px;
-          margin-right:30px;
+          width:215px;
+          margin-right:10px;
           margin-bottom:30px;
+          position:relative;
           
 
         }
@@ -262,7 +263,7 @@ header {
             }
             .main .center .list ul li figure img {
               width:100%;
-              height:154px;
+              height:155px;
               border:solid 1px #e3e3e3;
             }
             .main .center .list ul li figure p {
@@ -270,6 +271,21 @@ header {
               line-height:35px;
               margin-bottom:0px;
             }
+
+        .main .center .list ul li .state {
+            position:absolute;
+            top:0px;
+            right:0px;
+            padding:3px 10px;
+            background-color:#8c8c8c;
+            color:#ffffff;
+        }
+        .main .center .list ul li .state.unchecked {
+           background-color:#b98837;
+           color:#ffffff;
+        }
+
+
 
         .main .center .view {
         
@@ -328,8 +344,14 @@ header {
                 padding-right: 5px;
                 color: #444444;
                 font-weight: normal;
-                min-width:130px;
+                min-width:80px;
             }
+           
+            .main .center .view .mian-column dl dt.col-dt {
+                min-width:170px;
+                text-align:right;
+            }
+
             .main .center .view .mian-column dl dt i {
                 font-style:normal;
                 color:#ea0505;
@@ -504,6 +526,7 @@ header {
                  outline:none;
                  cursor:pointer;
                  width:auto;
+                 text-decoration:none;
 
             }
            .main .center .view .mian-column dl dd .btn-upfile:hover,
@@ -545,6 +568,17 @@ header {
        width:25px;
        background:url("img/icon-topnav-arrows.png")  center center no-repeat;
      }
+
+     .main .center .topnav .check-state {
+        float:right;
+        line-height:50px;
+        font-size:14px;
+        margin-right:5px;
+     }
+
+        .main .center .topnav .state-unchecked {
+          color:#ad6800;
+        }
      .btn-sunac {
   color: #fff;
   background-color: #b58d59;

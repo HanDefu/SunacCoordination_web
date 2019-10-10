@@ -94,6 +94,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BMPService.asmx" />
     <Content Include="Content\Css\img\file-upload.png" />
     <Content Include="Content\Css\img\icon-arrows-right.png" />
     <Content Include="Content\Css\img\icon-background.png" />
@@ -258,6 +259,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="BMPService.asmx.cs">
+      <DependentUpon>BMPService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controllers\AirconditionerController.cs" />
     <Compile Include="Controllers\BathroomController.cs" />
     <Compile Include="Controllers\CommonLibController.cs" />

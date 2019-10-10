@@ -15,16 +15,6 @@
                 <a class="active">全部</a>
             }
             <span>
-                @if (ViewBag.scope == 1)
-                {
-                    <a class="Scope active" data-val="1000">集团</a>
-                }
-                else
-                {
-                    <a class="Scope" data-val="1000">集团</a>
-                }
-            </span>
-            <span>
                 @foreach (BasArgumentSetting argument in ViewBag.Settings)
                 {
                     if (argument.Id == ViewBag.area)
@@ -124,12 +114,12 @@
         <dt> 关键词搜索：</dt>
         <dd>
             <span class="sear-input">
-                <input type="text" />
+                <input type="text"  value="@ViewBag.Keyword"/>
                 <em></em>
             </span>
         </dd>
     </dl>
-    <a class="btn-new" href="/window/add">新增</a>
+    <a class="btn-new" href="/window/add" style="margin-right:30px">新增</a>
 </div>
 <div class="row list">
      <ul>
@@ -140,9 +130,10 @@
                     <figure>
 
                         <img src="@drawing.DWGPath" />
-                        <p>@drawing.DrawingName</p>
+                        <p>@drawing.DrawingCode</p>
                     </figure>
                 </a>
+                <span class="state unchecked">草稿</span>
             </li>
          }
      </ul>
@@ -160,7 +151,8 @@
 
         $(".sear-input em").on("click", function () {
              
-             window.location.href="/"
+            let keyword = $('.sear-input').find('input[type="text"]').val();
+            window.location.href = "/window?keyword=" + keyword;
         });
     })
 

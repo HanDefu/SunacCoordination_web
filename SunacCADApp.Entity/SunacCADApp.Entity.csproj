@@ -44,6 +44,7 @@
     <Compile Include="BasArgumentSetting.cs" />
     <Compile Include="BaseCompanyInfo.cs" />
     <Compile Include="Bathroom.cs" />
+    <Compile Include="BPMSuccess.cs" />
     <Compile Include="CadDrawingAirconditionerDetail.cs" />
     <Compile Include="CadDrawingBathroomDetail.cs" />
     <Compile Include="CadDrawingByArea.cs" />

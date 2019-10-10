@@ -31,7 +31,10 @@ namespace SunacCADApp.Entity
         /// CAD文件地址DWG
         /// </summary>
         public string CADPath { get; set; }
-
+        /// <summary>
+        /// CAD文件类型
+        /// </summary>
+        public string CADType { get; set; }
         /// <summary>
         /// 是否有效
         ///</summary>

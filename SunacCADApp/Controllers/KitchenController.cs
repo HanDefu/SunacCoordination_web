@@ -109,6 +109,10 @@ namespace SunacCADApp.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 厨房新增类
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Addhandle()
         {
             try 

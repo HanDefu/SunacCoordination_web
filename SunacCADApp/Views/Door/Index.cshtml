@@ -15,15 +15,6 @@
                 <a class="active">全部</a>
             }
 
-            @if (ViewBag.scope == 1)
-            {
-                <a class="Scope active" data-val="1000">集团</a>
-            }
-            else
-            {
-                <a class="Scope" data-val="1000">集团</a>
-            }
-
             @foreach (BasArgumentSetting argument in ViewBag.Settings)
             {
                 if (argument.Id == ViewBag.area)
@@ -91,9 +82,10 @@
                     <figure>
 
                         <img src="@drawing.DWGPath" />
-                        <p>@drawing.DrawingName</p>
+                        <p>@drawing.DrawingCode</p>
                     </figure>
                 </a>
+                <span class="state unchecked">草稿</span>
             </li>
         }
 

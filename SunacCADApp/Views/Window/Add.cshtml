@@ -9,76 +9,74 @@
 </div>
 <div class="row view">
     <div class="left-column">
-        <figure>
+        <figure class="icon-drawing-img">
             <img src="~/Content/Css/img/icon-no-image.png" width="238" heigth="200" />
-            <p>CDA双开窗下</p>
+            <p></p>
         </figure>
     </div>
     <div class="mian-column">
         <form name="myform" id="myform">
             <dl>
-                <dt><i>*</i>原型编号:</dt>
+                <dt class="col-dt"><i>*</i>原型编号：</dt>
                 <dd>
                     <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" />
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>原型名称:</dt>
+                <dt class="col-dt"><i>*</i>原型dwg文件：</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingname" class="required" data-error="原型名称不能为空" />
-                </dd>
-            </dl> 
-            <dl>
-                <dt><i>*</i>原型dwg文件</dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_drawingcad" placeholder="平面图稿件" />
-                    <button class="btn-upfile">
-                      文件上传
-                      <input type="file" class="upload-cad" />
-                    </button>
-                </dd>
-            </dl>
-            <dl>
-                <dt><i></i></dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_drawingcad" placeholder="立面图稿件" />
-                    <button class="btn-upfile">
+                    <input type="text" style="width:378px" name="txt_filename" placeholder="平面图稿件" />
+                    <input type="hidden" name="txt_drawingcad" />
+                    <input type="hidden" name="hid_drawing_img" value="" />
+                    <a class="btn-upfile" href="javascript:void(0)">
                         文件上传
                         <input type="file" class="upload-cad" />
-                    </button>
+                    </a>
                 </dd>
             </dl>
             <dl>
-                <dt><i></i></dt>
+                <dt class="col-dt"><i></i></dt>
                 <dd>
-                    <input type="text" style="width:378px" name="txt_drawingcad" placeholder="侧视面图稿件" />
-                    <button class="btn-upfile">
+                    <input type="text" style="width:378px" name="txt_filename" placeholder="立面图稿件" />
+                    <input type="hidden"  name="txt_drawingcad" />
+                    <input type="hidden" name="hid_drawing_img" value="" />
+                    <a class="btn-upfile" href="javascript:void(0)">
                         文件上传
                         <input type="file" class="upload-cad" />
-                    </button>
+                    </a>
                 </dd>
             </dl>
             <dl>
-                <dt><i></i></dt>
+                <dt class="col-dt"><i></i></dt>
                 <dd>
-                    <input type="text" style="width:378px" name="txt_drawingcad" placeholder="展开图稿件" />
-                    <button class="btn-upfile">
+                    <input type="text" style="width:378px" name="txt_filename" placeholder="侧视面图稿件" />
+                    <input type="hidden" name="txt_drawingcad" />
+                    <input type="hidden" name="hid_drawing_img" value="" />
+                    <a class="btn-upfile" href="javascript:void(0)">
                         文件上传
                         <input type="file" class="upload-cad" />
-                    </button>
+                    </a>
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>使用范围:</dt>
+                <dt class="col-dt"><i></i></dt>
+                <dd>
+                    <input type="text" style="width:378px" name="txt_filename" placeholder="展开图稿件" />
+                    <input type="hidden" name="txt_drawingcad" />
+                    <input type="hidden" name="hid_drawing_img" value="" />
+                    <a class="btn-upfile" href="javascript:void(0)">
+                        文件上传
+                        <input type="file" class="upload-cad" />
+                    </a>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="col-dt"><i>*</i>使用范围：</dt>
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
                             <input type="checkbox" id="all" name="chk_area" class="select-all" />
                             <label for="all">全部</label>
-                        </span>
-                        <span class="online-checkbox">
-                            <input type="checkbox" id="all_group" name="chekbox_group" class="single-checkbox"  value="1"/>
-                            <label for="all_group">集团</label>
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
@@ -92,7 +90,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>模块类型：</dt>
+                <dt class="col-dt"><i>*</i>模块类型：</dt>
                 <dd>
                     <span class="online-checkbox">
                         <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
@@ -105,11 +103,11 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i></i>功能区类型：</dt>
+                <dt class="col-dt"><i></i>功能区类型：</dt>
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
-                            <input type="checkbox" id="actiontype_all" name="ActionTypeAll" value="0"  class="select-all"/>
+                            <input type="checkbox" id="actiontype_all" name="ActionTypeAll" value="0" class="select-all" />
                             <label for="actiontype_all">全部</label>
                         </span>
                         @foreach (BasArgumentSetting ActionType in ViewBag.ActionTypes)
@@ -123,7 +121,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>开启类型：</dt>
+                <dt class="col-dt"><i>*</i>开启类型：</dt>
                 <dd>
                     <select name="OpenType" class="required">
                         @foreach (BasArgumentSetting OpenType in ViewBag.OpenTypes)
@@ -134,7 +132,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>开启扇数量：</dt>
+                <dt class="col-dt"><i>*</i>开启扇数量：</dt>
                 <dd>
                     <select name="OpenWindowNum" class="required">
                         @foreach (BasArgumentSetting OpenType in ViewBag.OpenWindowNums)
@@ -145,41 +143,41 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i></i>是否对称窗型：</dt>
+                <dt class="col-dt"><i></i>是否对称窗型：</dt>
                 <dd>
                     <span class="online-checkbox">
-                        <input type="radio" name="Radio_WindowHasCorner" id="Radio_WindowHasCorner"  checked/>
+                        <input type="radio" name="Radio_WindowHasCorner" id="Radio_WindowHasCorner" value="1" checked />
                         <label for="Radio_WindowHasCorner">是</label>
                     </span>
                     <span class="online-checkbox">
-                        <input type="radio" name="Radio_WindowHasCorner" id="Radio_WindowHasCorner1" />
+                        <input type="radio" name="Radio_WindowHasCorner" id="Radio_WindowHasCorner1" value="0" />
                         <label for="Radio_WindowHasCorner1">否</label>
                     </span>
                 </dd>
             </dl>
             <dl>
-                <dt><i></i>是否转角窗型：</dt>
+                <dt class="col-dt"><i></i>是否转角窗型：</dt>
                 <dd>
                     <span class="online-checkbox">
-                        <input type="radio" name="Radio_WindowHasSymmetry" id="Radio_WindowHasSymmetry"  checked/>
+                        <input type="radio" name="Radio_WindowHasSymmetry" id="Radio_WindowHasSymmetry" value="1" checked />
                         <label for="Radio_WindowHasSymmetry">是</label>
                     </span>
                     <span class="online-checkbox">
-                        <input type="radio" name="Radio_WindowHasSymmetry" id="Radio_WindowHasSymmetry1" />
+                        <input type="radio" name="Radio_WindowHasSymmetry" id="Radio_WindowHasSymmetry1" value="0" />
                         <label for="Radio_WindowHasSymmetry1">否</label>
                     </span>
                 </dd>
             </dl>
             <dl class="dynamic_module">
-                <dt><i>*</i>宽度尺寸范围（mm）：</dt>
+                <dt class="col-dt"><i>*</i>宽度尺寸范围（mm）：</dt>
                 <dd>
-                    <input type="number" style="width:50px" name="txtWindowSizeMin"  value="0" />mm
-                    <i> -- &nbsp; </i>
-                    <input type="number" style="width:50px" name="txtWindowSizeMax" value="0" />mm
+                    <input type="number" style="width:50px" name="txtWindowSizeMin" value="0" /> mm
+                    <i> -&nbsp; </i>
+                    <input type="number" style="width:50px" name="txtWindowSizeMax" value="0" /> mm
                 </dd>
             </dl>
             <dl class="dynamic_module">
-                <dt><i>*</i>通风量计算公式：</dt>
+                <dt class="col-dt"><i>*</i>通风量计算公式：</dt>
                 <dd>
                     <input type="text" style="width:450px" name="txtWindowDesignFormula" />
 
@@ -188,50 +186,51 @@
 
 
             <dl class="static_module">
-                <dt><i>*</i>尺寸（mm）：</dt>
+                <dt class="col-dt"><i>*</i>尺寸（mm）：</dt>
                 <dd>
                     <em>宽</em>
                     <input type="number" style="width:60px" value="0" name="txt_Window_Width" />&nbsp;
+                    <i> -&nbsp; </i>
                     <em>高 </em>
                     <input type="number" style="width:60px" value="0" name="txt_Window_Height" />
                 </dd>
             </dl>
             <dl class="static_module">
-                <dt><i>*</i>通风量：</dt>
+                <dt class="col-dt"><i>*</i>通风量：</dt>
                 <dd>
                     <input type="number" style="width:80px" name="txt_WindowVentilationQuantity" value="0" />
 
                 </dd>
             </dl>
             <dl class="static_module">
-                <dt><i></i>塞缝尺寸：</dt>
+                <dt class="col-dt"><i></i>塞缝尺寸：</dt>
                 <dd>
-                    <input type="text" style="width:80px" name="txtWindowPlugslotSize"  value="0"/>
+                    <input type="text" style="width:80px" name="txtWindowPlugslotSize" value="0" />
 
                 </dd>
             </dl>
             <dl class="static_module">
-                <dt>&nbsp;</dt>
+                <dt class="col-dt">&nbsp;</dt>
                 <dd>
                     <span class="online-checkbox">
-                        <input type="checkbox" name="Checkbox_WindowAuxiliaryFrame" id="Checkbox_WindowAuxiliaryFrame" />
+                        <input type="checkbox" name="Checkbox_WindowAuxiliaryFrame" id="Checkbox_WindowAuxiliaryFrame" value="1" />
                         <label for="Checkbox_WindowAuxiliaryFrame">是否有附框</label>
                     </span>
                 </dd>
             </dl>
-            <dl>
-                <dt><i></i>参数取值：</dt>
+            <dl class="dynamic_module">
+                <dt class="col-dt"><i></i>参数取值：</dt>
             </dl>
-            <dl>
+            <dl class="dynamic_module">
                 <dd>
                     <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:620px;">
                         <thead>
                             <tr>
                                 <th width="80" class="text-center">尺寸代码</th>
                                 <th width="70" class="text-center">值类型</th>
-                                <th width="110" class="text-center">值</th>
                                 <th width="70" class="text-center">最大值</th>
                                 <th width="70" class="text-center">最小值</th>
+                                <th width="110" class="text-center">值</th>
                                 <th width="60" class="text-center">默认值</th>
                                 <th class="text-center">说明</th>
                             </tr>
@@ -248,9 +247,9 @@
                                         }
                                     </select>
                                 </td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
                                 <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
                             </tr>
@@ -264,9 +263,9 @@
                                         }
                                     </select>
                                 </td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
                                 <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
                             </tr>
@@ -280,28 +279,14 @@
                                         }
                                     </select>
                                 </td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+
                                 <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
                                 <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
                             </tr>
-                            <tr sizeno="W4">
-                                <td class="text-center">W4</td>
-                                <td valign="middle">
-                                    <select name="ValueType">
-                                        @foreach (DataSourceMember Member in ViewBag.Members)
-                                        {
-                                            <option value="@Member.ValueMember">@Member.DisplayMember</option>
-                                        }
-                                    </select>
-                                </td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
-                                <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
-                            </tr>
+
 
                             <tr sizeno="H1">
                                 <td class="text-center">H1</td>
@@ -313,9 +298,10 @@
                                         }
                                     </select>
                                 </td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+
                                 <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
                                 <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
                             </tr>
@@ -329,9 +315,10 @@
                                         }
                                     </select>
                                 </td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+
                                 <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
                                 <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
                             </tr>
@@ -345,14 +332,15 @@
                                         }
                                     </select>
                                 </td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+
                                 <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
                                 <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
                             </tr>
-                            <tr sizeno="H4">
-                                <td class="text-center">H4</td>
+                            <tr sizeno="R">
+                                <td class="text-center">R</td>
                                 <td valign="middle">
                                     <select name="ValueType">
                                         @foreach (DataSourceMember Member in ViewBag.Members)
@@ -361,9 +349,10 @@
                                         }
                                     </select>
                                 </td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+
                                 <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
                                 <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
                                 <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
                             </tr>
@@ -373,16 +362,12 @@
                 </dd>
             </dl>
         </form>
-            <div class="row" style="margin-bottom:20px;padding-left:58px;padding-right:57px;">
-                <div class="col-md-6 col-sm-6">
-                    <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
-                </div>
-                <div class="col-md-6 col-sm-6 text-right">
-                    <button type="button" class="btn btn-sunac">删除</button>
-                    <button type="button" class="btn btn-sunac">提交审核</button>
-                </div>
+        <div class="row" style="margin-bottom:20px;padding-left:58px;padding-right:57px;">
+            <div class="col-md-6 col-sm-6">
+                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
             </div>
-</div>
+        </div>
+    </div>
 
 </div>
 <script type="text/javascript">
@@ -393,32 +378,30 @@
         dataType: 'json',
         beforeSerialize: function () {
             var rtv = $("#myform").ValidationInput();
-            var cad_file = $('input[name="cad_file"]');
-            if (_isNull(cad_file))
-            {
+            if (rtv == false) {
+                return false;
+            }
+            var cad_file = $('input[name="txt_drawingcad"]').val();
+            if (_isNull(cad_file)) {
                 layer.msg("CAD文件不能为空");
                 return false;
             }
             var groupid = $('input[name="chekbox_group"]').is(':checked');
-            var areaid   = $('input[name="checkbox_areaid" ]').is(':checked')
-            if (areaid == false && groupid==false)
-            {
+            var areaid = $('input[name="checkbox_areaid" ]').is(':checked')
+            if (areaid == false && groupid == false) {
                 layer.msg("请选择使用范围");
                 return false;
             }
             var actiontype = $('input[name="ActionType"]').is(':checked');
-            if (actiontype == false)
-            {
+            if (actiontype == false) {
                 layer.msg("请选择功能区类型");
                 return false;
             }
 
             var radiomodule = parseInt($('input[name="radio_module"]:checked').val());
-            if (radiomodule == 1)
-            {
+            if (radiomodule == 1) {
                 var windowSizeMin = $('input[name="txtWindowSizeMin"]').val();
-                if (parseFloat(windowSizeMin).toString() == "NaN")
-                {
+                if (parseFloat(windowSizeMin).toString() == "NaN") {
                     layer.msg("宽度尺寸范围最小值不能为空");
                     $('input[name="txtWindowSizeMin"]').focus();
                     return false;
@@ -431,18 +414,16 @@
                     return false;
                 }
 
-                
+
 
                 var WindowDesignFormula = $('input[name="txtWindowDesignFormula"]').val();
-                if (_isNull(WindowDesignFormula))
-                {
+                if (_isNull(WindowDesignFormula)) {
                     layer.msg("通风量计算公式不能为空");
                     $('input[name="txtWindowDesignFormula"]').focus();
                     return false;
                 }
             }
-            else if (radiomodule == 2)
-            {
+            else if (radiomodule == 2) {
                 var window_Width = $('input[name="txt_Window_Width"]').val();
                 if (parseFloat(window_Width).toString() == "NaN") {
                     layer.msg("尺寸宽不能为空");
@@ -468,7 +449,7 @@
             var param = Array();
             $(".param  tr").each(function (i, v) {
                 let that = $(this);
-              
+
                 let SizeNo = that.attr("sizeno");
                 let ValueType = that.find('select[name="ValueType"]').val();
                 let Val = that.find('input[name="Val"]').val();
@@ -476,7 +457,7 @@
                 let MaxValue = that.find('input[name="MaxValue"]').val();
                 let DefaultValue = that.find('input[name="DefaultValue"]').val();
                 let Desc = that.find('input[name="Desc"]').val();
-                if (SizeNo != undefined ) {
+                if (SizeNo != undefined) {
                     let _json = '{"SizeNo":"' + SizeNo + '","ValueType":"' + ValueType + '","Val":"' + Val + '","MinValue":"' + MinValue + '","MaxValue":"' + MaxValue + '","DefaultValue":"' + DefaultValue + '","Desc":"' + Desc + '"}';
                     param.push(_json);
                 }
@@ -501,20 +482,19 @@
             let model = $(this).data("model");
             $(".dynamic_module").css("display", "none");
             $(".static_module").css("display", "none");
-            $(model).css("display","block");
+            $(model).css("display", "block");
         })
         $('.param tr select[name="ValueType"]').on("change", function () {
-            let value_type =parseInt($(this).val());
+            let value_type = parseInt($(this).val());
             let that = $(this).parent().parent();
             that.find('.input-val').attr("disabled", true);
             that.find('.input-minvalue').attr("disabled", true);
             that.find('.input-maxvalue').attr("disabled", true);
-            that.find('.input-defaultvalue').attr("disabled",true); 
-            switch (value_type)
-            {
+            that.find('.input-defaultvalue').attr("disabled", true);
+            switch (value_type) {
                 case 1:
-                    console.log(value_type);
-                   
+
+
                     break;
                 case 2:
                     that.find('.input-defaultvalue').removeAttr('disabled');
@@ -532,10 +512,12 @@
                     that.find('.input-minvalue').focus();
                     break;
                 case 5:
+                    that.find('.input-val').removeAttr('disabled');
                     that.find('.input-defaultvalue').removeAttr('disabled');
                     that.find('.input-defaultvalue').focus();
                     break;
                 case 6:
+                    that.find('.input-val').removeAttr('disabled');
                     that.find('.input-defaultvalue').removeAttr('disabled');
                     that.find('.input-defaultvalue').focus();
                     break;

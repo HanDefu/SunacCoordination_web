@@ -218,7 +218,7 @@ namespace SunacCADApp
 
 
          [WebMethod(Description = "标准部品库[栏杆原型]条件查询")]
-         public string GetAllBathroomByParam(int RailingType)
+         public string GetAllHandrailByParam(int RailingType)
          {
              string xml = string.Empty;
              try
@@ -236,7 +236,7 @@ namespace SunacCADApp
              return xml;
          }
          [WebMethod(Description = "标准部品库[空调原型]条件查询")]
-         public string GetAllBathroomByParam(int AirconditionerPower, int AirconditionerPipePosition, int AirconditionerIsRainpipe, int RainpipePosition)
+         public string GetAllAirconditionerByParam(int AirconditionerPower, int AirconditionerPipePosition, int AirconditionerIsRainpipe, int RainpipePosition)
          {
              string xml = string.Empty;
              try

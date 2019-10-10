@@ -95,7 +95,13 @@ namespace SunacCADApp.Data
         ///</summary>
         public static int DeleteHandleById(int Id)
         {
-            string sql = string.Format("DELETE FROM dbo.CadDrawingWindowDetail WHERE Id={0}", Id);
+
+            string sql = string.Format(@"DELETE FROM dbo.CaddrawingMaster WHERE Id={0};
+                                                        DELETE FROM dbo.CadDrawingWindowDetail WHERE MId={0};
+                                                        DELETE FROM dbo.CadDrawingDWG WHERE MId={0};
+                                                        DELETE FROM dbo.CadDrawingByArea WHERE MId={0};
+                                                        DELETE FROM dbo.CadDrawingFunction WHERE MId={0};
+                                                        DELETE FROM dbo.CadDrawingParameter WHERE MId={0};", Id);
             return MsSqlHelperEx.Execute(sql);
         }
 
@@ -155,13 +161,13 @@ namespace SunacCADApp.Data
             CadDrawingWindowDetail _caddrawingwindow = new CadDrawingWindowDetail();
             string sql = string.Format(@"SELECT a.Id,a.MId,a.WindowOpenTypeId,b.ArgumentText AS WindowOpenTypeName,
                                                                     a.WindowOpenQtyId,c.ArgumentText AS WindowOpenQtyName,a.WindowHasCorner,
-                                                                    a.WindowHasSymmetry,a.WindowSizeMin,a.WindowSizeMax,a.WindowDesignFormula	,
+                                                                    a.WindowHasSymmetry,a.WindowSizeMin,a.WindowSizeMax,
+                                                                    a.WindowDesignFormula AS WindowDesignFormula,
                                                                     a.WindowVentilationQuantity	,a.WindowPlugslotSize	,a.WindowAuxiliaryFrame  
                                                         FROM  dbo.CadDrawingWindowDetail a 
                                                         INNER JOIN dbo.BasArgumentSetting b ON a.WindowOpenTypeId=b.Id AND b.TypeCode='OpenType'
-                                                        INNER JOIN dbo.BasArgumentSetting c ON c.Id=a.WindowOpenQtyId AND c.TypeCode='OpenWindowNum'");
-
-
+                                                        INNER JOIN dbo.BasArgumentSetting c ON c.Id=a.WindowOpenQtyId AND c.TypeCode='OpenWindowNum'
+                                                               WHERE {0}",_where);
             _caddrawingwindow = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<CadDrawingWindowDetail>(new CadDrawingWindowDetail());
             return _caddrawingwindow;
         }
@@ -183,19 +189,25 @@ namespace SunacCADApp.Data
 
             if (!string.IsNullOrEmpty(openType)) 
             {
-                _where += string.Format(@" and 	 a.	WindowOpenTypeId	='{0}' ", openType);
-                _where2 += string.Format(@" and a.	WindowOpenTypeId	 ='{0}'", openType);
+                _where += string.Format(@" and 	 b.ArgumentText	='{0}' ", openType);
+                _where2 += string.Format(@" and b.ArgumentText	 ='{0}'", openType);
             }
-            if (!string.IsNullOrEmpty(openType))
+            if (!string.IsNullOrEmpty(openNum))
             {
-                _where += string.Format(@" and 	 a.	WindowOpenQtyId	='{0}' ", openNum);
-                _where2 += string.Format(@" and a.	WindowOpenQtyId	 ='{0}'", openNum);
+                _where += string.Format(@" and 	 c.ArgumentText	='{0}' ", openNum);
+                _where2 += string.Format(@" and c.ArgumentText	 ='{0}'", openNum);
             }
 
-            if (!string.IsNullOrEmpty(openType))
+            if (!string.IsNullOrEmpty(gongNengQu))
             {
-                _where += string.Format(@" AND EXISTS(SELECT 1 FROM dbo.CadDrawingByArea Area WHERE Area.MId=m.Id AND Area.AreaID IN ({0})) ", gongNengQu);
-                _where2 += string.Format(@" AND EXISTS(SELECT 1 FROM dbo.CadDrawingByArea Area WHERE Area.MId=m.Id AND Area.AreaID IN ({0}))", gongNengQu);
+                _where += string.Format(@" AND EXISTS (SELECT Area.AreaID,setting.ArgumentText 
+	                                                                    FROM dbo.CadDrawingByArea Area 
+                                                              INNER  JOIN dbo.BasArgumentSetting setting ON setting.Id=Area.AreaID
+                                                                     WHERE Area.MId=m.Id AND  setting.ArgumentText IN ({0})) ", gongNengQu);
+                _where2 += string.Format(@" AND EXISTS (SELECT Area.AreaID,setting.ArgumentText 
+	                                                                    FROM dbo.CadDrawingByArea Area 
+                                                              INNER  JOIN dbo.BasArgumentSetting setting ON setting.Id=Area.AreaID
+                                                                      WHERE Area.MId=m.Id AND  setting.ArgumentText IN ({0})) ", gongNengQu);
             }
             IList<Window> _window = new List<Window>();
             string xmlsql = string.Format(@"SELECT  m.Id, m.DrawingCode,m.DrawingName,m.Scope,m.DrawingType,m.DynamicType, a.MId,a.WindowOpenTypeId,b.ArgumentText AS WindowOpenTypeName,

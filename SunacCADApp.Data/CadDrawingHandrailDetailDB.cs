@@ -95,7 +95,10 @@ namespace SunacCADApp.Data
         ///</summary>
         public static int DeleteHandleById(int Id)
         {
-            string sql = string.Format("DELETE FROM dbo.CadDrawingHandrailDetail WHERE Id={0}", Id);
+            string sql = string.Format(@"DELETE FROM dbo.CaddrawingMaster WHERE Id={0};
+                                                        DELETE FROM dbo.CadDrawingHandrailDetail WHERE MId={0};
+                                                        DELETE FROM dbo.CadDrawingDWG WHERE MId={0};
+                                                        DELETE FROM dbo.CadDrawingByArea WHERE MId={0};", Id);
             return MsSqlHelperEx.Execute(sql);
         }
 
