@@ -539,7 +539,18 @@
             $("#myform").resetForm();
         });
 
-  
+          $('input[name="txt_drawingcode"]').on('focusout', function () {
+            let that = $(this);
+            let code = that.val();
+            $.post('/CommonLib/HasDradrawingCode', { code: code }, function (data) {
+                if (data.Code != 100) {
+                    layer.alert(data.Message, { icon: 5, shade: 0 }, function () {
+                        that.val('');
+                        layer.closeAll();
+                    });
+                }
+            }, 'json')
+        })
 
 
     })

@@ -205,6 +205,7 @@ header {
         border-radius:20px;
         padding-left:10px;
         padding-right:10px;
+        
      }
 
      .main .center .keywords .sear-input em {
@@ -377,6 +378,7 @@ header {
              outline:none;
              border:solid 1px #c3c3c2;
              border-radius:4px;
+               
        }
 
             .main .center .view .mian-column dl dd select {
@@ -384,9 +386,11 @@ header {
                   border-radius:4px;
                   padding:2px 5px;
                 outline: none;
+                  
             }
             .main .center .view .mian-column dl dd select option {
               line-height:35px;
+                
             }
             .main .center .view .mian-column dl dd select:hover,
             .main .center .view .mian-column dl dd select:focus {
@@ -398,6 +402,7 @@ header {
         .main .center .view .mian-column dl dd  input[type="number"]:hover, 
         .main .center .view .mian-column dl dd  input[type="number"]:focus  {
             outline:none;
+              
         }
 
 
@@ -409,7 +414,8 @@ header {
 
 
         .main .center .view .mian-column dl dd .online-checkbox input[type="checkbox"] {
-                 background:url("img/icon-checkbox.png")
+                 background:url("img/icon-checkbox.png");
+                       
         }
        .main .center .view .mian-column dl dd .online-checkbox label {
            margin-bottom:0px;
@@ -452,6 +458,7 @@ header {
                 width: 60px;
                 margin: 0px;
                 text-align: center;
+                  
             }
 
 
@@ -460,10 +467,12 @@ header {
             .main .center .view .mian-column dl dd .param td.desc input[type="text"] {
                 width:100%; 
                 text-align:left;
+                  
             }
 
              .main .center .view .mian-column dl dd .param td.value input[type="text"]{
                  text-align:center;
+                   
              }
 
             .main .center .view .mian-column dl dd .upfile {
@@ -512,14 +521,17 @@ header {
                  right:0px;
                  bottom:0px;
                  cursor:pointer;
+                   
 
 
             }
             .main .center .view .mian-column dl dd .param td input[disabled] {
               background:#ffffff;
+                
             }
             .main .center .view .mian-column dl dd .param td input:disabled {
                background:#ffffff;
+                 
             }
 
             .main .center .view .mian-column dl dd .btn-upfile {

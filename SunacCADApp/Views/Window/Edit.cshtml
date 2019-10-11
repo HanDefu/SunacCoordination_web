@@ -77,7 +77,7 @@
                 <dt class="col-dt"><i>*</i>平面图文件</dt>
                 <dd>
                     <input type="text" style="width:378px" name="txt_filename" placeholder="平面图文件" class="required" value="@PlanDWG.FileClass" data-error="平面图文件不能为空" />
-                    <input type="hidden" name="txt_drawingcad"  value="@PlanDWG.CADPath"/>
+                    <input type="hidden" name="txt_drawingcad" value="@PlanDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@PlanDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="TopViewFile" />
                     <a class="btn-upfile" href="javascript:void(0)">
@@ -106,13 +106,13 @@
                         <span class="online-checkbox">
                             @if (DrawingMaster.Scope == 1)
                             {
-                                <input type="checkbox" id="all" name="chk_area" class="select-all"  checked="checked"/>
+                                <input type="checkbox" id="all" name="chk_area" class="select-all" checked="checked" />
                             }
                             else
                             {
                                 <input type="checkbox" id="all" name="chk_area" class="select-all" />
                             }
-                            
+
                             <label for="all">全部</label>
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
@@ -299,7 +299,7 @@
                                 {
                                     string minValue = param.MinValue < 1 ? string.Empty : param.MinValue.ToString();
                                     string maxValue = param.MaxValue < 1 ? string.Empty : param.MaxValue.ToString();
-                                    string defaultValue = param.DefaultValue < 1 ? string.Empty : param.MaxValue.ToString();
+                                    string defaultValue = param.DefaultValue < 1 ? string.Empty : param.DefaultValue.ToString();
                                     <tr sizeno="@param.SizeNo">
                                         <td class="text-center">@param.SizeNo</td>
                                         <td valign="middle">
@@ -318,12 +318,52 @@
                                                 }
                                             </select>
                                         </td>
+                                        @switch (param.ValueType)
+                                        {
+                                            case 1:
+                                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
+                                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
+                                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" value="@defaultValue" /></td>
+                                                <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                                break;
+                                            case 2:
+                                            <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
+                                            <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                                break;
+                                            case 3:
+                                            <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
+                                            <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                                break;
+                                            case 4:
+                                            <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
+                                            <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                                break;
+                                            case 5:
+                                            <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
+                                            <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                                break;
+                                            case 6:
+                                            <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
+                                            <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                                                break;
+                                        }
 
-                                        <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
-                                        <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
-                                        <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
-                                        <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" value="@defaultValue" /></td>
-                                        <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
                                     </tr>
                                 }
 
@@ -426,19 +466,61 @@
                                                 }
                                             </select>
                                         </td>
+                                        @switch (param.ValueType)
+                                        {
+                                            case 1:
+                                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
+                                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
+                                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" value="@defaultValue" /></td>
+                                                <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                                break;
+                                            case 2:
+                                            <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
+                                            <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                                break;
+                                            case 3:
+                                            <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
+                                            <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                                break;
+                                            case 4:
+                                            <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
+                                            <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                                break;
+                                            case 5:
+                                            <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
+                                            <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                                break;
+                                            case 6:
+                                            <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
+                                            <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                                                break;
+                                        }
 
-                                        <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
-                                        <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
-                                        <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
-                                        <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" value="@defaultValue" /></td>
-                                        <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
                                     </tr>
                                 }
+
 
                             </tbody>
                         </table>
                     </dd>
                 </dl>
+
                 <dl class="static_module" style="display:block">
                     <dt class="col-dt"><i>*</i>尺寸（mm）：</dt>
                     <dd>

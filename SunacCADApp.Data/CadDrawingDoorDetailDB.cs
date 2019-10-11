@@ -72,10 +72,15 @@ namespace SunacCADApp.Data
         {
 
 
-            string sql = string.Format(@"INSERT INTO dbo.caddrawingdoordetail(MId,DoorType,WindowSizeMin,WindowSizeMax,
-                                     Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy,ModifiedOn,ModifiedUserId,ModifiedBy)
-                                     VALUES ({0},{1},{2},{3},{4},{5},getdate(),{6},'{7}',getdate(),{8},'{9}');SELECT @@IDENTITY as DoorID", caddrawingdoordetail.MId, caddrawingdoordetail.DoorType, caddrawingdoordetail.WindowSizeMin, caddrawingdoordetail.WindowSizeMax, caddrawingdoordetail.Enabled, caddrawingdoordetail.Reorder, caddrawingdoordetail.CreateUserId, caddrawingdoordetail.CreateBy, caddrawingdoordetail.ModifiedUserId, caddrawingdoordetail.ModifiedBy);
-            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(-1);
+            string sql = string.Format(@"INSERT INTO dbo.caddrawingdoordetail(MId,DoorType,WindowSizeMin,WindowSizeMax,WindowDesignFormula,
+                                                                                                                       Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy,ModifiedOn,ModifiedUserId,ModifiedBy)
+                                                               VALUES ({0},{1},{2},{3},'{4}',{5},{6},getdate(),{7},'{8}',getdate(),{9},'{10}');SELECT @@IDENTITY as DoorID", caddrawingdoordetail.MId, 
+                                                               caddrawingdoordetail.DoorType, caddrawingdoordetail.WindowSizeMin,
+                                                               caddrawingdoordetail.WindowSizeMax, caddrawingdoordetail.WindowDesignFormula, 
+                                                               caddrawingdoordetail.Enabled, caddrawingdoordetail.Reorder, caddrawingdoordetail.CreateUserId, 
+                                                               caddrawingdoordetail.CreateBy, caddrawingdoordetail.ModifiedUserId, caddrawingdoordetail.ModifiedBy);
+
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
         ///<summary>
         /// 门CAD原型属性表-修改方法
@@ -86,7 +91,7 @@ namespace SunacCADApp.Data
 
 
             string _wh = string.IsNullOrEmpty(editparam) ? " and id=" + caddrawingdoordetail.Id : editparam;
-            string sql = "UPDATE [dbo].[CadDrawingDoorDetail] SET [MId]=" + caddrawingdoordetail.MId + ",[DoorType]=" + caddrawingdoordetail.DoorType + ",[WindowSizeMin]=" + caddrawingdoordetail.WindowSizeMin + ",[WindowSizeMax]=" + caddrawingdoordetail.WindowSizeMax + ",[Enabled]=" + caddrawingdoordetail.Enabled + ",[Reorder]=" + caddrawingdoordetail.Reorder + ",[ModifiedUserId]=" + caddrawingdoordetail.ModifiedUserId + ",[ModifiedBy]='" + caddrawingdoordetail.ModifiedBy + "'  where 1=1 " + _wh;
+            string sql = "UPDATE [dbo].[CadDrawingDoorDetail] SET [MId]=" + caddrawingdoordetail.MId + ",[DoorType]=" + caddrawingdoordetail.DoorType + ",[WindowSizeMin]=" + caddrawingdoordetail.WindowSizeMin + ",[WindowSizeMax]=" + caddrawingdoordetail.WindowSizeMax + ",[WindowDesignFormula]='" + caddrawingdoordetail.WindowDesignFormula + "',[Enabled]=" + caddrawingdoordetail.Enabled + ",[Reorder]=" + caddrawingdoordetail.Reorder + ",[ModifiedUserId]=" + caddrawingdoordetail.ModifiedUserId + ",[ModifiedBy]='" + caddrawingdoordetail.ModifiedBy + "'  where 1=1 " + _wh;
             return MsSqlHelperEx.Execute(sql);
         }
 

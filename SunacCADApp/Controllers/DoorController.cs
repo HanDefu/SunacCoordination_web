@@ -7,6 +7,8 @@ using Common.Utility;
 using Common.Utility.Extender;
 using SunacCADApp.Entity;
 using SunacCADApp.Data;
+using Newtonsoft.Json;
+using System.Data;
 
 namespace SunacCADApp.Controllers
 {
@@ -28,16 +30,10 @@ namespace SunacCADApp.Controllers
             ViewBag.DoorTypes = DoorTypes;
             string _search_where = "";
             string _url = "1";
-            int scope = HttpUtility.UrlDecode(Request.QueryString["scope"]).ConvertToInt32(-1);
-            if (scope == 1)
-            {
-                _search_where += " and  a.scope='" + scope + "'";
-                _url += "&scope=" + scope;
-            }
-            ViewBag.scope = scope;
+
 
             int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(-1);
-            if (area == 1)
+            if (area > 0)
             {
                 _search_where += string.Format(@"  AND  EXISTS(SELECT 1 FROM dbo.CadDrawingByArea ba WHERE a.Id=ba.MId AND ba.AreaID={0})", area);
                 _url += "&area=" + area;
@@ -46,7 +42,7 @@ namespace SunacCADApp.Controllers
             ViewBag.area = area;
 
             int doortype = HttpUtility.UrlDecode(Request.QueryString["doortype"]).ConvertToInt32(-1);
-            if (doortype == 1)
+            if (doortype > 0)
             {
                 _search_where += string.Format(@"  AND b.DoorType={0}", doortype);
                 _url += "&doortype=" + doortype;
@@ -88,15 +84,20 @@ namespace SunacCADApp.Controllers
             string _where = string.Empty;
             CadDrawingMaster master = CadDrawingMasterDB.GetSingleEntityById(Id);
             ViewBag.CadDrawingMaster = master;
-            _where = "  a.MId=" + Id;
+            _where = string.Format(@"  a.MId={0}",Id);
             IList<CadDrawingByArea> ByAreas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
             ViewBag.ByAreas = ByAreas;
-            _where = string.Format("  a.MId={0} ", Id);
+
             IList<CadDrawingDWG> Dwgs = CadDrawingDWGDB.GetPageInfoByParameter(_where, string.Empty, 0, 50);
             ViewBag.Dwgs = Dwgs;
-            _where = string.Format("  a.MId={0} ", Id);
+
             CadDrawingDoorDetail door = CadDrawingDoorDetailDB.GetSingleEntityByparam(_where);
             ViewBag.Door = door;
+
+            IList<CadDrawingParameter> cadDrawingParams = CadDrawingParameterDB.GetCadDrawingParameterByWhereList(_where);
+            ViewBag.CadDrawingParams = cadDrawingParams;
+
+
             return View();
         }
 
@@ -105,9 +106,15 @@ namespace SunacCADApp.Controllers
             string _where = "TypeCode='Area' And ParentID!=0";
             IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.Settings = Settings;
+
             _where = "TypeCode='DoorType' And ParentID!=0";
             IList<BasArgumentSetting> DoorTypes = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.DoorTypes = DoorTypes;
+
+            IList<DataSourceMember> Members = CommonLib.GetWindowArgument();
+            ViewBag.Members = Members;
+
+
             return View();
         }
 
@@ -124,7 +131,7 @@ namespace SunacCADApp.Controllers
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
                 caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
-                caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
+                caddrawingmaster.Scope = Request.Form["chekbox_group"].ConvertToInt32(0);
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
                 caddrawingmaster.CreateOn = DateTime.Now;
@@ -165,15 +172,45 @@ namespace SunacCADApp.Controllers
                     }
                 }
 
-                
-                int DoorType = Request.Form["selectDoorType"].ConvertToInt32(-1);
-                int WindowSizeMin = Request.Form["txtWindowSizeMin"].ConvertToInt32(-1);
-                int WindowSizeMax = Request.Form["txtWindowSizeMax"].ConvertToInt32(-1);
+                string param = Request.Form["param"].ConventToString(string.Empty);
+                DataTable tableParam = JsonConvert.DeserializeObject<DataTable>(param);
+                if (tableParam != null)
+                {
+                    foreach (DataRow row in tableParam.Rows)
+                    {
+                        CadDrawingParameter cadParam = new CadDrawingParameter();
+                        cadParam.MId = mId;
+                        cadParam.SizeNo = row["SizeNo"].ConventToString(string.Empty);
+                        cadParam.ValueType = row["ValueType"].ConvertToInt32(0);
+                        cadParam.Val = row["Val"].ConventToString(string.Empty);
+                        cadParam.MinValue = row["MinValue"].ConvertToInt32(0);
+                        cadParam.MaxValue = row["MaxValue"].ConvertToInt32(0);
+                        cadParam.DefaultValue = row["DefaultValue"].ConvertToInt32(0);
+                        cadParam.Desc = row["Desc"].ConventToString(string.Empty);
+                        cadParam.CreateOn = DateTime.Now;
+                        CadDrawingParameterDB.AddHandle(cadParam);
+                    }
+                }
+                int DoorType = Request.Form["selectDoorType"].ConvertToInt32(0);
+                int WindowSizeMin = 0;
+                int WindowSizeMax = 0;
+                string windowDesignFormula = Request.Form["txtWindowDesignFormula"].ConventToString(string.Empty);
+                if (DynamicType == 1) 
+                {
+                    WindowSizeMin = Request.Form["txtWindowSizeMin"].ConvertToInt32(0);
+                    WindowSizeMax = Request.Form["txtWindowSizeMax"].ConvertToInt32(0);
+                }
+                else if (DynamicType == 2) 
+                {
+                    WindowSizeMin = Request.Form["txtSizeMin"].ConvertToInt32(0);
+                    WindowSizeMax = Request.Form["txtSizeMax"].ConvertToInt32(0);
+                }
                 CadDrawingDoorDetail door = new CadDrawingDoorDetail();
                 door.MId = mId;
                 door.DoorType = DoorType;
                 door.WindowSizeMin = WindowSizeMin;
                 door.WindowSizeMax = WindowSizeMax;
+                door.WindowDesignFormula = windowDesignFormula;
                 door.CreateOn = DateTime.Now;
                 door.ModifiedOn = DateTime.Now;
                 int rtv=  CadDrawingDoorDetailDB.AddHandle(door);
@@ -186,10 +223,6 @@ namespace SunacCADApp.Controllers
                     return Json(new { code = -100, message = "门原型图纸添加失败" }, JsonRequestBehavior.AllowGet);
 
                 }
-
-
-
-              
             }
             catch (Exception ex) {
                 return Json(new { code = -110, message = ex.Message }, JsonRequestBehavior.AllowGet);
@@ -213,6 +246,10 @@ namespace SunacCADApp.Controllers
             _where = "TypeCode='DoorType' And ParentID!=0";
             IList<BasArgumentSetting> DoorTypes = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.DoorTypes = DoorTypes;
+
+            IList<DataSourceMember> Members = CommonLib.GetWindowArgument();
+            ViewBag.Members = Members;
+
             _where = string.Empty;
             CadDrawingMaster master = CadDrawingMasterDB.GetSingleEntityById(Id);
             ViewBag.CadDrawingMaster = master;
@@ -222,8 +259,14 @@ namespace SunacCADApp.Controllers
             _where = string.Format("  a.MId={0} ", Id);
             IList<CadDrawingDWG> Dwgs = CadDrawingDWGDB.GetPageInfoByParameter(_where, string.Empty, 0, 50);
             ViewBag.Dwgs = Dwgs;
+
             _where = string.Format("  a.MId={0} ", Id);
             CadDrawingDoorDetail door = CadDrawingDoorDetailDB.GetSingleEntityByparam(_where);
+
+            IList<CadDrawingParameter> cadDrawingParams = CadDrawingParameterDB.GetCadDrawingParameterByWhereList(_where);
+            ViewBag.CadDrawingParams = cadDrawingParams;
+
+
             ViewBag.Door = door;
             ViewBag.Id = Id;
 
@@ -249,8 +292,7 @@ namespace SunacCADApp.Controllers
                 int Id = Request.Form["Id"].ConvertToInt32(-1);
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
                 caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
-                caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
-                caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
+                caddrawingmaster.Scope = Request.Form["chekbox_group"].ConvertToInt32(0);
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
                 caddrawingmaster.CreateOn = DateTime.Now;
@@ -297,24 +339,58 @@ namespace SunacCADApp.Controllers
                 }
 
                 CadDrawingDoorDetailDB.DeleteHandleByParam(string.Format(@" MId={0}", Id));
-                int DoorType = Request.Form["selectDoorType"].ConvertToInt32(-1);
-                decimal WindowSizeMin =  Request.Form["txtWindowSizeMin"].ConventToDecimal(0);
-                decimal WindowSizeMax = Request.Form["txtWindowSizeMax"].ConventToDecimal(0);
+                int DoorType = Request.Form["selectDoorType"].ConvertToInt32(0);
+                int WindowSizeMin = 0;
+                int WindowSizeMax = 0;
+                if (DynamicType == 1)
+                {
+                    WindowSizeMin = Request.Form["txtWindowSizeMin"].ConvertToInt32(0);
+                    WindowSizeMax = Request.Form["txtWindowSizeMax"].ConvertToInt32(0);
+                }
+                else if (DynamicType == 2)
+                {
+                    WindowSizeMin = Request.Form["txtSizeMin"].ConvertToInt32(0);
+                    WindowSizeMax = Request.Form["txtSizeMax"].ConvertToInt32(0);
+                }
+
+                string windowDesignFormula = Request.Form["txtWindowDesignFormula"];
                 CadDrawingDoorDetail door = new CadDrawingDoorDetail();
                 door.MId = mId;
                 door.DoorType = DoorType;
                 door.WindowSizeMin = WindowSizeMin;
                 door.WindowSizeMax = WindowSizeMax;
-                door.CreateOn = DateTime.Now;
+                door.WindowDesignFormula = windowDesignFormula;
                 door.ModifiedOn = DateTime.Now;
+
                 int rtv = CadDrawingDoorDetailDB.AddHandle(door);
+                string param = Request.Form["param"].ConventToString(string.Empty);
+                CadDrawingParameterDB.DeleteHandleByParam(string.Format(@" MId={0}", mId));
+                DataTable tableParam = JsonConvert.DeserializeObject<DataTable>(param);
+                if (tableParam != null)
+                {
+                    foreach (DataRow row in tableParam.Rows)
+                    {
+                        CadDrawingParameter cadParam = new CadDrawingParameter();
+                        cadParam.MId = mId;
+                        cadParam.SizeNo = row["SizeNo"].ConventToString(string.Empty);
+                        cadParam.ValueType = row["ValueType"].ConvertToInt32(0);
+                        cadParam.Val = row["Val"].ConventToString(string.Empty);
+                        cadParam.MinValue = row["MinValue"].ConvertToInt32(0);
+                        cadParam.MaxValue = row["MaxValue"].ConvertToInt32(0);
+                        cadParam.DefaultValue = row["DefaultValue"].ConvertToInt32(0);
+                        cadParam.Desc = row["Desc"].ConventToString(string.Empty);
+                        cadParam.CreateOn = DateTime.Now;
+                        CadDrawingParameterDB.AddHandle(cadParam);
+                    }
+                }
+
                 if (rtv > 0 && mId > 0)
                 {
-                    return Json(new { code = 100, message = "门原型图纸添加成功" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = 100, message = "门原型图纸修改成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { code = -100, message = "门原型图纸添加失败" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = -100, message = "门原型图纸修改失败" }, JsonRequestBehavior.AllowGet);
 
                 }
             }
@@ -361,6 +437,8 @@ namespace SunacCADApp.Controllers
                 return Json(new { code = -100, message = "删除失败" }, JsonRequestBehavior.AllowGet);
             }
         }
+
+       
 
                  
 

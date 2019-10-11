@@ -116,5 +116,11 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.Execute(sql);
         }
 
+        public static string HasDrawingCode(string DrawingCode) 
+        {
+            string sql = string.Format(@"SELECT DrawingCode FROM dbo.CadDrawingMaster WHERE DrawingCode='{0}'",DrawingCode);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConventToString(string.Empty);
+        }
+
     }
 }

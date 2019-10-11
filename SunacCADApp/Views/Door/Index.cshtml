@@ -111,11 +111,8 @@
     var searchparam = function () {
         let param = '1';
         let area = parseInt($(".dl_area .active").data("val"));
-        if (area > 0 && area == 1000) {
-            param += '&scope=1';
-        }
-        if (area > 0 && area != 1000) {
-            param += '&scope=0&area=' + area;
+        if (area > 0) {
+            param += '&area=' + area;
         }
 
         let doortype = parseInt($(".dl_doortype .active").data("val"))

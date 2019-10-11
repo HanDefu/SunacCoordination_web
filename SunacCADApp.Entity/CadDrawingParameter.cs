@@ -39,15 +39,15 @@ namespace SunacCADApp.Entity
         /// <summary>
         /// 最小值
         /// </summary>
-        public decimal MinValue { get; set; }
+        public int MinValue { get; set; }
         /// <summary>
         /// 最大值
         /// </summary>
-        public decimal MaxValue { get; set; }
+        public int MaxValue { get; set; }
         /// <summary>
         /// 默认值
         /// </summary>
-        public decimal DefaultValue { get; set; }
+        public int DefaultValue { get; set; }
         /// <summary>
         /// 描述
         /// </summary>

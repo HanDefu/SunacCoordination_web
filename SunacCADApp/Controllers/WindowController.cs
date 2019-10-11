@@ -50,7 +50,7 @@ namespace SunacCADApp.Controllers
             int action = HttpUtility.UrlDecode(Request.QueryString["action"]).ConvertToInt32(-1);
             if (action > 0)
             {
-                _search_where += string.Format(@" AND EXISTS(SELECT pa.Id FROM dbo.CadDrawingFunction pb WHERE pb.MId=a.Id AND pb.FunctionId={0})", action);
+                _search_where += string.Format(@" AND EXISTS(SELECT pb.Id FROM dbo.CadDrawingFunction pb WHERE pb.MId=a.Id AND pb.FunctionId={0})", action);
                 _url += "&action=" + action;
             }
             ViewBag.action = action;
@@ -154,13 +154,13 @@ namespace SunacCADApp.Controllers
             ViewBag.ActionTypes = ActionTypes;
 
             _where = "TypeCode='OpenType' And ParentID!=0";
-
             IList<BasArgumentSetting> OpenTypes = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.OpenTypes = OpenTypes;
 
             _where = "TypeCode='OpenWindowNum' And ParentID!=0";
             IList<BasArgumentSetting> OpenWindowNums = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.OpenWindowNums = OpenWindowNums;
+
             IList<DataSourceMember> Members = CommonLib.GetWindowArgument();
             ViewBag.Members = Members;
 
@@ -283,11 +283,11 @@ namespace SunacCADApp.Controllers
                         CadDrawingParameter cadParam = new CadDrawingParameter();
                         cadParam.MId = mId;
                         cadParam.SizeNo = row["SizeNo"].ConventToString(string.Empty);
-                        cadParam.ValueType = row["ValueType"].ConvertToInt32(-1);
+                        cadParam.ValueType = row["ValueType"].ConvertToInt32(0);
                         cadParam.Val = row["Val"].ConventToString(string.Empty);
-                        cadParam.MinValue = row["MinValue"].ConvertToInt32(-1);
-                        cadParam.MaxValue = row["MaxValue"].ConvertToInt32(-1);
-                        cadParam.DefaultValue = row["DefaultValue"].ConvertToInt32(-1);
+                        cadParam.MinValue = row["MinValue"].ConvertToInt32(0);
+                        cadParam.MaxValue = row["MaxValue"].ConvertToInt32(0);
+                        cadParam.DefaultValue = row["DefaultValue"].ConvertToInt32(0);
                         cadParam.Desc = row["Desc"].ConventToString(string.Empty);
                         cadParam.CreateOn = DateTime.Now;
                         CadDrawingParameterDB.AddHandle(cadParam);
@@ -487,17 +487,15 @@ namespace SunacCADApp.Controllers
                         CadDrawingParameter cadParam = new CadDrawingParameter();
                         cadParam.MId = mId;
                         cadParam.SizeNo = row["SizeNo"].ConventToString(string.Empty);
-                        cadParam.ValueType = Decimal.ToInt32(row["ValueType"].ConventToDecimal(0));
+                        cadParam.ValueType = row["ValueType"].ConvertToInt32(0);
                         cadParam.Val = row["Val"].ConventToString(string.Empty);
-                        cadParam.MinValue = Decimal.ToInt32(row["MinValue"].ConventToDecimal(0));
-                        cadParam.MaxValue = Decimal.ToInt32(row["MaxValue"].ConventToDecimal(0));
-                        cadParam.DefaultValue = row["DefaultValue"].ConvertToInt32(-1);
+                        cadParam.MinValue = row["MinValue"].ConvertToInt32(0);
+                        cadParam.MaxValue = row["MaxValue"].ConvertToInt32(0);
+                        cadParam.DefaultValue = row["DefaultValue"].ConvertToInt32(0);
                         cadParam.Desc = row["Desc"].ConventToString(string.Empty);
                         cadParam.CreateOn = DateTime.Now;
                         CadDrawingParameterDB.AddHandle(cadParam);
                     }
-
-
                 }
 
                 if (mId > 0 && detail > 0)

@@ -8,6 +8,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using SunacCADApp.Library;
 using Common.Utility.Extender;
+using SunacCADApp.Entity;
+using SunacCADApp.Data;
 
 namespace SunacCADApp.Controllers
 {
@@ -90,7 +92,7 @@ namespace SunacCADApp.Controllers
         public ActionResult DownFile(string filepath = "") 
         {
             string file = Request.QueryString["file"].ConventToString(string.Empty);
-            string filePath = Server.MapPath("~/uploader/cad/2019/10/7/3308c244-1d5b-450b-9c76-bf06a163cce9.dwg");
+            string filePath = Server.MapPath(file);
             string fileName = Path.GetFileName(file); //客户端保存的文件名            
             
             //以字符流的形式下载文件
@@ -106,6 +108,25 @@ namespace SunacCADApp.Controllers
             Response.Flush();
             Response.End();
             return RedirectToAction("ListForStore");
+        }
+
+       /// <summary>
+        ///  /CommonLib/HasDradrawingCode
+       /// </summary>
+       /// <returns></returns>
+
+        public ActionResult HasDradrawingCode() 
+        {
+            string drawingCode = Request.Form["code"];
+            string code = CadDrawingMasterDB.HasDrawingCode(drawingCode);
+            if (string.IsNullOrEmpty(code))
+            {
+                return Json(new { Code = 100, Message =drawingCode+"系统中不存在" });
+            }
+            else 
+            {
+                return Json(new { Code = -100, Message = drawingCode + "系统中已存在,请更换" });
+            }
         }
     }
 }

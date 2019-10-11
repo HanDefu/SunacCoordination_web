@@ -18,9 +18,10 @@
     <div class="mian-column">
         <form name="myform" id="myform">
             <dl>
-                <dt class="col-dt"><i>*</i>原型编号:</dt>
+                <dt class="col-dt"><i>*</i>原型编号：</dt>
                 <dd>
                     <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="门原型编号不能为空" />
+                    <i class="icon-tips" tips="<p>外窗原型编号规则：<p>">&nbsp;</i>
                 </dd>
             </dl>
            
@@ -30,7 +31,7 @@
                     <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
                     <input type="hidden" name="txt_drawingcad" />
                     <input type="hidden" name="hid_drawing_img" value="" />
-                    <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
+                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
                     <a class="btn-upfile" href="javascript:void(0)">
                         文件上传
                         <input type="file" class="upload-cad" />
@@ -44,7 +45,7 @@
                     <input type="text" style="width:378px" name="txt_filename" placeholder="立面图文件" class="required" data-error="立面图文件不能为空" />
                     <input type="hidden" name="txt_drawingcad" />
                     <input type="hidden" name="hid_drawing_img" value="" />
-                    <input type="hidden" name="hid_drawing_type" value="VerticalView" />
+                    <input type="hidden" name="hid_drawing_type" value="FrontViewFile" />
                     <a class="btn-upfile" href="javascript:void(0)">
                         文件上传
                         <input type="file" class="upload-cad" />
@@ -58,7 +59,7 @@
                     <input type="text" style="width:378px" name="txt_filename" placeholder="平面图文件" class="required" data-error="平面图文件不能为空" />
                     <input type="hidden" name="txt_drawingcad" />
                     <input type="hidden" name="hid_drawing_img" value="" />
-                    <input type="hidden" name="hid_drawing_type" value="PlanView" />
+                    <input type="hidden" name="hid_drawing_type" value="TopViewFile" />
                     <a class="btn-upfile" href="javascript:void(0)">
                         文件上传
                         <input type="file" class="upload-cad" />
@@ -72,7 +73,7 @@
                     <input type="text" style="width:378px" name="txt_filename" placeholder="侧面图文件" />
                     <input type="hidden" name="txt_drawingcad" />
                     <input type="hidden" name="hid_drawing_img" value="" />
-                    <input type="hidden" name="hid_drawing_type" value="SideView" />
+                    <input type="hidden" name="hid_drawing_type" value="LeftViewFile" />
                     <a class="btn-upfile" href="javascript:void(0)">
                         文件上传
                         <input type="file" class="upload-cad" />
@@ -85,8 +86,8 @@
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
-                            <input type="checkbox" id="all" name="chk_area" class="select-all"  value="1"/>
-                            <label for="all">全部</label>
+                            <input type="checkbox" id="all" name="chekbox_group" class="select-all" value="1" />
+                            <label for="all">集团</label>
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
@@ -126,16 +127,157 @@
             <dl class="dynamic_module">
                 <dt class="col-dt"><i>*</i>宽度尺寸范围(mm)：</dt>
                 <dd>
-                    <input type="number" style="width:50px" name="txtWindowSizeMin" value="0"  />
+                    <input type="number" style="width:70px" name="txtWindowSizeMin" value="0"  />
                     <i style="font-size:18px;"> - </i>
-                    <input type="number" style="width:50px" name="txtWindowSizeMax" value="0" />
+                    <input type="number" style="width:70px" name="txtWindowSizeMax" value="0" />
                 </dd>
             </dl>
-       
+            <dl class="dynamic_module">
+                <dt class="col-dt"><i>*</i>通风量计算公式：</dt>
+                <dd>
+                    <input type="text" style="width:450px" name="txtWindowDesignFormula" />
+                </dd>
+            </dl>
+            <dl class="dynamic_module">
+                <dt class="col-dt"><i></i>参数取值：</dt>
+                <dd><i class="icon-tips" tips="<p>参数取值说明：</p><p>取值类型无表示没有此尺寸代号；不限表示取值无限制；<br/>范围表示取值是在最小值、最大值范围内；<br />固定值表示只能用值一栏中的固定值；<br />值系列表示取值可有多个值选项，以逗号分隔，<br />如600,700表示此项可取600或700两个值选项。<p>">&nbsp;</i></dd>
+            </dl>
+            <dl class="dynamic_module">
+                <dd>
+                    <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:720px;">
+                        <thead>
+                            <tr>
+                                <th width="80" class="text-center">尺寸代码</th>
+                                <th width="70" class="text-center">值类型</th>
+                                <th width="70" class="text-center">最大值</th>
+                                <th width="70" class="text-center">最小值</th>
+                                <th width="200" class="text-center">值</th>
+                                <th width="60" class="text-center">默认值</th>
+                                <th class="text-center">说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr sizeno="W1">
+                                <td class="text-center">W1</td>
+                                <td valign="middle">
+                                    <select name="ValueType">
+                                        @foreach (DataSourceMember Member in ViewBag.Members)
+                                        {
+                                            <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
+                                <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                            </tr>
+                            <tr sizeno="W2">
+                                <td class="text-center">W2</td>
+                                <td valign="middle">
+                                    <select name="ValueType">
+                                        @foreach (DataSourceMember Member in ViewBag.Members)
+                                        {
+                                            <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
+                                <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                            </tr>
+                            <tr sizeno="W3">
+                                <td class="text-center">W3</td>
+                                <td valign="middle">
+                                    <select name="ValueType">
+                                        @foreach (DataSourceMember Member in ViewBag.Members)
+                                        {
+                                            <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                        }
+                                    </select>
+                                </td>
+
+                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
+                                <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                            </tr>
+
+
+                            <tr sizeno="H1">
+                                <td class="text-center">H1</td>
+                                <td valign="middle">
+                                    <select name="ValueType">
+                                        @foreach (DataSourceMember Member in ViewBag.Members)
+                                        {
+                                            <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                        }
+                                    </select>
+                                </td>
+
+                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
+                                <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                            </tr>
+                            <tr sizeno="H2">
+                                <td class="text-center">H2</td>
+                                <td valign="middle">
+                                    <select name="ValueType">
+                                        @foreach (DataSourceMember Member in ViewBag.Members)
+                                        {
+                                            <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                        }
+                                    </select>
+                                </td>
+
+                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
+                                <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                            </tr>
+                            <tr sizeno="H3">
+                                <td class="text-center">H3</td>
+                                <td valign="middle">
+                                    <select name="ValueType">
+                                        @foreach (DataSourceMember Member in ViewBag.Members)
+                                        {
+                                            <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                        }
+                                    </select>
+                                </td>
+
+                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
+                                <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <input type="hidden" name="param" />
+                </dd>
+            </dl>
+            <dl class="static_module">
+                <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
+                <dd>
+                    宽：<input type="number" style="width:70px" name="txtSizeMin" value="0" />
+                    <i style="font-size:18px;"> - </i>
+                    高：<input type="number" style="width:70px" name="txtSizeMax" value="0" />
+                </dd>
+            </dl>
+        
         </form>
-        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;margin-top:120px">
+        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
             <div class="col-md-6 col-sm-6">
-                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
+                <button type="button" class="btn btn-sunac" id="btn_save" style="margin-left:45px">保存</button>
             </div>
         </div>
     </div>
@@ -170,8 +312,26 @@
                     return;
                 }
             }
-            
+            var param = Array();
+            $(".param  tr").each(function (i, v) {
+                let that = $(this);
 
+                let SizeNo = that.attr("sizeno");
+                let ValueType = that.find('select[name="ValueType"]').val();
+                let Val = that.find('input[name="Val"]').val();
+                let MinValue = that.find('input[name="MinValue"]').val();
+                let MaxValue = that.find('input[name="MaxValue"]').val();
+                let DefaultValue = that.find('input[name="DefaultValue"]').val();
+                let Desc = that.find('input[name="Desc"]').val();
+                if (SizeNo != undefined) {
+                    let _json = '{"SizeNo":"' + SizeNo + '","ValueType":"' + ValueType + '","Val":"' + Val + '","MinValue":"' + MinValue + '","MaxValue":"' + MaxValue + '","DefaultValue":"' + DefaultValue + '","Desc":"' + Desc + '"}';
+                    param.push(_json);
+                }
+            });
+
+            let json_param = "[" + param.join(',') + "]";
+            $('input[name="param"]').val(json_param);
+           
             return rtv;
         },
         success: function (data) {
@@ -193,7 +353,47 @@
 
         })
 
-     
+        $('.param tr select[name="ValueType"]').on("change", function () {
+            let value_type = parseInt($(this).val());
+            let that = $(this).parent().parent();
+            that.find('.input-val').attr("disabled", true);
+            that.find('.input-minvalue').attr("disabled", true);
+            that.find('.input-maxvalue').attr("disabled", true);
+            that.find('.input-defaultvalue').attr("disabled", true);
+            switch (value_type) {
+                case 1:
+
+                    break;
+                case 2:
+                    that.find('.input-defaultvalue').removeAttr('disabled');
+                    that.find('.input-defaultvalue').focus();
+                    break;
+                case 3:
+                    that.find('.input-val').removeAttr('disabled');
+                    that.find('.input-defaultvalue').removeAttr('disabled');
+                    that.find('.input-val').focus();
+                    break;
+                case 4:
+                    that.find('.input-minvalue').removeAttr('disabled');
+                    that.find('.input-maxvalue').removeAttr('disabled');
+                    that.find('.input-defaultvalue').removeAttr('disabled');
+                    that.find('.input-minvalue').focus();
+                    break;
+                case 5:
+                    that.find('.input-val').removeAttr('disabled');
+                    that.find('.input-defaultvalue').removeAttr('disabled');
+                    that.find('.input-defaultvalue').focus();
+                    break;
+                case 6:
+                    that.find('.input-val').removeAttr('disabled');
+                    that.find('.input-defaultvalue').removeAttr('disabled');
+                    that.find('.input-defaultvalue').focus();
+                    break;
+                default:
+                    break;
+
+            }
+        })
 
         $("#btn_save").on('click', function () {
             $("#myform").ajaxSubmit(options);
@@ -202,6 +402,20 @@
         $("#btn_cancel").on('click', function () {
             $("#myform").resetForm();
         });
+
+        $('input[name="txt_drawingcode"]').on('focusout', function () {
+            let that    =  $(this);
+            let code = that.val();
+            $.post('/CommonLib/HasDradrawingCode', { code: code }, function (data) {
+                if (data.Code != 100)
+                {
+                    layer.alert(data.Message, { icon: 5, shade: 0 }, function () {
+                        that.val('');
+                        layer.closeAll();
+                    });
+                }
+            },'json')
+        })
     })
 
 </script>

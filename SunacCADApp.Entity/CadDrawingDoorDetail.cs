@@ -31,12 +31,15 @@ namespace SunacCADApp.Entity
         /// <summary>
         /// 宽度尺寸范围最小值
         /// </summary>
-        public decimal WindowSizeMin { get; set; }
+        public int WindowSizeMin { get; set; }
         /// <summary>
         /// 宽度尺寸范围最大值
         /// </summary>
-        public decimal WindowSizeMax { get; set; }
-
+        public int WindowSizeMax { get; set; }
+        /// <summary>
+        /// 通风量计算公式
+        /// </summary>
+        public string WindowDesignFormula { get; set; }
         /// <summary>
         /// 是否有效
         ///</summary>
