@@ -130,12 +130,11 @@ namespace SunacCADApp.Data
 
             IList<CadDrawingWindowSearch> _caddrawingwindowsearchs = new List<CadDrawingWindowSearch>();
             string sql = string.Format(@"SELECT  * FROM 
-                                                   (     SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber, a.Id,
-                                                                        a.DrawingCode,a.DrawingName,d.DWGPath,a.Reorder,a.CreateOn 
-                                                             FROM  dbo.CaddrawingMaster a 
-                                                    INNER JOIN  dbo.CadDrawingDoorDetail b ON a.Id=b.MId
-													   LEFT JOIN  (SELECT MIN(Id) AS Id, MId FROM dbo.CadDrawingDWG   GROUP BY MId) c ON c.MId = a.Id
-													   LEFT JOIN  dbo.CadDrawingDWG d ON d.Id=c.Id  WHERE 1=1  {0}
+                                                   ( SELECT ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber, a.Id,
+                                                                  a.DrawingCode,a.DrawingName, ISNULL(d.DWGPath,'') AS DWGPath,a.Reorder,a.CreateOn 
+                                                       FROM  dbo.CaddrawingMaster a 
+                                                 INNER JOIN  dbo.CadDrawingDoorDetail b ON a.Id=b.MId
+                                                  LEFT JOIN  dbo.CadDrawingDWG d ON d.MId=a.Id AND d.CADType='ExpandViewFile'  WHERE 1=1  {0}
                                                     ) T
                                                    WHERE    T.RowNumber BETWEEN {1} AND {2}  ORDER BY T.Reorder DESC,T.CreateOn DESC {3}", _where, start, end, orderby);
 
@@ -149,9 +148,8 @@ namespace SunacCADApp.Data
         public static int GetSearchPageCountByParameter(string _where)
         {
             string sql = string.Format(@"      SELECT   COUNT(*) AS CNT    FROM  dbo.CaddrawingMaster a 
-                                                       INNER JOIN  dbo.CadDrawingDoorDetail b ON a.Id=b.MId
-													      LEFT JOIN  (SELECT MIN(Id) AS Id, MId FROM dbo.CadDrawingDWG   GROUP BY MId) c ON c.MId = a.Id
-													      LEFT JOIN  dbo.CadDrawingDWG d ON d.Id=c.Id  WHERE 1=1  {0}", _where);
+                                                        INNER JOIN  dbo.CadDrawingDoorDetail b ON a.Id=b.MId
+													      LEFT JOIN  dbo.CadDrawingDWG d ON d.MId=a.Id AND d.CADType='ExpandViewFile'  WHERE 1=1  {0}", _where);
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
 

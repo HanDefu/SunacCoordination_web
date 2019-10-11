@@ -5,14 +5,8 @@
     IList<CadDrawingByArea> ByAreas = ViewBag.ByAreas;
     CadDrawingHandrailDetail Handrail = ViewBag.handrail;
     IList<CadDrawingDWG> Dwgs = ViewBag.Dwgs;
-    CadDrawingDWG ExpansionDWG = Dwgs.Where(e => e.CADType == "ExpansionView").SingleOrDefault<CadDrawingDWG>();
+    CadDrawingDWG ExpansionDWG = Dwgs.Where(e => e.CADType == "ExpandViewFile").SingleOrDefault<CadDrawingDWG>();
     ExpansionDWG = ExpansionDWG == null ? new CadDrawingDWG() : ExpansionDWG;
-    CadDrawingDWG VerticalDWG = Dwgs.Where(e => e.CADType == "VerticalView").SingleOrDefault<CadDrawingDWG>();
-    VerticalDWG = VerticalDWG == null ? new CadDrawingDWG() : VerticalDWG;
-    CadDrawingDWG PlanDWG = Dwgs.Where(e => e.CADType == "PlanView").SingleOrDefault<CadDrawingDWG>();
-    PlanDWG = PlanDWG == null ? new CadDrawingDWG() : PlanDWG;
-    CadDrawingDWG SideDWG = Dwgs.Where(e => e.CADType == "SideView").SingleOrDefault<CadDrawingDWG>();
-    SideDWG = SideDWG == null ? new CadDrawingDWG() : SideDWG;
     string imagePath   = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
     string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? string.Empty : ExpansionDWG.FileClass;
 }
@@ -21,7 +15,7 @@
     <i></i>
     <a href="/handrail/index">栏杆</a>
     <i></i>
-     <a>@Drawing.DrawingName</a>
+     <a>@Drawing.DrawingCode</a>
 </div>
 <div class="row view">
     <div class="left-column">
@@ -40,7 +34,7 @@
         <dl>
             <dt class="col-dt"><i></i>展开图文件：</dt>
             <dd>
-                <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
+                <input type="text" style="width:378px" name="txt_filename" disabled="disabled" value="@ExpansionDWG.FileClass"/>
                 <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
                 <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
                 <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
@@ -103,7 +97,6 @@
                     }
                 },'json');
             });
-
         })
 
     })

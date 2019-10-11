@@ -19,7 +19,7 @@
             <dl>
                 <dt class="col-dt"><i>*</i>原型编号:</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" />
+                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" placeholder="原型编号" />
                 </dd>
             </dl>
             
@@ -29,7 +29,7 @@
                     <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
                     <input type="hidden" name="txt_drawingcad" />
                     <input type="hidden" name="hid_drawing_img" value="" />
-                    <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
+                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
                     <a class="btn-upfile" href="javascript:void(0)">
                         文件上传
                         <input type="file" class="upload-cad" />
@@ -41,8 +41,8 @@
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
-                            <input type="checkbox" id="all" name="chk_area" class="select-all" />
-                            <label for="all">全部</label>
+                            <input type="checkbox" id="all" name="chk_area" class="select-all"  value="1"/>
+                            <label for="all">集团</label>
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
@@ -125,6 +125,19 @@
         $("#btn_cancel").on('click', function () {
             $("#myform").resetForm();
         });
+
+        $('input[name="txt_drawingcode"]').on('focusout', function () {
+            let that = $(this);
+            let code = that.val();
+            $.post('/CommonLib/HasDradrawingCode', { code: code }, function (data) {
+                if (data.Code != 100) {
+                    layer.alert(data.Message, { icon: 5, shade: 0 }, function () {
+                        that.val('');
+                        layer.closeAll();
+                    });
+                }
+            }, 'json')
+        })
     })
 
 </script>

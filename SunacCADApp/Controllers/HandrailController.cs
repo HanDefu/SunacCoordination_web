@@ -12,7 +12,16 @@ namespace SunacCADApp.Controllers
 {
     public class HandrailController : Controller
     {
+
+        public HandrailController() 
+        {
+            ViewBag.SelectModel = 7;
+        }
         // GET: Handrail
+        /// <summary>
+        ///  Handrail/Index
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
 
@@ -28,8 +37,8 @@ namespace SunacCADApp.Controllers
 
             _where = string.Empty;  //查询
             string _url = string.Empty;
-            int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(-1);
-            if (area == 1)
+            int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(0);
+            if (area >0)
             {
                 _where += string.Format(@"  AND  EXISTS(SELECT 1 FROM dbo.CadDrawingByArea ba WHERE a.Id=ba.MId AND ba.AreaID={0})", area);
                 _url += "&area=" + area;
@@ -37,14 +46,21 @@ namespace SunacCADApp.Controllers
 
             ViewBag.Area = area;
 
-            int handrailType = HttpUtility.UrlDecode(Request.QueryString["handrailtype"]).ConvertToInt32(-1);
-            if (handrailType == 1)
+            int handrailType = HttpUtility.UrlDecode(Request.QueryString["handrailtype"]).ConvertToInt32(0);
+            if (handrailType >1)
             {
                 _where += string.Format(@"  AND b.HandrailType={0}", handrailType);
                 _url += "&handrailtype=" + handrailType;
             }
 
             ViewBag.HandrailType = handrailType;
+
+            string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                _where = string.Format(@" AND a.DrawingCode like  '%{0}%'", keyword);
+            }
+            ViewBag.Keyword = keyword;
 
             string _orderby = string.Empty;  //排序
             int recordCount = 0;    //记录总数
@@ -128,7 +144,6 @@ namespace SunacCADApp.Controllers
                 string imgFile = Request.Form["hid_drawing_img"];
                 string filenames = Request.Form["txt_filename"];
                 string drawingtype = Request.Form["hid_drawing_type"];
-                string areaid = Request.Form["checkbox_areaid"];
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
                 caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
@@ -145,8 +160,6 @@ namespace SunacCADApp.Controllers
                 string[] arr_IMGFile = imgFile.Split(',');
                 string[] arr_FileName = filenames.Split(',');
                 string[] arr_DrawingType = drawingtype.Split(',');
-
-
                 CadDrawingDWG dwg = null;
                 int index = 0;
                 foreach (string cad in arr_CADFile)
@@ -163,6 +176,7 @@ namespace SunacCADApp.Controllers
                         index++;
                     }
                 }
+                string areaid = Request.Form["checkbox_areaid"];
                 string[] arr_Area = areaid.Split(',');
                 foreach (string area in arr_Area)
                 {
@@ -178,6 +192,7 @@ namespace SunacCADApp.Controllers
                 handrail.MId= mId;
                 handrail.HandrailType = Request.Form["HandRailType"].ConvertToInt32(0);
                 handrail.CreateOn = DateTime.Now;
+                handrail.ModifiedOn = DateTime.Now;
                 int detailId = CadDrawingHandrailDetailDB.AddHandle(handrail);
 
                 if (mId > 0 && detailId > 0)
