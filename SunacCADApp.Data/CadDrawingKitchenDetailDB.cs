@@ -128,7 +128,7 @@ namespace SunacCADApp.Data
                                                                        a.DrawingCode,a.DrawingName,c.DWGPath,a.Reorder,a.CreateOn 
                                                              FROM dbo.CaddrawingMaster a 
                                                     INNER JOIN dbo.CadDrawingKitchenDetail b ON a.Id=b.MId
-                                                      LEFT JOIN dbo.CadDrawingDWG  c ON c.MId = a.Id
+                                                     LEFT JOIN dbo.CadDrawingDWG  c ON c.MId = a.Id AND c.CADType='ExpandViewFile'
                                                       WHERE 1=1  {0}
                                                     ) T
                                                    WHERE    T.RowNumber BETWEEN {1} AND {2}  ORDER BY T.Reorder DESC,T.CreateOn DESC {3}", _where, start, end, orderby);

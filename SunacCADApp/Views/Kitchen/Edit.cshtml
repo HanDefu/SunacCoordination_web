@@ -10,12 +10,6 @@
     IList<CadDrawingDWG> Dwgs = ViewBag.Dwgs;
     CadDrawingDWG ExpansionDWG = Dwgs.Where(e => e.CADType == "ExpandViewFile").SingleOrDefault<CadDrawingDWG>();
     ExpansionDWG = ExpansionDWG == null ? new CadDrawingDWG() : ExpansionDWG;
-    CadDrawingDWG VerticalDWG = Dwgs.Where(e => e.CADType == "FrontViewFile").SingleOrDefault<CadDrawingDWG>();
-    VerticalDWG = VerticalDWG == null ? new CadDrawingDWG() : VerticalDWG;
-    CadDrawingDWG PlanDWG = Dwgs.Where(e => e.CADType == "TopViewFile").SingleOrDefault<CadDrawingDWG>();
-    PlanDWG = PlanDWG == null ? new CadDrawingDWG() : PlanDWG;
-    CadDrawingDWG SideDWG = Dwgs.Where(e => e.CADType == "LeftViewFile").SingleOrDefault<CadDrawingDWG>();
-    SideDWG = SideDWG == null ? new CadDrawingDWG() : SideDWG;
     string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
     string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? "" : ExpansionDWG.FileClass;
 }
@@ -60,8 +54,16 @@
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
-                            <input type="checkbox" id="all" name="chk_area" class="select-all" />
-                            <label for="all">全部</label>
+                            @if (Master.Scope == 1)
+                            {
+                                <input type="checkbox" id="all" name="chk_area" class="select-all"  value="1" checked="checked"/>
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="all" name="chk_area" class="select-all" value="1" />
+                            }
+                           
+                            <label for="all">集团</label>
                         </span>
 
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)

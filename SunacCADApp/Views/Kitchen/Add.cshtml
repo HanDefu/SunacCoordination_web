@@ -41,7 +41,7 @@
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
                             <input type="checkbox" id="all" name="chk_area" class="select-all" />
-                            <label for="all">全部</label>
+                            <label for="all">集团</label>
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
@@ -106,25 +106,25 @@
             <dl class="dynamic_module">
                 <dt class="col-dt"><i>*</i>开间尺寸范围(mm)：</dt>
                 <dd>
-                    <input type="number" style="width:50px" name="txtKitchenOpenSizeMin" value="1" />
-                    <i> -- &nbsp; </i>
-                    <input type="number" style="width:50px" name="txtKitchenOpenSizeMax"  value="2"/>
+                    <input type="number" style="width:70px" name="txtKitchenOpenSizeMin" value="0" />
+                    <i> -&nbsp; </i>
+                    <input type="number" style="width:70px" name="txtKitchenOpenSizeMax"  value="0"/>
                 </dd>
             </dl>
             <dl class="dynamic_module">
                 <dt class="col-dt"><i>*</i>进深尺寸范围(mm)：</dt>
                 <dd>
-                    <input type="number" style="width:50px" name="txtKitchenDepthsizeMin"  value="1"/>
-                    <i> -- &nbsp; </i>
-                    <input type="number" style="width:50px" name="txtKitchenDepthsizeMax" value="2" />
+                    <input type="number" style="width:70px" name="txtKitchenDepthsizeMin"  value="0"/>
+                    <i> -&nbsp; </i>
+                    <input type="number" style="width:70px" name="txtKitchenDepthsizeMax" value="0" />
                 </dd>
             </dl>
             <dl class="static_module">
                 <dt class="col-dt"><i>*</i>开间进深(mm)：</dt>
                 <dd>
-                    <input type="number" style="width:50px" name="txtWindowSizeMin"  value="1"/>
-                    <i> -- &nbsp; </i>
-                    <input type="number" style="width:50px" name="txtWindowSizeMax"  value="2"/>
+                    <input type="number" style="width:70px" name="txtWindowSizeMin"  value="0"/>
+                    <i> -&nbsp; </i>
+                    <input type="number" style="width:70px" name="txtWindowSizeMax"  value="0"/>
                 </dd>
             </dl>
             <dl class="static_module">

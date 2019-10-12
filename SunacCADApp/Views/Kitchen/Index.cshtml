@@ -6,13 +6,13 @@
     <dl class="dl_area">
         <dt>区域：</dt>
         <dd>
-            @if (ViewBag.area == -1)
+            @if (ViewBag.area == 0)
             {
-                <a class="active" data-val="0">全部</a>
+                <a class="active" data-val="0">集团</a>
             }
             else
             {
-                <a data-val="0">全部</a>
+                <a data-val="0">集团</a>
             }
             
             @foreach (BasArgumentSetting argument in ViewBag.Settings)
@@ -122,7 +122,7 @@
         <dt> 关键词搜索：</dt>
         <dd>
             <span class="sear-input">
-                <input type="text" />
+                <input type="text"  value="@ViewBag.Keyword"/>
                 <em></em>
             </span>
 
@@ -139,7 +139,7 @@
                     <figure>
 
                         <img src="@drawing.DWGPath" />
-                        <p>@drawing.DrawingName</p>
+                        <p>@drawing.DrawingCode</p>
                     </figure>
                 </a>
             </li>

@@ -35,10 +35,10 @@ namespace SunacCADApp.Controllers
             string _orderby = string.Empty;  //排序
             string _url = string.Empty;
 
-            int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(-1);
+            int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(0);
             if (area > 0)
             {
-                _where += string.Format(@" AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE pa.MId=a.Id AND pa.AreaID={0})", area);
+                _where += string.Format(@" AND EXISTS(SELECT pa.Id FROM dbo.CadDrawingByArea pa WHERE pa.MId=a.Id AND pa.AreaID={0})", area);
                 _url += "&area=" + area;
             }
 
@@ -61,12 +61,20 @@ namespace SunacCADApp.Controllers
             ViewBag.doorwindowpostionid = doorwindowpostionid;
 
             int is_airduct = HttpUtility.UrlDecode(Request.QueryString["is_airduct"]).ConvertToInt32(-1);
-            if (is_airduct > 0)
+            if (is_airduct > -1)
             {
                 _where += string.Format(@" And  b.KitchenIsAirduct={0}", is_airduct);
                 _url += "&is_airduct=" + is_airduct;
             }
             ViewBag.airduct = is_airduct;
+
+
+            string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                _where = string.Format(@" AND a.DrawingCode like  '%{0}%'", keyword);
+            }
+            ViewBag.Keyword = keyword;
 
             int recordCount = 0;    //记录总数
             int pageSize = 15;      //每页条数

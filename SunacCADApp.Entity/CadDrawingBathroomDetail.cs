@@ -37,19 +37,19 @@ namespace SunacCADApp.Entity
         /// <summary>
         /// 卫生间短边最小值
         /// </summary>
-        public decimal BathroomShortSideMin { get; set; }
+        public int BathroomShortSideMin { get; set; }
         /// <summary>
         /// 卫生间短边最大值
         /// </summary>
-        public decimal BathroomShortSideMax { get; set; }
+        public int BathroomShortSideMax { get; set; }
         /// <summary>
         /// 卫生间长边最小值
         /// </summary>
-        public decimal BathroomLongSizeMin { get; set; }
+        public int BathroomLongSizeMin { get; set; }
         /// <summary>
         /// 卫生间长边最大值
         /// </summary>
-        public decimal BathroomLongSizeMax { get; set; }
+        public int BathroomLongSizeMax { get; set; }
         /// <summary>
         /// 卫生间水盆柜宽
         /// </summary>

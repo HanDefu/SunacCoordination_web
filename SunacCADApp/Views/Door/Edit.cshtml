@@ -51,7 +51,10 @@
                     <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
-                    <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath">原型图纸下载</a>
+                    <a class="btn-upfile" href="javascript:void(0)">
+                        文件上传
+                        <input type="file" class="upload-cad" />
+                    </a>
                 </dd>
             </dl>
 
@@ -62,7 +65,10 @@
                     <input type="hidden" name="txt_drawingcad" value="@VerticalDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@VerticalDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="FrontViewFile" />
-                    <a class="btn-upfile  download-upfile" data-src="@VerticalDWG.CADPath">原型图纸下载</a>
+                    <a class="btn-upfile" href="javascript:void(0)">
+                        文件上传
+                        <input type="file" class="upload-cad" />
+                    </a>
                 </dd>
             </dl>
 
@@ -73,7 +79,10 @@
                     <input type="hidden" name="txt_drawingcad" value="@PlanDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@PlanDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="TopViewFile" />
-                    <a class="btn-upfile  download-upfile" data-src="@PlanDWG.CADPath">原型图纸下载</a>
+                    <a class="btn-upfile" href="javascript:void(0)">
+                        文件上传
+                        <input type="file" class="upload-cad" />
+                    </a>
                 </dd>
             </dl>
 
@@ -87,7 +96,10 @@
                     <input type="hidden" name="txt_drawingcad" value="@SideDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@SideDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="LeftViewFile" />
-                    <a class="btn-upfile  download-upfile" data-src="@SideDWG.CADPath">原型图纸下载</a>
+                    <a class="btn-upfile" href="javascript:void(0)">
+                        文件上传
+                        <input type="file" class="upload-cad" />
+                    </a>
                 </dd>
             </dl>
             <dl>
@@ -418,7 +430,7 @@
 
             </div>
             <div class="col-md-6 col-sm-6 text-right">
-                <button type="button" class="btn btn-sunac" id="btn_save">编辑</button>
+                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
                 <button type="button" class="btn btn-sunac">删除</button>
                 <button type="button" class="btn btn-sunac">提交审核</button>
             </div>
