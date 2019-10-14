@@ -12,7 +12,11 @@ namespace SunacCADApp.Controllers
 {
     public class AirconditionerController : Controller
     {
-        // GET: Airconditioner
+        public AirconditionerController() 
+        {
+            ViewBag.SelectModel = 10;
+        }
+        // GET: /airconditioner/Index
         public ActionResult Index()
         {
             string _where = "TypeCode='Area' And ParentID!=0";
@@ -27,9 +31,52 @@ namespace SunacCADApp.Controllers
             IList<BasArgumentSetting> AirConditionNumbers = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.AirConditionNumbers = AirConditionNumbers;
             
-            _where = string.Empty;  //查询
+            _where = " 1=1";  //查询
             string _orderby = string.Empty;  //排序
             string _url = string.Empty;
+
+            int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(0);
+            if (area > 0)
+            {
+                _where += string.Format(@" AND EXISTS(SELECT pa.Id FROM dbo.CadDrawingByArea pa WHERE pa.MId=a.Id AND pa.AreaID={0})", area);
+                _url += "&area=" + area;
+            }
+
+            ViewBag.area = area;
+
+            int AirConditionNumber = HttpUtility.UrlDecode(Request.QueryString["AirConditionNumber"]).ConvertToInt32(0);
+            if (AirConditionNumber > 0)
+            {
+                _where += string.Format(@" And  b.AirconditionerPower={0}", AirConditionNumber);
+                _url += "&AirConditionNumber=" + AirConditionNumber;
+            }
+            ViewBag.AirConditionNumber = AirConditionNumber;
+
+            int CondensatePipePosition = HttpUtility.UrlDecode(Request.QueryString["CondensatePipePosition"]).ConvertToInt32(0);
+            if (CondensatePipePosition > 0)
+            {
+                _where += string.Format(@" And  b.AirconditionerRainPipePosition={0}", CondensatePipePosition);
+                _url += "&CondensatePipePosition=" + CondensatePipePosition;
+            }
+
+            ViewBag.CondensatePipePosition = CondensatePipePosition;
+
+            int IsRainPipe = HttpUtility.UrlDecode(Request.QueryString["IsRainPipe"]).ConvertToInt32(-1);
+            if (IsRainPipe > -1)
+            {
+                _where += string.Format(@" And  b.AirconditionerIsRainPipe={0}", IsRainPipe);
+                _url += "&IsRainPipe=" + IsRainPipe;
+            }
+            ViewBag.IsRainPipe = IsRainPipe;
+
+            string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                _where = string.Format(@" a.DrawingCode like  '%{0}%'", keyword);
+            }
+            ViewBag.Keyword = keyword;
+
+
             int recordCount = 0;    //记录总数
             int pageSize = 15;      //每页条数
             int currentPage = 0;    //当前页数
@@ -55,26 +102,24 @@ namespace SunacCADApp.Controllers
         /// GET:/Handrail/LookOver
         /// </summary>
         /// <returns></returns>
-        public ActionResult LookOver()
+        public ActionResult LookOver(int Id = 0)
         {
-            string _where = "TypeCode='Area' And ParentID!=0";
-            IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
-            ViewBag.Settings = Settings;
-            //空调匹数
-            _where = "TypeCode='AirConditionNumber' And ParentID!=0";
-            IList<BasArgumentSetting> AirConditionNumbers = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
-            ViewBag.AirConditionNumbers = AirConditionNumbers;
+            if (Id < 1)
+            {
+                return Redirect("/Bathroom/Index");
+            }
+            string _where = string.Empty;
+            CadDrawingMaster master = CadDrawingMasterDB.GetSingleEntityById(Id);
+            ViewBag.CadDrawingMaster = master;
+            _where = "  a.MId=" + Id;
+            IList<CadDrawingByArea> ByAreas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
+            ViewBag.ByAreas = ByAreas;
+            _where = string.Format("  a.MId={0}", Id);
+            IList<CadDrawingDWG> Dwgs = CadDrawingDWGDB.GetPageInfoByParameter(_where, string.Empty, 0, 50);
+            ViewBag.Dwgs = Dwgs;
 
-            //冷凝管位置
-            _where = "TypeCode='CondensatePipePosition' And ParentID!=0";
-            IList<BasArgumentSetting> CondensatePipePositions = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
-            ViewBag.CondensatePipePositions = CondensatePipePositions;
-
-
-            //雨水管位置
-            _where = "TypeCode='RainPipePosition' And ParentID!=0";
-            IList<BasArgumentSetting> RainPipePositions = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
-            ViewBag.RainPipePositions = RainPipePositions;
+            CadDrawingAirconditionerDetail Airconditioner = CadDrawingAirconditionerDetailDB.GetCadDrawingAirconditionerDetailByWhere(string.Format(@" MId={0}", Id));
+            ViewBag.Airconditioner = Airconditioner;
 
             return View();
         }
@@ -123,13 +168,14 @@ namespace SunacCADApp.Controllers
             try
             {
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
-                string cadFile = Request.Form["cad_file"];
-                string imgFile = Request.Form["img_file"];
-                string areaid = Request.Form["checkbox_areaid"];
+                string cadFile = Request.Form["txt_drawingcad"];
+                string imgFile = Request.Form["hid_drawing_img"];
+                string filenames = Request.Form["txt_filename"];
+                string drawingtype = Request.Form["hid_drawing_type"];
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
                 caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
-                caddrawingmaster.Scope = Request.Form["chekbox_group"].ConvertToInt32(0);
+                caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
                 caddrawingmaster.CreateOn = DateTime.Now;
@@ -140,7 +186,8 @@ namespace SunacCADApp.Controllers
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
                 string[] arr_CADFile = cadFile.Split(',');
                 string[] arr_IMGFile = imgFile.Split(',');
-                string[] arr_Area = areaid.Split(',');
+                string[] arr_FileName = filenames.Split(',');
+                string[] arr_DrawingType = drawingtype.Split(',');
                 CadDrawingDWG dwg = null;
                 int index = 0;
                 foreach (string cad in arr_CADFile)
@@ -150,13 +197,15 @@ namespace SunacCADApp.Controllers
                         dwg = new CadDrawingDWG();
                         dwg.MId = mId;
                         dwg.DWGPath = arr_IMGFile[index];
-                        dwg.FileClass = "DWG";
-                        dwg.CADPath = cad;
+                        dwg.CADPath = arr_CADFile[index];
+                        dwg.FileClass = arr_FileName[index];
+                        dwg.CADType = arr_DrawingType[index];
                         CadDrawingDWGDB.AddHandle(dwg);
                         index++;
                     }
                 }
-
+                string areaid = Request.Form["checkbox_areaid"];
+                string[] arr_Area = areaid.Split(',');
                 foreach (string area in arr_Area)
                 {
                     if (!string.IsNullOrEmpty(area))
@@ -212,8 +261,12 @@ namespace SunacCADApp.Controllers
         ///  /Handrail/Edit
         /// </summary>
         /// <returns></returns>
-        public ActionResult Edit()
+        public ActionResult Edit(int Id=0)
         {
+            if (Id < 1)
+            {
+                return Redirect("/Bathroom/Index");
+            }
             string _where = "TypeCode='Area' And ParentID!=0";
             IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.Settings = Settings;
@@ -233,7 +286,126 @@ namespace SunacCADApp.Controllers
             IList<BasArgumentSetting> RainPipePositions = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.RainPipePositions = RainPipePositions;
 
+      
+            _where = string.Empty;
+            CadDrawingMaster master = CadDrawingMasterDB.GetSingleEntityById(Id);
+            ViewBag.CadDrawingMaster = master;
+            _where = "  a.MId=" + Id;
+            IList<CadDrawingByArea> ByAreas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
+            ViewBag.ByAreas = ByAreas;
+            _where = string.Format("  a.MId={0}", Id);
+            IList<CadDrawingDWG> Dwgs = CadDrawingDWGDB.GetPageInfoByParameter(_where, string.Empty, 0, 50);
+            ViewBag.Dwgs = Dwgs;
+
+            CadDrawingAirconditionerDetail Airconditioner = CadDrawingAirconditionerDetailDB.GetCadDrawingAirconditionerDetailByWhere(string.Format(@" MId={0}", Id));
+            ViewBag.Airconditioner = Airconditioner;
+
             return View();
         }
+
+        /// <summary>
+        ///   空调CAD原型属性表-新增方法
+        /// </summary>
+        /// <returns></returns>
+        /// <get>/Bathroom/addhandle</get>
+        /// <author>alon<84789887@qq.com></author> 
+        [ValidateInput(false)]
+        public ActionResult Edithandle()
+        {
+            try
+            {
+                CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
+                int Id = Request.Form["Id"].ConvertToInt32(0);
+                string cadFile = Request.Form["txt_drawingcad"];
+                string imgFile = Request.Form["hid_drawing_img"];
+                string filenames = Request.Form["txt_filename"];
+                string drawingtype = Request.Form["hid_drawing_type"];
+                int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
+                caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
+                caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
+                caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
+                caddrawingmaster.AreaId = 0;
+                caddrawingmaster.DynamicType = DynamicType;
+                caddrawingmaster.CreateOn = DateTime.Now;
+                caddrawingmaster.Reorder = 2;
+                caddrawingmaster.Enabled = 1;
+                caddrawingmaster.CreateUserId = 0;
+                caddrawingmaster.CreateBy = "admin";
+                caddrawingmaster.Id = Id;
+                CadDrawingMasterDB.EditHandle(caddrawingmaster,string.Empty);
+                int mId = Id;
+                string _where = string.Format(@" MId={0}", mId);
+                string[] arr_CADFile = cadFile.Split(',');
+                string[] arr_IMGFile = imgFile.Split(',');
+                string[] arr_FileName = filenames.Split(',');
+                string[] arr_DrawingType = drawingtype.Split(',');
+                CadDrawingDWG dwg = null;
+                int index = 0;
+                CadDrawingDWGDB.DeleteHandleByParam(_where);
+                foreach (string cad in arr_CADFile)
+                {
+                    if (!string.IsNullOrEmpty(cad))
+                    {
+                        dwg = new CadDrawingDWG();
+                        dwg.MId = mId;
+                        dwg.DWGPath = arr_IMGFile[index];
+                        dwg.CADPath = arr_CADFile[index];
+                        dwg.FileClass = arr_FileName[index];
+                        dwg.CADType = arr_DrawingType[index];
+                        CadDrawingDWGDB.AddHandle(dwg);
+                        index++;
+                    }
+                }
+                string areaid = Request.Form["checkbox_areaid"];
+                string[] arr_Area = areaid.Split(',');
+                CadDrawingByAreaDB.DeleteHandleByParam(_where);
+                foreach (string area in arr_Area)
+                {
+                    if (!string.IsNullOrEmpty(area))
+                    {
+                        CadDrawingByArea byArea = new CadDrawingByArea();
+                        byArea.AreaID = area.ConvertToInt32(-1);
+                        byArea.MId = mId;
+                        CadDrawingByAreaDB.AddHandle(byArea);
+                    }
+                }
+
+                CadDrawingAirconditionerDetailDB.DeleteHandleByParam(_where);
+                int AirConditionNumber = Request.Form["AirConditionNumber"].ConvertToInt32(-1);
+                int AirconditionerMinWidth = Request.Form["txtAirconditionerMinWidth"].ConvertToInt32(-1);
+                int AirconditionerMinLength = Request.Form["txtAirconditionerMinLength"].ConvertToInt32(-1);
+                int CondensatePipePosition = Request.Form["selectCondensatePipePosition"].ConvertToInt32(-1);
+                int AirconditionerIsRainPipe = Request.Form["Checkbox_AirconditionerIsRainPipe"].ConvertToInt32(-1);
+                int RainPipePosition = Request.Form["selectRainPipePosition"].ConvertToInt32(-1);
+                CadDrawingAirconditionerDetail airconditioner = new CadDrawingAirconditionerDetail();
+                airconditioner.MId = mId;
+                airconditioner.AirconditionerIsRainPipe = AirconditionerIsRainPipe;
+                airconditioner.AirconditionerMinWidth = AirconditionerMinWidth;
+                airconditioner.AirconditionerMinLength = AirconditionerMinLength;
+                airconditioner.AirconditionerPower = AirConditionNumber;
+                airconditioner.AirconditionerPipePosition = CondensatePipePosition;
+                airconditioner.AirconditionerIsRainPipe = AirconditionerIsRainPipe;
+                if (AirconditionerIsRainPipe == 1)
+                {
+                    airconditioner.AirconditionerRainPipePosition = RainPipePosition;
+                }
+                int rtv = CadDrawingAirconditionerDetailDB.AddHandle(airconditioner);
+                if (rtv > 0 && mId > 0)
+                {
+                    return Json(new { code = 100, message = "空调原型图纸修改成功" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { code = -100, message = "空调原型图纸修改失败" }, JsonRequestBehavior.AllowGet);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -100, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+    
     }
 }

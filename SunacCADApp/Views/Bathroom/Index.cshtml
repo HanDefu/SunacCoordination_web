@@ -5,12 +5,27 @@
 <div class="row search search-bottom">
     <dl>
         <dt>区域：</dt>
-        <dd>
-            <a class="active">全部</a>
-            <a class="Scope" data-val="1">集团</a>
+        <dd class="dd_area">
+            @if (ViewBag.area == 0)
+            {
+                <a class="active">全部</a>
+            }
+            else
+            {
+                <a>全部</a>
+            }
+
             @foreach (BasArgumentSetting argument in ViewBag.Settings)
             {
-                <a data-val="@argument.Id">@argument.ArgumentText</a>
+                if (argument.Id == ViewBag.area)
+                {
+                    <a data-val="@argument.Id" class="active">@argument.ArgumentText</a>
+                }
+                else
+                {
+                    <a data-val="@argument.Id">@argument.ArgumentText</a>
+                }
+
             }
 
         </dd>
@@ -20,11 +35,28 @@
 
     <dl>
         <dt>卫生间类型：</dt>
-        <dd class="dd_action">
-            <a class="active">全部</a>
-            @foreach (BasArgumentSetting KitchenType in ViewBag.KitchenType)
+        <dd class="dd_bathroomtype">
+            @if (ViewBag.BathroomType == 0)
             {
-                <a data-val="@KitchenType.Id">@KitchenType.ArgumentText</a>
+                <a class="active">全部</a>
+            }
+            else
+            {
+                <a>全部</a>
+            }
+            
+            
+            @foreach (BasArgumentSetting Bathroom in ViewBag.ToiletTypes)
+            {
+                if (ViewBag.BathroomType == Bathroom.Id)
+                {
+                    <a data-val="@Bathroom.Id" class="active">@Bathroom.ArgumentText</a>
+                }
+                else
+                {
+                    <a data-val="@Bathroom.Id">@Bathroom.ArgumentText</a>
+                }
+
             }
         </dd>
     </dl>
@@ -33,11 +65,27 @@
 
     <dl>
         <dt>门窗位置：</dt>
-        <dd class="dd_action">
-            <a class="active">全部</a>
-            @foreach (BasArgumentSetting DoorWindowPosition in ViewBag.DoorWindowPositions)
+        <dd class="dd_bathroomdoorwindowposition">
+            @if (ViewBag.BathroomDoorWindowPosition == 0)
             {
-                <a data-val="@DoorWindowPosition.Id">@DoorWindowPosition.ArgumentText</a>
+                <a class="active">全部</a>
+            }
+            else
+            {
+                <a>全部</a>
+            }
+
+            @foreach (BasArgumentSetting BathroomDoorWindowPosition in ViewBag.BathroomDoorWindowPositions)
+            {
+                if (ViewBag.BathroomDoorWindowPosition == BathroomDoorWindowPosition.Id)
+                {
+                    <a data-val="@BathroomDoorWindowPosition.Id" class="active">@BathroomDoorWindowPosition.ArgumentText</a>
+                }
+                else
+                {
+                    <a data-val="@BathroomDoorWindowPosition.Id">@BathroomDoorWindowPosition.ArgumentText</a>
+                }
+
             }
         </dd>
     </dl>
@@ -46,10 +94,26 @@
 
     <dl>
         <dt>排气道：</dt>
-        <dd class="dd_action">
-            <a class="active">全部</a>
-            <a>含排气道</a>
-            <a>不含排气道</a>
+        <dd class="dd_is_airduct">
+            @if (ViewBag.airduct == -1)
+            {
+                <a class="active" data-val="-1">全部</a>
+                <a data-val="1">含排气道</a>
+                <a data-val="0">不含排气道</a>
+            }
+            else if (ViewBag.airduct == 1)
+            {
+                <a data-val="-1">全部</a>
+                <a data-val="1" class="active">含排气道</a>
+                <a data-val="0">不含排气道</a>
+            }
+            else if (ViewBag.airduct == 0)
+            {
+                <a data-val="-1">全部</a>
+                <a data-val="1">含排气道</a>
+                <a data-val="0" class="active">不含排气道</a>
+            }
+
         </dd>
     </dl>
 </div>
@@ -58,7 +122,7 @@
         <dt> 关键词搜索：</dt>
         <dd>
             <span class="sear-input">
-                <input type="text" />
+                <input type="text" value="@ViewBag.Keyword" />
                 <em></em>
             </span>
 
@@ -75,14 +139,53 @@
                     <figure>
 
                         <img src="@drawing.DWGPath" />
-                        <p>@drawing.DrawingName</p>
+                        <p>@drawing.DrawingCode</p>
                     </figure>
                 </a>
             </li>
         }
-
-
-
     </ul>
 </div>
+<script type="text/javascript">
 
+    $(".search a").on('click', function () {
+        let that = $(this);
+        let parent = $(this).parent();
+        parent.find("a").removeClass("active")
+        that.addClass("active");
+        let param = searchparam();
+        window.location.href = "/bathroom?" + param
+    });
+
+
+
+    $(".sear-input em").on("click", function () {
+
+        let keyword = $('.sear-input').find('input[type="text"]').val();
+        window.location.href = "/bathroom?keyword="+keyword;
+    })
+
+    var searchparam = function () {
+        let param = '1';
+        let area = parseInt($(".dd_area .active").data("val"));
+        if (area > 0) {
+            param += '&area=' + area;
+        }
+
+        let bathroomtype = parseInt($(".dd_bathroomtype .active").data("val"));
+        if (bathroomtype > 0) {
+            param += '&bathroomtype=' + bathroomtype;
+        }
+
+        let bathroomdoorwindowposition = parseInt($(".dd_bathroomdoorwindowposition .active").data("val"));
+        if (bathroomdoorwindowposition > 0) {
+            param += '&bathroomdoorwindowposition=' + bathroomdoorwindowposition;
+        }
+
+        let is_airduct = parseInt($(".dd_is_airduct .active").data("val"));
+        if (is_airduct > -1) {
+            param += '&is_airduct=' + is_airduct;
+        }
+        return param;
+    }
+</script>

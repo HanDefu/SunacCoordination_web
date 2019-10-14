@@ -1,71 +1,61 @@
 ﻿@using SunacCADApp.Entity
 @{
     Layout = "~/Views/_LayoutPage.cshtml";
-    CadDrawingMaster Drawing = ViewBag.CadDrawingMaster;
-    IList<CadDrawingDWG> Dwgs = ViewBag.Dwgs;
+    CadDrawingMaster dMaster = ViewBag.CadDrawingMaster;
     IList<CadDrawingByArea> ByAreas = ViewBag.ByAreas;
     CadDrawingBathroomDetail Bathroom = ViewBag.Bathroom;
-    string cadImg = string.Empty;
-    if (Dwgs != null) 
-    {
-       CadDrawingDWG DWG = Dwgs.FirstOrDefault<CadDrawingDWG>();
-       cadImg = string.IsNullOrEmpty(DWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : DWG.DWGPath;
-    }
-    
+    IList<CadDrawingByArea> byAreaList = ViewBag.ByAreas;
+    IList<CadDrawingDWG> Dwgs = ViewBag.Dwgs;
+    CadDrawingDWG ExpansionDWG = Dwgs.Where(e => e.CADType == "ExpandViewFile").SingleOrDefault<CadDrawingDWG>();
+    ExpansionDWG = ExpansionDWG == null ? new CadDrawingDWG() : ExpansionDWG;
+    string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
+    string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? "" : ExpansionDWG.FileClass;
+
 }
 
 
 <div class="row topnav">
     <a>标准部品库</a>
     <i></i>
-    <a>卫生间</a>
+    <a href="/bathroom/index">卫生间</a>
     <i></i>
-    <a>新增</a>
+    <a>@dMaster.DrawingCode</a>
 </div>
 <div class="row view">
     <div class="left-column">
-        <figure>
-            <img src="@cadImg" width="238" heigth="200" />
-            <p>@Drawing.DrawingName</p>
+        <figure class="icon-drawing-img">
+            <img src="@imagePath" width="238" heigth="200" />
+            <p>@imageName</p>
         </figure>
     </div>
     <div class="mian-column">
         <form name="myform" id="myform">
             <dl>
-                <dt><i></i>原型编号:</dt>
+                <dt class="col-dt"><i></i>原型编号：</dt>
                 <dd>
-                    @Drawing.DrawingCode
+                    @dMaster.DrawingCode
                 </dd>
             </dl>
             <dl>
-                <dt><i></i>原型名称:</dt>
+                <dt class="col-dt"><i></i>展开图文件：</dt>
                 <dd>
-                    @Drawing.DrawingName
+                    <input type="text" style="width:378px" name="txt_filename" disabled="disabled" value="@ExpansionDWG.FileClass" />
+                    <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
+                    <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
+                    <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
+                    <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath">原型图纸下载</a>
                 </dd>
             </dl>
             <dl>
-                <dt><i></i>原型dwg文件:</dt>
-                <dd>
-
-                    @foreach (CadDrawingDWG Dwg in Dwgs)
-                    {
-                        <span class="upfile">
-                            <img src="@Dwg.DWGPath" />
-                        </span>
-                    }
-
-                </dd>
-            </dl>
-            <dl>
-                <dt><i></i>使用范围:</dt>
+                <dt class="col-dt"><i></i>使用范围：</dt>
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
-                         @if (Drawing.Scope == 1)
-                         {
-                               <span class="online-checkbox">
-                                   <label>集团</label>
-                               </span>
-                         }
+                        @if (dMaster.Scope == 1)
+                        {
+                            <span class="online-checkbox">
+                                <label>集团</label>
+                            </span>
+                        }
                         @foreach (CadDrawingByArea Area in ByAreas)
                         {
                             <span class="online-checkbox">
@@ -78,35 +68,36 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i></i>卫生间类型：</dt>
+                <dt class="col-dt"><i></i>卫生间类型：</dt>
                 <dd>
                     @Bathroom.BathroomTypeName
                 </dd>
             </dl>
             <dl>
-                <dt><i></i>门窗位置：</dt>
+                <dt class="col-dt"><i></i>门窗位置：</dt>
                 <dd>
                     @Bathroom.BathroomDoorWindowPositionName
                 </dd>
             </dl>
+ 
             <dl>
-                <dt><i></i>模块类型：</dt>
+                <dt class="col-dt"><i></i>模块类型：</dt>
                 <dd>
                     <span class="online-checkbox">
                         @{
-                            string modelName = Drawing.DynamicType == 1 ? "动态模型" : "静态模型";
+                            string modelName = dMaster.DynamicType == 1 ? "动态模型" : "静态模型";
                         }
                         @modelName
-                       
+
                     </span>
-                   
+
                 </dd>
             </dl>
 
-            @if (Drawing.DynamicType == 1)
+            @if (dMaster.DynamicType == 1)
             {
                 <dl class="dynamic_module">
-                    <dt><i></i>短边尺寸范围(mm)：</dt>
+                    <dt class="col-dt"><i></i>短边尺寸范围(mm)：</dt>
                     <dd>
                         @Bathroom.BathroomShortSideMin
                         <i> - </i>
@@ -114,18 +105,18 @@
                     </dd>
                 </dl>
                 <dl class="dynamic_module">
-                    <dt><i></i>长边尺寸范围(mm)：</dt>
+                    <dt class="col-dt"><i></i>长边尺寸范围(mm)：</dt>
                     <dd>
-                         @Bathroom.BathroomLongSizeMin
+                        @Bathroom.BathroomLongSizeMin
                         <i> - </i>
                         @Bathroom.BathroomLongSizeMax
                     </dd>
                 </dl>
             }
-            else if (Drawing.DynamicType == 2)
+            else if (dMaster.DynamicType == 2)
             {
                 <dl class="static_module" style="display:block">
-                    <dt><i></i>尺寸(mm)：</dt>
+                    <dt class="col-dt"><i></i>尺寸(mm)：</dt>
                     <dd>
                         @Bathroom.BathroomShortSideMin
                         <i> - </i>
@@ -133,33 +124,69 @@
                     </dd>
                 </dl>
                 <dl class="static_module" style="display:block">
-                    <dt><i> </i>马桶尺寸:</dt>
+                    <dt class="col-dt"><i> </i>马桶尺寸：</dt>
                     <dd>
                         @Bathroom.BathroomClosestoolSizeName
                     </dd>
                 </dl>
                 <dl class="static_module" style="display:block">
-                    <dt><i></i>水盆柜宽：</dt>
+                    <dt class="col-dt"><i></i>水盆柜宽：</dt>
                     <dd>
                         @Bathroom.BathroomBasinSizeName
                     </dd>
-
-                    
                 </dl>
             }
-
-
-
-
-
+            
+            <dl>
+                <dt class="col-dt"><i></i>是否含排气道：</dt>
+                <dd>
+                    <span class="online-checkbox">
+                        @if (Bathroom.BathroomIsAirduct == 1)
+                        {
+                            <label for="radio_static_module">是</label>
+                        }
+                        else
+                        {
+                            <label for="radio_static_module">否</label>
+                        }   
+                       
+                    </span>
+                    
+                </dd>
+            </dl>
         </form>
         <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
             <div class="col-md-6 col-sm-6">
-                <a class="btn btn-sunac" href="/Bathroom/Edit/@Drawing.Id">编辑</a>
+
             </div>
             <div class="col-md-6 col-sm-6 text-right">
-
+                <a class="btn btn-sunac" href="/bathroom/Edit/@dMaster.Id">编辑</a>
+                <a class="btn btn-sunac btn-delete" data-id="@dMaster.Id">删除</a>
+                <a class="btn btn-sunac">提交审核</a>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function () {
+        $(".btn-delete").on("click", function () {
+            let Id = $(this).data("id");
+            layer.confirm('是否需要删除', {
+                btn: ['删除', '取消'],
+                shade: false,
+                icon: 3
+            }, function () {
+                $.post("/handrail/deleteHandlebyid", { Id: Id }, function (data) {
+                    if (data.code == 100) {
+                        layer.alert("删除成功", { icon: 6, shade: false }, function () {
+                            window.location.href = "/bathroom/index";
+                        })
+                    } else {
+                        layer.alert("删除失败", { icon: 6, shade: false });
+                    }
+                },'json');
+            });
+        })
+
+    })
+</script>

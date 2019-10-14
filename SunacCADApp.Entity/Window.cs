@@ -14,44 +14,26 @@ namespace SunacCADApp.Entity
         /// 原型编号
         /// </summary>
         public string DrawingCode { get; set; }
-        /// <summary>
-        /// 原型名称
-        /// </summary>
-        public string DrawingName { get; set; }
 
         /// <summary>
         /// 原型平面图稿件地址
         /// </summary>
 
         public Drawing[] Drawings { get; set; }
-        public string DrawingPathTop { get; set; }
         /// <summary>
-        /// 原型立面图稿件地址
+        /// 功能区域
         /// </summary>
-        public string DrawingPathFront { get; set; }
+        public Area[] Areas { get; set; }
+
         /// <summary>
-        /// 原型侧视面图稿件地址
+        /// 功能区类型
         /// </summary>
-        public string DrawingPathLeft { get; set; }
-        /// <summary>
-        /// 原型展开图稿件地址
-        /// </summary>
-        public string DrawingPathExpanded { get; set; }
+        public Function[] Functions { get; set; }
+
         /// <summary>
         /// 集团
         /// </summary>
         public int Scope { get; set; }
-        /// <summary>
-        /// 区域ID
-        /// </summary>
-        public string AreaId { get; set; }
-        /// <summary>
-        /// 区域ID
-        /// </summary>
-        public string AreaName { get; set; }
-
-
-        
         /// <summary>
         /// 原型类型
         /// </summary>
@@ -113,7 +95,9 @@ namespace SunacCADApp.Entity
         /// 功能区
         /// </summary>
         public string WindowFunctionalArea { get; set; }
-
+        /// <summary>
+        /// 参数类型
+        /// </summary>
         public Item[] SizePara { get; set; }
 
     }

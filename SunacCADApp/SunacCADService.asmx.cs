@@ -76,6 +76,15 @@ namespace SunacCADApp
              
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="openType"></param>
+        /// <param name="openNum"></param>
+        /// <param name="gongNengQu"></param>
+        /// <returns></returns>
         [WebMethod(Description = "标准部品库[外窗]按条件查询")]
         public string GetWindows(double width = 0, double height = 0, string openType = "", string openNum = "", string gongNengQu = "") 
         {

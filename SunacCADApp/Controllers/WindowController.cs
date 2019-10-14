@@ -77,7 +77,7 @@ namespace SunacCADApp.Controllers
             string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
             if (!string.IsNullOrEmpty(keyword)) 
             {
-                _where = string.Format(@" a.DrawingCode like  '%{0}%'", keyword);
+                _where = string.Format(@" AND a.DrawingCode like  '%{0}%'", keyword);
             }
             ViewBag.Keyword = keyword;
 

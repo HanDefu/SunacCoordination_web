@@ -49,6 +49,12 @@ namespace SunacCADApp.Controllers
             }
 
             ViewBag.doortype = doortype;
+            string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                _where = string.Format(@" a.DrawingCode like  '%{0}%'", keyword);
+            }
+            ViewBag.Keyword = keyword;
             string _orderby = string.Empty;  //排序
             int recordCount = 0;    //记录总数
             int pageSize = 15;      //每页条数

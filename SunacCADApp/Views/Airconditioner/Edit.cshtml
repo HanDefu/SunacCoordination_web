@@ -1,61 +1,78 @@
-﻿@{
+﻿@using SunacCADApp.Entity
+@{
     Layout = "~/Views/_LayoutPage.cshtml";
+    CadDrawingMaster dMaster = ViewBag.CadDrawingMaster;
+    IList<CadDrawingByArea> ByAreas = ViewBag.ByAreas;
+    CadDrawingAirconditionerDetail Airconditioner = ViewBag.Airconditioner;
+    IList<CadDrawingByArea> byAreaList = ViewBag.ByAreas;
+    IList<CadDrawingDWG> Dwgs = ViewBag.Dwgs;
+    CadDrawingDWG ExpansionDWG = Dwgs.Where(e => e.CADType == "ExpandViewFile").SingleOrDefault<CadDrawingDWG>();
+    ExpansionDWG = ExpansionDWG == null ? new CadDrawingDWG() : ExpansionDWG;
+    string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
+    string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? "" : ExpansionDWG.FileClass;
 }
-@using SunacCADApp.Entity
+
 <div class="row topnav">
     <a>标准部品库</a>
     <i></i>
-    <a>外窗</a>
+    <a href="/airconditioner/Index">空调</a>
     <i></i>
-    <a>CD02X1外开双扇下</a>
+    <a>@dMaster.DrawingCode</a>
 </div>
 <div class="row view">
     <div class="left-column">
-        <figure>
-            <img src="~/Content/Css/img/icon-no-image.png" width="238" heigth="200" />
-            <p>CDA双开窗下</p>
+        <figure class="icon-drawing-img">
+            <img src="@imagePath" width="238" heigth="200" />
+            <p>@imageName</p>
         </figure>
     </div>
     <div class="mian-column">
         <form name="myform" id="myform">
             <dl>
-                <dt><i>*</i>原型编号:</dt>
+                <dt class="col-dt"><i>*</i>原型编号：</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" />
+                    <input type="text" style="width:450px" disabled="disabled"  value="@dMaster.DrawingCode"/>
+                    <input type="hidden" name="txt_drawingcode" value="@dMaster.DrawingCode" />
+                    <i class="icon-tips" tips="<p>外窗原型编号规则：<p>">&nbsp;</i>
                 </dd>
             </dl>
-            <dl>
-                <dt><i>*</i>原型名称:</dt>
-                <dd>
-                    <input type="text" style="width:450px" name="txt_drawingname" class="required" />
-                </dd>
-            </dl>
-            <dl>
-                <dt><i>*</i>原型dwg文件:</dt>
-                <dd>
-                    <span class="upfile">
-                        <input type="file" />
-                        <input type="hidden" name="cad_file" />
-                    </span>
 
+            <dl>
+                <dt class="col-dt"><i>*</i>展开图文件：</dt>
+                <dd>
+                    <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" />
+                    <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
+                    <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
+                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
+                    <a class="btn-upfile" href="javascript:void(0)">
+                        文件上传
+                        <input type="file" class="upload-cad" />
+                    </a>
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>使用范围:</dt>
+                <dt class="col-dt"><i>*</i>使用范围：</dt>
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
-                            <input type="checkbox" id="all" name="chk_area" class="select-all" />
-                            <label for="all">全部</label>
-                        </span>
-                        <span class="online-checkbox">
-                            <input type="checkbox" id="all_group" name="chekbox_group" class="single-checkbox" value="0" />
-                            <label for="all_group">集团</label>
+                            @if (dMaster.Scope == 1)
+                            {
+                                <input type="checkbox" id="all_group" name="chk_area" class="single-checkbox" value="1" checked />
+                                <label for="all_group">集团</label>
+                            }
+                            else
+                            {
+                                <input type="checkbox" id="all_group" name="chk_area" class="single-checkbox" value="1" />
+                                <label for="all_group">集团</label>
+                            }
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
+                            string str_check = string.Empty;
+                            int hasArea = ByAreas.Where(e => e.AreaID == Setting.Id).Count();
+                            str_check = hasArea > 0 ? "checked" : string.Empty;
                             <span class="online-checkbox">
-                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" />
+                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" @str_check />
                                 <label for="area_@Setting.Id">@Setting.ArgumentText</label>
                             </span>
                         }
@@ -65,63 +82,101 @@
             </dl>
 
             <dl>
-                <dt><i>*</i>空调匹数：</dt>
+                <dt class="col-dt"><i>*</i>空调匹数：</dt>
                 <dd>
-                    <select name="OpenType">
+                    <select name="AirConditionNumber" class="required" data-error="请选择空调匹数不能为空">
                         @foreach (BasArgumentSetting AirConditionNumber in ViewBag.AirConditionNumbers)
                         {
-                            <option value="@AirConditionNumber.Id">@AirConditionNumber.ArgumentText</option>
+                            if (Airconditioner.AirconditionerPower == AirConditionNumber.Id)
+                            {
+                                <option value="@AirConditionNumber.Id" selected="selected">@AirConditionNumber.ArgumentText</option>
+                            }
+                            else
+                            {
+                                <option value="@AirConditionNumber.Id">@AirConditionNumber.ArgumentText</option>
+                            }
+
                         }
                     </select>
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>长宽最小值：</dt>
+                <dt class="col-dt"><i>*</i>长宽最小值：</dt>
                 <dd>
-                    <input type="text" style="width:50px" name="txtWindowSizeMin" />
-                    <i> -- &nbsp; </i>
-                    <input type="text" style="width:50px" name="txtWindowSizeMax" />
+                    <input type="number" style="width:70px" name="txtAirconditionerMinWidth"  value="@Airconditioner.AirconditionerMinWidth"/>
+                    <i> -</i>
+                    <input type="number" style="width:70px" name="txtAirconditionerMinLength" value="@Airconditioner.AirconditionerMinLength" />
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>冷凝水管位置：</dt>
+                <dt class="col-dt"><i>*</i>冷凝水管位置：</dt>
                 <dd>
-                    <select name="OpenType">
+                    <select name="selectCondensatePipePosition">
                         @foreach (BasArgumentSetting CondensatePipePosition in ViewBag.CondensatePipePositions)
                         {
-                            <option value="@CondensatePipePosition.Id">@CondensatePipePosition.ArgumentText</option>
+                            if (Airconditioner.AirconditionerPipePosition == CondensatePipePosition.Id)
+                            {
+                                <option value="@CondensatePipePosition.Id" selected="selected">@CondensatePipePosition.ArgumentText</option>
+                            }
+                            else
+                            {
+                                <option value="@CondensatePipePosition.Id">@CondensatePipePosition.ArgumentText</option>
+                            }
+
                         }
                     </select>
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>&nbsp;</dt>
+                <dt class="col-dt"><i>*</i>是否包含雨水管：</dt>
                 <dd>
                     <span class="online-checkbox">
-                        <input type="checkbox" name="Checkbox_WindowAuxiliaryFrame" id="Checkbox_WindowAuxiliaryFrame" />
-                        <label for="Checkbox_WindowAuxiliaryFrame">是否包含雨水管</label>
-                    </span>
-                </dd>
-            </dl>
-            <dl>
-                <dt><i>*</i>雨水管位置：</dt>
-                <dd>
-                    <select name="OpenType">
-                        @foreach (BasArgumentSetting RainPipePosition in ViewBag.RainPipePositions)
+                        @if (Airconditioner.AirconditionerIsRainPipe == 1)
                         {
-                            <option value="@RainPipePosition.Id">@RainPipePosition.ArgumentText</option>
+                            <input type="checkbox" name="Checkbox_AirconditionerIsRainPipe" id="Checkbox_AirconditionerIsRainPipe" value="1"  checked="checked"/>
                         }
-                    </select>
+                        else
+                        {
+                            <input type="checkbox" name="Checkbox_AirconditionerIsRainPipe" id="Checkbox_AirconditionerIsRainPipe" value="1" />
+                        }
+                        
+                        <label for="Checkbox_AirconditionerIsRainPipe">是</label>
+                    </span>
+
                 </dd>
             </dl>
+            @if (Airconditioner.AirconditionerIsRainPipe == 1)
+            {
+                <dl style="display:none" class="dlRainPipePosition">
+                    <dt class="col-dt"><i>*</i>雨水管位置：</dt>
+                    <dd>
+                        <select name="selectRainPipePosition">
+                            @foreach (BasArgumentSetting RainPipePosition in ViewBag.RainPipePositions)
+                            {
+                                if (Airconditioner.AirconditionerPipePosition == RainPipePosition.Id)
+                                {
+                                    <option value="@RainPipePosition.Id" selected="selected">@RainPipePosition.ArgumentText</option>
+                                }
+                                else
+                                {
+                                    <option value="@RainPipePosition.Id">@RainPipePosition.ArgumentText</option>
+                                }
+
+                            }
+                        </select>
+                    </dd>
+                </dl>
+            }
+            <input type="hidden" name="Id"  value="@dMaster.Id"/>
         </form>
-        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;margin-top:120px">
+        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
             <div class="col-md-6 col-sm-6">
-                <button type="button" class="btn btn-sunac" id="btn_save">编辑</button>
+
             </div>
             <div class="col-md-6 col-sm-6 text-right">
-                <button type="button" class="btn btn-sunac">删除</button>
-                <button type="button" class="btn btn-sunac">提交审核</button>
+                <button type="button" class="btn btn-sunac" id="btn_save" style="margin-left:30px;">保存</button>
+                <a class="btn btn-sunac btn-delete" data-id="@dMaster.Id">删除</a>
+                <a class="btn btn-sunac">提交审核</a>
             </div>
         </div>
     </div>
@@ -129,7 +184,7 @@
 </div>
 <script type="text/javascript">
     var options = {
-        url: '/airconditioner/Addhandle',
+        url: '/airconditioner/Edithandle',
         type: 'post',
         data: $("#myform").serialize(),
         dataType: 'json',
@@ -153,7 +208,15 @@
             $(".dynamic_module").css("display", "none");
             $(".static_module").css("display", "none");
             $(model).css("display", "block");
+        })
 
+        $("#Checkbox_AirconditionerIsRainPipe").on("change", function () {
+            let checked = $(this).prop("checked");
+            if (checked) {
+                $(".dlRainPipePosition").css("display", "block");
+            } else {
+                $(".dlRainPipePosition").css("display", "none");
+            }
         })
 
 

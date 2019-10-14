@@ -5,49 +5,45 @@
 <div class="row topnav">
     <a>标准部品库</a>
     <i></i>
-    <a>空调</a>
+    <a href="/airconditioner/Index">空调</a>
 </div>
 <div class="row view">
     <div class="left-column">
-        <figure>
+        <figure class="icon-drawing-img">
             <img src="~/Content/Css/img/icon-no-image.png" width="238" heigth="200" />
-            <p>空调添加</p>
+            <p></p>
         </figure>
     </div>
     <div class="mian-column">
         <form name="myform" id="myform">
             <dl>
-                <dt><i>*</i>原型编号:</dt>
+                <dt class="col-dt"><i>*</i>原型编号：</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" />
+                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="空调原型编号不能为空" />
+                    <i class="icon-tips" tips="<p>外窗原型编号规则：<p>">&nbsp;</i>
+                </dd>
+            </dl>
+         
+            <dl>
+                <dt class="col-dt"><i>*</i>展开图文件：</dt>
+                <dd>
+                    <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
+                    <input type="hidden" name="txt_drawingcad" />
+                    <input type="hidden" name="hid_drawing_img" value="" />
+                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
+                    <a class="btn-upfile" href="javascript:void(0)">
+                        文件上传
+                        <input type="file" class="upload-cad" />
+                    </a>
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>原型名称:</dt>
-                <dd>
-                    <input type="text" style="width:450px" name="txt_drawingname" class="required" />
-                </dd>
-            </dl>
-            <dl>
-                <dt><i>*</i>原型dwg文件:</dt>
-                <dd>
-                    <span class="upfile">
-                        <input type="file" />
-                    </span>
-                    
-                </dd>
-            </dl>
-            <dl>
-                <dt><i>*</i>使用范围:</dt>
+                <dt class="col-dt"><i>*</i>使用范围：</dt>
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
-                            <input type="checkbox" id="all" name="chk_area" class="select-all" />
-                            <label for="all">全部</label>
-                        </span>
-                        <span class="online-checkbox">
-                            <input type="checkbox" id="all_group" name="chekbox_group" class="single-checkbox" value="0" />
-                            <label for="all_group">集团</label>
+                            <input type="checkbox" id="all" name="chk_area" class="select-all"  value="1"/>
+                            <label for="all">集团</label>
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
@@ -62,7 +58,7 @@
             </dl>
    
             <dl>
-                <dt><i>*</i>空调匹数：</dt>
+                <dt class="col-dt"><i>*</i>空调匹数：</dt>
                 <dd>
                     <select name="AirConditionNumber">
                         @foreach (BasArgumentSetting AirConditionNumber in ViewBag.AirConditionNumbers)
@@ -73,15 +69,15 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>长宽最小值：</dt>
+                <dt class="col-dt"><i>*</i>长宽最小值：</dt>
                 <dd>
-                    <input type="number" style="width:50px" name="txtAirconditionerMinWidth"  />
+                    <input type="number" style="width:70px" name="txtAirconditionerMinWidth"  />
                     <i> -</i>
-                    <input type="number" style="width:50px" name="txtAirconditionerMinLength" />
+                    <input type="number" style="width:70px" name="txtAirconditionerMinLength" />
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>冷凝水管位置：</dt>
+                <dt class="col-dt"><i>*</i>冷凝水管位置：</dt>
                 <dd>
                     <select name="selectCondensatePipePosition">
                         @foreach (BasArgumentSetting CondensatePipePosition in ViewBag.CondensatePipePositions)
@@ -92,7 +88,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt><i>*</i>是否包含雨水管</dt>
+                <dt class="col-dt"><i>*</i>是否包含雨水管：</dt>
                 <dd>
                     <span class="online-checkbox">
                         <input type="checkbox" name="Checkbox_AirconditionerIsRainPipe" id="Checkbox_AirconditionerIsRainPipe" value="1" />
@@ -102,7 +98,7 @@
                 </dd>
             </dl>
             <dl style="display:none" class="dlRainPipePosition">
-                <dt><i>*</i>雨水管位置：</dt>
+                <dt class="col-dt"><i>*</i>雨水管位置：</dt>
                 <dd>
                     <select name="selectRainPipePosition">
                         @foreach (BasArgumentSetting RainPipePosition in ViewBag.RainPipePositions)
@@ -113,9 +109,9 @@
                 </dd>
             </dl>
         </form>
-        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;margin-top:120px">
+        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;margin-top:40px">
             <div class="col-md-6 col-sm-6">
-                <button type="button" class="btn btn-sunac" id="btn_save">编辑</button>
+                <button type="button" class="btn btn-sunac" id="btn_save"  style="margin-left:30px;">保存</button>
             </div>
             <div class="col-md-6 col-sm-6 text-right">
                

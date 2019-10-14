@@ -558,9 +558,13 @@ header {
               outline:none;
            }
 
+        .main .center .icon-drawing-img img {
+                width:238px;
+                height:200px;
            
+        }
 
-
+  
 
 
 

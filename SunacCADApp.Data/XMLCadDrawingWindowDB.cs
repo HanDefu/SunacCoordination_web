@@ -19,30 +19,10 @@ namespace SunacCADApp.Data
 
                 IList<Drawing> drawingList = CadDrawingDWGDB.GetDrawingByWhere(_where);
                 window.Drawings = drawingList.ToArray<Drawing>();
-                string function="";
-                IList<CadDrawingFunction> functions = CadDrawingFunctionDB.GetCadDrawingFunctionByWhereList(_where);
-                foreach (CadDrawingFunction fun in functions) 
-                {
-                    function = fun.FunctionName + ",";
-                }
-                window.WindowFunctionalArea = function.TrimEnd(',');
-                string areaid = "";
-                string areaname = "";
-                IList<CadDrawingByArea> areas= CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
-
-                foreach (CadDrawingByArea area in areas)
-                {
-                    areaid = area.AreaID + ",";
-                }
-                window.AreaId = areaid.TrimEnd(',');
-
-
-                foreach (CadDrawingByArea area in areas)
-                {
-                    areaname = area.AreaName + ",";
-                }
-                window.AreaName = areaname.TrimEnd(',');
-
+                IList<Function> Funs = CadDrawingFunctionDB.GetFunctionByWhereList(_where);
+                window.Functions = Funs.ToArray<Function>();
+                IList<Area> areas = CadDrawingByAreaDB.GetAreaByWhere(_where);
+                window.Areas=areas.ToArray<Area>();
                 IList<Item> items = CadDrawingParameterDB.GetCadDrawingItemByWhereList(_where);
                 window.SizePara = items.ToArray<Item>();
 

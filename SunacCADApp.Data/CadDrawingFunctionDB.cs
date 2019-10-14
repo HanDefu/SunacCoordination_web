@@ -123,5 +123,21 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<CadDrawingFunction>(new CadDrawingFunction());
         }
 
+        /// <summary>
+        /// 根据条件获取功能区信息
+        /// </summary>
+        /// <param name="_where"></param>
+        /// <returns></returns>
+        public static IList<Function> GetFunctionByWhereList(string _where) 
+        {
+            Function fun = new Function();
+            string sql = string.Format(@" SELECT A.FunctionId,B.ArgumentText AS FunctionName
+                                                           FROM dbo.CadDrawingFunction A  
+                                                   INNER JOIN dbo.BasArgumentSetting B  ON A.FunctionId=B.Id
+                                                          WHERE {0}",_where);
+            return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Function>(new Function());
+
+        }
+
     }
 }

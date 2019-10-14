@@ -5,12 +5,23 @@
 <div class="row search search-bottom">
     <dl>
         <dt>区域：</dt>
-        <dd>
-            <a class="active">全部</a>
-            <a class="Scope" data-val="1">集团</a>
+        <dd class="dd_area">
+            @if (ViewBag.area == 0)
+            {
+                <a class="active">集团</a>
+            }
+            else
+            {
+                <a>集团</a>
+            }
+
             @foreach (BasArgumentSetting argument in ViewBag.Settings)
             {
-                <a data-val="@argument.Id">@argument.ArgumentText</a>
+                if (ViewBag.area == argument.Id)
+                { <a data-val="@argument.Id" class="active">@argument.ArgumentText</a>}
+                else
+                { <a data-val="@argument.Id">@argument.ArgumentText</a>}
+
             }
 
         </dd>
@@ -19,11 +30,27 @@
 <div class="row search search-bottom">
     <dl>
         <dt>空调匹数：</dt>
-        <dd class="dd_action">
-            <a class="active">全部</a>
+        <dd class="dd_AirConditionNumber">
+            @if (ViewBag.AirConditionNumber == 0)
+            {
+                <a class="active">全部</a>
+            }
+            else
+            {
+                <a>全部</a>
+            }
+
             @foreach (BasArgumentSetting AirConditionNumber in ViewBag.AirConditionNumbers)
             {
-                <a data-val="@AirConditionNumber.Id">@AirConditionNumber.ArgumentText</a>
+                if (ViewBag.AirConditionNumber == AirConditionNumber.Id)
+                {
+                    <a data-val="@AirConditionNumber.Id" class="active">@AirConditionNumber.ArgumentText</a>
+                }
+                else
+                {
+                    <a data-val="@AirConditionNumber.Id">@AirConditionNumber.ArgumentText</a>
+                }
+
             }
         </dd>
     </dl>
@@ -31,11 +58,25 @@
 <div class="row search search-bottom">
     <dl>
         <dt>冷凝水管：</dt>
-        <dd class="dd_action">
-            <a class="active">全部</a>
+        <dd class="dd_CondensatePipePosition">
+            @if (ViewBag.CondensatePipePosition == 0)
+            {
+                <a class="active">全部</a>
+            }
+            else
+            {
+                <a>全部</a>
+            }
             @foreach (BasArgumentSetting CondensatePipePosition in ViewBag.CondensatePipePositions)
             {
-                <a data-val="@CondensatePipePosition.Id">@CondensatePipePosition.ArgumentText</a>
+                if (ViewBag.CondensatePipePosition == CondensatePipePosition.Id)
+                {
+                    <a data-val="@CondensatePipePosition.Id" class="active">@CondensatePipePosition.ArgumentText</a>
+                }
+                else
+                {
+                    <a data-val="@CondensatePipePosition.Id">@CondensatePipePosition.ArgumentText</a>
+                }
             }
         </dd>
     </dl>
@@ -43,10 +84,28 @@
 <div class="row search search-bottom">
     <dl>
         <dt>雨水管：</dt>
-        <dd class="dd_action">
-            <a class="active">全部</a>
-            <a>有雨水管</a>
-            <a>无雨水管</a>
+        <dd class="dd_IsRainPipe">
+            @if (ViewBag.IsRainPipe == -1)
+            {
+                <a class="active">全部</a>
+                <a data-val="1">有雨水管</a>
+                <a data-val="0">无雨水管</a>
+            }
+            else if (ViewBag.IsRainPipe == 1)
+            {
+
+                <a data-val="-1">全部</a>
+                <a data-val="1" class="active">有雨水管</a>
+                <a data-val="0">无雨水管</a>
+            }
+            else if (ViewBag.IsRainPipe == 0)
+            {
+
+                <a data-val="-1">全部</a>
+                <a data-val="1">有雨水管</a>
+                <a data-val="0" class="active">无雨水管</a>
+            }
+
         </dd>
     </dl>
 </div>
@@ -55,7 +114,7 @@
         <dt> 关键词搜索：</dt>
         <dd>
             <span class="sear-input">
-                <input type="text" />
+                <input type="text" value="@ViewBag.Keyword" />
                 <em></em>
             </span>
 
@@ -68,11 +127,11 @@
         @foreach (CadDrawingWindowSearch drawing in ViewBag.List)
         {
             <li>
-                <a href="/Window/LookOver/@drawing.Id">
+                <a href="/airconditioner/lookover/@drawing.Id">
                     <figure>
 
                         <img src="@drawing.DWGPath" />
-                        <p>@drawing.DrawingName</p>
+                        <p>@drawing.DrawingCode</p>
                     </figure>
                 </a>
             </li>
@@ -82,4 +141,49 @@
 
     </ul>
 </div>
+<script type="text/javascript">
+    $(function () {
 
+        $(".search a").on('click', function () {
+            let that = $(this);
+            let parent = $(this).parent();
+            parent.find("a").removeClass("active")
+            that.addClass("active");
+            let param = searchparam();
+            window.location.href = "/airconditioner?" + param
+        });
+
+
+
+        $(".sear-input em").on("click", function () {
+
+            let keyword = $('.sear-input').find('input[type="text"]').val();
+            window.location.href = "/airconditioner?keyword=" + keyword;
+        })
+    })
+ 
+
+    var searchparam = function () {
+        let param = '1';
+        let area = parseInt($(".dd_area .active").data("val"));
+        if (area > 0) {
+            param += '&area=' + area;
+        }
+
+        let AirConditionNumber = parseInt($(".dd_AirConditionNumber  .active").data("val"));
+        if (AirConditionNumber > 0) {
+            param += '&AirConditionNumber=' + AirConditionNumber;
+        }
+
+        let CondensatePipePosition = parseInt($(".dd_CondensatePipePosition .active").data("val"));
+        if (CondensatePipePosition > 0) {
+            param += '&CondensatePipePosition=' + CondensatePipePosition;
+        }
+
+        let IsRainPipe = parseInt($(".dd_IsRainPipe .active").data("val"));
+        if (IsRainPipe > -1) {
+            param += '&IsRainPipe=' + IsRainPipe;
+        }
+        return param;
+    }
+</script>

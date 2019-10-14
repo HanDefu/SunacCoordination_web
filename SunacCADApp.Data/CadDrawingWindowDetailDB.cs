@@ -218,6 +218,7 @@ namespace SunacCADApp.Data
                                                              INNER JOIN dbo.BasArgumentSetting b ON a.WindowOpenTypeId=b.Id AND b.TypeCode='OpenType'
                                                              INNER JOIN dbo.BasArgumentSetting c ON c.Id=a.WindowOpenQtyId AND c.TypeCode='OpenWindowNum'
                                                              WHERE m.DynamicType=1 {0} ",_where);
+
              xmlsql += string.Format(@"  	 UNION ALL  SELECT  m.Id, m.DrawingCode,m.DrawingName,m.Scope,m.DrawingType,m.DynamicType, a.MId,a.WindowOpenTypeId,b.ArgumentText AS WindowOpenTypeName,
                                                                     a.WindowOpenQtyId,c.ArgumentText AS WindowOpenQtyName,a.WindowHasCorner,
                                                                     a.WindowHasSymmetry,a.WindowSizeMin,a.WindowSizeMax,a.WindowDesignFormula	,

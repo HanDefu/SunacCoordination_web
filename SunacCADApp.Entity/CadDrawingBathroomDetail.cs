@@ -69,6 +69,15 @@ namespace SunacCADApp.Entity
         /// 卫生间马桶尺寸名称
         /// </summary>
         public int BathroomClosestoolSizeName { get; set; }
+        /// <summary>
+        /// 是否包含排气道
+        /// </summary>
+        public int BathroomIsAirduct { get; set; }
+        /// <summary>
+        /// 是否包含排气道名称
+        /// </summary>
+        public string BathroomIsAirductName { get; set; }
+
 
         /// <summary>
         /// 是否有效
