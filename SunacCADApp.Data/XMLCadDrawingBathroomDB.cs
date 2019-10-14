@@ -10,7 +10,7 @@ namespace SunacCADApp.Data
 {
     public  class XMLCadDrawingBathroomDB
     {
-        protected static IList<Bathroom> GetCadDrawingBathroomByWidth(double Width, double Height, int BathroomDoorWindowPosition, int ToiletType, int AirVent)
+        protected static IList<Bathroom> GetCadDrawingBathroomByWidth(double Width, double Height, string BathroomDoorWindowPosition, string ToiletType, string AirVent)
         {
             IList<Bathroom> listDoor = new List<Bathroom>();
             string _dynamic_where = "m.DynamicType=1";
@@ -22,20 +22,20 @@ namespace SunacCADApp.Data
             _dynamic_where += Height > 0 ? string.Format(@" AND (b.BathroomLongSizeMin>='{0}' AND b.BathroomLongSizeMax<='{0}')  ", Height) : string.Empty;
             _static_where += Height > 0 ? string.Format(@" AND b.BathroomShortSideMax='{0}'", Height) : string.Empty;
 
-            _dynamic_where += BathroomDoorWindowPosition > 0 ? string.Format(@" AND a.BathroomDoorWindowPosition={0} ", BathroomDoorWindowPosition) : string.Empty;
-            _static_where += BathroomDoorWindowPosition > 0 ? string.Format(@" AND a.BathroomDoorWindowPosition={0} ", BathroomDoorWindowPosition) : string.Empty;
+            _dynamic_where += string.IsNullOrEmpty(BathroomDoorWindowPosition) ? string.Empty:string.Format(@" AND ba.ArgumentText in ({0}) ", BathroomDoorWindowPosition);
+            _static_where += string.IsNullOrEmpty(BathroomDoorWindowPosition)? string.Empty:string.Format(@" AND ba.ArgumentText in ({0}) ", BathroomDoorWindowPosition);
 
-            _dynamic_where += ToiletType > 0 ? string.Format(@" AND a.BathroomType={0} ", ToiletType) : string.Empty;
-            _static_where += ToiletType > 0 ? string.Format(@" AND a.BathroomType={0} ", ToiletType) : string.Empty;
+            _dynamic_where +=string.IsNullOrEmpty(ToiletType) ? string.Empty: string.Format(@" AND a.BathroomType={0} ", ToiletType);
+            _static_where += string.IsNullOrEmpty(ToiletType) ?string.Empty: string.Format(@" AND a.BathroomType={0} ", ToiletType);
 
-
-            _dynamic_where += AirVent > 0 ? string.Format(@" AND a.BathroomType={0} ", ToiletType) : string.Empty;
-            _static_where += AirVent > 0 ? string.Format(@" AND a.BathroomType={0} ", ToiletType) : string.Empty;
+            int _airVent = string.IsNullOrEmpty(AirVent) ? -1 : (AirVent == "是" ? 1 : 0);
+            _dynamic_where += _airVent > 0 ? string.Format(@" AND a.BathroomIsAirduct={0} ", _airVent) : string.Empty;
+            _static_where += _airVent > 0 ? string.Format(@" AND a.BathroomIsAirduct={0} ", _airVent) : string.Empty;
             string sql = string.Format(@"      SELECT  m.Id,m.DrawingCode,m.DrawingName,m.Scope,m.DynamicType,
 			                                                             CASE m.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '定性模块' END AS DynamicType,
 			                                                             a.BathroomType,b.ArgumentText AS BathroomTypeName,a.BathroomDoorWindowPosition,ba.ArgumentText AS BathroomDoorWindowPositionName,
 			                                                             a.BathroomBasinSize,c.ArgumentText AS BathroomBasinSizeName,a.BathroomClosestoolSize,d.ArgumentText AS BathroomClosestoolSizeName,
-			                                                             a.BathroomShortSideMin,a.BathroomShortSideMax,a.BathroomLongSizeMin,a.BathroomLongSizeMax
+			                                                             a.BathroomShortSideMin,a.BathroomShortSideMax,a.BathroomLongSizeMin,a.BathroomLongSizeMax,a.BathroomIsAirduct
                                                                    FROM  dbo.CadDrawingBathroomDetail a 
                                                              INNER JOIN dbo.CaddrawingMaster m ON m.Id=a.MId
                                                               LEFT JOIN  dbo.BasArgumentSetting b ON a.BathroomType=b.Id AND b.TypeCode='ToiletType'
@@ -47,7 +47,7 @@ namespace SunacCADApp.Data
 			                                                             CASE m.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '定性模块' END AS DynamicType,
 			                                                             a.BathroomType,b.ArgumentText AS BathroomTypeName,a.BathroomDoorWindowPosition,ba.ArgumentText AS BathroomDoorWindowPositionName,
 			                                                             a.BathroomBasinSize,c.ArgumentText AS BathroomBasinSizeName,a.BathroomClosestoolSize,d.ArgumentText AS BathroomClosestoolSizeName,
-			                                                             a.BathroomShortSideMin,a.BathroomShortSideMax,a.BathroomLongSizeMin,a.BathroomLongSizeMax
+			                                                             a.BathroomShortSideMin,a.BathroomShortSideMax,a.BathroomLongSizeMin,a.BathroomLongSizeMax,a.BathroomIsAirduct
                                                                    FROM  dbo.CadDrawingBathroomDetail a 
                                                              INNER JOIN dbo.CaddrawingMaster m ON m.Id=a.MId
                                                               LEFT JOIN  dbo.BasArgumentSetting b ON a.BathroomType=b.Id AND b.TypeCode='ToiletType'
@@ -60,7 +60,7 @@ namespace SunacCADApp.Data
             return listDoor;
         }
 
-        public static IList<Bathroom> GetCadDrawingBathroomListByWidth(double Width, double Height, int BathroomDoorWindowPosition, int ToiletType, int AirVent)
+        public static IList<Bathroom> GetCadDrawingBathroomListByWidth(double Width, double Height, string BathroomDoorWindowPosition, string ToiletType, string AirVent)
         {
 
             IList<Bathroom> listBathroom = GetCadDrawingBathroomByWidth(Width,Height,BathroomDoorWindowPosition,ToiletType,AirVent);

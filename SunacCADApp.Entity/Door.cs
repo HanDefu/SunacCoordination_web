@@ -15,10 +15,6 @@ namespace SunacCADApp.Entity
         /// </summary>
         public string DrawingCode { get; set; }
         /// <summary>
-        /// 原型名称
-        /// </summary>
-        public string DrawingName { get; set; }
-        /// <summary>
         /// 原型平面图稿件地址
         /// </summary>
         public Drawing[] Drawings { get; set; }
@@ -60,6 +56,15 @@ namespace SunacCADApp.Entity
         /// 宽度尺寸范围最大值
         /// </summary>
         public decimal WindowSizeMax { get; set; }
+        /// <summary>
+        /// 通风量计算公式
+        /// </summary>
+        public string WindowDesignFormula { get; set; }
+
+        /// <summary>
+        /// 参数类型
+        /// </summary>
+        public Item[] SizePara { get; set; }
     }
 
     public class XMLDoor 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Net;
 using System.Web;
+using System.Xml;
 
 namespace SunacCADApp.Library
 {
@@ -21,13 +22,24 @@ namespace SunacCADApp.Library
         /// <returns></returns>
         public static string XmlSerialize<T>(T obj)
         {
-            using (StringWriter sw = new StringWriter())
+            using (MemoryStream stream = new MemoryStream())
             {
-                Type t = obj.GetType();
                 XmlSerializer serializer = new XmlSerializer(obj.GetType());
-                serializer.Serialize(sw, obj);
-                sw.Close();
-                return sw.ToString();
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.Indent = true;
+                settings.NewLineChars = "\r\n";
+                settings.Encoding = Encoding.UTF8;
+                settings.IndentChars = "    ";
+                using (XmlWriter writer = XmlWriter.Create(stream, settings))
+                {
+                    serializer.Serialize(writer, obj);
+                    writer.Close();
+                }
+                stream.Position = 0;
+                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+                {
+                    return reader.ReadToEnd();
+                }
             }
         }
 

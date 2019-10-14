@@ -10,10 +10,10 @@ namespace SunacCADApp.Data
 {
     public  class XMLCadDrawingHandrailDB
     {
-        protected static IList<Handrail> GetCadDrawingHandrailByParame(int RailingType)
+        protected static IList<Handrail> GetCadDrawingHandrailByParame(string RailingType)
         {
             string _where = "1=1";
-            _where = RailingType > 1 ? string.Format(@" AND a.HandrailType={0}",RailingType) : string.Empty;
+            _where += string.IsNullOrEmpty(RailingType) ? string.Empty : string.Format(@" AND b.ArgumentText in ({0})", RailingType);
             IList<Handrail> listHandrail = new List<Handrail>();
             string _sql = string.Format(@" SELECT    m.Id,m.DrawingCode,m.DrawingName,m.Scope,m.DynamicType,
 			                                                             CASE m.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '定性模块' END AS DynamicType,
@@ -26,7 +26,7 @@ namespace SunacCADApp.Data
             return listHandrail;
         }
 
-        public static IList<Handrail> GetCadDrawingHandrailListByParam(int RailingType)
+        public static IList<Handrail> GetCadDrawingHandrailListByParam(string RailingType)
         {
 
             IList<Handrail> listHandrail = GetCadDrawingHandrailByParame(RailingType);

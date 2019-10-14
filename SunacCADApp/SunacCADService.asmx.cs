@@ -108,7 +108,7 @@ namespace SunacCADApp
             string xml = string.Empty;
             try
             {
-                IList<Door> doors = XMLCadDrawingDoorDB.GetCadDrawingDoorsListByWidth(0, 0);
+                IList<Door> doors = XMLCadDrawingDoorDB.GetCadDrawingDoorsListByWidth(0, string.Empty);
                 var retDoor = new XMLDoor{ Code = 100, Message = "门查询成功", Doors = doors.ToArray() };
                 xml = XmlSerializeHelper.XmlSerialize<XMLDoor>(retDoor);
             }
@@ -122,7 +122,7 @@ namespace SunacCADApp
 
         }
         [WebMethod(Description = "标准部品库[门]条件查询")]
-        public string GetAllDoorByParam(double width,int doorType)
+        public string GetAllDoorByParam(double width,string doorType)
         {
             string xml = string.Empty;
             try
@@ -148,7 +148,7 @@ namespace SunacCADApp
             try
             {
 
-                IList<Kitchen> kitchens = XMLCadDrawingKitchenDB.GetKitchenListByWidth(0, 0, 0, 0, 0);
+                IList<Kitchen> kitchens = XMLCadDrawingKitchenDB.GetKitchenListByWidth(0, 0, string.Empty, string.Empty, string.Empty);
                 var retKitchen = new XMLKitchen { Code = 100, Message = "厨房原型查询成功", Kitchens = kitchens.ToArray() };
                 xml = XmlSerializeHelper.XmlSerialize<XMLKitchen>(retKitchen);
             }
@@ -161,7 +161,7 @@ namespace SunacCADApp
         }
 
          [WebMethod(Description = "标准部品库[厨房原型]条件查询")]
-         public string GetAllKitchenParam(double Width, double Height, int KitchenDoorWindowPosition, int KitchenType, int AirVent)
+         public string GetAllKitchenParam(double Width, double Height, string KitchenDoorWindowPosition, string KitchenType, string AirVent)
          {
              string xml = string.Empty;
              try
@@ -191,7 +191,7 @@ namespace SunacCADApp
              try
              {
 
-                 IList<Bathroom> bathroomList = XMLCadDrawingBathroomDB.GetCadDrawingBathroomListByWidth(0, 0, 0, 0, 0);
+                 IList<Bathroom> bathroomList = XMLCadDrawingBathroomDB.GetCadDrawingBathroomListByWidth(0, 0, string.Empty, string.Empty, string.Empty);
                  var retBathroom = new XMLBathroom { Code = 100, Message = "卫生间查询成功", Bathrooms = bathroomList.ToArray() };
                  xml = XmlSerializeHelper.XmlSerialize<XMLBathroom>(retBathroom);
              }
@@ -205,7 +205,7 @@ namespace SunacCADApp
          }
 
          [WebMethod(Description = "标准部品库[卫生间原型]条件查询")]
-         public string GetAllBathroomByParam(double Width, double Height, int BathroomDoorWindowPosition, int ToiletType, int AirVent) 
+         public string GetAllBathroomByParam(double Width, double Height, string BathroomDoorWindowPosition, string ToiletType, string AirVent) 
          {
              string xml = string.Empty;
              try
@@ -227,14 +227,14 @@ namespace SunacCADApp
 
 
          [WebMethod(Description = "标准部品库[栏杆原型]条件查询")]
-         public string GetAllHandrailByParam(int RailingType)
+         public string GetAllHandrailByParam(string RailingType)
          {
              string xml = string.Empty;
              try
              {
 
                  IList<Handrail> handrailList = XMLCadDrawingHandrailDB.GetCadDrawingHandrailListByParam(RailingType);
-                 var retHandrail = new XMLHandrail { Code = 100, Message = "卫生间查询成功", Handrails = handrailList.ToArray() };
+                 var retHandrail = new XMLHandrail { Code = 100, Message = "栏杆原型查询成功", Handrails = handrailList.ToArray() };
                  xml = XmlSerializeHelper.XmlSerialize<XMLHandrail>(retHandrail);
              }
              catch (Exception ex)
@@ -245,7 +245,7 @@ namespace SunacCADApp
              return xml;
          }
          [WebMethod(Description = "标准部品库[空调原型]条件查询")]
-         public string GetAllAirconditionerByParam(int AirconditionerPower, int AirconditionerPipePosition, int AirconditionerIsRainpipe, int RainpipePosition)
+         public string GetAllAirconditionerByParam(string AirconditionerPower, string AirconditionerPipePosition, string AirconditionerIsRainpipe, string RainpipePosition)
          {
              string xml = string.Empty;
              try

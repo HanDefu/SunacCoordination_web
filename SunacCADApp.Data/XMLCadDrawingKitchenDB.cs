@@ -10,15 +10,26 @@ namespace SunacCADApp.Data
 {
     public  class XMLCadDrawingKitchenDB
     {
-        protected static IList<Kitchen> GetKitchenByParam(double Width, double Height, int KitchenDoorWindowPosition, int KitchenType, int AirVent) 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Width"></param>
+        /// <param name="Height"></param>
+        /// <param name="KitchenDoorWindowPosition"></param>
+        /// <param name="KitchenType"></param>
+        /// <param name="AirVent"></param>
+        /// <returns></returns>
+        protected static IList<Kitchen> GetKitchenByParam(double Width, double Height, string KitchenDoorWindowPosition, string KitchenType, string AirVent) 
         {
             IList<Kitchen> listKitchen = new List<Kitchen>();
             string _where = string.Empty;
+            int _airVent=string.IsNullOrEmpty(AirVent)?-1:(AirVent=="是"?1:0);
             _where += Width > 0 ? string.Format(@" AND (a.KitchenOpenSizeMin >={0}  AND a.KitchenOpenSizeMax<={0})",Width) : string.Empty;
             _where += Height > 0 ? string.Format(@" AND (a.KitchenDepthsizeMin >={0}  AND a.KitchenDepthsizeMax<={0})", Height) : string.Empty;
-            _where +=KitchenDoorWindowPosition>0?string.Format(@" AND a.KitchenPosition = {0}",KitchenDoorWindowPosition):string.Empty;
-            _where += KitchenType > 0 ? string.Format(@" AND a.KitchenType = {0}", KitchenType) : string.Empty;
-            _where += AirVent > 0 ? string.Format(@" AND a.KitchenIsAirduct={0}", AirVent) : string.Empty;
+            _where += string.IsNullOrEmpty(KitchenDoorWindowPosition) ? string.Empty : string.Format(@" AND c.ArgumentText in ({0})", KitchenDoorWindowPosition);
+            _where +=string.IsNullOrEmpty(KitchenType) ?string.Empty: string.Format(@" AND a.KitchenType in ({0})", KitchenType);
+            _where += _airVent > -1 ? string.Format(@" AND a.KitchenIsAirduct={0}", _airVent) : string.Empty;
             string sql = string.Format(@"	 SELECT m.Id,m.DrawingCode,m.DrawingName,m.Scope,m.DynamicType,
 			                                                             CASE m.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '定性模块' END AS DynamicType,
 			                                                            a.KitchenType,b.ArgumentText AS KitchenTypeName,a.KitchenPosition,c.ArgumentText as KitchenPositionName,
@@ -38,7 +49,7 @@ namespace SunacCADApp.Data
         }
 
 
-        public static IList<Kitchen> GetKitchenListByWidth(double Width, double Height, int KitchenDoorWindowPosition, int KitchenType, int AirVent)
+        public static IList<Kitchen> GetKitchenListByWidth(double Width, double Height, string KitchenDoorWindowPosition, string KitchenType, string AirVent)
         {
 
             IList<Kitchen> listKitchen = GetKitchenByParam(Width, Height, KitchenDoorWindowPosition, KitchenType, AirVent);
