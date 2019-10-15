@@ -235,7 +235,7 @@
 
 
 
-        #ArgumentSetting dl dd input[type="text"] {
+        #ArgumentSetting dl dd b input[type="text"] {
            outline:none;
            border-width:0px;
            width:100%;
@@ -243,6 +243,8 @@
            margin:0px;
            background-color:#b58d59;
            text-align:center;
+           outline:none;
+           
         }
 
 #sunac {

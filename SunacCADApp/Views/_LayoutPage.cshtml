@@ -21,6 +21,7 @@
            let win_height =  $(window).height();
            console.log(win_height);
            $('.mian-column').css("min-height", (win_height - 130));
+           $('.center').css("min-height", (win_height - 70));
            $(".btn-upfile  .upload-cad").on("change", function () {
                let file_info = $(this).val();
                let that = $(this);

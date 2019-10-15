@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API_Common.cs" />
     <Compile Include="ViewDWGHelper.cs" />
     <Compile Include="XmlSerializeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

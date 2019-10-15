@@ -73,6 +73,7 @@
     <Compile Include="CadDrawingWindowDetailDB.cs" />
     <Compile Include="CadDrawingWindowSearchDB.cs" />
     <Compile Include="CommonLib.cs" />
+    <Compile Include="ESB\BpmLibDB.cs" />
     <Compile Include="MsSqlHelperEx.cs" />
     <Compile Include="Project_InformationDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

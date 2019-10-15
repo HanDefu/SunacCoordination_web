@@ -1,0 +1,92 @@
+﻿@using SunacCADApp.Entity;
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <link href="~/Content/Css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Css/site.css" rel="stylesheet" />
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js" type="text/javascript"></script>
+    <script src="~/Content/Js/goyeer.validation.js" type="text/javascript"></script>
+    <script src="~/Content/Plugins/layer/layer.js" type="text/javascript"></script>
+    <script src="~/Content/Plugins/laydate/laydate.js" type="text/javascript"></script>
+</head>
+<body>
+    <div id="ArgumentSetting">
+        @foreach (BasArgumentSetting argumentSetting in ViewBag.parentBasArgumentSetting)
+        {
+            <dl>
+                <dt>
+                    <b>@argumentSetting.ArgumentText</b>
+                </dt>
+                <dd>
+                    @foreach (BasArgumentSetting childArgumentSetting in ViewBag.childBasArgumentSetting)
+                    {
+                        if (childArgumentSetting.ParentID == argumentSetting.Id) 
+                        {
+                            <b>@childArgumentSetting.ArgumentText<del id="@childArgumentSetting.Id"></del></b>
+                        }
+                    }
+          
+                    <i parentid="@argumentSetting.Id" typecode="@argumentSetting.TypeCode" typename="@argumentSetting.TypeName"></i>
+                </dd>
+            </dl>
+        }
+
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+        $("dd > i").on('click', function () {
+            var attr_value = $(this).parent().find('input[type="text"]:first').val();
+            if (attr_value != undefined) {
+                layer.msg("先输入参数后，再添加下一个");
+                return;
+            }
+            
+             var _html = "<b class=\"selected\"><input type=\"text\" /> <del></del></b>";
+             $(this).before(_html);
+        })
+
+        $("dd").on("click", "del", function () {
+            let that = $(this);
+            let id = that.attr("id");
+            $.get("/ArgumentSetting/deleteHandlebyid", { id: id }, function (data) {
+                if (data.code == 100) {
+                    that.parent().remove();
+                } else {
+                    layer.alert("属性值删除失败", { icon: 5 });
+                }
+            }, "json")
+               
+        });
+
+        $("dd").on("focusout", "input[type='text']", function () {
+            let argumenttext =$(this).val();
+            if (_isNull(argumenttext))
+            {
+                layer.msg("属性值不能为空");
+                return false;
+            }
+            let that = $(this).parent().parent().find("i");
+            let self = $(this).parent();
+            let parentid = that.attr("parentid");
+            let typecode = that.attr("typecode");
+            let typename = that.attr("typename");
+            $.post("/ArgumentSetting/addhandle", { argumenttext: argumenttext, parentid: parentid, typecode: typecode, typename: typename }, function (data) {
+                if (data.code == 100) {
+                    let _html = "<b>" + argumenttext + "<del></del></b>";
+                    that.before(_html);
+                    window.location.reload();
+                } else {
+                    layer.alert("属性值添加失败",{icon:5});
+                }
+                self.remove();
+            },'json')
+        })
+
+
+    })
+</script>

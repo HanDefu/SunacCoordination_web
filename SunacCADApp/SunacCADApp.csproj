@@ -105,45 +105,8 @@
     <Content Include="Content\Css\img\main-bg.png" />
     <Content Include="Content\Css\img\sunac-head-logo.png" />
     <Content Include="Content\Css\sunac.css" />
-    <None Include="Service References\ServicePQA\SI_MD_COMMON_OUT.wsdl" />
     <Content Include="Content\Plugins\mtips\mTips.css" />
     <Content Include="Content\Plugins\mtips\mTips.js" />
-    <Content Include="Service References\ServicePQA\SunacCADApp.ServicePQA.DT_MDM_Landpublic_RESP.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ServicePQA\SunacCADApp.ServicePQA.DT_MDM_Producttype_RESP.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ServicePQA\SunacCADApp.ServicePQA.DT_MDM_Projectstage_RESP.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ServicePQA\SunacCADApp.ServicePQA.DT_MDM_Roomstructure_RESP.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ServicePQA\SunacCADApp.ServicePQA.SI_MD_LANDPUBLIC_OUTResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ServicePQA\SunacCADApp.ServicePQA.SI_MD_PRODUCTTYPE_OUTResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ServicePQA\SunacCADApp.ServicePQA.SI_MD_PROJEC_STAGE_OUTResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ServicePQA\SunacCADApp.ServicePQA.SI_MD_ROOMSTRUCTURE_OUTResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <None Include="Service References\ServiceReference1\configuration91.svcinfo" />
-    <None Include="Service References\ServiceReference1\configuration.svcinfo" />
-    <None Include="Service References\ServiceReference1\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\ServicePQA\configuration91.svcinfo" />
-    <None Include="Service References\ServicePQA\configuration.svcinfo" />
-    <None Include="Service References\ServicePQA\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="SunacCADService.asmx" />
     <Content Include="Content\Css\base.css" />
     <Content Include="Content\Css\bootstrap.css" />
@@ -264,7 +227,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BMPService.asmx.cs">
       <DependentUpon>BMPService.asmx</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controllers\AirconditionerController.cs" />
     <Compile Include="Controllers\BathroomController.cs" />
@@ -272,16 +234,6 @@
     <Compile Include="Controllers\DoorController.cs" />
     <Compile Include="Controllers\HandrailController.cs" />
     <Compile Include="Controllers\KitchenController.cs" />
-    <Compile Include="Service References\ServicePQA\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\ServiceReference1\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="SunacCADService.asmx.cs">
       <DependentUpon>SunacCADService.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -305,7 +257,7 @@
     <Content Include="Content\Plugins\laydate\theme\default\font\iconfont.ttf" />
     <Content Include="Content\Plugins\laydate\theme\default\font\iconfont.woff" />
     <Content Include="Views\Home\UserCenter.cshtml" />
-    <Content Include="Views\ArgumentSetting\Index.cshtml" />
+    <Content Include="Views\ArgumentSetting\Index-01.cshtml" />
     <Content Include="Views\CompanyInfo\Index.cshtml" />
     <Content Include="Content\Plugins\bootstrap\css\bootstrap-theme.css.map" />
     <Content Include="Content\Plugins\bootstrap\css\bootstrap-theme.min.css.map" />
@@ -350,22 +302,6 @@
     <Content Include="Views\Airconditioner\Edit.cshtml" />
     <Content Include="Views\Airconditioner\Index.cshtml" />
     <Content Include="Views\Airconditioner\LookOver.cshtml" />
-    <None Include="Service References\ServiceReference1\IDM_SUNAC_392_validatePwd.wsdl" />
-    <None Include="Service References\ServiceReference1\IDM_SUNAC_392_validatePwd_PS.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ServiceReference1\IDM_SUNAC_392_validatePwd_PS1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="Service References\ServiceReference1\SunacCADApp.ServiceReference1.Header.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ServiceReference1\SunacCADApp.ServiceReference1.IDM_SUNAC_392_validatePwdResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ServiceReference1\SunacCADApp.ServiceReference1.response.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <Content Include="uploader\cad\2019\9\26\107a3b93-0506-495e-974c-f2f1c3abd3d5.dwg" />
     <Content Include="uploader\cad\2019\9\26\2dbd3a2c-9b5c-4cdf-bc70-1fbda3f1ee3d.dwg" />
     <Content Include="uploader\cad\2019\9\26\3a0ae4d4-6c37-4376-af63-d59b2018510a.dwg" />
@@ -449,6 +385,7 @@
     <Content Include="uploader\cad\2019\9\30\92060f6d-b171-4546-8da5-fa696fb99cac.dwg" />
     <Content Include="uploader\cad\2019\9\30\be25bf34-0ed3-409e-9f02-23f19f22a2fc.dwg" />
     <Content Include="uploader\cad\2019\9\30\ff396b06-550f-423b-a7cc-cbf5e9a85b93.dwg" />
+    <Content Include="Views\ArgumentSetting\index.cshtml" />
     <None Include="Views\_LayoutPage-marster.cshtml.bak" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -475,13 +412,6 @@
       <Project>{3e7513e1-1863-4b37-add7-51a0167ee67a}</Project>
       <Name>SunacCADApp.Library</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\ServicePQA\" />
-    <WCFMetadataStorage Include="Service References\ServiceReference1\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

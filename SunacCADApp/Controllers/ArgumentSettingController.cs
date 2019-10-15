@@ -12,6 +12,11 @@ namespace SunacCADApp.Controllers
 
     public class ArgumentSettingController : Controller
     {
+
+        public ArgumentSettingController()
+        {
+            ViewBag.SelectModel = 13;
+        }
         /// <summary>
         ///   参数配置表-列表
         /// </summary>
@@ -21,6 +26,8 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Index()
         {
+
+            
 
             IList<BasArgumentSetting> parentBasArgumentSetting = BasArgumentSettingDB.GetBasArgumentSettingParent();
             IList<BasArgumentSetting> childBasArgumentSetting = BasArgumentSettingDB.GetBasArgumentSettingChild();
