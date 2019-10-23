@@ -267,9 +267,15 @@ namespace SunacCADApp
 
 
         [WebMethod(Description = "标准部品库[ CAD文件下载]")]
-        public string CadFileDownload(int Id) 
+        public string CadFileDownload(int Id,string Type="CAD") 
         {
             return XMLCadDrawingWindowDB.GetCADFileDownloadByWhere(Id);
+        }
+
+        [WebMethod(Description = "标准部品库[原型文件缩略图下载]")]
+        public string CadImgDownload(int Id) 
+        {
+            return XMLCadDrawingWindowDB.GeImgFileDownloadByID(Id);
         }
 
 

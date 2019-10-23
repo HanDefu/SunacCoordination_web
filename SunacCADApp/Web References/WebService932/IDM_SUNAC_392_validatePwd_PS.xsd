@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns:tns="http://www.ekingwin.com/esb/header/v1" elementFormDefault="qualified" targetNamespace="http://www.ekingwin.com/esb/header/v1" xmlns="http://www.w3.org/2001/XMLSchema">
+  <complexType name="Header">
+    <sequence>
+      <element name="BIZTRANSACTIONID" type="string" />
+      <element name="COUNT" type="string" />
+      <element name="CONSUMER" type="string" />
+      <element name="SRVLEVEL" type="dateTime" />
+      <element name="ACCOUNT" type="string" />
+      <element name="PASSWORD" type="string" />
+    </sequence>
+  </complexType>
+  <element name="commonHeader" type="tns:Header" />
+</schema>

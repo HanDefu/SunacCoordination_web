@@ -158,6 +158,56 @@ namespace SunacCADApp.Controllers
         }
 
 
+        /// <summary>
+        ///  /ArgumentSetting/deleteargumentsettingbyid
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult DeleteHandleByTo() 
+        {
+            int Id = Request.Form["supid"].ConvertToInt32(0);
+            if (Id < 1) 
+            {
+                return Json(new { code = -100, message = "传入值异常" }, JsonRequestBehavior.AllowGet);
+            }
+            int rtv = BasArgumentSettingDB.DeleteArgumentSettingById(Id);
+            if (rtv > 0)
+            {
+                return Json(new { code = 100, message = "删除成功" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { code = -100, message = "删除失败" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult AddSuperArgumentSetting() 
+        {
+            string ArgumentText = Request.Form["ArgumentText"];
+            string ArgumentCode = BasArgumentSettingDB.GetArgumentSettingCode();
+            BasArgumentSetting setting = new BasArgumentSetting();
+            setting.ArgumentText = ArgumentText;
+            setting.TypeCode = ArgumentCode;
+            setting.TypeName = ArgumentText;
+            setting.ParentID = 0;
+            setting.CreateOn = DateTime.Now;
+            setting.Reorder = 0;
+            setting.Enabled = 1;
+            setting.CreateUserId = 0;
+            setting.CreateBy = "admin";
+            setting.ModifiedOn = DateTime.Now;
+            int rtv = BasArgumentSettingDB.AddHandle(setting);
+            if (rtv > 0)
+            {
+                return Json(new { code = 100, message = "删除成功" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { code = -100, message = "删除失败" }, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+
 
 
     }

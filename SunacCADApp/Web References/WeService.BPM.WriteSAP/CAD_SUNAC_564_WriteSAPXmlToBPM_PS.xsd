@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns:tns="http://www.ekingwin.com/esb/error/v1" elementFormDefault="qualified" targetNamespace="http://www.ekingwin.com/esb/error/v1" xmlns="http://www.w3.org/2001/XMLSchema">
+  <element name="error" type="tns:errorType" />
+  <complexType name="errorType">
+    <sequence>
+      <element minOccurs="1" maxOccurs="1" name="ErrorCode" type="string" />
+      <element minOccurs="0" maxOccurs="1" name="ErrorMessage" type="string" />
+      <element minOccurs="1" maxOccurs="1" name="Timestamp" type="dateTime" />
+      <element minOccurs="0" maxOccurs="1" name="ErrorDetails" type="anyType" />
+    </sequence>
+  </complexType>
+</schema>

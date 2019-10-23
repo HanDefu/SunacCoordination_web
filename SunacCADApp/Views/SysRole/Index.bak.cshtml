@@ -1,0 +1,134 @@
+﻿@using SunacCADApp.Entity
+@using SunacCADApp.Data
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <link href="~/Content/Plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Css/site.css" rel="stylesheet" />
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="~/Content/Plugins/layer/layer.js"></script>
+    <script src="~/Content/Plugins/laydate/laydate.js"></script>
+</head>
+<body id="sunac">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 panel-search">
+                <span class="panel-item panel-form">
+                    <input type="text" class="form-control" />
+                </span>
+                <span class="panel-item panel-button">
+                    <button class="btn btn-sunac" type="button">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                    </button>
+                </span>
+                <span class="panel-item panel-button">
+                    <button class="btn btn-sunac btn-add" type="button">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div class="row panel-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="60" class="text-center">序号</th>
+                        <th width="160">角色名称</th>
+                        <th>角色描述</th>
+                        <th>权限</th>
+                        <th width="160" class="text-center">创建时间</th>
+                        <th width="120" class="text-center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                        foreach (Sys_Role row in ViewBag.List)
+                        {
+                            <tr>
+                                <td class="text-center">@(i++)</td>
+                                <td>@row.Role_Name</td>
+                                <td>@row.Role_Remark</td>
+                                <td>
+                               @{
+                            IList<Sys_Model> models = Sys_ModelDB.GetSysModeByRoleID(row.Id);
+                            List<string> strList = new List<string>();
+                            foreach (Sys_Model model in models)
+                            {
+                                string modelName = model.Model_Name;
+                                strList.Add(modelName);
+
+                            }
+                            string strName = string.Join("、", strList);
+                            <span>@strName</span>
+                            }
+
+                                </td>
+                                <td class="text-center">@row.ModifiedOn.ToString("yyyy-MM-dd  HH:mm:ss")</td>
+                                <td align="center" class="operate">
+                                    <a href="javascript:void(0)" class="handle-modify" data-id="@row.Id">修改</a> |
+                                    <a data-id="@row.Id" title="删除" class="handle-delete" href="javascript:void(0)">删除</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+        $(".btn-add").on("click", function () {
+            var index = layer.open({
+                type: 2,
+                skin: 'layer-ext-sunacskin',
+                area: ['840px', '560px'],
+                title: '新增角色',
+                scrollbar :true,
+                content: ['/sysrole/add','yes']
+            });
+        });
+
+        $(".handle-modify").on("click", function () {
+            let id = $(this).data("id");
+            var index = layer.open({
+                type: 2,
+                skin: 'layer-ext-sunacskin',
+                area: ['840px', '560px'],
+                title: '修改角色',
+                content: ['/sysrole/edit/' + id,'yes']
+            });
+        });
+
+        $('.handle-delete').on('click', function () {
+            var id = $(this).data('id');
+            if (id > 0) {
+                layer.confirm('是否需要删除', {
+                    btn: ['删除', '取消'],
+                    shade: false,
+                    icon: 3
+                }, function () {
+                    $.get("/sysrole/deletehandlebyid", { id: id }, function (data) {
+                        if (data.code == 100) {
+                            layer.msg(data.message, { icon: 6, shade: false }, function () {
+                                location.reload();
+                            });
+                        } else {
+                            layer.msg(data.message, { icon: 5, shade: false });
+                        }
+                    }, 'json');
+
+                });
+            } else {
+                layer.msg('非法操作', { icon: 5, shade: false });
+            }
+        });
+
+
+    })
+</script>
+

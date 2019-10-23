@@ -12,11 +12,17 @@ namespace SunacCADApp.Controllers
 
     public class SysRoleController : Controller
     {
+
+        public SysRoleController() 
+        {
+            ViewBag.SelectModel = 12;
+        }
+
         /// <summary>
         ///   角色表-列表
         /// </summary>
         /// <returns></returns>
-        /// <get>/Manage/Sys_Role</get>
+        /// <get>/SysRole/Index</get>
         /// <author>alon<84789887@qq.com></author> 
         [ValidateInput(false)]
         public ActionResult Index()

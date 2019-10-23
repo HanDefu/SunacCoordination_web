@@ -12,6 +12,12 @@ namespace SunacCADApp.Controllers
 
     public class CompanyInfoController : Controller
     {
+
+        public CompanyInfoController() 
+        {
+            ViewBag.SelectModel = 14;
+        }
+
         /// <summary>
         ///   机构信息-列表
         /// </summary>

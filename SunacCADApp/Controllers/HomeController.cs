@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using SunacCADApp.Entity;
 using SunacCADApp.Data;
+using SunacCADApp.PI;
+
 
 namespace SunacCADApp.Controllers
 {
@@ -51,11 +53,29 @@ namespace SunacCADApp.Controllers
             
         }
 
+
+        /// <summary>
+        ///   /home/get
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Get()
         {
+            cn.com.sunac.sappoqas.DT_COM_Projectstage_REQBaseInfo baseInfo = new cn.com.sunac.sappoqas.DT_COM_Projectstage_REQBaseInfo();
+            baseInfo.ServiceName="SI_MD_COMMON_OUT";
+            baseInfo.SourceSystem="BS-CAD-Q";
+            baseInfo.TargetSystem="S4QCLNT200";
+            cn.com.sunac.sappoqas.DT_COM_Projectstage_REQ request = new cn.com.sunac.sappoqas.DT_COM_Projectstage_REQ();
+            request.BaseInfo = baseInfo;
+            request.Begindate = "20190911095448.3007171";
+            request.Numb = "100";
 
-       
-            return Json(new { code = 1000 });
+            cn.com.sunac.sappoqas.SI_MD_COMMON_OUTService client = new cn.com.sunac.sappoqas.SI_MD_COMMON_OUTService();
+            client.Credentials = new System.Net.NetworkCredential("POQ_CAD", "cad@1234");
+            cn.com.sunac.sappoqas.DT_MDM_Projectstage_RESP response = client.SI_MD_PROJEC_STAGE_OUT(request);
+            return Json(new { code = -100, message = "开发成功" }, JsonRequestBehavior.AllowGet);
+            
         }
+
+
     }
 }

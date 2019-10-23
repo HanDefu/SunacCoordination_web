@@ -1,85 +1,73 @@
-﻿@using SunacCADApp.Entity
+﻿@{
+    Layout = "~/Views/_LayoutPage.cshtml";
+}
+@using SunacCADApp.Entity
 @using SunacCADApp.Data
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-    <link href="~/Content/Plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/Css/site.css" rel="stylesheet" />
-    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
-    <script src="~/Content/Plugins/layer/layer.js"></script>
-    <script src="~/Content/Plugins/laydate/laydate.js"></script>
-</head>
-<body id="sunac">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12 panel-search">
-                <span class="panel-item panel-form">
-                    <input type="text" class="form-control" />
-                </span>
-                <span class="panel-item panel-button">
-                    <button class="btn btn-sunac" type="button">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
-                    </button>
-                </span>
-                <span class="panel-item panel-button">
-                    <button class="btn btn-sunac btn-add" type="button">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
-                    </button>
-                </span>
-            </div>
-        </div>
-        <div class="row panel-table">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th width="60" class="text-center">序号</th>
-                        <th width="160">角色名称</th>
-                        <th>角色描述</th>
-                        <th>权限</th>
-                        <th width="160" class="text-center">创建时间</th>
-                        <th width="120" class="text-center">操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        int i = 1;
-                        foreach (Sys_Role row in ViewBag.List)
-                        {
-                            <tr>
-                                <td class="text-center">@(i++)</td>
-                                <td>@row.Role_Name</td>
-                                <td>@row.Role_Remark</td>
-                                <td>
-                               @{
-                            IList<Sys_Model> models = Sys_ModelDB.GetSysModeByRoleID(row.Id);
-                            List<string> strList = new List<string>();
-                            foreach (Sys_Model model in models)
-                            {
-                                string modelName = model.Model_Name;
-                                strList.Add(modelName);
-
-                            }
-                            string strName = string.Join("、", strList);
-                            <span>@strName</span>
-                            }
-
-                                </td>
-                                <td class="text-center">@row.ModifiedOn.ToString("yyyy-MM-dd  HH:mm:ss")</td>
-                                <td align="center" class="operate">
-                                    <a href="javascript:void(0)" class="handle-modify" data-id="@row.Id">修改</a> |
-                                    <a data-id="@row.Id" title="删除" class="handle-delete" href="javascript:void(0)">删除</a>
-                                </td>
-                            </tr>
-                        }
-                    }
-                </tbody>
-            </table>
+<div id="sunac">
+    <div class="row">
+        <div class="col-lg-12 panel-search">
+            <span class="panel-item panel-form">
+                <input type="text" class="form-control" />
+            </span>
+            <span class="panel-item panel-button">
+                <button class="btn btn-sunac" type="button">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                </button>
+            </span>
+            <span class="panel-item panel-button">
+                <button class="btn btn-sunac btn-add" type="button">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增
+                </button>
+            </span>
         </div>
     </div>
-</body>
-</html>
+    <div class="row panel-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="60" class="text-center">序号</th>
+                    <th width="160">角色名称</th>
+                    <th>角色描述</th>
+                    <th>权限</th>
+                    <th width="160" class="text-center">创建时间</th>
+                    <th width="120" class="text-center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int i = 1;
+                    foreach (Sys_Role row in ViewBag.List)
+                    {
+                        <tr>
+                            <td class="text-center">@(i++)</td>
+                            <td>@row.Role_Name</td>
+                            <td>@row.Role_Remark</td>
+                            <td>
+                            @{
+                                IList<Sys_Model> models = Sys_ModelDB.GetSysModeByRoleID(row.Id);
+                                List<string> strList = new List<string>();
+                                foreach (Sys_Model model in models)
+                                {
+                                    string modelName = model.Model_Name;
+                                    strList.Add(modelName);
+
+                                }
+                                string strName = string.Join("、", strList);
+                                <span>@strName</span>
+                             }
+                            </td>
+                            <td class="text-center">@row.ModifiedOn.ToString("yyyy-MM-dd  HH:mm:ss")</td>
+                            <td align="center" class="operate">
+                                <a href="javascript:void(0)" class="handle-modify" data-id="@row.Id">修改</a> |
+                                <a data-id="@row.Id" title="删除" class="handle-delete" href="javascript:void(0)">删除</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 <script type="text/javascript">
     $(function () {
         $(".btn-add").on("click", function () {

@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SunacCADApp.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SunacCADApp_cn_com_sunac_sappoqas_SI_MD_COMMON_OUTService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://sappoqas.sunac.com.cn:50100/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BC_MDM&amp;receiverParty=&amp;receiverService=&amp;interface=SI_MD_COMMON_OUT&amp;interfaceNamespace=urn%3ASunac%3Acom%3Amdm%3Aproject</Value>
+    </Setting>
+    <Setting Name="SunacCADApp_WeService_BPM_WriteSAP_CAD_SUNAC_564_WriteSAPXmlToBPM_ptt_bindingQSService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_564_WriteSAPXmlToBPM_PS</Value>
+    </Setting>
+    <Setting Name="SunacCADApp_WebService_UpdataAndApproveFlow_CAD_SUNAC_565_UpdateAndApproveFlow_ptt_bindingQSService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_565_UpdateAndApproveFlow_PS</Value>
+    </Setting>
+    <Setting Name="SunacCADApp_WebService_Idm_User_PUBLIC_SUNAC_300_queryIdmUserData_ptt_bindingQSService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://192.168.2.219:8001/WP_SUNAC/APP_PUBLIC_SERVICES/Proxy_Services/TA_IDM/PUBLIC_SUNAC_300_queryIdmUserData_PS</Value>
+    </Setting>
+    <Setting Name="SunacCADApp_WebService_IDM_Public_PUBLIC_SUNAC_301_queryIdmOrgData_ptt_bindingQSService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://192.168.2.219:8001/WP_SUNAC/APP_PUBLIC_SERVICES/Proxy_Services/TA_IDM/PUBLIC_SUNAC_301_queryIdmOrgData_PS</Value>
+    </Setting>
+    <Setting Name="SunacCADApp_WebService932_IDM_SUNAC_392_validatePwd_ptt_bindingQSService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

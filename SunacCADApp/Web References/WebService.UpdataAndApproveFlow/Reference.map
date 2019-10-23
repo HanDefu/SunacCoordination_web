@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_565_UpdateAndApproveFlow_PS?SCHEMA%2FWP_SUNAC%2FAPP_CAD_SERVICES%2FResources%2FWSDL%2FXSD_SYS_BASEINFO" filename="CAD_SUNAC_565_UpdateAndApproveFlow_PS.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.SchemaReference" url="http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_565_UpdateAndApproveFlow_PS?SCHEMA%2FWP_SUNAC%2FAPP_CAD_SERVICES%2FResources%2FWSDL%2FXSD_SYS_ERROR" filename="CAD_SUNAC_565_UpdateAndApproveFlow_PS0.xsd" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_565_UpdateAndApproveFlow_PS?wsdl" filename="CAD_SUNAC_565_UpdateAndApproveFlow.wsdl" />
+  </Results>
+</DiscoveryClientResultsFile>

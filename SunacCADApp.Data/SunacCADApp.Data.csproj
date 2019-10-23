@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="BasArgumentSettingDB.cs" />
     <Compile Include="BaseCompanyInfoDB.cs" />
+    <Compile Include="BasInstitutionDataDB.cs" />
     <Compile Include="CadDrawingAirconditionerDetailDB.cs" />
     <Compile Include="CadDrawingBathroomDetailDB.cs" />
     <Compile Include="CadDrawingByAreaDB.cs" />

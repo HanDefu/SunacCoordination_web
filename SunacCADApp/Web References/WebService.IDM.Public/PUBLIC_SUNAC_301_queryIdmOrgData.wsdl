@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WL5G3N0:definitions xmlns:WL5G3N2="http://www.ekingwin.com/esb/header/v1" xmlns:WL5G3N1="http://www.ekingwin.com/esb/PUBLIC_SUNAC_301_queryIdmOrgData" xmlns:WL5G3N3="http://schemas.xmlsoap.org/wsdl/soap/" name="PUBLIC_SUNAC_301_queryIdmOrgData" targetNamespace="http://www.ekingwin.com/esb/PUBLIC_SUNAC_301_queryIdmOrgData" xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/">
+  <WL5G3N0:types>
+    <xsd:schema xmlns:tns="http://www.ekingwin.com/esb/PUBLIC_SUNAC_301_queryIdmOrgData" xmlns:err="http://www.ekingwin.com/esb/error/v1" xmlns:head="http://www.ekingwin.com/esb/header/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" elementFormDefault="qualified" targetNamespace="http://www.ekingwin.com/esb/PUBLIC_SUNAC_301_queryIdmOrgData" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import schemaLocation="http://192.168.2.219:8001/WP_SUNAC/APP_PUBLIC_SERVICES/Proxy_Services/TA_IDM/PUBLIC_SUNAC_301_queryIdmOrgData_PS?SCHEMA%2FWP_SUNAC%2FAPP_PUBLIC_SERVICES%2FResources%2FWSDL%2FXSD_SYS_ERROR" namespace="http://www.ekingwin.com/esb/error/v1" />
+      <xsd:import schemaLocation="http://192.168.2.219:8001/WP_SUNAC/APP_PUBLIC_SERVICES/Proxy_Services/TA_IDM/PUBLIC_SUNAC_301_queryIdmOrgData_PS?SCHEMA%2FWP_SUNAC%2FAPP_PUBLIC_SERVICES%2FResources%2FWSDL%2FXSD_SYS_HEADER_NEW" namespace="http://www.ekingwin.com/esb/header/v1" />
+      <xsd:element name="PUBLIC_SUNAC_301_queryIdmOrgData">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" name="queryDto" type="tns:queryDto" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="queryDto">
+        <xsd:sequence>
+          <xsd:element name="beginDate" type="xsd:string" />
+          <xsd:element name="endDate" type="xsd:string" />
+          <xsd:element name="pageNo" type="xsd:string" />
+          <xsd:element name="pageRowNo" type="xsd:string" />
+          <xsd:element name="systemID" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="response">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" name="HEADER" type="tns:HEADER" />
+            <xsd:element maxOccurs="1" name="LIST" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="QueryFault">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" name="QueryFault" type="err:errorType" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="HEADER">
+        <xsd:sequence>
+          <xsd:element name="BIZTRANSACTIONID" type="xsd:string" />
+          <xsd:element name="RESULT" type="xsd:string" />
+          <xsd:element name="ERRORCODE" type="xsd:string" />
+          <xsd:element name="ERRORINFO" type="xsd:string" />
+          <xsd:element name="COMMENTS" type="xsd:string" />
+          <xsd:element name="SUCCESSCOUNT" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </WL5G3N0:types>
+  <WL5G3N0:message name="PUBLIC_SUNAC_301_queryIdmOrgData">
+    <WL5G3N0:part name="parameters" element="WL5G3N1:PUBLIC_SUNAC_301_queryIdmOrgData" />
+    <WL5G3N0:part name="parameters2" element="WL5G3N2:commonHeader" />
+  </WL5G3N0:message>
+  <WL5G3N0:message name="response">
+    <WL5G3N0:part name="parameters" element="WL5G3N1:response" />
+    <WL5G3N0:part name="parameters2" element="WL5G3N2:commonHeader" />
+  </WL5G3N0:message>
+  <WL5G3N0:message name="QueryFault">
+    <WL5G3N0:part name="parameters" element="WL5G3N1:QueryFault" />
+  </WL5G3N0:message>
+  <WL5G3N0:portType name="PUBLIC_SUNAC_301_queryIdmOrgData_ptt">
+    <WL5G3N0:operation name="PUBLIC_SUNAC_301_queryIdmOrgData">
+      <WL5G3N0:input message="WL5G3N1:PUBLIC_SUNAC_301_queryIdmOrgData" />
+      <WL5G3N0:output message="WL5G3N1:response" />
+      <WL5G3N0:fault name="QueryFault" message="WL5G3N1:QueryFault" />
+    </WL5G3N0:operation>
+  </WL5G3N0:portType>
+  <WL5G3N0:binding name="PUBLIC_SUNAC_301_queryIdmOrgData_ptt-binding" type="WL5G3N1:PUBLIC_SUNAC_301_queryIdmOrgData_ptt">
+    <WL5G3N3:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <WL5G3N0:operation name="PUBLIC_SUNAC_301_queryIdmOrgData">
+      <WL5G3N3:operation soapAction="PUBLIC_SUNAC_301_queryIdmOrgData" style="document" />
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal" parts="parameters" />
+        <WL5G3N3:header message="WL5G3N1:PUBLIC_SUNAC_301_queryIdmOrgData" part="parameters2" use="literal" />
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal" parts="parameters" />
+        <WL5G3N3:header message="WL5G3N1:response" part="parameters2" use="literal" />
+      </WL5G3N0:output>
+      <WL5G3N0:fault name="QueryFault">
+        <WL5G3N3:fault use="literal" name="QueryFault" namespace="" />
+      </WL5G3N0:fault>
+    </WL5G3N0:operation>
+  </WL5G3N0:binding>
+  <WL5G3N0:service name="PUBLIC_SUNAC_301_queryIdmOrgData_ptt-bindingQSService">
+    <WL5G3N0:documentation>OSB Service</WL5G3N0:documentation>
+    <WL5G3N0:port name="PUBLIC_SUNAC_301_queryIdmOrgData_ptt-bindingQSPort" binding="WL5G3N1:PUBLIC_SUNAC_301_queryIdmOrgData_ptt-binding">
+      <WL5G3N3:address location="http://192.168.2.219:8001/WP_SUNAC/APP_PUBLIC_SERVICES/Proxy_Services/TA_IDM/PUBLIC_SUNAC_301_queryIdmOrgData_PS" />
+    </WL5G3N0:port>
+  </WL5G3N0:service>
+</WL5G3N0:definitions>

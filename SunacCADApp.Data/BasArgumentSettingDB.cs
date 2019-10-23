@@ -139,6 +139,20 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.Execute(sql);
         }
 
+
+        /// <summary>
+        ///   / 
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public static int DeleteArgumentSettingById(int Id) 
+        {
+
+            string sql = string.Format(@"DELETE FROM dbo.BasArgumentSetting WHERE Id={0};
+                                                        DELETE  FROM BasArgumentSetting WHERE ParentID={0};", Id);
+            return MsSqlHelperEx.Execute(sql);
+        }
+
         ///<summary>
         /// 参数配置表-删除多个ID
         ///</summary>  
@@ -154,6 +168,12 @@ namespace SunacCADApp.Data
         {
             string sql = string.Format("DELETE FROM dbo.BasArgumentSetting WHERE {0} ", param);
             return MsSqlHelperEx.Execute(sql);
+        }
+
+        public static string GetArgumentSettingCode() 
+        {
+            string sql = string.Format(@"SELECT CONCAT('Setting_',COUNT(*)+1) AS TypeCode FROM dbo.BasArgumentSetting WHERE ParentID=0");
+            return MsSqlHelperEx.ExecuteScalar(sql).ConventToString(string.Empty);
         }
 
     }

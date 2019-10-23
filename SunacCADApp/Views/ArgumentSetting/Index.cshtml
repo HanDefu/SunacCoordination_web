@@ -4,11 +4,18 @@
     Layout = "~/Views/_LayoutPage.cshtml";
 }
 <div id="ArgumentSetting">
+    <dl class="operate">
+        <dt>
+            <strong></strong>
+        </dt>
+    </dl>
     @foreach (BasArgumentSetting argumentSetting in ViewBag.parentBasArgumentSetting)
     {
         <dl>
             <dt>
                 <b>@argumentSetting.ArgumentText</b>
+                <s data-supid="@argumentSetting.Id">&nbsp;</s>
+               
             </dt>
             <dd>
                 @foreach (BasArgumentSetting childArgumentSetting in ViewBag.childBasArgumentSetting)
@@ -76,6 +83,40 @@
                 }
                 self.remove();
             },'json')
+        })
+
+        $("dt s").on("click", function () {
+            var supid = parseInt($(this).data("supid"));
+            if (supid > 0)
+            {
+                layer.confirm("是否需要删除父类", { icon: 3, title: '删除提示', shade: 0, btn: ['确定删除', '取消'] }, function () {
+                    $.post("/ArgumentSetting/DeleteHandleByTo", { supid: supid }, function (data) {
+                        if (data.code == 100) {
+                            layer.alert("父类删除成功", { icon: 6, shade: 0 }, function () {
+                                window.location.reload();
+                            });
+
+                        } else {
+                            layer.alert("父类删除失败", { icon: 5 });
+                        }
+                    }, 'json')
+                });
+            }
+        });
+
+        $(".operate strong").on("click", function () {
+            layer.prompt({ title: '输入大类名称', formType: 0,shade:0}, function (text, index) {
+                $.post("/ArgumentSetting/AddSuperArgumentSetting", { ArgumentText: text }, function (data) {
+                    if (data.code == 100) {
+                        layer.alert("父类添加成功", { icon: 6, shade: 0 }, function () {
+                            window.location.reload();
+                        });
+
+                    } else {
+                        layer.alert("父类添加失败", { icon: 5 });
+                    }
+                }, 'json')
+            });
         })
 
 

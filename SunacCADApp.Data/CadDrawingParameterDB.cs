@@ -140,5 +140,19 @@ namespace SunacCADApp.Data
             return _caddrawingparameters;
         }
 
+        public static IList<SizePara> GetBPMSizeParamList(string _where) 
+        {
+            IList<SizePara> _param = new List<SizePara>();
+            string sql = string.Format(@" SELECT  a.SizeNo AS code,b.StateName AS valueType,a.Val AS [value],
+                                                                      a.MinValue AS minValue,a.MaxValue AS maxValue,
+                                                                      a.DefaultValue AS defaultValue,a.[Desc] AS valueDescription
+                                                           FROM dbo.CadDrawingParameter  a 
+                                                   INNER JOIN dbo.Sys_State b ON a.ValueType=b.StateId 
+                                                                                             AND b.StateFixFlag='WindowArgument' 
+                                                            WHERE {0}",_where);
+            _param = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<SizePara>(new SizePara());
+            return _param;
+        }
+
     }
 }

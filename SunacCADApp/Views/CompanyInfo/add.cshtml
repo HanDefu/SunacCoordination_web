@@ -18,7 +18,7 @@
             <div class="row sunacrow">
                 <div class="form-group">
                     <label>机构名称：</label>
-                    <select class="form-control" name="select_companyname">
+                    <select class="form-control required" name="select_companyname">
                         <option value="">选择机构</option>
                         @foreach (DataSourceMember member in ViewBag.companynameSource)
                         {
@@ -70,7 +70,7 @@
         success: function (data) {
             if (data.code == 100) {
                 layer.msg(data.message, { icon: 6, time: 2000 }, function () {
-                    parent.window.location.href = "/manage/companyinfo"
+                    parent.window.location.reload();
                 });
             } else {
                 layer.alert(data.message, { icon: 5, shade: false });

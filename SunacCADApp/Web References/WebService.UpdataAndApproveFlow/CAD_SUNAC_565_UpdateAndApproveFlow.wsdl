@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WL5G3N0:definitions xmlns:WL5G3N2="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:WL5G3N1="http://www.ekingwin.com/esb/CAD_SUNAC_565_UpdateAndApproveFlow" name="CAD_SUNAC_565_UpdateAndApproveFlow" targetNamespace="http://www.ekingwin.com/esb/CAD_SUNAC_565_UpdateAndApproveFlow" xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/">
+  <WL5G3N0:types>
+    <xsd:schema xmlns:base="http://www.ekingwin.com/esb/header/v1" xmlns:tns="http://www.ekingwin.com/esb/CAD_SUNAC_565_UpdateAndApproveFlow" xmlns:err="http://www.ekingwin.com/esb/error/v1" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" elementFormDefault="unqualified" targetNamespace="http://www.ekingwin.com/esb/CAD_SUNAC_565_UpdateAndApproveFlow" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import schemaLocation="http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_565_UpdateAndApproveFlow_PS?SCHEMA%2FWP_SUNAC%2FAPP_CAD_SERVICES%2FResources%2FWSDL%2FXSD_SYS_ERROR" namespace="http://www.ekingwin.com/esb/error/v1" />
+      <xsd:import schemaLocation="http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_565_UpdateAndApproveFlow_PS?SCHEMA%2FWP_SUNAC%2FAPP_CAD_SERVICES%2FResources%2FWSDL%2FXSD_SYS_BASEINFO" namespace="http://www.ekingwin.com/esb/header/v1" />
+      <xsd:element name="CAD_SUNAC_565_UpdateAndApproveFlow">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" name="I_REQUEST" type="tns:I_REQUEST" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="I_REQUEST">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" name="REQ_BASEINFO" type="base:REQ_BASEINFO" />
+          <xsd:element maxOccurs="1" name="MESSAGE" type="tns:MESSAGE" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MESSAGE">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="REQ_ITEM" nillable="true" type="tns:REQ_ITEM" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="REQ_ITEM">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="1" name="procInstId" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="jobid" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="xmldata" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="userid" type="xsd:string" />
+          <xsd:element minOccurs="0" maxOccurs="1" name="comments" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="CAD_SUNAC_565_UpdateAndApproveFlow_RSP">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" name="E_RESPONSE" type="tns:E_RESPONSE" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="E_RESPONSE">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" name="RSP_BASEINFO" type="base:RSP_BASEINFO" />
+          <xsd:element name="MESSAGE">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="unbounded" name="RSP_ITEM" nillable="true">
+                  <xsd:complexType>
+                    <xsd:sequence>
+                      <xsd:element minOccurs="0" maxOccurs="1" name="STATUSCODE" type="xsd:string" />
+                      <xsd:element minOccurs="0" maxOccurs="1" name="STATUSMESSAGE" type="xsd:string" />
+                    </xsd:sequence>
+                  </xsd:complexType>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="QueryFault">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="1" name="QueryFault" type="err:errorType" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </WL5G3N0:types>
+  <WL5G3N0:message name="CAD_SUNAC_565_UpdateAndApproveFlow">
+    <WL5G3N0:part name="parameters" element="WL5G3N1:CAD_SUNAC_565_UpdateAndApproveFlow" />
+  </WL5G3N0:message>
+  <WL5G3N0:message name="CAD_SUNAC_565_UpdateAndApproveFlow_RSP">
+    <WL5G3N0:part name="parameters" element="WL5G3N1:CAD_SUNAC_565_UpdateAndApproveFlow_RSP" />
+  </WL5G3N0:message>
+  <WL5G3N0:message name="QueryFault">
+    <WL5G3N0:part name="parameters" element="WL5G3N1:QueryFault" />
+  </WL5G3N0:message>
+  <WL5G3N0:portType name="CAD_SUNAC_565_UpdateAndApproveFlow_ptt">
+    <WL5G3N0:operation name="CAD_SUNAC_565_UpdateAndApproveFlow">
+      <WL5G3N0:input message="WL5G3N1:CAD_SUNAC_565_UpdateAndApproveFlow" />
+      <WL5G3N0:output message="WL5G3N1:CAD_SUNAC_565_UpdateAndApproveFlow_RSP" />
+      <WL5G3N0:fault name="QueryFault" message="WL5G3N1:QueryFault" />
+    </WL5G3N0:operation>
+  </WL5G3N0:portType>
+  <WL5G3N0:binding name="CAD_SUNAC_565_UpdateAndApproveFlow_ptt-binding" type="WL5G3N1:CAD_SUNAC_565_UpdateAndApproveFlow_ptt">
+    <WL5G3N2:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <WL5G3N0:operation name="CAD_SUNAC_565_UpdateAndApproveFlow">
+      <WL5G3N2:operation soapAction="CAD_SUNAC_565_UpdateAndApproveFlow" style="document" />
+      <WL5G3N0:input>
+        <WL5G3N2:body use="literal" parts="parameters" />
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N2:body use="literal" parts="parameters" />
+      </WL5G3N0:output>
+      <WL5G3N0:fault name="QueryFault">
+        <WL5G3N2:fault use="literal" name="QueryFault" namespace="" />
+      </WL5G3N0:fault>
+    </WL5G3N0:operation>
+  </WL5G3N0:binding>
+  <WL5G3N0:service name="CAD_SUNAC_565_UpdateAndApproveFlow_ptt-bindingQSService">
+    <WL5G3N0:documentation>OSB Service</WL5G3N0:documentation>
+    <WL5G3N0:port name="CAD_SUNAC_565_UpdateAndApproveFlow_ptt-bindingQSPort" binding="WL5G3N1:CAD_SUNAC_565_UpdateAndApproveFlow_ptt-binding">
+      <WL5G3N2:address location="http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_565_UpdateAndApproveFlow_PS" />
+    </WL5G3N0:port>
+  </WL5G3N0:service>
+</WL5G3N0:definitions>

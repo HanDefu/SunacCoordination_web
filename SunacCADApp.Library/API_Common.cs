@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,6 +30,37 @@ namespace SunacCADApp.Library
             }
         }
 
+        public static string GetSOAPReSource(string url, string datastr)
+        {
+            try
+            {
+                //request
+                Uri uri = new Uri(url);
+                WebRequest webRequest = WebRequest.Create(uri);
+                webRequest.ContentType = "text/xml; charset=utf-8";
+                webRequest.Headers.Add("Username", "POQ_CAD");
+                webRequest.Headers.Add("Password", "cad@1234");
+                webRequest.Method = "POST";
+                using (Stream requestStream = webRequest.GetRequestStream())
+                {
+                    byte[] paramBytes = Encoding.UTF8.GetBytes(datastr.ToString());
+                    requestStream.Write(paramBytes, 0, paramBytes.Length);
+                }
+                //response
+                WebResponse webResponse = webRequest.GetResponse();
+                using (StreamReader myStreamReader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8))
+                {
+                    string result = "";
+                    return result = myStreamReader.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
+
+   
     }
 }

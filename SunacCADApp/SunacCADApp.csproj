@@ -98,15 +98,21 @@
     <Content Include="Content\Css\img\file-upload.png" />
     <Content Include="Content\Css\img\icon-arrows-right.png" />
     <Content Include="Content\Css\img\icon-background.png" />
+    <Content Include="Content\Css\img\icon-delete-yellow.png" />
     <Content Include="Content\Css\img\icon-no-image.png" />
     <Content Include="Content\Css\img\icon-project.png" />
     <Content Include="Content\Css\img\icon-tips.png" />
     <Content Include="Content\Css\img\icon-topnav-arrows.png" />
     <Content Include="Content\Css\img\main-bg.png" />
     <Content Include="Content\Css\img\sunac-head-logo.png" />
+    <Content Include="Content\Css\img\sunac-logo.png" />
     <Content Include="Content\Css\sunac.css" />
     <Content Include="Content\Plugins\mtips\mTips.css" />
     <Content Include="Content\Plugins\mtips\mTips.js" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <Content Include="SunacCADService.asmx" />
     <Content Include="Content\Css\base.css" />
     <Content Include="Content\Css\bootstrap.css" />
@@ -221,7 +227,9 @@
     <Content Include="uploader\img\2019\9\30\92060f6d-b171-4546-8da5-fa696fb99cac.jpg" />
     <Content Include="uploader\img\2019\9\30\be25bf34-0ed3-409e-9f02-23f19f22a2fc.jpg" />
     <Content Include="uploader\img\2019\9\30\ff396b06-550f-423b-a7cc-cbf5e9a85b93.jpg" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -229,11 +237,18 @@
       <DependentUpon>BMPService.asmx</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AirconditionerController.cs" />
+    <Compile Include="Controllers\BasInstitutionDataController.cs" />
     <Compile Include="Controllers\BathroomController.cs" />
+    <Compile Include="Controllers\BpmHandleController.cs" />
     <Compile Include="Controllers\CommonLibController.cs" />
     <Compile Include="Controllers\DoorController.cs" />
     <Compile Include="Controllers\HandrailController.cs" />
     <Compile Include="Controllers\KitchenController.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="SunacCADService.asmx.cs">
       <DependentUpon>SunacCADService.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -248,6 +263,36 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web References\cn.com.sunac.sappoqas\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\WebService.IDM.Public\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\WebService.Idm.User\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\WebService.UpdataAndApproveFlow\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\WebService932\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\WeService.BPM.WriteSAP\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -258,7 +303,7 @@
     <Content Include="Content\Plugins\laydate\theme\default\font\iconfont.woff" />
     <Content Include="Views\Home\UserCenter.cshtml" />
     <Content Include="Views\ArgumentSetting\Index-01.cshtml" />
-    <Content Include="Views\CompanyInfo\Index.cshtml" />
+    <Content Include="Views\CompanyInfo\Index.bak.cshtml" />
     <Content Include="Content\Plugins\bootstrap\css\bootstrap-theme.css.map" />
     <Content Include="Content\Plugins\bootstrap\css\bootstrap-theme.min.css.map" />
     <Content Include="Content\Plugins\bootstrap\css\bootstrap.css.map" />
@@ -269,10 +314,10 @@
     <Content Include="Content\Plugins\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\CompanyInfo\add.cshtml" />
     <Content Include="Views\CompanyInfo\edit.cshtml" />
-    <Content Include="Views\SysRole\Index.cshtml" />
+    <Content Include="Views\SysRole\Index.bak.cshtml" />
     <Content Include="Views\SysRole\Add.cshtml" />
     <Content Include="Views\SysRole\Edit.cshtml" />
-    <Content Include="Views\SysUser\Index.cshtml" />
+    <Content Include="Views\SysUser\Index.bak.cshtml" />
     <Content Include="Views\SysUser\Add.cshtml" />
     <Content Include="Views\SysUser\SelectedProjectInfo.cshtml" />
     <Content Include="Views\SysUser\Edit.cshtml" />
@@ -386,7 +431,97 @@
     <Content Include="uploader\cad\2019\9\30\be25bf34-0ed3-409e-9f02-23f19f22a2fc.dwg" />
     <Content Include="uploader\cad\2019\9\30\ff396b06-550f-423b-a7cc-cbf5e9a85b93.dwg" />
     <Content Include="Views\ArgumentSetting\index.cshtml" />
+    <Content Include="Views\SysRole\Index.cshtml" />
+    <Content Include="Views\CompanyInfo\index.cshtml" />
+    <Content Include="Views\SysUser\Index.cshtml" />
     <None Include="Views\_LayoutPage-marster.cshtml.bak" />
+    <Content Include="Web References\cn.com.sunac.sappoqas\DT_MDM_Landpublic_RESP.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\cn.com.sunac.sappoqas\DT_MDM_Producttype_RESP.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\cn.com.sunac.sappoqas\DT_MDM_Projectstage_RESP.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\cn.com.sunac.sappoqas\DT_MDM_Roomstructure_RESP.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\cn.com.sunac.sappoqas\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <None Include="Web References\cn.com.sunac.sappoqas\SI_MD_COMMON_OUT.wsdl" />
+    <Content Include="Web References\WebService.Idm.User\HEADER.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\WebService.IDM.Public\HEADER.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <None Include="Web References\WebService.IDM.Public\PUBLIC_SUNAC_301_queryIdmOrgData.wsdl" />
+    <None Include="Web References\WebService.IDM.Public\PUBLIC_SUNAC_301_queryIdmOrgData_PS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WebService.IDM.Public\PUBLIC_SUNAC_301_queryIdmOrgData_PS0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Web References\WebService.IDM.Public\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <None Include="Web References\WebService.Idm.User\PUBLIC_SUNAC_300_queryIdmUserData.wsdl" />
+    <None Include="Web References\WebService.Idm.User\PUBLIC_SUNAC_300_queryIdmUserData_PS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WebService.Idm.User\PUBLIC_SUNAC_300_queryIdmUserData_PS0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Web References\WebService.Idm.User\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <None Include="Web References\WebService.UpdataAndApproveFlow\CAD_SUNAC_565_UpdateAndApproveFlow.wsdl" />
+    <None Include="Web References\WebService.UpdataAndApproveFlow\CAD_SUNAC_565_UpdateAndApproveFlow_PS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WebService.UpdataAndApproveFlow\CAD_SUNAC_565_UpdateAndApproveFlow_PS0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Web References\WebService.UpdataAndApproveFlow\E_RESPONSE.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\WebService.UpdataAndApproveFlow\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <Content Include="Web References\WebService932\HEADER.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <None Include="Web References\WebService932\IDM_SUNAC_392_validatePwd.wsdl" />
+    <None Include="Web References\WebService932\IDM_SUNAC_392_validatePwd_PS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WebService932\IDM_SUNAC_392_validatePwd_PS0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Web References\WebService932\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <None Include="Web References\WeService.BPM.WriteSAP\CAD_SUNAC_564_WriteSAPXmlToBPM.wsdl" />
+    <None Include="Web References\WeService.BPM.WriteSAP\CAD_SUNAC_564_WriteSAPXmlToBPM_PS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WeService.BPM.WriteSAP\CAD_SUNAC_564_WriteSAPXmlToBPM_PS0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Web References\WeService.BPM.WriteSAP\E_RESPONSE.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\WeService.BPM.WriteSAP\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -397,6 +532,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\BasInstitutionData\" />
+    <Folder Include="Views\BpmHandle\" />
     <Folder Include="Views\CommonLib\" />
   </ItemGroup>
   <ItemGroup>
@@ -412,6 +549,84 @@
       <Project>{3e7513e1-1863-4b37-add7-51a0167ee67a}</Project>
       <Name>SunacCADApp.Library</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SunacCADApp.PI\SunacCADApp.PI.csproj">
+      <Project>{92067027-95a8-4343-9718-72da3bc13cf4}</Project>
+      <Name>SunacCADApp.PI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_564_WriteSAPXmlToBPM_PS%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WeService.BPM.WriteSAP\</RelPath>
+      <UpdateFromURL>http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_564_WriteSAPXmlToBPM_PS%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SunacCADApp_WeService_BPM_WriteSAP_CAD_SUNAC_564_WriteSAPXmlToBPM_ptt_bindingQSService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_565_UpdateAndApproveFlow_PS%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WebService.UpdataAndApproveFlow\</RelPath>
+      <UpdateFromURL>http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_565_UpdateAndApproveFlow_PS%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SunacCADApp_WebService_UpdataAndApproveFlow_CAD_SUNAC_565_UpdateAndApproveFlow_ptt_bindingQSService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WebService932\</RelPath>
+      <UpdateFromURL>http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SunacCADApp_WebService932_IDM_SUNAC_392_validatePwd_ptt_bindingQSService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://192.168.2.219:8001/WP_SUNAC/APP_PUBLIC_SERVICES/Proxy_Services/TA_IDM/PUBLIC_SUNAC_300_queryIdmUserData_PS%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WebService.Idm.User\</RelPath>
+      <UpdateFromURL>http://192.168.2.219:8001/WP_SUNAC/APP_PUBLIC_SERVICES/Proxy_Services/TA_IDM/PUBLIC_SUNAC_300_queryIdmUserData_PS%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SunacCADApp_WebService_Idm_User_PUBLIC_SUNAC_300_queryIdmUserData_ptt_bindingQSService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://192.168.2.219:8001/WP_SUNAC/APP_PUBLIC_SERVICES/Proxy_Services/TA_IDM/PUBLIC_SUNAC_301_queryIdmOrgData_PS%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WebService.IDM.Public\</RelPath>
+      <UpdateFromURL>http://192.168.2.219:8001/WP_SUNAC/APP_PUBLIC_SERVICES/Proxy_Services/TA_IDM/PUBLIC_SUNAC_301_queryIdmOrgData_PS%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SunacCADApp_WebService_IDM_Public_PUBLIC_SUNAC_301_queryIdmOrgData_ptt_bindingQSService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://sappoqas.sunac.com.cn:50100/dir/wsdl%3fp=ic/6caf9c56825a3d638c4580be9ec9134a">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\cn.com.sunac.sappoqas\</RelPath>
+      <UpdateFromURL>http://sappoqas.sunac.com.cn:50100/dir/wsdl%3fp=ic/6caf9c56825a3d638c4580be9ec9134a</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SunacCADApp_cn_com_sunac_sappoqas_SI_MD_COMMON_OUTService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

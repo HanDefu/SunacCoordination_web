@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://sappoqas.sunac.com.cn:50100/dir/wsdl?p=ic/6caf9c56825a3d638c4580be9ec9134a" filename="SI_MD_COMMON_OUT.wsdl" />
+  </Results>
+</DiscoveryClientResultsFile>

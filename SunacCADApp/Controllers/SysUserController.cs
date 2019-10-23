@@ -12,6 +12,11 @@ namespace SunacCADApp.Controllers
 
     public class SysUserController : Controller
     {
+        public SysUserController() 
+        {
+            ViewBag.SelectModel = 11;
+        }
+
         /// <summary>
         ///   用户表-列表
         /// </summary>

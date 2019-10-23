@@ -25,14 +25,13 @@ header {
     background: #f8f8f5 url("img/main-bg.png") repeat-x top;
     margin-left: -15px;
     margin-right: -15px;
-    min-height: 650px;
 }
 
     .main .leftsidebar {
         float: left;
         width: 170px;
         margin-top: 0px;
-        min-height: 650px;
+        min-height: 500px;
         padding-top: 5px;
     }
 
@@ -129,7 +128,6 @@ header {
 .main .center {
     display: block;
     overflow: hidden;
-    min-height: 700px;
     border-left: solid 1px #d4d4d4;
     margin-top: 0px;
     background: #ffffff url("img/main-bg.png") repeat-x top;
@@ -627,8 +625,26 @@ header {
 }
 
     #ArgumentSetting dl {
-        margin-top: 30px;
+        margin-top: 10px;
     }
+
+        #ArgumentSetting dl.operate {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+            #ArgumentSetting dl.operate strong {
+                display: block;
+                overflow: hidden;
+                width: 30px;
+                height: 30px;
+                text-align: center;
+                background-color: #b98837;
+                background: url(img/icon-add.png) center center no-repeat;
+                cursor: pointer;
+            }
+
 
         #ArgumentSetting dl dt,
         #ArgumentSetting dl dd {
@@ -654,10 +670,28 @@ header {
                 height: 30px;
                 padding-left: 5px;
                 padding-right: 15px;
+                position: relative;
             }
 
         #ArgumentSetting dl dt b {
             font-weight: 700;
+            position: relative;
+            display: inline-block;
+            padding-right: 10px;
+        }
+
+        #ArgumentSetting dl dt:focus s,
+        #ArgumentSetting dl dt:hover s {
+            display: inline-block;
+            line-height: 25px;
+            width: 30px;
+            background: url('img/icon-delete-yellow.png') no-repeat center center;
+            text-justify: none;
+        }
+
+        #ArgumentSetting dl dt s {
+            text-decoration: none;
+            cursor: pointer;
         }
 
         #ArgumentSetting dl dt i, #ArgumentSetting dl dd i {
@@ -716,17 +750,271 @@ header {
         }
 
         #ArgumentSetting dl dd b input[type="text"] {
-           outline:none;
-           border-width:0px;
-           width:100%;
-           height:26px;
-           margin:0px;
-           background-color:#b58d59;
-           text-align:center;
-           outline:none;
-           
+            outline: none;
+            border-width: 0px;
+            width: 100%;
+            height: 26px;
+            margin: 0px;
+            background-color: #b58d59;
+            text-align: center;
+            outline: none;
         }
+
+
+#sunac {
+    display: block;
+    margin-left: 15px;
+    margin-top: 20px;
+    margin-right: 15px;
+    margin-bottom: 20px;
+}
+
+    #sunac .panel-search {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+        #sunac .panel-search .panel-item {
+            float: left;
+            overflow: hidden;
+        }
+
+        #sunac .panel-search .panel-form {
+            margin-right: 20px;
+        }
+
+        #sunac .panel-search .panel-button {
+            margin-right: 5px;
+        }
+            #sunac .panel-search .panel-button button {
+                background-position:8px center;
+                background-repeat:no-repeat;
+                background-size:16px 16px;
+                padding-left:28px;
+            }
+
+            #sunac .panel-search .panel-button .icon-add-extend {
+               background-image:url("img/icon-add-extend.png");
+            }
+
+            #sunac .panel-search .panel-button .icon-search {
+               background-image:url("img/icon-search.png");
+            }
+            
+
+    #sunac .panel-table {
+        margin-top: 20px;
+    }
+
+        #sunac .panel-table thead th {
+            background-color: #efefe8;
+            border-bottom-width: 0px;
+        }
+
+        #sunac .panel-table tbody td {
+            border-bottom: solid 1px #cfc6df;
+        }
+
+    #sunac .sunacrow {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    #sunac .form-group {
+        margin-bottom: 5px;
+    }
+
+        #sunac .form-group label {
+          display:inline-block;
+        }
+
+
+    #sunac .sunacrow .handle label {
+        line-height: normal;
+        font-weight: normal;
+        margin-right: 15px;
+    }
+
+    #sunac .sunacrow .tr-row {
+        line-height: normal;
+        padding-top: 20px;
+    }
+
+
+    #sunac .sunacrow .checkbox-inline {
+        padding-left: 5px;
+        padding-right: 10px;
+    }
+
+    #sunac .sunacrow .col-title i {
+        color: #d90000;
+        font-style: normal;
+    }
+
+    #sunac .sunacrow label {
+        line-height: 30px;
+        text-align: right;
+    }
+
 
 .btn-sunac .radio-inline {
     line-height: 40px;
 }
+
+#sunac .float-left {
+    float: left;
+}
+
+#sunac .float-right {
+    float: right;
+}
+
+
+#sunac .input-control-group dl,
+#sunac .input-control-group dl dt,
+#sunac .input-control-group dl dd {
+    float: left;
+    margin-bottom: 0px;
+}
+
+#sunac .input-control-group.search-btn {
+    float: right;
+    margin-right: 0px;
+}
+
+#sunac .search-btn input[type="text"] {
+    border-radius: 50px;
+    width: 250px;
+}
+
+#sunac .input-control-group strong {
+    position: absolute;
+    width: 60px;
+    height: 33px;
+    background: #b58d59 url('img/icon-search.png') center center no-repeat;
+    background-size: 18px 18px;
+    right: 0px;
+    top: 0px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    cursor: pointer;
+}
+
+#sunac .input-control-group {
+    margin-right: 30px;
+}
+
+    #sunac .input-control-group dl dt {
+        line-height: 35px;
+        font-weight: normal;
+        font-size: 15px;
+    }
+
+        #sunac .input-control-group dl dt.lbl-title {
+            width: 120px;
+            text-align: right;
+        }
+
+        #sunac .input-control-group dl dt i {
+            color: #e80404;
+            font-style: normal;
+            line-height: 35px;
+            font-size: 14px;
+        }
+
+    #sunac .input-control-group dl dd.tips {
+        text-align: center;
+        width: 40px;
+        line-height: 35px;
+    }
+
+    #sunac .input-control-group dl dd.explain {
+        line-height: 35px;
+        padding-left: 8px;
+        color: #797978;
+    }
+
+#sunac .no-record {
+    display: block;
+    text-align: center;
+    margin-top: -20px;
+    line-height: 45px;
+    border-bottom: solid 1px #cfc6df;
+    font-size: 14px;
+    color: #dddddd;
+    margin-bottom: 20px;
+}
+
+#sunac .not-record-num {
+    font-size: 14px;
+    color: #dddddd;
+    text-align: center;
+}
+
+
+
+
+
+#sunac .icon-layer-date {
+    background: url('img/icon-datetime.png') right center no-repeat;
+}
+
+#sunac .sunacrow .multiselect-container label {
+    text-align: left;
+    line-height: 22px;
+}
+
+
+#sunac .sunacrow .multiselect-container .btn {
+    text-align: left;
+}
+
+
+#sunac .form-bottom {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    text-align: center;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    background-color: #ffffff;
+}
+
+    #sunac .form-bottom button {
+        min-width: 120px;
+    }
+
+
+
+
+body .layer-ext-sunacskin .layui-layer-title {
+    background: #dbac58;
+    color: #fff;
+    border: none;
+    text-align: center;
+    font-size: 18px;
+}
+
+body .layui-ext-sunacskin .layui-layer-btn {
+    border-top: 1px solid #E9E7E7;
+}
+
+    body .layui-ext-sunacskin .layui-layer-btn a {
+        background: #ffffff;
+    }
+
+    body .layui-ext-sunacskin .layui-layer-btn .layui-layer-btn1 {
+        background: #ffffff;
+        color: #ffffff;
+    }
+
+
+#sunac .home {
+    width: 1200px;
+    margin: -19px auto -19px auto;
+    padding: 0px 0px 0px 0px;
+    background: #cf9a56;
+    min-height: 500px;
+}
+
