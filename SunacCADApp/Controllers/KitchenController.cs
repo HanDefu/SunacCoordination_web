@@ -7,6 +7,7 @@ using Common.Utility;
 using Common.Utility.Extender;
 using SunacCADApp.Entity;
 using SunacCADApp.Data;
+using SunacCADApp.Library;
 
 namespace SunacCADApp.Controllers
 {
@@ -451,6 +452,73 @@ namespace SunacCADApp.Controllers
             else
             {
                 return Json(new { code = -100, message = "删除失败" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// 厨房原型提交
+        /// </summary>
+        /// <returns></returns>
+        /// <get>/Door/WriteBPMDoorApproval</get>
+        public ActionResult WriteBPMDoorApproval()
+        {
+            try
+            {
+
+                int kitchenID = Request.Form["Id"].ConvertToInt32(0);
+                string BOID = kitchenID.ConventToString("0");
+                string State = Request.Form["State"].ConventToString(string.Empty);
+                string BTID = "P31";
+                WeService.BPM.WriteSAP.I_REQUEST request = new WeService.BPM.WriteSAP.I_REQUEST();
+                IList<WeService.BPM.WriteSAP.REQ_ITEM> peq_item = new List<WeService.BPM.WriteSAP.REQ_ITEM>();
+                WeService.BPM.WriteSAP.REQ_ITEM item = new WeService.BPM.WriteSAP.REQ_ITEM();
+                string BPMXml = string.Empty;
+                if (State == "1")
+                {
+
+                    BPMDynamicKitchen kitchen = CadDrawingKitchenDetailDB.GetBPMDynamicKitchenById(kitchenID);
+                    BPMXml = XmlSerializeHelper.XmlSerialize<BPMDynamicKitchen>(kitchen);
+                    BTID = "P31";
+                }
+                else if (State == "2")
+                {
+                    BPMStaticKitchen kitchen = CadDrawingKitchenDetailDB.GetBPMStaticKitchenById(kitchenID);
+                    BPMXml = XmlSerializeHelper.XmlSerialize<BPMStaticKitchen>(kitchen);
+                    BTID = "P33";
+                }
+                item.BSID = "vsheji";
+                item.BTID = BTID;
+                item.BOID = BOID;
+                item.BSXML = BPMXml;
+                item.procInstID = "0";
+                item.userid = "zhaoy58";
+                peq_item.Add(item);
+                WeService.BPM.WriteSAP.REQ_BASEINFO baseInfo = new WeService.BPM.WriteSAP.REQ_BASEINFO();
+                baseInfo.REQ_TRACE_ID = API_Common.UUID;
+                baseInfo.REQ_SEND_TIME = API_Common.SEND_DATETIME;
+                baseInfo.REQ_SRC_SYS = "BS_CAD_BPM";
+                baseInfo.REQ_TAR_SYS = "BS_CAD_BPM";
+                baseInfo.REQ_SERVER_NAME = "CAD_SUNAC_564_WriteSAPXmlToBPM";
+                baseInfo.REQ_SYN_FLAG = "0";
+                request.REQ_BASEINFO = baseInfo;
+                request.MESSAGE = peq_item.ToArray<WeService.BPM.WriteSAP.REQ_ITEM>();
+                WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService service = new WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService();
+                WeService.BPM.WriteSAP.E_RESPONSE response = service.CAD_SUNAC_564_WriteSAPXmlToBPM(request);
+                WeService.BPM.WriteSAP.E_RESPONSERSP_ITEM Message = response.MESSAGE.First();
+                if (Message.STATUSCODE == "1")
+                {
+                    CadDrawingMasterDB.ChangeBpmStateusByMId(kitchenID, 2);
+                    return Json(new { code = 100, message = "BPM提交成功" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { code = -100, message = "BPM提交失败" }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -100, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 

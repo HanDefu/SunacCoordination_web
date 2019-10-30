@@ -59,5 +59,9 @@ namespace SunacCADApp.Entity
         /// 灶台尺寸
         /// </summary>
         public string gasstoveSize { get; set; }
+        /// <summary>
+        /// 相关附件地址
+        /// </summary>
+        public string filePath { get; set; }
     }
 }

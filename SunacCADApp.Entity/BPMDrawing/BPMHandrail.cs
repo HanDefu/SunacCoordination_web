@@ -26,5 +26,9 @@ namespace SunacCADApp.Entity
         /// 动态类型
         /// </summary>
         public string railingType { get; set; }
+        /// <summary>
+        /// 相关附件地址
+        /// </summary>
+        public string filePath { get; set; }
     }
 }

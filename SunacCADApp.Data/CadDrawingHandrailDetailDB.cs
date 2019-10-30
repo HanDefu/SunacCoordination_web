@@ -129,7 +129,7 @@ namespace SunacCADApp.Data
             IList<CadDrawingWindowSearch> _caddrawingwindowsearchs = new List<CadDrawingWindowSearch>();
             string sql = string.Format(@"SELECT  * FROM 
                                                            (SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber, a.Id,
-                                                                        a.DrawingCode,a.DrawingName,d.DWGPath,a.Reorder,a.CreateOn 
+                                                                        a.DrawingCode,a.DrawingName,d.DWGPath,a.BillStatus,a.Reorder,a.CreateOn 
                                                              FROM  dbo.CaddrawingMaster a 
                                                     INNER JOIN  dbo.CadDrawingHandrailDetail b ON a.Id=b.MId
 													   LEFT JOIN  (SELECT MIN(Id) AS Id, MId FROM dbo.CadDrawingDWG   GROUP BY MId) c ON c.MId = a.Id
@@ -173,7 +173,7 @@ namespace SunacCADApp.Data
                                                               FROM   dbo.CadDrawingHandrailDetail a
                                                             INNER JOIN dbo.CaddrawingMaster m ON m.Id=a.MId
                                                              LEFT JOIN  dbo.BasArgumentSetting b ON a.HandrailType=b.Id AND b.TypeCode='HandRail'
-                                                             WHERE a.Id={0}", handraidId);
+                                                             WHERE m.Id={0}", handraidId);
             handrail = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMHandrail>(new BPMHandrail());
             string _where = string.Format(@" MId={0}", handraidId);
             string _str_area = "";
@@ -184,6 +184,16 @@ namespace SunacCADApp.Data
             }
             _str_area = _str_area.TrimEnd(',');
             handrail.region = _str_area;
+
+
+            string _str_file = string.Empty;
+            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
+            foreach (Drawing drawing in DWGS)
+            {
+                _str_file += string.Format(@"http://10.4.64.91/{0},", drawing.CADPath);
+            }
+            _str_file = _str_file.TrimEnd(',');
+            handrail.filePath = _str_file;
             return handrail;
         }
 

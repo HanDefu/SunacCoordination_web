@@ -187,7 +187,7 @@ namespace SunacCADApp.Data
                                                     INNER JOIN  dbo.CaddrawingMaster m ON m.Id=a.MId
                                                      LEFT JOIN  dbo.BasArgumentSetting b ON a.BathroomType=b.Id AND b.TypeCode='ToiletType'
                                                      LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='BathroomDoorWindowPosition'
-                                                     WHERE a.Id={0}", bathroomId);
+                                                     WHERE m.Id={0}", bathroomId);
             bathroom = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMDynamicBathroom>(new BPMDynamicBathroom());
             string _where = string.Format(@" MId={0}", bathroomId);
             string _str_area = "";
@@ -198,6 +198,14 @@ namespace SunacCADApp.Data
             }
             _str_area = _str_area.TrimEnd(',');
             bathroom.region = _str_area;
+            string _str_file = string.Empty;
+            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
+            foreach (Drawing drawing in DWGS)
+            {
+                _str_file += string.Format(@"http://10.4.64.91/{0},", drawing.CADPath);
+            }
+            _str_file = _str_file.TrimEnd(',');
+            bathroom.filePath = _str_file;
             return bathroom;
         }
 
@@ -219,7 +227,7 @@ namespace SunacCADApp.Data
                                                      LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='BathroomDoorWindowPosition'
                                                      LEFT JOIN  dbo.BasArgumentSetting c ON c.Id=a.BathroomBasinSize AND c.TypeCode='ToiletBasinWidth'
                                                      LEFT JOIN  dbo.BasArgumentSetting d ON d.Id=a.BathroomClosestoolSize AND d.TypeCode='ClosesToolWidth' 
-                                                     WHERE a.Id={0}", bathroomId);
+                                                     WHERE m.Id={0}", bathroomId);
             bathroom = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMStaticBathroom>(new BPMStaticBathroom());
             string _where = string.Format(@" MId={0}", bathroomId);
             string _str_area = "";
@@ -230,6 +238,14 @@ namespace SunacCADApp.Data
             }
             _str_area = _str_area.TrimEnd(',');
             bathroom.region = _str_area;
+            string _str_file = string.Empty;
+            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
+            foreach (Drawing drawing in DWGS)
+            {
+                _str_file += string.Format(@"http://10.4.64.91/{0},", drawing.CADPath);
+            }
+            _str_file = _str_file.TrimEnd(',');
+            bathroom.filePath = _str_file;
             return bathroom;
         }
     }

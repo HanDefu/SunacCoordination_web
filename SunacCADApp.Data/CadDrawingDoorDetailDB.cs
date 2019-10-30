@@ -131,7 +131,7 @@ namespace SunacCADApp.Data
             IList<CadDrawingWindowSearch> _caddrawingwindowsearchs = new List<CadDrawingWindowSearch>();
             string sql = string.Format(@"SELECT  * FROM 
                                                    ( SELECT ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber, a.Id,
-                                                                  a.DrawingCode,a.DrawingName, ISNULL(d.DWGPath,'') AS DWGPath,a.Reorder,a.CreateOn 
+                                                                  a.DrawingCode,a.DrawingName, ISNULL(d.DWGPath,'') AS DWGPath,a.Reorder,a.CreateOn ,a.BillStatus
                                                        FROM  dbo.CaddrawingMaster a 
                                                  INNER JOIN  dbo.CadDrawingDoorDetail b ON a.Id=b.MId
                                                   LEFT JOIN  dbo.CadDrawingDWG d ON d.MId=a.Id AND d.CADType='ExpandViewFile'  WHERE 1=1  {0}
@@ -172,6 +172,15 @@ namespace SunacCADApp.Data
             }
             _str_area = _str_area.TrimEnd(',');
             door.region = _str_area;
+
+            string _str_file = string.Empty;
+            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
+            foreach (Drawing drawing in DWGS)
+            {
+                _str_file += string.Format(@"http://10.4.64.91/{0},", drawing.CADPath);
+            }
+            _str_file = _str_file.TrimEnd(',');
+            door.filePath = _str_file;
             return door;
         }
 
@@ -194,6 +203,14 @@ namespace SunacCADApp.Data
             }
             _str_area = _str_area.TrimEnd(',');
             door.region = _str_area;
+            string _str_file = string.Empty;
+            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
+            foreach (Drawing drawing in DWGS)
+            {
+                _str_file += string.Format(@"http://10.4.64.91/{0},", drawing.CADPath);
+            }
+            _str_file = _str_file.TrimEnd(',');
+            door.filePath = _str_file;
             return door;
         }
 

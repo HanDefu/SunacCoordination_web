@@ -47,5 +47,9 @@ namespace SunacCADApp.Entity
         /// 进深尺寸范围
         /// </summary>
         public string HeightRange { get; set; }
+        /// <summary>
+        /// 相关附件地址
+        /// </summary>
+        public string filePath { get; set; }
     }
 }

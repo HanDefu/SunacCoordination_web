@@ -34,5 +34,10 @@ namespace SunacCADApp.Entity
         /// 门尺寸
         /// </summary>
         public string doorsize { get; set; }
+
+        /// <summary>
+        /// 相关附件地址
+        /// </summary>
+        public string filePath { get; set; }
     }
 }

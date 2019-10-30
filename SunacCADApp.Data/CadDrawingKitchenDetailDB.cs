@@ -125,7 +125,7 @@ namespace SunacCADApp.Data
             IList<CadDrawingWindowSearch> _caddrawingwindowsearchs = new List<CadDrawingWindowSearch>();
             string sql = string.Format(@"SELECT  * FROM 
                                                    (     SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber, a.Id,
-                                                                       a.DrawingCode,a.DrawingName,c.DWGPath,a.Reorder,a.CreateOn 
+                                                                       a.DrawingCode,a.DrawingName,c.DWGPath,a.Reorder,a.CreateOn,a.BillStatus
                                                              FROM dbo.CaddrawingMaster a 
                                                     INNER JOIN dbo.CadDrawingKitchenDetail b ON a.Id=b.MId
                                                      LEFT JOIN dbo.CadDrawingDWG  c ON c.MId = a.Id AND c.CADType='ExpandViewFile'
@@ -184,7 +184,7 @@ namespace SunacCADApp.Data
                                                  INNER JOIN dbo.CaddrawingMaster m ON m.Id=a.MId
                                                     LEFT JOIN dbo.BasArgumentSetting b ON a.KitchenType =b.Id AND b.TypeCode='KitchenType'
                                                     LEFT JOIN dbo.BasArgumentSetting c ON a.KitchenPosition =c.Id AND c.TypeCode='DoorWindowPosition'
-                                                        WHERE a.Id={0}", kitchenId);
+                                                        WHERE m.Id={0}", kitchenId);
             BPMDynamicKitchen kitchen = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMDynamicKitchen>(new BPMDynamicKitchen());
             string _where = string.Format(@" MId={0}", kitchenId);
             string _str_area = "";
@@ -195,6 +195,16 @@ namespace SunacCADApp.Data
             }
             _str_area = _str_area.TrimEnd(',');
             kitchen.region = _str_area;
+
+            string _str_file = string.Empty;
+            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
+            foreach (Drawing drawing in DWGS)
+            {
+                _str_file += string.Format(@"http://10.4.64.91/{0},", drawing.CADPath);
+            }
+            _str_file = _str_file.TrimEnd(',');
+            kitchen.filePath = _str_file;
+
             return kitchen;
         }
 
@@ -216,7 +226,7 @@ namespace SunacCADApp.Data
                                                     LEFT JOIN dbo.BasArgumentSetting d ON a.KitchenBasinSize =d.Id AND d.TypeCode='KitchenBasinType'
                                                     LEFT JOIN dbo.BasArgumentSetting e ON a.KitchenFridgSize =e.Id AND e.TypeCode='RefrigeratorType'
                                                     LEFT JOIN dbo.BasArgumentSetting f ON a.KitchenHearthSize =f.Id AND f.TypeCode='HearthWidth' 
-                                                        WHERE a.Id={0}",kitchenId);
+                                                        WHERE m.Id={0}",kitchenId);
             BPMStaticKitchen kitchen= MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMStaticKitchen>(new BPMStaticKitchen());
             string _where = string.Format(@" MId={0}", kitchenId);
             string _str_area = "";
@@ -227,6 +237,14 @@ namespace SunacCADApp.Data
             }
             _str_area = _str_area.TrimEnd(',');
             kitchen.region = _str_area;
+            string _str_file = string.Empty;
+            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
+            foreach (Drawing drawing in DWGS)
+            {
+                _str_file += string.Format(@"http://10.4.64.91/{0},", drawing.CADPath);
+            }
+            _str_file = _str_file.TrimEnd(',');
+            kitchen.filePath = _str_file;
             return kitchen;
         }
     }

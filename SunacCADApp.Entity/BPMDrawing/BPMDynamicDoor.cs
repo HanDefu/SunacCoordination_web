@@ -37,5 +37,9 @@ namespace SunacCADApp.Entity
         /// 宽度范围
         /// </summary>
         public string widthrange { get; set; }
+        /// <summary>
+        /// 相关附件地址
+        /// </summary>
+        public string filePath { get; set; }
     }
 }

@@ -42,5 +42,9 @@ namespace SunacCADApp.Entity
         /// 下水管位置
         /// </summary>
         public string sewerPipePos { get; set; }
+        /// <summary>
+        /// 相关附件地址
+        /// </summary>
+        public string filePath { get; set; }
     }
 }
