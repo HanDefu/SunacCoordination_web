@@ -153,6 +153,50 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
 
+        public static BPMDynamicDoor GetBPMDynamicDoorById(int doorId) 
+        {
+            string sql = string.Format(@" SELECT 'P21' AS PageCode,a.Id AS prototypeID,
+                                                                     CASE a.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '静态模块' END AS dynamicType,
+                                                                     c.ArgumentText AS doortype,CONCAT(b.WindowSizeMin,'mm','-',b.WindowSizeMax,'mm') AS widthrange
+                                                          FROM  dbo.CaddrawingMaster a 
+                                                    INNER JOIN  dbo.CadDrawingDoorDetail b ON a.Id=b.MId
+                                                     LEFT JOIN  dbo.BasArgumentSetting c ON c.Id=b.DoorType AND c.TypeCode='DoorType' 
+                                                     WHERE a.Id={0}",doorId);
+            BPMDynamicDoor door = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMDynamicDoor>(new BPMDynamicDoor());
+            string _where = string.Format(@" MId={0}", doorId);
+            string _str_area = "";
+            IList<CadDrawingByArea> areas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
+            foreach (CadDrawingByArea area in areas)
+            {
+                _str_area += area.AreaName + ",";
+            }
+            _str_area = _str_area.TrimEnd(',');
+            door.region = _str_area;
+            return door;
+        }
+
+        public static BPMStaticDoor GetBPMStaticDoorById(int doorId) 
+        {
+            string sql = string.Format(@" SELECT 'P22' AS PageCode,a.Id AS prototypeID,
+                                                                     CASE a.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '静态模块' END AS dynamicType,
+                                                                     c.ArgumentText AS doortype,CONCAT(b.WindowSizeMin,'mm','-',b.WindowSizeMax,'mm') AS doorsize
+                                                          FROM  dbo.CaddrawingMaster a 
+                                                    INNER JOIN  dbo.CadDrawingDoorDetail b ON a.Id=b.MId
+                                                     LEFT JOIN  dbo.BasArgumentSetting c ON c.Id=b.DoorType AND c.TypeCode='DoorType' 
+                                                     WHERE a.Id={0}", doorId);
+            BPMStaticDoor door = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMStaticDoor>(new BPMStaticDoor());
+            string _where = string.Format(@" MId={0}", doorId);
+            string _str_area = "";
+            IList<CadDrawingByArea> areas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
+            foreach (CadDrawingByArea area in areas)
+            {
+                _str_area += area.AreaName + ",";
+            }
+            _str_area = _str_area.TrimEnd(',');
+            door.region = _str_area;
+            return door;
+        }
+
 
     }
 }

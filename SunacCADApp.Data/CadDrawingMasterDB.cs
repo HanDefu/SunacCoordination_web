@@ -122,5 +122,17 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.ExecuteScalar(sql).ConventToString(string.Empty);
         }
 
+        /// <summary>
+        /// 状态更改
+        /// </summary>
+        /// <param name="MId"></param>
+        /// <param name="Status"></param>
+        /// <returns></returns>
+        public static int ChangeBpmStateusByMId(int MId,int Status) 
+        {
+            string sql = string.Format(@"UPDATE dbo.CaddrawingMaster  SET BillStatus={0},ModifiedOn=GETDATE() WHERE Id={1}", Status, MId);
+            return MsSqlHelperEx.Execute(sql);
+        }
+
     }
 }

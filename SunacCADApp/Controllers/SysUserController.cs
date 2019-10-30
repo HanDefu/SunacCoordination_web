@@ -80,6 +80,7 @@ namespace SunacCADApp.Controllers
             ViewBag.List = lst;
             ViewBag.RecordCount = recordCount;
             ViewBag.CurrentPage = currentPage;
+         
             return View();
         }
         /// <summary>
@@ -94,13 +95,14 @@ namespace SunacCADApp.Controllers
             string _order = string.Empty;
             IList<BaseCompanyInfo> companyInfo = BaseCompanyInfoDB.GetPageInfoByParameter(_wh, _order, 1, 1000);
             ViewBag.CompanyInfoList = companyInfo;
-            _wh = " ParentID=1";
+            _wh = " TypeCode='area' AND ParentID!=0";
             IList<BasArgumentSetting> argumentSettingList = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_wh);
             ViewBag.ArgumentSettingList = argumentSettingList;
 
             IList<Sys_Role> SysRoleList = SysRoleDB.GetSysRoleListById();
             ViewBag.SysRoleList = SysRoleList;
-
+            ViewBag.StartDate = DateTime.Now.ToString("yyyy-mm-dd");
+            ViewBag.EndDate = DateTime.Now.AddYears(5).ToString("yyyy-mm-dd");
 
             return View();
         }
@@ -113,9 +115,15 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Addhandle()
         {
+             string userName = Request.Form["txt_user_name"].ConventToString(string.Empty);
+             int hasUser = Sys_UserDB.HasSysUserByUserName(userName);
+            if (hasUser > 0) 
+            {
+                return Json(new { code = -100, message = "登陆名已存在，请更换登陆名" }, JsonRequestBehavior.AllowGet);
+            }
             Sys_User sys_user = new Sys_User();
             string areaids = Request.Form["select_areaid"];
-            sys_user.User_Name = Request.Form["txt_user_name"].ConventToString(string.Empty);
+            sys_user.User_Name = userName;
             sys_user.User_Psd = CommonLib.UserMd5("123456");
             sys_user.True_Name = Request.Form["txt_true_name"].ConventToString(string.Empty);
             sys_user.Telephone = Request.Form["txt_telephone"].ConventToString(string.Empty);
@@ -145,6 +153,15 @@ namespace SunacCADApp.Controllers
                         Sys_User_Area_RelationDB.AddHandle(userArea);
                     }
                 }
+                string proids = Request.Form["hid_proids"].ConventToString(string.Empty);
+                if (!string.IsNullOrEmpty(proids)) 
+                {
+                    string[] arr_pro_ids = proids.Split(',');
+                    foreach (string pid in arr_pro_ids) 
+                    {
+                        Sys_UserDB.InsertUserAndProjectRelation(UserId,pid);
+                    }
+                }
                 
                 return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
             }
@@ -165,7 +182,7 @@ namespace SunacCADApp.Controllers
             string _order = string.Empty;
             IList<BaseCompanyInfo> companyInfo = BaseCompanyInfoDB.GetPageInfoByParameter(_wh, _order, 1, 1000);
             ViewBag.CompanyInfoList = companyInfo;
-            _wh = " ParentID=1";
+            _wh = " TypeCode='area' AND ParentID!=0";
             IList<BasArgumentSetting> argumentSettingList = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_wh);
             ViewBag.ArgumentSettingList = argumentSettingList;
 
@@ -225,6 +242,8 @@ namespace SunacCADApp.Controllers
         {
             int Id = Request.QueryString["id"].ConvertToInt32(0);
             int rtv = Sys_UserDB.DeleteHandleById(Id);
+
+
             if (rtv > 0)
             {
                 return Json(new { code = 100, message = "删除成功" }, JsonRequestBehavior.AllowGet);
@@ -238,11 +257,15 @@ namespace SunacCADApp.Controllers
         ///   用户表-删除多条根据多个主键
         /// </summary>
         /// <returns></returns>
-        /// <get>/manage/Sys_User/deletehandlebyids</get> 
+        /// <get>SysUser/deletehandlebyids</get> 
         /// <author>alon<84789887@qq.com></author> 
         public ActionResult DeleteHandleByIds()
         {
-            string ids = Request.QueryString["ids"].ConventToString(string.Empty);
+            string ids = Request.Form["ids"].ConventToString(string.Empty);
+            if (string.IsNullOrEmpty(ids)) 
+            {
+                return Json(new { code = -100, message = "请选择删除项" }, JsonRequestBehavior.AllowGet);
+            }
             int rtv = Sys_UserDB.DeleteHandleByIds(ids);
             if (rtv > 0)
             {
@@ -257,9 +280,9 @@ namespace SunacCADApp.Controllers
 
         public ActionResult SelectedProjectInfo() 
         {
-            string  _wh = " ParentID=1";
-            IList<BasArgumentSetting> argumentSettingList = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_wh);
-            ViewBag.ArgumentSettingList = argumentSettingList;
+            IList<BasIdmOrganization> IdmOrganizations = new List<BasIdmOrganization>();
+            IdmOrganizations = IdmCommonLibDB.GetPageInfoByParameter(string.Empty);
+            ViewBag.IdmOrganizations = IdmOrganizations;
             return View();
         }
 
@@ -300,7 +323,7 @@ namespace SunacCADApp.Controllers
             string areaName = Request.Form["AreaName"].ConventToString(string.Empty);
             string cityCompany = Request.Form["CityCompany"].ConventToString(string.Empty);
             string keyword = Request.Form["Keyword"].ConventToString(string.Empty);
-            IList<ProjectInfo> list = Project_InformationDB.GetProjectInformationByAreaName(areaName, cityCompany, keyword);
+            IList<Bas_Idm_Project> list = BasIdmProjectDB.GetBasIdmProjectByWhere(areaName, cityCompany, keyword);
             if (list.Count() > 0)
             {
                 return Json(new { code = 100, message = "查询成功", list = list }, JsonRequestBehavior.AllowGet);
@@ -310,6 +333,21 @@ namespace SunacCADApp.Controllers
                 return Json(new { code = -100, message = "查询失败" }, JsonRequestBehavior.AllowGet);
             }
 
+        }
+
+
+        public ActionResult GetIdmCityByAreaCode() 
+        {
+            string areaCode = Request.Form["areaCode"].ConventToString(string.Empty);
+            IList<BasIdmOrganization> cities = IdmCommonLibDB.GetIdmCityAndCompanyByArea(areaCode);
+            if (cities.Count() > 0)
+            {
+                return Json(new { code = 100, message = "查询成功", list = cities }, JsonRequestBehavior.AllowGet);
+            }
+            else 
+            {
+                return Json(new { code = -100, message = "查询失败" }, JsonRequestBehavior.AllowGet);
+            }
         }
         
 

@@ -29,7 +29,7 @@ namespace SunacCADApp.Controllers
         {
             string _where = "1=1";  //查询
             string _orderby = string.Empty;  //排序
-            string _url = string.Empty;
+            string _url = "1";
             int recordCount = 0;    //记录总数
             int pageSize = 15;      //每页条数
             int currentPage = 0;    //当前页数
@@ -39,28 +39,21 @@ namespace SunacCADApp.Controllers
             currentPage = string.IsNullOrEmpty(Request.QueryString["page"]) ? 1 : Request.QueryString["page"].ConvertToInt32(0);
             startRowNum = ((currentPage - 1) * pageSize) + 1;
             endRowNum = currentPage * pageSize;
-            string companyname = HttpUtility.UrlDecode(Request.QueryString["companyname"]);
+            string companyname = HttpUtility.UrlDecode(Request.QueryString["keyword"]);
             if (!string.IsNullOrEmpty(companyname))
             {
-                _where += " and  companyname='" + companyname + "'";
-                _url += "companyname=" + companyname + "&";
+                _where += " and  companyname like '" + companyname + "%'";
+                _url += "&companyname=" + companyname;
             }
-
-
-            ViewBag.companynameSource = BaseCompanyInfoDB.GetInstitutionData();
-            string companycode = HttpUtility.UrlDecode(Request.QueryString["companycode"]);
-            if (!string.IsNullOrEmpty(companycode))
-            {
-                _where += " and  companycode='" + companycode + "'";
-                _url += "companycode=" + companycode + "&";
-            }
-            ViewBag.companycode = companycode;
+            ViewBag.Keyword = companyname;
+          
             IList<BaseCompanyInfo> lst = BaseCompanyInfoDB.GetPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
             recordCount = BaseCompanyInfoDB.GetPageCountByParameter(_where);
-            pageCount = recordCount % pageSize == 0 ? recordCount / pageSize : ((recordCount / pageSize) + 1);
+            pageCount =  (int)Math.Ceiling((Double)recordCount / (Double)pageSize);
             ViewBag.URL = _url;
             ViewBag.List = lst;
             ViewBag.RecordCount = recordCount;
+            ViewBag.PageCount = pageCount;
             ViewBag.CurrentPage = currentPage;
             return View();
         }
@@ -85,6 +78,12 @@ namespace SunacCADApp.Controllers
         public ActionResult Addhandle()
         {
             BaseCompanyInfo basecompanyinfo = new BaseCompanyInfo();
+            int companyId = Request.Form["select_companyname"].ConvertToInt32(0);
+            if (BaseCompanyInfoDB.IsExistsInstitutionDataById(companyId)>0) 
+            {
+                return Json(new { code = -100, message = "机构已添加不能重复添加" }, JsonRequestBehavior.AllowGet);
+            }
+
             basecompanyinfo.CompanyID = Request.Form["select_companyname"].ConvertToInt32(0);
             basecompanyinfo.CompanyName = Request.Form["hid_companyname"].ConventToString(string.Empty);
             basecompanyinfo.CompanyCode = "00000";
@@ -132,8 +131,17 @@ namespace SunacCADApp.Controllers
         {
             BaseCompanyInfo basecompanyinfo = new BaseCompanyInfo();
             int Id = Request.Form["hid_id"].ConvertToInt32(0);
+            int new_companyid = Request.Form["select_companyname"].ConvertToInt32(0);
+            int old_companyid = Request.Form["hid_companyId"].ConvertToInt32(0);
+            if (new_companyid != old_companyid) 
+            {
+                if (BaseCompanyInfoDB.IsExistsInstitutionDataById(new_companyid) > 0)
+                {
+                    return Json(new { code = -100, message = "机构已添加不能重复添加" }, JsonRequestBehavior.AllowGet);
+                }
+            }
             basecompanyinfo.Id = Id;
-            basecompanyinfo.CompanyID = Request.Form["select_companyname"].ConvertToInt32(0);
+            basecompanyinfo.CompanyID = new_companyid;
             basecompanyinfo.CompanyName = Request.Form["hid_companyname"].ConventToString(string.Empty);
             basecompanyinfo.CompanyCode = "";
             basecompanyinfo.CompanyRemark = Request.Form["area_companyremark"].ConventToString(string.Empty);
@@ -189,6 +197,27 @@ namespace SunacCADApp.Controllers
             {
                 return Json(new { code = -100, message = "删除失败" }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+
+        /// <summary>
+        ///  /BaseCompanyInfo/ChangeCompanyEnabled
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ChangeCompanyEnabled() 
+        {
+            int id = Request.Form["id"].ConvertToInt32(0);
+            int enabled = Request.Form["enabled"].ConvertToInt32(0);
+            int flag = BaseCompanyInfoDB.IsChangeCompanyInfo(id, enabled);
+            if (flag > 0)
+            {
+                return Json(new { code = 100, message = "状态更改成功" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { code = -100, message = "状态更改失败" }, JsonRequestBehavior.AllowGet);
+            }
+
         }
 
 

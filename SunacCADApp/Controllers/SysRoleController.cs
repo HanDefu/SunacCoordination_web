@@ -29,7 +29,7 @@ namespace SunacCADApp.Controllers
         {
             string _where = "1=1";  //查询
             string _orderby = string.Empty;  //排序
-            string _url = string.Empty;
+            string _url ="1&";
             int recordCount = 0;    //记录总数
             int pageSize = 15;      //每页条数
             int currentPage = 0;    //当前页数
@@ -39,13 +39,13 @@ namespace SunacCADApp.Controllers
             currentPage = string.IsNullOrEmpty(Request.QueryString["page"]) ? 1 : Request.QueryString["page"].ConvertToInt32(0);
             startRowNum = ((currentPage - 1) * pageSize) + 1;
             endRowNum = currentPage * pageSize;
-            string rolename = HttpUtility.UrlDecode(Request.QueryString["rolename"]);
-            if (!string.IsNullOrEmpty(rolename))
+            string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"]);
+            if (!string.IsNullOrEmpty(keyword))
             {
-                _where += " and  rolename='" + rolename + "'";
-                _url += "rolename=" + rolename + "&";
+                _where += " and  a.Role_Name like '" + keyword + "%'";
+                _url += "rolename=" + keyword + "&";
             }
-            ViewBag.rolename = rolename;
+            ViewBag.rolename = keyword;
             IList<Sys_Role> lst = SysRoleDB.GetPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
             recordCount = SysRoleDB.GetPageCountByParameter(_where);
             pageCount = recordCount % pageSize == 0 ? recordCount / pageSize : ((recordCount / pageSize) + 1);

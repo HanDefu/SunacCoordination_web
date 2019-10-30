@@ -66,7 +66,7 @@ namespace SunacCADApp.Controllers
             baseInfo.TargetSystem="S4QCLNT200";
             cn.com.sunac.sappoqas.DT_COM_Projectstage_REQ request = new cn.com.sunac.sappoqas.DT_COM_Projectstage_REQ();
             request.BaseInfo = baseInfo;
-            request.Begindate = "20190911095448.3007171";
+            request.Begindate = "20180911095448.3007171";
             request.Numb = "100";
 
             cn.com.sunac.sappoqas.SI_MD_COMMON_OUTService client = new cn.com.sunac.sappoqas.SI_MD_COMMON_OUTService();

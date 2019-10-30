@@ -60,6 +60,7 @@
     <Compile Include="BasArgumentSettingDB.cs" />
     <Compile Include="BaseCompanyInfoDB.cs" />
     <Compile Include="BasInstitutionDataDB.cs" />
+    <Compile Include="Bas_Idm_ProjectDB.cs" />
     <Compile Include="CadDrawingAirconditionerDetailDB.cs" />
     <Compile Include="CadDrawingBathroomDetailDB.cs" />
     <Compile Include="CadDrawingByAreaDB.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="CadDrawingWindowSearchDB.cs" />
     <Compile Include="CommonLib.cs" />
     <Compile Include="ESB\BpmLibDB.cs" />
+    <Compile Include="IdmCommonLibDB.cs" />
     <Compile Include="MsSqlHelperEx.cs" />
     <Compile Include="Project_InformationDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

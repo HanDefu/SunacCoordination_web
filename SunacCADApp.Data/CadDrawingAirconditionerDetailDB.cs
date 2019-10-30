@@ -162,6 +162,25 @@ namespace SunacCADApp.Data
             return _caddrawingwindow;
         }
 
+        public static BPMAirConditioner GetBPMAirConditionerById(int Id) 
+        {
+            BPMAirConditioner airConditioner = new BPMAirConditioner();
+            string sql = string.Format(@"SELECT  'P61' AS PageCode, m.Id AS prototypeID,
+		                                                              ba.ArgumentText AS [power],
+		                                                              bb.ArgumentText AS condensatePipePos,
+		                                                              CONCAT(a.AirconditionerMinWidth,'mm','-',a.AirconditionerMinLength,'mm') AS minSize,
+		                                                              ISNULL(bc.ArgumentText,'') AS sewerPipePos,
+                                                                      CASE a.AirconditionerIsRainPipe WHEN 1 THEN '是' ELSE '否' END AS hasSewerPipe
+                                                          FROM   dbo.CadDrawingAirconditionerDetail a 
+                                                         INNER JOIN dbo.CaddrawingMaster m ON m.Id=a.MId
+                                                          LEFT JOIN  dbo.BasArgumentSetting ba ON a.AirconditionerPower=ba.Id AND ba.TypeCode='AirConditionNumber'
+                                                          LEFT JOIN  dbo.BasArgumentSetting bb ON a.AirconditionerPipePosition=bb.Id AND bb.TypeCode='CondensatePipePosition'
+                                                          LEFT JOIN  dbo.BasArgumentSetting bc ON a.AirconditionerRainPipePosition=bc.Id AND bc.TypeCode='RainPipePosition'
+                                                          WHERE a.Id={0}", Id);
+            airConditioner = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMAirConditioner>(new BPMAirConditioner());
+            return airConditioner;
+        }
+
 
 
 

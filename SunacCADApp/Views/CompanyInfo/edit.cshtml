@@ -30,7 +30,6 @@
                             {
                                 <option value="@member.ValueMember" selected>@member.DisplayMember</option>
                             }
-
                             else
                             {
                                 <option value="@member.ValueMember">@member.DisplayMember</option>
@@ -38,10 +37,11 @@
 
                         }
                     </select>
-                    <input type="hidden" name="hid_companyname" />
+                    <input type="hidden" name="hid_companyname" value="@companyInfo.CompanyName" />
+                    <input type="hidden" name="hid_companyId" value="@companyInfo.CompanyID"/>
                 </div>
                 <div class="form-group ">
-                    <label>机构名称：</label>
+                    <label>机构描述：</label>
                     <textarea class="form-control" rows="7" name="area_companyremark">@companyInfo.CompanyRemark</textarea>
                 </div>
                 <div class="form-group ">
@@ -50,13 +50,13 @@
                     {
                         <div class="radio-inline">
                             <span class="radio">
-                                <input type="radio" name="select_enabled" value="1" checked="checked" />启用
+                                <input type="radio" name="select_enabled" value="1" checked="checked"  id="radion_enabled_01"/> 启用
                             </span>
                         </div>
 
                         <div class="radio-inline">
                             <span class="radio">
-                                <input type="radio" name="select_enabled" value="0" />禁用
+                                <input type="radio" name="select_enabled" value="0" id="radion_enabled_02" /> 禁用
                             </span>
                         </div>
                     }

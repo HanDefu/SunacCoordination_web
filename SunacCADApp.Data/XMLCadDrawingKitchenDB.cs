@@ -25,10 +25,10 @@ namespace SunacCADApp.Data
             IList<Kitchen> listKitchen = new List<Kitchen>();
             string _where = string.Empty;
             int _airVent=string.IsNullOrEmpty(AirVent)?-1:(AirVent=="是"?1:0);
-            _where += Width > 0 ? string.Format(@" AND (a.KitchenOpenSizeMin >={0}  AND a.KitchenOpenSizeMax<={0})",Width) : string.Empty;
-            _where += Height > 0 ? string.Format(@" AND (a.KitchenDepthsizeMin >={0}  AND a.KitchenDepthsizeMax<={0})", Height) : string.Empty;
-            _where += string.IsNullOrEmpty(KitchenDoorWindowPosition) ? string.Empty : string.Format(@" AND c.ArgumentText in ({0})", KitchenDoorWindowPosition);
-            _where +=string.IsNullOrEmpty(KitchenType) ?string.Empty: string.Format(@" AND a.KitchenType in ({0})", KitchenType);
+            _where += Width > 0 ? string.Format(@" AND (a.KitchenOpenSizeMin <={0}  AND a.KitchenOpenSizeMax>={0})",Width) : string.Empty;
+            _where += Height > 0 ? string.Format(@" AND (a.KitchenDepthsizeMin <={0}  AND a.KitchenDepthsizeMax>={0})", Height) : string.Empty;
+            _where += string.IsNullOrEmpty(KitchenDoorWindowPosition) ? string.Empty : string.Format(@" AND c.ArgumentText ='{0}'", KitchenDoorWindowPosition);
+            _where += string.IsNullOrEmpty(KitchenType) ? string.Empty : string.Format(@" AND b.ArgumentText ='{0}'", KitchenType);
             _where += _airVent > -1 ? string.Format(@" AND a.KitchenIsAirduct={0}", _airVent) : string.Empty;
             string sql = string.Format(@"	 SELECT m.Id,m.DrawingCode,m.DrawingName,m.Scope,m.DynamicType,
 			                                                             CASE m.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '定性模块' END AS DynamicType,
@@ -58,7 +58,6 @@ namespace SunacCADApp.Data
                 string _where = string.Format(@" MId={0}", kitchen.Id);
                 IList<Drawing> drawingList = CadDrawingDWGDB.GetDrawingByWhere(_where);
                 kitchen.Drawings = drawingList.ToArray<Drawing>();
-
                 IList<Area> areaList = CadDrawingByAreaDB.GetAreaByWhere(_where);
                 kitchen.Areas = areaList.ToArray<Area>();
             }

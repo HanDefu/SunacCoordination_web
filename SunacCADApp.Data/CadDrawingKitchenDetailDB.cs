@@ -163,7 +163,71 @@ namespace SunacCADApp.Data
                                                         LEFT JOIN dbo.BasArgumentSetting f ON a.KitchenHearthSize =f.Id AND f.TypeCode='HearthWidth'
                                                         WHERE a.MId={0}",Id);
             return MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<CadDrawingKitchenDetail>(new CadDrawingKitchenDetail());
+
         }
 
+
+        /// <summary>
+        /// BPM 厨房原型提交
+        /// </summary>
+        /// <param name="KitchenId"></param>
+        /// <returns></returns>
+        public static BPMDynamicKitchen GetBPMDynamicKitchenById(int kitchenId)
+        {
+            string sql = string.Format(@"SELECT 'P31' AS PageCode ,m.Id AS prototypeID,
+                                                                     CASE m.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '静态模块' END AS dynamicType,
+	                                                                 b.ArgumentText AS kitchenType,c.ArgumentText as doorWindowPos,
+	                                                                 CASE a.KitchenIsAirduct WHEN 1 THEN '是' ELSE  '否' END AS hasAirVent,
+	                                                                 CONCAT(a.KitchenOpenSizeMin,'mm','-',a.KitchenOpenSizeMax,'mm') AS widthRange,
+	                                                                 CONCAT(a.KitchenDepthsizeMin,'mm','-',a.KitchenDepthsizeMax,'mm') AS HeightRange
+                                                          FROM dbo.CadDrawingKitchenDetail a
+                                                 INNER JOIN dbo.CaddrawingMaster m ON m.Id=a.MId
+                                                    LEFT JOIN dbo.BasArgumentSetting b ON a.KitchenType =b.Id AND b.TypeCode='KitchenType'
+                                                    LEFT JOIN dbo.BasArgumentSetting c ON a.KitchenPosition =c.Id AND c.TypeCode='DoorWindowPosition'
+                                                        WHERE a.Id={0}", kitchenId);
+            BPMDynamicKitchen kitchen = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMDynamicKitchen>(new BPMDynamicKitchen());
+            string _where = string.Format(@" MId={0}", kitchenId);
+            string _str_area = "";
+            IList<CadDrawingByArea> areas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
+            foreach (CadDrawingByArea area in areas)
+            {
+                _str_area += area.AreaName + ",";
+            }
+            _str_area = _str_area.TrimEnd(',');
+            kitchen.region = _str_area;
+            return kitchen;
+        }
+
+        public static BPMStaticKitchen GetBPMStaticKitchenById(int kitchenId) 
+        {
+            string sql = string.Format(@"SELECT 'P32' AS PageCode ,m.Id AS prototypeID,
+                                                                    CASE m.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '静态模块' END AS dynamicType,
+	                                                                b.ArgumentText AS kitchenType,c.ArgumentText as doorWindowPos,
+	                                                                CASE a.KitchenIsAirduct WHEN 1 THEN '是' ELSE  '否' END AS hasAirVent,
+	                                                                CONCAT(a.KitchenOpenSizeMin,'mm') AS width,
+	                                                                CONCAT(a.KitchenOpenSizeMax,'mm') AS Height,
+	                                                               d.ArgumentText AS basinSize,
+	                                                               e.ArgumentText AS fridgeSize,
+	                                                               f.ArgumentText AS gasstoveSize
+                                                         FROM dbo.CadDrawingKitchenDetail a
+                                                 INNER JOIN dbo.CaddrawingMaster m ON m.Id=a.MId
+                                                    LEFT JOIN dbo.BasArgumentSetting b ON a.KitchenType =b.Id AND b.TypeCode='KitchenType'
+                                                    LEFT JOIN dbo.BasArgumentSetting c ON a.KitchenPosition =c.Id AND c.TypeCode='DoorWindowPosition'
+                                                    LEFT JOIN dbo.BasArgumentSetting d ON a.KitchenBasinSize =d.Id AND d.TypeCode='KitchenBasinType'
+                                                    LEFT JOIN dbo.BasArgumentSetting e ON a.KitchenFridgSize =e.Id AND e.TypeCode='RefrigeratorType'
+                                                    LEFT JOIN dbo.BasArgumentSetting f ON a.KitchenHearthSize =f.Id AND f.TypeCode='HearthWidth' 
+                                                        WHERE a.Id={0}",kitchenId);
+            BPMStaticKitchen kitchen= MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMStaticKitchen>(new BPMStaticKitchen());
+            string _where = string.Format(@" MId={0}", kitchenId);
+            string _str_area = "";
+            IList<CadDrawingByArea> areas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
+            foreach (CadDrawingByArea area in areas)
+            {
+                _str_area += area.AreaName + ",";
+            }
+            _str_area = _str_area.TrimEnd(',');
+            kitchen.region = _str_area;
+            return kitchen;
+        }
     }
 }

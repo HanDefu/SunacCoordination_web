@@ -39,7 +39,10 @@ namespace SunacCADApp.Entity
         /// 动态类型
         /// </summary>
         public int DynamicType { get; set; }
-
+        /// <summary>
+        /// BPM提交状态
+        /// </summary>
+        public int BillStatus { get; set; }
         /// <summary>
         /// 是否有效
         ///</summary>

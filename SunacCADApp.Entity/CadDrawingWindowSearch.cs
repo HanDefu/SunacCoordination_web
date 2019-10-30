@@ -28,5 +28,11 @@ namespace SunacCADApp.Entity
         /// 外窗图片
         /// </summary>
         public string DWGPath { get; set; }
+
+        /// <summary>
+        /// 单据状态
+        /// </summary>
+        public int BillStatus { get; set; }
+
     }
 }

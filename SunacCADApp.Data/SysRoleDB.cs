@@ -46,7 +46,7 @@ namespace SunacCADApp.Data
         ///<summary>
         public static int GetPageCountByParameter(string _where)
         {
-            string sql = string.Format(@"SELECT COUNT(*) AS RowNum  FROM dbo.Sys_Role WHERE 1=1 AND {0}", _where);
+            string sql = string.Format(@"SELECT COUNT(*) AS RowNum  FROM dbo.Sys_Role a WHERE 1=1 AND {0}", _where);
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
 
@@ -135,6 +135,12 @@ namespace SunacCADApp.Data
         {
             string sql = string.Format("UPDATE [dbo].[Sys_Role] SET Reorder={0} WHERE Id={1}", record, id);
             return MsSqlHelperEx.Execute(sql);
+        }
+
+        public static int HasExistSysRole(string roleName) 
+        {
+            string sql = string.Format(@"SELECT Id FROM dbo.Sys_Role WHERE Role_Name='{0}'",roleName);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
 
     }

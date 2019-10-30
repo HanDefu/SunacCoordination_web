@@ -1,8 +1,5 @@
 ﻿@using SunacCADApp.Entity
 @using SunacCADApp.Data
-@{
-
-}
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,25 +16,37 @@
               height: 34px;
 
             }
+
+        .table tr {
+           cursor:pointer;
+        }
+
+
+
     </style>
     <script type="text/javascript">
         var ProjectInfo = null;
         $(function () {
             $("#select_area").on("change", function () {
-                let areaname = $(this).val();
+                let areaCode = $(this).val();
                 $("#select_citycompany").empty();
-                $.get("/SysUser/GetJsonProjectInfoByAreaName", { AreaName: areaname }, function (data) {
+                $.post("/SysUser/GetIdmCityByAreaCode", { areaCode: areaCode }, function (data) {
                     if (data.code == 100)
                     {
                         $.each(data.list, function (i, item) {
-                            $("#select_citycompany").append("<option value=\"" + item.CityCompany + "\">" + item.CityCompany + "</option>");
+                            $("#select_citycompany").append("<option value=\"" + item.OrgCode + "\">" + item.OrgName + "</option>");
                         });
                     } else {
-                       
                           $("#select_citycompany").append("<option value=\"\">不限制</option>");
                     }
                 }, "json");
             })
+
+
+
+
+
+
 
             $(".search-control strong").on("click", function () {
                 let areaname = $("#select_area").val();
@@ -47,17 +56,7 @@
                 $.post("/SysUser/GetJsonProjectInfoBySearch", { AreaName: areaname, CityCompany: citycompany, Keyword: keyword }, function (data) {
                     if (data.code == 100) {
                         ProjectInfo = data.list;
-                        $.each(data.list, function (i, row) {
-                            
-                            let _html = "<tr>" +
-                                      "   <td class=\"text-center\"><input  type=\"checkbox\" name=\"productid\" value=\""+row.Id+"\"/></td>" +
-                                      "   <td>" + row.ProjectName + "</td>" +
-                                      "   <td class=\"text-center\">" + row.AreaName + "</td>" +
-                                      "   <td class=\"text-center\">" + row.CityCompany + "</td>" +
-                                      "   <td class=\"text-center\">" + row.Project_StartTime + "</td>" +
-                                     "</tr>";
-                            $(".table tbody").append(_html);
-                        })
+                        init_company(ProjectInfo);
                     
                     } else {
                         ProjectInfo = null;
@@ -82,27 +81,70 @@
 
                 $("input[name='productid']:checked").each(function (index, item) {
                     let pid = $(this).val();
+                    let hasExistId = false;
+                    $.each(getParentTable(), function (i,row) {
+                        let existId = $(this).data('pid');
+                        if (existId == pid) {
+                            hasExistId = true;
+                            return false;
+                        }
+                    });
+                    if (hasExistId)
+                        return true;
+
                     parent.$("#tr_record_not").empty();
                     $.each(ProjectInfo, function (i, row) {
-                        if (row.Id == pid)
+
+                        if (row.POSID == pid)
                         {
-                            let _html = "<tr data-pid=\""+row.Id+"\">" +
-                              "   <td>" + row.ProjectName + "</td>" +
-                              "   <td class=\"text-center\">" + row.AreaName + "</td>" +
-                              "   <td class=\"text-center\">" + row.CityCompany + "</td>" +
-                              "   <td class=\"text-center\">" + row.Project_StartTime + "</td>" +
+
+                            let _html = "<tr data-pid=\"" + row.POSID+ "\">" +
+                              "   <td>" + row.POST1 + "</td>" +
+                              "   <td class=\"text-center\">" + row.PAREANAME + "</td>" +
+                              "   <td class=\"text-center\">" + row.PCITYNAME + "</td>" +
+                              "   <td class=\"text-center\">" + row.MTIMESTAMP + "</td>" +
                                "   <td class=\"text-center btn-delete-project\">删除</td>" +
                              "</tr>";
                             parent.$("#product-table").append(_html);
                         }
                     });
                 });
-                var index = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(index); 
-                
+               var index = parent.layer.getFrameIndex(window.name);
+               parent.layer.close(index);  
+            })
 
+            $(".table tbody").on("click", "tr", function () {
+                let that = $(this);
+                let _checked = that.find("input[name='productid']").prop("checked");
+                if(_checked==false)
+                {
+                    that.find("input[name='productid']").attr("checked",true);
+                } else {
+                    that.find("input[name='productid']").attr("checked", false);
+                }
+               
             })
         })
+
+        var init_company = function (list) {
+            $.each(list, function (i, row) {
+                let _html = "<tr>" +
+                          "   <td class=\"text-center\"><input  type=\"checkbox\" name=\"productid\" value=\"" + row.POSID + "\"/></td>" +
+                          "   <td>" + row.POST1 + "</td>" +
+                          "   <td class=\"text-center\">" + row.PAREANAME + "</td>" +
+                          "   <td class=\"text-center\">" + row.PCITYNAME + "</td>" +
+                          "   <td class=\"text-center\">" + row.MTIMESTAMP + "</td>" +
+                         "</tr>";
+                $(".table tbody").append(_html);
+            })
+        }
+
+
+        var getParentTable = function () {
+            var tr = parent.$("#product-table").find("tbody").find('tr');
+             
+            return tr;
+        }
     </script>
 </head>
 <body id="sunac">
@@ -113,11 +155,11 @@
                     <dl>
                         <dt>区域：</dt>
                         <dd>
-                            <select class="form-control" style="width:120px;" name="select_area" id="select_area">
+                            <select class="form-control" style="width:150px;" name="select_area" id="select_area">
                                 <option value="">选择区域</option>
-                                @foreach (BasArgumentSetting ArgumentSetting in ViewBag.ArgumentSettingList)
+                                @foreach (BasIdmOrganization organization in ViewBag.IdmOrganizations)
                                 {
-                                    <option value="@ArgumentSetting.ArgumentText">@ArgumentSetting.ArgumentText</option>
+                                    <option value="@organization.OrgCode">@organization.OrgName</option>
                                 }
                             </select>
 
@@ -128,7 +170,7 @@
                     <dl>
                         <dt>城市公司：</dt>
                         <dd>
-                            <select class="form-control" style="width:150px;" id="select_citycompany">
+                            <select class="form-control" style="width:200px;" id="select_citycompany">
                                 <option value="">不限制</option>
                             </select>
                         </dd>
@@ -154,7 +196,7 @@
                         <th>项目名称</th>
                         <th width="160" class="text-center">区域</th>
                         <th width="120" class="text-center">城市公司</th>
-                        <th width="120" class="text-center">创建时间</th>
+                        <th width="180" class="text-center">创建时间</th>
                     </tr>
                 </thead>
                 <tbody>

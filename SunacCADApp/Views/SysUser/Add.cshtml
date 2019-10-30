@@ -18,7 +18,21 @@
     <script src="~/Content/Js/goyeer.validation.js"></script>
     <script src="~/Content/Plugins/layer/layer.js"></script>
     <script src="~/Content/Plugins/laydate/laydate.js"></script>
+    <style type="text/css">
+       .table .btn-delete-project {
+            cursor:pointer;
+        }
 
+       .btn-form-bottom {
+          z-index:1000;
+          position:fixed;
+          bottom:0px;
+          left:0px;
+          right:0px;
+          height:45px;
+          background:#ffffff;
+        }
+    </style>
 </head>
 <body id="sunac">
     <div class="container-fluid">
@@ -117,7 +131,7 @@
                         <dl>
                             <dt class="lbl-title"><i>*</i>角色：</dt>
                             <dd>
-                                <select class="form-control" name="select_roleid">
+                                <select class="form-control required" name="select_roleid" data-error="角色不能为空">
                                     <option value="">选择角色</option>
                                     @foreach (Sys_Role Role in ViewBag.SysRoleList)
                                     {
@@ -135,11 +149,11 @@
                         <dl>
                             <dt class="lbl-title">账户有效期：</dt>
                             <dd>
-                                <input type="text"  name="datetime_used_begin_datetime" class=" form-control datetime_used_begin_datetime icon-layer-date">
+                                <input type="text"  name="datetime_used_begin_datetime" class=" form-control datetime_used_begin_datetime icon-layer-date" value="@ViewBag.StartDate">
                                 
                             </dd>
                             <dd class="tips" style="font-size:18px;">-</dd>
-                            <dd><input type="text" name="datetime_used_end_datetime" class=" form-control datetime_used_end_datetime icon-layer-date"></dd>
+                            <dd><input type="text" name="datetime_used_end_datetime" class=" form-control datetime_used_end_datetime icon-layer-date" value="@ViewBag.EndDate"></dd>
                         </dl>
                     </div>
                 </div>
@@ -165,7 +179,7 @@
                             <th>项目名称</th>
                             <th width="120" class="text-center">区域</th>
                             <th width="120" class="text-center">城市公司</th>
-                            <th width="120" class="text-center">创建时间</th>
+                            <th width="160" class="text-center">创建时间</th>
                             <th width="60"  class="text-center">操作</th>
                         </tr>
                     </thead>
@@ -177,9 +191,10 @@
 
                 </table>
             </div>
-
+            <input type="hidden"  name="hid_proids"/>
         </form>
-        <div class="row sunacrow text-center" >
+
+        <div class="row sunacrow text-center btn-form-bottom" >
             <button type="button" class="btn btn-sunac" id="btn_save" style="width:120px;margin-right:20px;">确定</button>
             <button type="button" class="btn btn-sunac" id="btn_cancel" style="width:120px;">取消</button>
         </div>
@@ -194,7 +209,7 @@
 
     laydate.render({
         elem: '.datetime_used_end_datetime'
-  , type: 'date'
+       , type: 'date'
     });
     
 
@@ -205,12 +220,24 @@
         data: $("#myform").serialize(),
         dataType: 'json',
         beforeSerialize: function () {
+            var arr_pro =new  Array();
             var rtv = $("#myform").ValidationInput();
+            let obj_ids = $("#product-table tbody").find("tr");
+            $.each(obj_ids, function (i, v) {
+                let oid = $(this).data("pid");
+                if (!_isNull(oid))
+                {
+                    arr_pro.push(oid);
+                }
+            });
+            $('input[name="hid_proids"]').val(arr_pro.join(","));
             return rtv;
         },
         success: function (data) {
             if (data.code == 100) {
-                layer.msg(data.message, { icon: 6, time: 2000 }, function () {
+                layer.alert(data.message, { icon: 6, shade: false}, function () {
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
                     parent.window.location.reload();
                 });
             } else {
@@ -253,7 +280,6 @@
         });
 
         $("input[name='all']").on('click', function () {
-
             $(this).parent().parent().parent().find('.checkbox').prop('checked', $(this).prop('checked'));
         });
 
@@ -262,14 +288,18 @@
             var index =layer.open({
                 type: 2,
                 skin: 'layer-ext-sunacskin',
-                area: ['780px', '450px'],
+                area: ['850px', '450px'],
                 shade:0,
                 title: '项目信息选择',
                 content: ['/sysuser/selectedprojectinfo', 'yes']
             });
         });
 
-        $(".btn-delete-project").on("click", "", function () {
+        $("#product-table").on("click", ".btn-delete-project", function () {
+
+            $(this).parent().remove();
+
+             
         })
     });
 </script>

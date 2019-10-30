@@ -23,8 +23,10 @@ namespace SunacCADApp.Data
 
             IList<BaseCompanyInfo> _basecompanyinfos = new List<BaseCompanyInfo>();
             string sql = string.Format(@"SELECT  * FROM 
-                                                   ( SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber , *
-                                                      FROM    dbo.BaseCompanyInfo  a
+                                                   ( SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber , a.*,
+                                                                    b.InsCode,b.InsName,b.InsEnCode
+                                                      FROM    dbo.BaseCompanyInfo  a 
+                                              INNER JOIN   dbo.BasInstitutionData b ON a.CompanyID=b.Id
                                                       WHERE   {0}
                                                     ) T
                                                    WHERE    T.RowNumber BETWEEN {1} AND {2}  ORDER BY T.Reorder DESC,T.ModifiedOn DESC {3}", _where, start, end, orderby);
@@ -38,7 +40,9 @@ namespace SunacCADApp.Data
         ///<summary>
         public static int GetPageCountByParameter(string _where)
         {
-            string sql = string.Format(@"SELECT COUNT(*) AS RowNum  FROM dbo.BaseCompanyInfo WHERE 1=1 AND {0}", _where);
+            string sql = string.Format(@"  SELECT COUNT(*) AS RowNum   
+                                                            FROM    dbo.BaseCompanyInfo  a 
+                                                   INNER JOIN   dbo.BasInstitutionData b ON a.CompanyID=b.Id WHERE {0}", _where);
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
 
@@ -118,8 +122,26 @@ namespace SunacCADApp.Data
 
         public static IList<DataSourceMember> GetInstitutionData() 
         {
-            string sql = string.Format(@"select Id as ValueMember,InsName as DisplayMember from BasInstitutionData where Enabled=1 Order by Reorder desc");
+            string sql = string.Format(@"select Id as ValueMember,InsName as DisplayMember from BasInstitutionData where Enabled=1 Order by InsName desc");
             return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<DataSourceMember>(new DataSourceMember());
+        }
+
+        public static int IsExistsInstitutionDataById(int Id) 
+        {
+            string sql = string.Format(@"SELECT Id FROM dbo.BaseCompanyInfo WHERE CompanyID={0}", Id);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
+        }
+
+        /// <summary>
+        /// 状态修改
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="enabled"></param>
+        /// <returns></returns>
+        public static int IsChangeCompanyInfo(int id,int enabled) 
+        {
+            string sql = string.Format(@"UPDATE dbo.BaseCompanyInfo SET [Enabled]={0} WHERE Id={1}",enabled,id);
+            return MsSqlHelperEx.Execute(sql).ConvertToInt32(0);
         }
 
     }

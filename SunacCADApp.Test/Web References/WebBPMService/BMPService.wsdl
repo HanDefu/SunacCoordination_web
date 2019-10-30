@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="CreateResult">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="I_REQUEST" type="tns:Bpm_Req_CreateResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Bpm_Req_CreateResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="REQ_BASEINFO" type="tns:Bpm_Req_BaseInfo" />
+          <s:element minOccurs="0" maxOccurs="1" name="MESSAGE" type="tns:Bpm_Req_CreateResult_Message" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Bpm_Req_BaseInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="REQ_TRACE_ID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="REQ_SEND_TIME" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="REQ_SRC_SYS" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="REQ_TAR_SYS" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="REQ_SERVER_NAME" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="REQ_SYN_FLAG" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="REQ_BSN_ID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="REQ_RETRY_TIMES" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="REQ_REPEAT_FLAG" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="REQ_REPEAT_CYCLE" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="BIZTRANSACTIONID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="COUNT" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Bpm_Req_CreateResult_Message">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="REQ_ITEM" type="tns:Bpm_Req_CreateResult_Param" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Bpm_Req_CreateResult_Param">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="strBTID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="strBOID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="bSuccess" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="iProcInstID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="procURL" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="strMessage" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CreateResultResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="E_RESPONSE" type="tns:Rsp_Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Rsp_Result">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="E_RESPONSE" type="tns:Bpm_Rsp_Result" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Bpm_Rsp_Result">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RSP_BASEINFO" type="tns:Bpm_Rsp_BaseInfo" />
+          <s:element minOccurs="0" maxOccurs="1" name="MESSAGE" type="tns:Bpm_Rsp_Message" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Bpm_Rsp_BaseInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RSP_TRACE_ID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RSP_REQ_TRACEID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RSP_SEND_TIME" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RSP_SRC_SYS" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RSP_TAR_SYS" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RSP_SERVER_NAME" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RSP_BSN_ID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RSP_RETRY_TIMES" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="RSP_STATUS_CODE" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="RSP_STATUS_MSG" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="BIZTRANSACTIONID" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RESULT" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Bpm_Rsp_Message">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RSP_ITEM" type="tns:Bpm_Rsp_Param" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Bpm_Rsp_Param">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Code" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Success" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Error" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="EProcessInstanceResult" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Audit">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="I_REQUEST" type="tns:Bpm_Req_Audit" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Bpm_Req_Audit">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="REQ_BASEINFO" type="tns:Bpm_Req_BaseInfo" />
+          <s:element minOccurs="0" maxOccurs="1" name="MESSAGE" type="tns:Bpm_Req_Audit_Message" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Bpm_Req_Audit_Message">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="REQ_ITEM" type="tns:Bpm_Req_Audit_Param" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Bpm_Req_Audit_Param">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="strBTID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="strBOID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="iProcInstID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="strStepName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="strApproverId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="eAction" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="strComment" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="dtTime" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AuditResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="E_RESPONSE" type="tns:Bpm_Rsp_Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Rework">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="I_REQUEST" type="tns:Bpm_Req_Rework" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Bpm_Req_Rework">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="REQ_BASEINFO" type="tns:Bpm_Req_BaseInfo" />
+          <s:element minOccurs="0" maxOccurs="1" name="MESSAGE" type="tns:Bpm_Req_Rework_Message" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Bpm_Req_Rework_Message">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="REQ_ITEM" type="tns:Bpm_Req_Rewok_Param" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Bpm_Req_Rewok_Param">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="strBTID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="strBOID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="iProcInstID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="strStepName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="strApproverId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="eAction" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="strComment" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="dtTime" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ReworkResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="E_RESPONSE" type="tns:Bpm_Rsp_Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ApproveClose">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="I_REQUEST" type="tns:Bpm_Req_ApproveClose" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Bpm_Req_ApproveClose">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="REQ_BASEINFO" type="tns:Bpm_Req_BaseInfo" />
+          <s:element minOccurs="0" maxOccurs="1" name="MESSAGE" type="tns:Bpm_Req_ApproveClose_Message" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Bpm_Req_ApproveClose_Message">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="REQ_ITEM" type="tns:Bpm_Req_ApproveClose_Param" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Bpm_Req_ApproveClose_Param">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="strBTID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="strBOID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="iProcInstID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="eProcessInstanceResult" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="strComment" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="dtTime" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ApproveCloseResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="E_RESPONSE" type="tns:Bpm_Rsp_Result" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="CreateResultSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateResult" />
+  </wsdl:message>
+  <wsdl:message name="CreateResultSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateResultResponse" />
+  </wsdl:message>
+  <wsdl:message name="AuditSoapIn">
+    <wsdl:part name="parameters" element="tns:Audit" />
+  </wsdl:message>
+  <wsdl:message name="AuditSoapOut">
+    <wsdl:part name="parameters" element="tns:AuditResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReworkSoapIn">
+    <wsdl:part name="parameters" element="tns:Rework" />
+  </wsdl:message>
+  <wsdl:message name="ReworkSoapOut">
+    <wsdl:part name="parameters" element="tns:ReworkResponse" />
+  </wsdl:message>
+  <wsdl:message name="ApproveCloseSoapIn">
+    <wsdl:part name="parameters" element="tns:ApproveClose" />
+  </wsdl:message>
+  <wsdl:message name="ApproveCloseSoapOut">
+    <wsdl:part name="parameters" element="tns:ApproveCloseResponse" />
+  </wsdl:message>
+  <wsdl:portType name="BMPServiceSoap">
+    <wsdl:operation name="CreateResult">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">BMP提交成功</wsdl:documentation>
+      <wsdl:input message="tns:CreateResultSoapIn" />
+      <wsdl:output message="tns:CreateResultSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Audit">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">BMP流程审批(通过)</wsdl:documentation>
+      <wsdl:input message="tns:AuditSoapIn" />
+      <wsdl:output message="tns:AuditSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Rework">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">BPM流程审批(退回、发起人取消）</wsdl:documentation>
+      <wsdl:input message="tns:ReworkSoapIn" />
+      <wsdl:output message="tns:ReworkSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ApproveClose">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">BPM流程审批结束(通过、拒绝、作废)</wsdl:documentation>
+      <wsdl:input message="tns:ApproveCloseSoapIn" />
+      <wsdl:output message="tns:ApproveCloseSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BMPServiceSoap" type="tns:BMPServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateResult">
+      <soap:operation soapAction="http://tempuri.org/CreateResult" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Audit">
+      <soap:operation soapAction="http://tempuri.org/Audit" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Rework">
+      <soap:operation soapAction="http://tempuri.org/Rework" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ApproveClose">
+      <soap:operation soapAction="http://tempuri.org/ApproveClose" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BMPServiceSoap12" type="tns:BMPServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateResult">
+      <soap12:operation soapAction="http://tempuri.org/CreateResult" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Audit">
+      <soap12:operation soapAction="http://tempuri.org/Audit" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Rework">
+      <soap12:operation soapAction="http://tempuri.org/Rework" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ApproveClose">
+      <soap12:operation soapAction="http://tempuri.org/ApproveClose" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="BMPService">
+    <wsdl:port name="BMPServiceSoap" binding="tns:BMPServiceSoap">
+      <soap:address location="http://10.4.64.91/BMPService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="BMPServiceSoap12" binding="tns:BMPServiceSoap12">
+      <soap12:address location="http://10.4.64.91/BMPService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -23,9 +23,11 @@ namespace SunacCADApp
         
         [WebMethod(Description = "BMP提交成功")]
         [return: System.Xml.Serialization.XmlElement("E_RESPONSE")]
-        public Rsp_Result CreateResult(Bpm_Req_CreateResult I_REQUEST)
+        public Bpm_Rsp_Result CreateResult(Bpm_Req_CreateResult I_REQUEST)
         {
-            Bpm_Rsp_Result _createResult = new Bpm_Rsp_Result();
+              Bpm_Rsp_Result _createResult = new Bpm_Rsp_Result();
+             Bpm_Rsp_BaseInfo _rsp_BaseInfo = new Bpm_Rsp_BaseInfo();
+            
             try 
             {
                 if (I_REQUEST == null)
@@ -39,19 +41,19 @@ namespace SunacCADApp
                 else
                 {
                     Bpm_Req_BaseInfo _Req = I_REQUEST.REQ_BASEINFO;
-                    Bpm_Rsp_BaseInfo _rsp_BaseInfo = new Bpm_Rsp_BaseInfo();
+                   
                     _rsp_BaseInfo = BpmLibDB.ReqToRspBaseInfo(_Req);
+                    _createResult.RSP_BASEINFO = _rsp_BaseInfo;
                     Bpm_Req_CreateResult_Param request = I_REQUEST.MESSAGE.REQ_ITEM;
                     if (request.bSuccess == "1")
                     {
-
                         _rsp_BaseInfo.RESULT = 0;
                         _rsp_BaseInfo.RSP_STATUS_MSG = "成功";
+                       
                         _createResult.MESSAGE = new Bpm_Rsp_Message()
                         {
                             RSP_ITEM = new Bpm_Rsp_Param { Code = 100, Success = 1111 }
                         };
-
                     }
                     else
                     {
@@ -72,9 +74,7 @@ namespace SunacCADApp
                     RSP_ITEM = new Bpm_Rsp_Param { Code = -100, Error = -1000 }
                 };
             }
-
-
-            return new Rsp_Result() { E_RESPONSE = _createResult };
+            return _createResult;
         }
 
 
@@ -82,12 +82,10 @@ namespace SunacCADApp
         [return: System.Xml.Serialization.XmlElement("E_RESPONSE")]
         public Bpm_Rsp_Result Audit(Bpm_Req_Audit I_REQUEST)
         {
-
             Bpm_Rsp_Result _Rsp_Result = new Bpm_Rsp_Result();
             Bpm_Rsp_BaseInfo _Rsp_BaseInfo =new Bpm_Rsp_BaseInfo();
             if (I_REQUEST == null)
             {
-
                 _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
                 {
                     RSP_ITEM = new Bpm_Rsp_Param { Code = -100, Error = -1000 }
@@ -95,8 +93,9 @@ namespace SunacCADApp
             }
             else
             {
-
-
+                Bpm_Req_BaseInfo _Req = I_REQUEST.REQ_BASEINFO;
+                _Rsp_BaseInfo = BpmLibDB.ReqToRspBaseInfo(_Req);
+                _Rsp_Result.RSP_BASEINFO = _Rsp_BaseInfo;
                 Bpm_Req_Audit_Param param = I_REQUEST.MESSAGE.REQ_ITEM;
 
                 if (param.eAction == "1")
@@ -138,7 +137,6 @@ namespace SunacCADApp
             Bpm_Rsp_BaseInfo _Rsp_BaseInfo = new Bpm_Rsp_BaseInfo();
             if (I_REQUEST == null)
             {
-
                 _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
                 {
                     RSP_ITEM = new Bpm_Rsp_Param { Code = -100, Error = -1000 }
@@ -147,6 +145,9 @@ namespace SunacCADApp
             else
             {
                 Bpm_Req_Rewok_Param param = I_REQUEST.MESSAGE.REQ_ITEM;
+                Bpm_Req_BaseInfo _Req = I_REQUEST.REQ_BASEINFO;
+                _Rsp_BaseInfo = BpmLibDB.ReqToRspBaseInfo(_Req);
+                _Rsp_Result.RSP_BASEINFO = _Rsp_BaseInfo;
                 if (param.eAction == "1") 
                 {
                     _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
@@ -191,6 +192,9 @@ namespace SunacCADApp
              else
              {
                  Bpm_Req_ApproveClose_Param  param = I_REQUEST.MESSAGE.REQ_ITEM;
+                 Bpm_Req_BaseInfo _Req = I_REQUEST.REQ_BASEINFO;
+                 _Rsp_BaseInfo = BpmLibDB.ReqToRspBaseInfo(_Req);
+                 _Rsp_Result.RSP_BASEINFO = _Rsp_BaseInfo;
                  if (param.eProcessInstanceResult == "1")
                  {
                      _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()

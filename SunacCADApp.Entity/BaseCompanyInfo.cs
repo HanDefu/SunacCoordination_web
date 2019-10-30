@@ -33,6 +33,21 @@ namespace SunacCADApp.Entity
         public string CompanyRemark { get; set; }
 
         /// <summary>
+        /// 对接系统ID
+        /// </summary>
+        public string InsCode { get; set; }
+
+        /// <summary>
+        /// 机构名称
+        /// </summary>
+        public string InsName { get; set; }
+
+        /// <summary>
+        /// 统一社会信用编码
+        /// </summary>
+        public string InsEnCode { get; set; }
+
+        /// <summary>
         /// 是否有效
         ///</summary>
         public int Enabled { get; set; }

@@ -172,5 +172,65 @@ namespace SunacCADApp.Data
             _caddrawingwindow = MsSqlHelperEx.ExecuteDataTable(bathroom_sql).ConverToModel<CadDrawingBathroomDetail>(new CadDrawingBathroomDetail());
             return _caddrawingwindow;
         }
+
+        public static BPMDynamicBathroom GetBPMDynamicBathroomByBathroomId(int bathroomId) 
+        {
+            BPMDynamicBathroom bathroom = new BPMDynamicBathroom();
+            string sql = string.Format(@" SELECT  'P41' AS PageCode, m.Id AS prototypeID,
+                                                                      CASE m.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '静态模块' END AS dynamicType,
+		                                                              b.ArgumentText AS bathroomType,
+			                                                          CASE a.BathroomIsAirduct WHEN 1 THEN '是' ELSE '否' END AS hasAirVent, 
+			                                                          ba.ArgumentText AS doorWindowPos,
+			                                                         CONCAT(a.BathroomShortSideMin,'mm','-',a.BathroomShortSideMax,'mm') AS widthRange,
+			                                                         CONCAT(a.BathroomLongSizeMin,'mm','-',a.BathroomLongSizeMax,'mm') AS HeightRange
+                                                          FROM  dbo.CadDrawingBathroomDetail a 
+                                                    INNER JOIN  dbo.CaddrawingMaster m ON m.Id=a.MId
+                                                     LEFT JOIN  dbo.BasArgumentSetting b ON a.BathroomType=b.Id AND b.TypeCode='ToiletType'
+                                                     LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='BathroomDoorWindowPosition'
+                                                     WHERE a.Id={0}", bathroomId);
+            bathroom = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMDynamicBathroom>(new BPMDynamicBathroom());
+            string _where = string.Format(@" MId={0}", bathroomId);
+            string _str_area = "";
+            IList<CadDrawingByArea> areas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
+            foreach (CadDrawingByArea area in areas)
+            {
+                _str_area += area.AreaName + ",";
+            }
+            _str_area = _str_area.TrimEnd(',');
+            bathroom.region = _str_area;
+            return bathroom;
+        }
+
+        public static BPMStaticBathroom GetBPMStaticBathroomByBathroomId(int bathroomId) 
+        {
+            BPMStaticBathroom bathroom = new BPMStaticBathroom();
+            string sql = string.Format(@" SELECT  'P42' AS PageCode, m.Id AS prototypeID,
+                                                                CASE m.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '静态模块' END AS dynamicType,
+		                                                        b.ArgumentText AS bathroomType,
+			                                                    CASE a.BathroomIsAirduct WHEN 1 THEN '是' ELSE '否' END AS hasAirVent, 
+			                                                    ba.ArgumentText AS doorWindowPos,
+			                                                    a.BathroomShortSideMin AS width,
+			                                                    a.BathroomShortSideMax AS Height,
+		                                                        c.ArgumentText AS basinSize,
+			                                                    d.ArgumentText AS closestoolSize
+                                                          FROM  dbo.CadDrawingBathroomDetail a 
+                                                    INNER JOIN  dbo.CaddrawingMaster m ON m.Id=a.MId
+                                                     LEFT JOIN  dbo.BasArgumentSetting b ON a.BathroomType=b.Id AND b.TypeCode='ToiletType'
+                                                     LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='BathroomDoorWindowPosition'
+                                                     LEFT JOIN  dbo.BasArgumentSetting c ON c.Id=a.BathroomBasinSize AND c.TypeCode='ToiletBasinWidth'
+                                                     LEFT JOIN  dbo.BasArgumentSetting d ON d.Id=a.BathroomClosestoolSize AND d.TypeCode='ClosesToolWidth' 
+                                                     WHERE a.Id={0}", bathroomId);
+            bathroom = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMStaticBathroom>(new BPMStaticBathroom());
+            string _where = string.Format(@" MId={0}", bathroomId);
+            string _str_area = "";
+            IList<CadDrawingByArea> areas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
+            foreach (CadDrawingByArea area in areas)
+            {
+                _str_area += area.AreaName + ",";
+            }
+            _str_area = _str_area.TrimEnd(',');
+            bathroom.region = _str_area;
+            return bathroom;
+        }
     }
 }

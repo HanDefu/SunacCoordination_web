@@ -95,7 +95,9 @@ namespace SunacCADApp.Data
         ///</summary>
         public static int DeleteHandleById(int Id)
         {
-            string sql = string.Format("DELETE FROM dbo.Sys_User WHERE Id={0}", Id);
+            string sql = string.Format(@"DELETE FROM dbo.Sys_User WHERE Id={0};
+                                                        DELETE FROM dbo.sys_user_area_relation WHERE User_ID='{0}';
+                                                        DELETE FROM dbo.Sys_User_Project_Relation WHERE User_ID='{0}'", Id);
             return MsSqlHelperEx.Execute(sql);
         }
 
@@ -104,7 +106,9 @@ namespace SunacCADApp.Data
         ///</summary>  
         public static int DeleteHandleByIds(string Ids)
         {
-            string sql = string.Format("DELETE FROM dbo.Sys_User WHERE Id in ({0})", Ids);
+            string sql = string.Format(@"DELETE FROM dbo.Sys_User WHERE Id in ({0});
+                                                        DELETE FROM dbo.sys_user_area_relation WHERE User_ID in ({0});
+                                                        DELETE FROM dbo.Sys_User_Project_Relation WHERE User_ID in ({0})", Ids);
             return MsSqlHelperEx.Execute(sql);
         }
         ///<summary>
@@ -116,5 +120,18 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.Execute(sql);
         }
 
+        public static int HasSysUserByUserName(string userName) 
+        {
+            string sql = string.Format(@"SELECT top 1 Id FROM dbo.Sys_User WHERE User_Name='{0}'",userName);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
+        }
+
+        public static int InsertUserAndProjectRelation(int userID, string ObjID,int OperateId=0,string Operater="Test") 
+        {
+            string sql = string.Format(@"INSERT INTO dbo.sys_user_project_relation(User_ID,Project_ID,CreateOn ,CreateUserId ,CreateBy)
+                                                                 VALUES ({0},'{1}',getdate(),{2},'{3}')", userID, ObjID, OperateId, Operater);
+            return MsSqlHelperEx.Execute(sql);
+        }
+            
     }
 }

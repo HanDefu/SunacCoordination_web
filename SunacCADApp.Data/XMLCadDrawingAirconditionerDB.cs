@@ -14,10 +14,10 @@ namespace SunacCADApp.Data
         {
             string _where = "1=1";
             int _airVent = string.IsNullOrEmpty(AirconditionerIsRainpipe) ? -1 : (AirconditionerIsRainpipe == "是" ? 1 : 0);
-            _where += string.IsNullOrEmpty(AirconditionerPower) ? string.Empty : string.Format(@" AND ba.ArgumentText in ({0})", AirconditionerPower);
-            _where += string.IsNullOrEmpty(AirconditionerPipePosition) ? string.Empty : string.Format(@" AND bb.ArgumentText in ({0})", AirconditionerPipePosition);
+            _where += string.IsNullOrEmpty(AirconditionerPower) ? string.Empty : string.Format(@" AND ba.ArgumentText ='{0}'", AirconditionerPower);
+            _where += string.IsNullOrEmpty(AirconditionerPipePosition) ? string.Empty : string.Format(@" AND bb.ArgumentText = '{0}'", AirconditionerPipePosition);
             _where += _airVent > 1 ? string.Format(@" AND a.AirconditionerIsRainPipe={0}", _airVent) : string.Empty;
-            _where += string.IsNullOrEmpty(RainpipePosition) ? string.Empty : string.Format(@" AND bc.ArgumentText in ({0})", RainpipePosition);
+            _where += string.IsNullOrEmpty(RainpipePosition) ? string.Empty : string.Format(@" AND bc.ArgumentText ='{0}'", RainpipePosition);
             IList<Airconditioner> listAirconditioner = new List<Airconditioner>();
             string _sql = string.Format(@"     SELECT  m.Id,m.DrawingCode,m.DrawingName,m.Scope,m.DynamicType,
 		                                                                    CASE m.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '定性模块' END AS DynamicType,

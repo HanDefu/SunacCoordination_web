@@ -432,7 +432,12 @@
             <div class="col-md-6 col-sm-6 text-right">
                 <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
                 <button type="button" class="btn btn-sunac">删除</button>
-                <button type="button" class="btn btn-sunac">提交审核</button>
+                <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus">提交审核</button>
+                @if (@dMaster.BillStatus == 2)
+                {
+                    string BTID = dMaster.DynamicType == 1 ? "P11" : "P12";
+                    <a class="btn btn-sunac" href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=@BTID&BOID=@dMaster.Id" target="_blank">BPM查看</a>
+                }
             </div>
         </div>
     </div>
@@ -539,6 +544,34 @@
         $("#btn_cancel").on('click', function () {
             $("#myform").resetForm();
         });
+
+
+        $(".btn-bpm-submit").on("click", function () {
+            let self = $(this);
+            let billstatus = self.data("billstatus");
+            if (billstatus == 2) {
+                layer.alert("已提交审核,请不要重复提交", { icon: 6, shade: false });
+                return;
+            }
+            layer.confirm('是否提交BPM审核', {
+                btn: ['提交BPM审核', '取消'],
+                shade: false,
+                icon: 3
+            }, function () {
+                let Id = self.data("id");
+                let State = self.data("state");
+                $.post("/Door/WriteBPMDoorApproval", { Id: Id, State: State }, function (data) {
+                    if (data.code == 100) {
+                        layer.alert("BPM提交成功", { icon: 6, shade: false }, function () {
+                            window.location.reload();
+                        })
+                    } else {
+                        layer.alert(data.message, { icon: 6, shade: false });
+                    }
+                }, "json")
+
+            })
+        })
     })
 
 </script>

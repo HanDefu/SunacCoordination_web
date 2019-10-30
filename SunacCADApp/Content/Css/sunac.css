@@ -1018,3 +1018,84 @@ body .layui-ext-sunacskin .layui-layer-btn {
     min-height: 500px;
 }
 
+
+#sunac .pagination {
+
+  display:block;
+  text-align:right;
+}
+
+   #sunac .pagination a {
+    display:inline-block;
+    line-height:22px;
+    padding:0px 8px; 
+    border:dotted 1px;
+    border-color:#b58d59;
+    background-color:#b58d59;
+    color:#fff;
+    text-decoration:none;
+    font-size:12px;
+    border-radius:3px;
+    cursor:pointer;
+    
+     
+   }
+
+    #sunac .pagination a.dispaly {
+       border-color:#efefef;
+       background-color:#efefef;
+       color:#d6d393;
+       cursor:default;
+    }
+
+
+    
+    #sunac .pagination strong,
+    #sunac .pagination b
+     {
+        display:inline-block;
+        line-height:22px;
+        font-size:16px;
+        color:#595e60;
+        font-weight:normal;
+        
+
+    }
+    #sunac .pagination strong {
+     margin-right:8px;
+
+    }
+     #sunac .pagination b {
+       margin-left:8px;
+       background-color:#b58d59;
+       color:#ffffff;
+       line-height:22px;
+       border-radius:23px;
+       text-align:center;
+       width:23px;
+       background-color:#b58d59;
+       margin-right:5px;
+        
+    }
+
+    #sunac .pagination input {
+     padding:2px 1px;
+     text-align:center;
+     margin-left:5px;
+     margin-right:5px;
+    }
+
+    #sunac .pagination input[type="text"] {
+       width:30px;
+       min-width:30px;
+       display:inline-block;
+       outline:none;
+       border:solid #c3c3c2 1px;
+       font-size:14px;
+       vertical-align:middle;
+       border-radius:3px;
+       
+    }
+
+
+

@@ -133,7 +133,19 @@
                         <p>@drawing.DrawingCode</p>
                     </figure>
                 </a>
-                <span class="state unchecked">草稿</span>
+                @if (drawing.BillStatus == 0 || drawing.BillStatus == 1)
+                {
+                    <span class="state">草稿</span>
+                }
+                else if (drawing.BillStatus == 2)
+                {
+                    <span class="state unchecked">审核中</span>
+                }
+                else if (drawing.BillStatus == 3)
+                {
+                    
+                }
+              
             </li>
          }
      </ul>

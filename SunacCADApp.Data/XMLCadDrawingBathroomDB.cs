@@ -22,11 +22,11 @@ namespace SunacCADApp.Data
             _dynamic_where += Height > 0 ? string.Format(@" AND (b.BathroomLongSizeMin>='{0}' AND b.BathroomLongSizeMax<='{0}')  ", Height) : string.Empty;
             _static_where += Height > 0 ? string.Format(@" AND b.BathroomShortSideMax='{0}'", Height) : string.Empty;
 
-            _dynamic_where += string.IsNullOrEmpty(BathroomDoorWindowPosition) ? string.Empty:string.Format(@" AND ba.ArgumentText in ({0}) ", BathroomDoorWindowPosition);
-            _static_where += string.IsNullOrEmpty(BathroomDoorWindowPosition)? string.Empty:string.Format(@" AND ba.ArgumentText in ({0}) ", BathroomDoorWindowPosition);
+            _dynamic_where += string.IsNullOrEmpty(BathroomDoorWindowPosition) ? string.Empty:string.Format(@" AND ba.ArgumentText = '{0}' ", BathroomDoorWindowPosition);
+            _static_where += string.IsNullOrEmpty(BathroomDoorWindowPosition) ? string.Empty : string.Format(@" AND ba.ArgumentText = '{0}' ", BathroomDoorWindowPosition);
 
-            _dynamic_where +=string.IsNullOrEmpty(ToiletType) ? string.Empty: string.Format(@" AND a.BathroomType={0} ", ToiletType);
-            _static_where += string.IsNullOrEmpty(ToiletType) ?string.Empty: string.Format(@" AND a.BathroomType={0} ", ToiletType);
+            _dynamic_where += string.IsNullOrEmpty(ToiletType) ? string.Empty : string.Format(@" AND b.ArgumentText='{0}' ", ToiletType);
+            _static_where += string.IsNullOrEmpty(ToiletType) ? string.Empty : string.Format(@" AND b.ArgumentText='{0}' ", ToiletType);
 
             int _airVent = string.IsNullOrEmpty(AirVent) ? -1 : (AirVent == "是" ? 1 : 0);
             _dynamic_where += _airVent > 0 ? string.Format(@" AND a.BathroomIsAirduct={0} ", _airVent) : string.Empty;

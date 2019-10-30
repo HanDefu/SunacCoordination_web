@@ -131,7 +131,7 @@ namespace SunacCADApp.Data
             IList<CadDrawingWindowSearch> _caddrawingwindowsearchs = new List<CadDrawingWindowSearch>();
             string sql = string.Format(@"SELECT  * FROM 
                                                            (     SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber, a.Id,
-                                                                              a.DrawingCode,a.DrawingName,c.DWGPath,a.Reorder,a.CreateOn 
+                                                                              a.DrawingCode,a.DrawingName,c.DWGPath,a.Reorder,a.CreateOn,a.BillStatus 
                                                                    FROM  dbo.CaddrawingMaster a 
                                                           INNER JOIN  dbo.CadDrawingWindowDetail b ON a.Id=b.MId
                                                             LEFT JOIN  dbo.CadDrawingDWG c ON c.MId = a.Id AND c.CADType='ExpandViewFile' WHERE  {0}
@@ -234,7 +234,107 @@ namespace SunacCADApp.Data
             return _window;
         }
 
+        /// <summary>
+        /// 动态模型
+        /// </summary>
+        /// <param name="windowId"></param>
+        /// <returns></returns>
+        public static BPMDynamicWindow GetBPMDynamicWindowByWhere(int windowId) 
+        {
+            BPMDynamicWindow window = new BPMDynamicWindow();
+            string sql = string.Format(@"SELECT  'P11' AS PageCode, m.Id AS prototypeID, 
+                                                                     CASE m.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '静态模块' END AS dynamicType,
+		                                                             b.ArgumentText AS openType,
+                                                                     CONCAT(c.ArgumentText,'扇')  AS openCount,
+		                                                             CASE a.WindowHasCorner WHEN 1 THEN '是' ELSE '否' END AS isCorner, 
+                                                                     CASE a.WindowHasSymmetry WHEN 1 THEN '是' ELSE '否' END AS isMirror,
+                                                                     CONCAT(a.WindowSizeMin,'mm','- ',a.WindowSizeMax,'mm') AS widthRange,
+		                                                             a.WindowDesignFormula AS airVolumeFormula
+                                                           FROM dbo.CaddrawingMaster m 
+                                                   INNER JOIN  dbo.CadDrawingWindowDetail a ON m.Id=a.MId
+                                                      LEFT JOIN dbo.BasArgumentSetting b ON a.WindowOpenTypeId=b.Id AND b.TypeCode='OpenType'
+                                                      LEFT JOIN dbo.BasArgumentSetting c ON c.Id=a.WindowOpenQtyId AND c.TypeCode='OpenWindowNum'
+                                                          WHERE  m.id={0}", windowId);
+            window = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMDynamicWindow>(new BPMDynamicWindow());
 
+            string _where = string.Format(@" MId={0}", windowId);
+            string _str_area = "";
+            IList<CadDrawingByArea> areas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
+            foreach (CadDrawingByArea area in areas)
+            {
+                _str_area += area.AreaName + ",";
+            }
+            _str_area = _str_area.TrimEnd(',');
+
+            string _str_function = "";
+            IList<CadDrawingFunction> funcs = CadDrawingFunctionDB.GetCadDrawingFunctionByWhereList(_where);
+            foreach (CadDrawingFunction func in funcs)
+            {
+                _str_function += string.Format(@"{0},", func.FunctionName);
+            }
+            _str_function = _str_function.TrimEnd(',');
+
+            string _str_file = string.Empty;
+            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
+            foreach (Drawing drawing in DWGS)
+            {
+                _str_file += string.Format(@"{0},", drawing.CADPath);
+            }
+            _str_file = _str_file.TrimEnd(',');
+
+            window.region = _str_area;
+            window.functionAreas = _str_function;
+            window.filePath = _str_file;
+            window.SizeParas = CadDrawingParameterDB.GetBPMSizeParamList(_where).ToArray<SizePara>();
+            return window;
+        }
+
+        public static BPMStaticWindow GetBPMStaticWindowByWindowId(int windowId) 
+        {
+            BPMStaticWindow window = new BPMStaticWindow();
+            string sql = string.Format(@"SELECT  'P12' AS PageCode, m.Id AS prototypeID, 
+                                                                     CASE m.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '静态模块' END AS dynamicType,
+		                                                             b.ArgumentText AS openType,
+                                                                     CONCAT(c.ArgumentText,'扇')  AS openCount,
+		                                                             CASE a.WindowHasCorner WHEN 1 THEN '是' ELSE '否' END AS isCorner, 
+                                                                     CASE a.WindowHasSymmetry WHEN 1 THEN '是' ELSE '否' END AS isMirror,
+                                                                     CONCAT(a.WindowSizeMin,'mm','- ',a.WindowSizeMax,'mm') AS widthRange,
+		                                                             CASE a.WindowAuxiliaryFrame WHEN 1 THEN '是' ELSE '否' END  AS hasAuxiliaryFrame
+                                                           FROM dbo.CaddrawingMaster m 
+                                                   INNER JOIN  dbo.CadDrawingWindowDetail a ON m.Id=a.MId
+                                                      LEFT JOIN dbo.BasArgumentSetting b ON a.WindowOpenTypeId=b.Id AND b.TypeCode='OpenType'
+                                                      LEFT JOIN dbo.BasArgumentSetting c ON c.Id=a.WindowOpenQtyId AND c.TypeCode='OpenWindowNum'
+                                                          WHERE  m.id={0}", windowId);
+            window = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMStaticWindow>(new BPMStaticWindow());
+            string _where = string.Format(@" MId={0}", windowId);
+            string _str_area = "";
+            IList<CadDrawingByArea> areas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
+            foreach (CadDrawingByArea area in areas)
+            {
+                _str_area += area.AreaName + ",";
+            }
+            _str_area = _str_area.TrimEnd(',');
+
+            string _str_function = "";
+            IList<CadDrawingFunction> funcs = CadDrawingFunctionDB.GetCadDrawingFunctionByWhereList(_where);
+            foreach (CadDrawingFunction func in funcs)
+            {
+                _str_function += string.Format(@"{0},", func.FunctionName);
+            }
+            _str_function = _str_function.TrimEnd(',');
+
+            string _str_file = string.Empty;
+            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
+            foreach (Drawing drawing in DWGS)
+            {
+                _str_file += string.Format(@"{0},", drawing.CADPath);
+            }
+            _str_file = _str_file.TrimEnd(',');
+            window.region = _str_area;
+            window.functionAreas = _str_function;
+            window.filePath = _str_file;
+            return window;
+        }
 
 
 

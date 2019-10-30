@@ -29,17 +29,17 @@
     <a href="/Window">外窗</a>
     <i></i>
     <a>@master.DrawingCode</a>
-    @if (master.Enabled == 0)
+    @if (master.BillStatus == 0||master.BillStatus==1)
     {
-        <span class="check-state state-unchecked">草稿</span>
-    }
-    else if (master.Enabled == 1)
-    {
-        <span class="check-state state-unchecked">待审核</span>
+        <span class="check-state">草稿</span>
     }
     else if (master.Enabled == 2)
     {
-        <span class="check-state state-unchecked">已发布</span>
+        <span class="check-state state-unchecked">待审核</span>
+    }
+    else if (master.Enabled == 3)
+    {
+
     }
 
 </div>
@@ -278,8 +278,8 @@
             </div>
             <div class="col-md-6 col-sm-6" style="text-align:right;">
                 <a class="btn btn-sunac" id="btn_save" href="/Window/Edit/@master.Id"> 编辑</a>
-                <button type="button" class="btn btn-sunac btn-delete" data-id="@master.Id">删除</button>
-                <button type="button" class="btn btn-sunac">提交审核</button>
+               
+              
             </div>
         </div>
     </div>
@@ -305,7 +305,28 @@
                     }
                 }, 'json');
             });
+        })
 
+        $(".btn-bpm-submit").on("click", function () {
+            let self = $(this);
+            layer.confirm('是否提交BPM审核', {
+                btn: ['提交BPM审核', '取消'],
+                shade: false,
+                icon: 3
+            }, function () {
+                let Id = self.data("id");
+                let State = self.data("state");
+                $.post("/window/CadWirteBPMApproval", { Id: Id, State: State }, function (data) {
+                    if (data.code == 100) {
+                        layer.alert("BPM提交成功", { icon: 6, shade: false }, function () {
+                            window.location.href = "/window/index";
+                        })
+                    } else {
+                        layer.alert(data.message, { icon: 6, shade: false });
+                    }
+                }, "json")
+
+            })
         })
 
     })

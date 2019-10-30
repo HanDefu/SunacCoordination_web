@@ -9,6 +9,7 @@ using SunacCADApp.Entity;
 using SunacCADApp.Data;
 using Newtonsoft.Json;
 using System.Data;
+using SunacCADApp.Library;
 
 namespace SunacCADApp.Controllers
 {
@@ -424,8 +425,10 @@ namespace SunacCADApp.Controllers
                 return Json(new { code = -100, message = "删除失败" }, JsonRequestBehavior.AllowGet);
             }
         }
+        
+        
         /// <summary>
-        ///   门CAD原型属性表-删除多条根据多个主键
+        ///   门原型属性表-删除多条根据多个主键
         /// </summary>
         /// <returns></returns>
         /// <get>caddrawingdoordetail/deletehandlebyids</get> 
@@ -444,9 +447,74 @@ namespace SunacCADApp.Controllers
             }
         }
 
-       
 
-                 
+        /// <summary>
+        /// 门原型提交
+        /// </summary>
+        /// <returns></returns>
+        /// <get>/Door/WriteBPMDoorApproval</get>
+        public ActionResult   WriteBPMDoorApproval()
+        {
+            try
+            {
+
+                int doorID = Request.Form["Id"].ConvertToInt32(0);
+                string BOID = doorID.ConventToString("0");
+                string State = Request.Form["State"].ConventToString(string.Empty);
+                string BTID = "P21";
+                WeService.BPM.WriteSAP.I_REQUEST request = new WeService.BPM.WriteSAP.I_REQUEST();
+                IList<WeService.BPM.WriteSAP.REQ_ITEM> peq_item = new List<WeService.BPM.WriteSAP.REQ_ITEM>();
+                WeService.BPM.WriteSAP.REQ_ITEM item = new WeService.BPM.WriteSAP.REQ_ITEM();
+                string BPMXml = string.Empty;
+                if (State == "1")
+                {
+                    BPMDynamicDoor door = CadDrawingDoorDetailDB.GetBPMDynamicDoorById(doorID);
+                    BPMXml = XmlSerializeHelper.XmlSerialize<BPMDynamicDoor>(door);
+                    BTID = "P21";
+                }
+                else if (State == "2")
+                {
+                    BPMStaticDoor door = CadDrawingDoorDetailDB.GetBPMStaticDoorById(doorID);
+                    BPMXml = XmlSerializeHelper.XmlSerialize<BPMStaticDoor>(door);
+                    BTID = "P22";
+                }
+                item.BSID = "vsheji";
+                item.BTID = BTID;
+                item.BOID = BOID;
+                item.BSXML = BPMXml;
+                item.procInstID = "0";
+                item.userid = "zhaoy58";
+                peq_item.Add(item);
+                WeService.BPM.WriteSAP.REQ_BASEINFO baseInfo = new WeService.BPM.WriteSAP.REQ_BASEINFO();
+                baseInfo.REQ_TRACE_ID = API_Common.UUID;
+                baseInfo.REQ_SEND_TIME = API_Common.SEND_DATETIME;
+                baseInfo.REQ_SRC_SYS = "BS_CAD_BPM";
+                baseInfo.REQ_TAR_SYS = "BS_CAD_BPM";
+                baseInfo.REQ_SERVER_NAME = "CAD_SUNAC_564_WriteSAPXmlToBPM";
+                baseInfo.REQ_SYN_FLAG = "0";
+                request.REQ_BASEINFO = baseInfo;
+                request.MESSAGE = peq_item.ToArray<WeService.BPM.WriteSAP.REQ_ITEM>();
+                WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService service = new WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService();
+                WeService.BPM.WriteSAP.E_RESPONSE response = service.CAD_SUNAC_564_WriteSAPXmlToBPM(request);
+                WeService.BPM.WriteSAP.E_RESPONSERSP_ITEM Message = response.MESSAGE.First();
+                if (Message.STATUSCODE == "1")
+                {
+                    CadDrawingMasterDB.ChangeBpmStateusByMId(doorID, 2);
+                    return Json(new { code = 100, message = "BPM提交成功" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { code = -100, message = "BPM提交失败" }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -100, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        
+        
 
     }
 }

@@ -165,6 +165,28 @@ namespace SunacCADApp.Data
             return _caddrawingwindow;
         }
 
+        public static BPMHandrail GetBPMHandrailByHandrailId(int handraidId) 
+        {
+            BPMHandrail handrail = new BPMHandrail();
+            string sql = string.Format(@"SELECT   'P51' AS PageCode, m.Id AS prototypeID,
+		                                                              b.ArgumentText AS railingType
+                                                              FROM   dbo.CadDrawingHandrailDetail a
+                                                            INNER JOIN dbo.CaddrawingMaster m ON m.Id=a.MId
+                                                             LEFT JOIN  dbo.BasArgumentSetting b ON a.HandrailType=b.Id AND b.TypeCode='HandRail'
+                                                             WHERE a.Id={0}", handraidId);
+            handrail = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMHandrail>(new BPMHandrail());
+            string _where = string.Format(@" MId={0}", handraidId);
+            string _str_area = "";
+            IList<CadDrawingByArea> areas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
+            foreach (CadDrawingByArea area in areas)
+            {
+                _str_area += area.AreaName + ",";
+            }
+            _str_area = _str_area.TrimEnd(',');
+            handrail.region = _str_area;
+            return handrail;
+        }
+
 
     }
 }
