@@ -7,6 +7,7 @@ using SunacCADApp.Entity;
 using SunacCADApp.Data;
 using Common.Utility;
 using Common.Utility.Extender;
+using SunacCADApp.Library;
 
 namespace SunacCADApp.Controllers
 {
@@ -438,6 +439,82 @@ namespace SunacCADApp.Controllers
             {
                 return Json(new { code = -100, message = "删除失败" }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+
+        /// <summary>
+        ///  BPM提交审核
+        /// </summary>
+        /// <param name="Id">原型ID</param>
+        /// <param name="status">1、动态  2、静态</param>
+        /// <returns></returns>
+        /// <get>/bathroom/CadWirteBPMApproval</get>
+        public ActionResult CadWirteBPMApproval()
+        {
+            try
+            {
+
+                int Id = Request.Form["Id"].ConvertToInt32(0);
+                int _btid = Request.Form["State"].ConvertToInt32(0);
+                string BOID = string.Empty,
+                          BTID = "P41",
+                          Bsxml = string.Empty;
+                if (_btid == 1)
+                {
+                    BOID = Id.ConventToString(string.Empty);
+                    BTID = "P41";
+
+                    BPMDynamicBathroom bathroom = CadDrawingBathroomDetailDB.GetBPMDynamicBathroomByBathroomId(Id);
+                    Bsxml = XmlSerializeHelper.XmlSerialize<BPMDynamicBathroom>(bathroom);
+                }
+                else if (_btid == 2)
+                {
+                    BOID = Id.ConventToString(string.Empty);
+                    BTID = "P42";
+                    BPMStaticBathroom bathroom = CadDrawingBathroomDetailDB.GetBPMStaticBathroomByBathroomId(Id);
+                    Bsxml = XmlSerializeHelper.XmlSerialize<BPMStaticBathroom>(bathroom);
+
+                }
+                WeService.BPM.WriteSAP.I_REQUEST request = new WeService.BPM.WriteSAP.I_REQUEST();
+                IList<WeService.BPM.WriteSAP.REQ_ITEM> peq_item = new List<WeService.BPM.WriteSAP.REQ_ITEM>();
+                WeService.BPM.WriteSAP.REQ_ITEM item = new WeService.BPM.WriteSAP.REQ_ITEM();
+                item.BSID = "vsheji";
+                item.BTID = BTID;
+                item.BOID = BOID;
+                item.BSXML = Bsxml;
+                item.procInstID = "0";
+                item.userid = "zhaoy58";
+                peq_item.Add(item);
+                WeService.BPM.WriteSAP.REQ_BASEINFO baseInfo = new WeService.BPM.WriteSAP.REQ_BASEINFO();
+                baseInfo.REQ_TRACE_ID = API_Common.UUID;
+                baseInfo.REQ_SEND_TIME = API_Common.SEND_DATETIME;
+                baseInfo.REQ_SRC_SYS = "BS_CAD_BPM";
+                baseInfo.REQ_TAR_SYS = "BS_CAD_BPM";
+                baseInfo.REQ_SERVER_NAME = "CAD_SUNAC_564_WriteSAPXmlToBPM";
+                baseInfo.REQ_SYN_FLAG = "0";
+                request.REQ_BASEINFO = baseInfo;
+                request.MESSAGE = peq_item.ToArray<WeService.BPM.WriteSAP.REQ_ITEM>();
+                WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService service = new WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService();
+                WeService.BPM.WriteSAP.E_RESPONSE response = service.CAD_SUNAC_564_WriteSAPXmlToBPM(request);
+                WeService.BPM.WriteSAP.E_RESPONSERSP_ITEM Message = response.MESSAGE.First();
+                if (Message.STATUSCODE == "1")
+                {
+                    CadDrawingMasterDB.ChangeBpmStateusByMId(Id, 2);
+                    return Json(new { code = 100, message = "提交成功" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { code = -100, message = "提交失败" }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -100, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+
+
+
         }
 
 

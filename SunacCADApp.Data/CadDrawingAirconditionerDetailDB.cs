@@ -126,7 +126,7 @@ namespace SunacCADApp.Data
             IList<CadDrawingWindowSearch> _caddrawingwindowsearchs = new List<CadDrawingWindowSearch>();
             string sql = string.Format(@"SELECT  * FROM 
                                                            (    SELECT  ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber, a.Id,
-                                                                             a.DrawingCode,a.DrawingName,d.DWGPath,a.Reorder,a.CreateOn 
+                                                                             a.DrawingCode,a.DrawingName,d.DWGPath,a.Reorder,a.CreateOn,a.BillStatus
                                                                   FROM  dbo.CaddrawingMaster a 
                                                           INNER JOIN  dbo.CadDrawingAirconditionerDetail b ON a.Id=b.MId
                                                              LEFT JOIN  dbo.CadDrawingDWG d ON d.MId=a.Id  AND d.CADType='ExpandViewFile'  WHERE  {0}
@@ -176,8 +176,26 @@ namespace SunacCADApp.Data
                                                           LEFT JOIN  dbo.BasArgumentSetting ba ON a.AirconditionerPower=ba.Id AND ba.TypeCode='AirConditionNumber'
                                                           LEFT JOIN  dbo.BasArgumentSetting bb ON a.AirconditionerPipePosition=bb.Id AND bb.TypeCode='CondensatePipePosition'
                                                           LEFT JOIN  dbo.BasArgumentSetting bc ON a.AirconditionerRainPipePosition=bc.Id AND bc.TypeCode='RainPipePosition'
-                                                          WHERE a.Id={0}", Id);
+                                                          WHERE m.Id={0}", Id);
             airConditioner = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMAirConditioner>(new BPMAirConditioner());
+
+            string _where = string.Format(@" MId={0}", Id);
+            string _str_area = "";
+            IList<CadDrawingByArea> areas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
+            foreach (CadDrawingByArea area in areas)
+            {
+                _str_area += area.AreaName + ",";
+            }
+            _str_area = _str_area.TrimEnd(',');
+            airConditioner.region = _str_area;
+            string _str_file = string.Empty;
+            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
+            foreach (Drawing drawing in DWGS)
+            {
+                _str_file += string.Format(@"http://10.4.64.91{0},", drawing.CADPath);
+            }
+            _str_file = _str_file.TrimEnd(',');
+            airConditioner.filePath = _str_file;
             return airConditioner;
         }
 

@@ -484,7 +484,7 @@ namespace SunacCADApp.Controllers
                 {
                     BPMStaticKitchen kitchen = CadDrawingKitchenDetailDB.GetBPMStaticKitchenById(kitchenID);
                     BPMXml = XmlSerializeHelper.XmlSerialize<BPMStaticKitchen>(kitchen);
-                    BTID = "P33";
+                    BTID = "P32";
                 }
                 item.BSID = "vsheji";
                 item.BTID = BTID;
