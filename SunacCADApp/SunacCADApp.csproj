@@ -234,6 +234,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="IDMProjectService.asmx" />
     <Content Include="SunacCADService.asmx" />
     <Content Include="Content\Css\base.css" />
     <Content Include="Content\Css\bootstrap.css" />
@@ -365,6 +366,11 @@
     <Compile Include="Controllers\DoorController.cs" />
     <Compile Include="Controllers\HandrailController.cs" />
     <Compile Include="Controllers\KitchenController.cs" />
+    <Compile Include="Controllers\ProjectInfoController.cs" />
+    <Compile Include="IDMProjectService.asmx.cs">
+      <DependentUpon>IDMProjectService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -555,6 +561,7 @@
     <Content Include="Views\SysRole\Index.cshtml" />
     <Content Include="Views\CompanyInfo\index.cshtml" />
     <Content Include="Views\SysUser\Index.cshtml" />
+    <Content Include="Views\ProjectInfo\Index.cshtml" />
     <None Include="Views\_LayoutPage-marster.cshtml.bak" />
     <Content Include="Web References\cn.com.sunac.sappoqas\DT_MDM_Landpublic_RESP.datasource">
       <DependentUpon>Reference.map</DependentUpon>

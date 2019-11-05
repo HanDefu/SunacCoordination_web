@@ -27,9 +27,19 @@ namespace SunacCADApp.Test.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
         [global::System.Configuration.DefaultSettingValueAttribute("http://10.4.64.91/BMPService.asmx")]
-        public string SunacCADApp_Test_WebBPMService_BMPService {
+        public string SunacCADApp_Test_WebBMPService_BMPService {
             get {
-                return ((string)(this["SunacCADApp_Test_WebBPMService_BMPService"]));
+                return ((string)(this["SunacCADApp_Test_WebBMPService_BMPService"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://des.sunac.com.cn/SunacCADService.asmx")]
+        public string SunacCADApp_Test_SunacCadService_ArgumentSettingService {
+            get {
+                return ((string)(this["SunacCADApp_Test_SunacCadService_ArgumentSettingService"]));
             }
         }
     }

@@ -49,15 +49,10 @@
       <s:element name="CreateResultResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="E_RESPONSE" type="tns:Rsp_Result" />
+            <s:element minOccurs="0" maxOccurs="1" name="E_RESPONSE" type="tns:Bpm_Rsp_Result" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:complexType name="Rsp_Result">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="1" name="E_RESPONSE" type="tns:Bpm_Rsp_Result" />
-        </s:sequence>
-      </s:complexType>
       <s:complexType name="Bpm_Rsp_Result">
         <s:sequence>
           <s:element minOccurs="0" maxOccurs="1" name="RSP_BASEINFO" type="tns:Bpm_Rsp_BaseInfo" />

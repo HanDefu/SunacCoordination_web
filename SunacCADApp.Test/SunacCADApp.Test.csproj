@@ -54,7 +54,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Web References\WebBPMService\Reference.cs">
+    <Compile Include="Web References\SunacCadService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\WebBMPService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
@@ -80,20 +85,44 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Web References\WebBPMService\BMPService.wsdl" />
-    <None Include="Web References\WebBPMService\Bpm_Rsp_Result.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\WebBPMService\Reference.map">
+    <None Include="Web References\SunacCadService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Web References\WebBPMService\Rsp_Result.datasource">
+    <None Include="Web References\SunacCadService\SunacCADService.wsdl" />
+    <None Include="Web References\WebBMPService\BMPService.wsdl" />
+    <None Include="Web References\WebBMPService\Bpm_Rsp_Result.datasource">
       <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WebBMPService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SunacCADApp.Data\SunacCADApp.Data.csproj">
+      <Project>{7a288be7-1940-401e-8b97-c0231857de21}</Project>
+      <Name>SunacCADApp.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SunacCADApp.Entity\SunacCADApp.Entity.csproj">
+      <Project>{a79e65f4-82df-4063-aaa1-27a2dbb69997}</Project>
+      <Name>SunacCADApp.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SunacCADApp.Library\SunacCADApp.Library.csproj">
+      <Project>{3e7513e1-1863-4b37-add7-51a0167ee67a}</Project>
+      <Name>SunacCADApp.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SunacCADApp.PI\SunacCADApp.PI.csproj">
+      <Project>{92067027-95a8-4343-9718-72da3bc13cf4}</Project>
+      <Name>SunacCADApp.PI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SunacCADApp\SunacCADApp.csproj">
+      <Project>{47db3c7a-c71e-4de3-81dc-a80590fbc6b0}</Project>
+      <Name>SunacCADApp</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -104,18 +133,32 @@
   <ItemGroup>
     <WebReferenceUrl Include="http://10.4.64.91/BMPService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\WebBPMService\</RelPath>
+      <RelPath>Web References\WebBMPService\</RelPath>
       <UpdateFromURL>http://10.4.64.91/BMPService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>SunacCADApp_Test_WebBPMService_BMPService</CachedSettingsPropName>
+      <CachedSettingsPropName>SunacCADApp_Test_WebBMPService_BMPService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://des.sunac.com.cn/SunacCADService.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SunacCadService\</RelPath>
+      <UpdateFromURL>http://des.sunac.com.cn/SunacCADService.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SunacCADApp_Test_SunacCadService_ArgumentSettingService</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Web References\WebBPMService\BMPService.disco" />
+    <None Include="Web References\WebBMPService\BMPService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\SunacCadService\SunacCADService.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

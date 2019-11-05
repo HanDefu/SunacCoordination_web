@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Code>100</Code>
+  <Message>查询成功</Message>
+  <Projects>
+    <Project>
+      <ProjectInfo>
+        <Id>22752</Id>
+        <ProjectID>P1553</ProjectID>
+        <Name>望江地块住宅项目</Name>
+        <Area>东南区域集团</Area>
+        <CityCompany>城东片区</CityCompany>
+      </ProjectInfo>
+    </Project>
+    <Project>
+      <ProjectInfo>
+        <Id>23766</Id>
+        <ProjectID>P1259</ProjectID>
+        <Name>天阅云合源公寓</Name>
+        <Area>东南区域集团</Area>
+        <CityCompany>城东片区</CityCompany>
+      </ProjectInfo>
+    </Project>
+    <Project>
+      <ProjectInfo>
+        <Id>24400</Id>
+        <ProjectID>P0133</ProjectID>
+        <Name>涌璘府</Name>
+        <Area>东南区域集团</Area>
+        <CityCompany>城东片区</CityCompany>
+      </ProjectInfo>
+      <FileDir>
+        <Id>3</Id>
+        <Name>T01</Name>
+        <File>
+          <Id>2</Id>
+          <FileName>F0023.png</FileName>
+          <SaveName>F0012</SaveName>
+          <FileUrl />
+          <Creator />
+          <CreateTime>20191102</CreateTime>
+          <Updator />
+          <UpdateTime>20191102</UpdateTime>
+        </File>
+        <File>
+          <Id>3</Id>
+          <FileName>F00101F00101</FileName>
+          <SaveName>F00101</SaveName>
+          <FileUrl />
+          <Creator />
+          <CreateTime>20191102</CreateTime>
+          <Updator />
+          <UpdateTime>20191102</UpdateTime>
+        </File>
+        <FileDir>
+          <Id>4</Id>
+          <Name>T101</Name>
+        </FileDir>
+        <FileDir>
+          <Id>5</Id>
+          <Name>T1012</Name>
+        </FileDir>
+        <FileDir>
+          <Id>6</Id>
+          <Name>T1001</Name>
+        </FileDir>
+        <FileDir>
+          <Id>7</Id>
+          <Name>T1001</Name>
+        </FileDir>
+        <FileDir>
+          <Id>8</Id>
+          <Name>T1002</Name>
+        </FileDir>
+        <FileDir>
+          <Id>10</Id>
+          <Name>TT00101</Name>
+        </FileDir>
+      </FileDir>
+    </Project>
+  </Projects>
+</Root>

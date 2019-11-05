@@ -1098,4 +1098,70 @@ body .layui-ext-sunacskin .layui-layer-btn {
     }
 
 
+#sunac dl.search-list,
+#sunac dl.search-list dd,
+#sunac dl.search-list dt
+ {
+    position:relative;
+    margin:0px;
+    padding:0px;
+}
+#sunac dl.search-list {
+  display:block;
+  clear:both;
+  overflow:hidden
+
+}
+
+    #sunac dl.search-list dt, #sunac dl.search-list dd {
+      float:left;
+      overflow:hidden;
+      font-size:14px;
+    }
+
+    #sunac dl.search-list dt  span{
+         width:100px;
+         line-height:35px;
+         display:inline-block;
+         text-align:right;
+         padding-right:5px;
+    }
+        #sunac dl.search-list dd span {
+            line-height:35px;
+            margin-right:10px;
+            position:relative;
+
+        }
+
+            #sunac dl.search-list dd span input[type="text"] {
+                line-height: 23px;
+                outline: none;
+                border: solid 1px #b9b9b7;
+                border-radius: 15px;
+                width: 210px;
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+
+            #sunac dl.search-list dd span strong {
+              position:absolute;
+              right:1px;
+              top:-3px;
+              height:25px;
+              width:40px;
+              border-top-right-radius:12px;
+              border-bottom-right-radius:12px;
+              outline:none;
+              background:#b58d59 url("img/icon-search.png") center center no-repeat;
+              background-size:16px;
+              cursor:pointer;
+            }
+
+
+
+
+
+
+
+
 

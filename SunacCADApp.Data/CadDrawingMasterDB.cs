@@ -134,5 +134,14 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.Execute(sql);
         }
 
+        public static int Insert_BPM_Commit_Log(string BTID, string BOID, string InterfaceName, string ParamInfo, string ReturnInfo) 
+        {
+            string sql = string.Format(@"INSERT INTO dbo.BPM_Commit_Log
+                                                                            (BTID,BOID, InterfaceName,ParamInfo, ReturnInfo, CreateOn,ModifyTime)
+                                                               VALUES
+                                                                             ('{0}','{1}','{2}', N'{3}',N'{4}',GETDATE(),GETDATE())",BTID,BOID,InterfaceName,ParamInfo,ReturnInfo);
+            return MsSqlHelperEx.Execute(sql);
+        }
+
     }
 }

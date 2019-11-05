@@ -47,6 +47,8 @@
     <Compile Include="BasInstitutionData.cs" />
     <Compile Include="Bas_Idm_City.cs" />
     <Compile Include="Bas_Idm_Project.cs" />
+    <Compile Include="Bas_Idm_ProjectDirectory.cs" />
+    <Compile Include="Bas_Idm_ProjectFile.cs" />
     <Compile Include="Bathroom.cs" />
     <Compile Include="BPMDrawing\BPMAirConditioner.cs" />
     <Compile Include="BPMDrawing\BPMDynamicBathroom.cs" />
@@ -111,6 +113,12 @@
     <Compile Include="XMLCadDrawingDoor.cs" />
     <Compile Include="XMLCadDrawingWindow.cs" />
     <Compile Include="Window.cs" />
+    <Compile Include="XML_IDM_File.cs" />
+    <Compile Include="XML_IDM_FileDir.cs" />
+    <Compile Include="XML_IDM_Project.cs" />
+    <Compile Include="XML_IDM_ProjectBase.cs" />
+    <Compile Include="XML_IDM_ProjectInfo.cs" />
+    <Compile Include="XML_Result.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

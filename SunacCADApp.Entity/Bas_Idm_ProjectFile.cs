@@ -7,22 +7,43 @@ using System.Threading.Tasks;
 namespace SunacCADApp.Entity
 {
 
-    ///用户与项目
+    ///项目对应CAD文件
     [Serializable]
-    public class Sys_User_Project_Relation
+    public class Bas_Idm_ProjectFile
     {
         /// <summary>
         /// 主键
         ///</summary>
         public int Id { get; set; }
         /// <summary>
-        /// 用户ID
+        /// 文件名
         /// </summary>
-        public int User_ID { get; set; }
+        public string FileName { get; set; }
+        /// <summary>
+        /// 保存文件名称
+        /// </summary>
+        public string SaveName { get; set; }
+        /// <summary>
+        /// 上传文件地址
+        /// </summary>
+        public string FileUrl { get; set; }
+
+        /// <summary>
+        /// 文件目录ID
+        /// </summary>
+        public int DirId { get; set; }
+        /// <summary>
+        /// 文件目录名称
+        /// </summary>
+        public string DirName { get; set; }
         /// <summary>
         /// 项目ID
         /// </summary>
-        public int Project_ID { get; set; }
+        public int OID { get; set; }
+        /// <summary>
+        /// 项目编号
+        /// </summary>
+        public string Project_ID { get; set; }
 
         /// <summary>
         /// 是否有效
@@ -58,34 +79,4 @@ namespace SunacCADApp.Entity
         public string ModifiedBy { get; set; }
 
     }
-
-    public class SysUserAndProject 
-    {
-        /// <summary>
-        /// 项目 ID
-        /// </summary>
-        public string ProjectID { get; set; }
-        /// <summary>
-        /// 项目名称
-        /// </summary>
-        public string ProjectName { get; set; }
-        /// <summary>
-        /// 项目区域
-        /// </summary>
-        public string ProjectArea { get; set; }
-        /// <summary>
-        /// 项目城市
-        /// </summary>
-        public string ProjectCity { get; set; }
-        /// <summary>
-        /// 更新时间
-        /// </summary>
-
-        public string ModifiedOn { get; set; }
-    }
 }
-
-
-
-
-

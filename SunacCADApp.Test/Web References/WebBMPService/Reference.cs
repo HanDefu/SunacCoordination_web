@@ -13,7 +13,7 @@
 // 
 #pragma warning disable 1591
 
-namespace SunacCADApp.Test.WebBPMService {
+namespace SunacCADApp.Test.WebBMPService {
     using System;
     using System.Web.Services;
     using System.Diagnostics;
@@ -41,7 +41,7 @@ namespace SunacCADApp.Test.WebBPMService {
         
         /// <remarks/>
         public BMPService() {
-            this.Url = global::SunacCADApp.Test.Properties.Settings.Default.SunacCADApp_Test_WebBPMService_BMPService;
+            this.Url = global::SunacCADApp.Test.Properties.Settings.Default.SunacCADApp_Test_WebBMPService_BMPService;
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;
@@ -90,10 +90,10 @@ namespace SunacCADApp.Test.WebBPMService {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/CreateResult", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("E_RESPONSE")]
-        public Rsp_Result CreateResult(Bpm_Req_CreateResult I_REQUEST) {
+        public Bpm_Rsp_Result CreateResult(Bpm_Req_CreateResult I_REQUEST) {
             object[] results = this.Invoke("CreateResult", new object[] {
                         I_REQUEST});
-            return ((Rsp_Result)(results[0]));
+            return ((Bpm_Rsp_Result)(results[0]));
         }
         
         /// <remarks/>
@@ -1135,27 +1135,6 @@ namespace SunacCADApp.Test.WebBPMService {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
-    public partial class Rsp_Result {
-        
-        private Bpm_Rsp_Result e_RESPONSEField;
-        
-        /// <remarks/>
-        public Bpm_Rsp_Result E_RESPONSE {
-            get {
-                return this.e_RESPONSEField;
-            }
-            set {
-                this.e_RESPONSEField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.3190.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
     public partial class Bpm_Req_CreateResult_Param {
         
         private string strBTIDField;
@@ -1270,10 +1249,10 @@ namespace SunacCADApp.Test.WebBPMService {
         }
         
         /// <remarks/>
-        public Rsp_Result Result {
+        public Bpm_Rsp_Result Result {
             get {
                 this.RaiseExceptionIfNecessary();
-                return ((Rsp_Result)(this.results[0]));
+                return ((Bpm_Rsp_Result)(this.results[0]));
             }
         }
     }

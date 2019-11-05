@@ -188,8 +188,18 @@ namespace SunacCADApp.Controllers
 
             IList<Sys_Role> SysRoleList = SysRoleDB.GetSysRoleListById();
             ViewBag.SysRoleList = SysRoleList;
+            string _where = string.Format(@" and [User_ID]='{0}'",Id);
+            IList<Sys_User_Area_Relation> areas = Sys_User_Area_RelationDB.GetListSysUserAreaRelationByWhere(_where);
+
             Sys_User sys_user = Sys_UserDB.GetSingleEntityById(Id);
             ViewBag.Sys_User = sys_user;
+            ViewBag.Areas = areas;
+
+            ViewBag.StartDateTime = sys_user.Used_Begin_DateTime.ToString("yyyy-MM-dd");
+            ViewBag.EndDateTime = sys_user.Used_End_DateTime.ToString("yyyy-MM-dd");
+
+            IList<SysUserAndProject> Projects = SysUserProjectRelationDB.GetUserAndProjectWhere(Id);
+            ViewBag.UserProjects = Projects;
             return View();
         }
         /// <summary>

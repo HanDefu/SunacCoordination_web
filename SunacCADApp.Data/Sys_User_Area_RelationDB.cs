@@ -33,6 +33,19 @@ namespace SunacCADApp.Data
             return _sys_user_area_relations;
         }
 
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="_where"></param>
+        /// <returns></returns>
+        public static IList<Sys_User_Area_Relation> GetListSysUserAreaRelationByWhere(string _where) 
+        {
+            IList<Sys_User_Area_Relation> _sys_user_area_relations = new List<Sys_User_Area_Relation>();
+            string sql = string.Format(@"SELECT * FROM dbo.Sys_User_Area_Relation WHERE 1=1 {0}", _where);
+            _sys_user_area_relations = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Sys_User_Area_Relation>(new Sys_User_Area_Relation());
+            return _sys_user_area_relations;
+        }
+
         ///<summary>
         /// 用户与区域关联表  分页数据总数量
         ///<summary>

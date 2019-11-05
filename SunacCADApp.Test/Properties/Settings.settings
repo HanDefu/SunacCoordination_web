@@ -2,8 +2,11 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SunacCADApp.Test.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="SunacCADApp_Test_WebBPMService_BMPService" Type="(Web Service URL)" Scope="Application">
+    <Setting Name="SunacCADApp_Test_WebBMPService_BMPService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://10.4.64.91/BMPService.asmx</Value>
+    </Setting>
+    <Setting Name="SunacCADApp_Test_SunacCadService_ArgumentSettingService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://des.sunac.com.cn/SunacCADService.asmx</Value>
     </Setting>
   </Settings>
 </SettingsFile>

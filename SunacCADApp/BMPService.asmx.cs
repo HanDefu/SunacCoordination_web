@@ -7,6 +7,8 @@ using SunacCADApp.Entity;
 using SunacCADApp.Data;
 using SunacCADApp.Library;
 using SunacCADApp.Data.ESB;
+using Common.Utility;
+using Common.Utility.Extender;
 namespace SunacCADApp
 {
     /// <summary>
@@ -49,7 +51,10 @@ namespace SunacCADApp
                     {
                         _rsp_BaseInfo.RESULT = 0;
                         _rsp_BaseInfo.RSP_STATUS_MSG = "成功";
-                       
+                        int boid =  request.strBOID.ConvertToInt32(0);
+                        string ParamInfo = string.Format(@"strBTID={0}||strBOID={1}||bSuccess={2}||iProcInstID={3}||procURL={4}||strMessage={5}", request.strBTID, request.strBOID, request.bSuccess, request.iProcInstID, request.procURL,request.strMessage);
+                        string ReturnInfo = string.Format(@"Code=100||Success=1111");
+                        CadDrawingMasterDB.Insert_BPM_Commit_Log(request.strBTID, request.strBOID, "CreateResult[流程发起结果]", ParamInfo, ReturnInfo);
                         _createResult.MESSAGE = new Bpm_Rsp_Message()
                         {
                             RSP_ITEM = new Bpm_Rsp_Param { Code = 100, Success = 1111 }
@@ -57,6 +62,9 @@ namespace SunacCADApp
                     }
                     else
                     {
+                        string ParamInfo = string.Format(@"strBTID={0}||strBOID={1}||bSuccess={2}||iProcInstID={3}||procURL={4}||strMessage={5}", request.strBTID, request.strBOID, request.bSuccess, request.iProcInstID, request.procURL, request.strMessage);
+                        string ReturnInfo = string.Format(@"Code=-100||Success=2222");
+                        CadDrawingMasterDB.Insert_BPM_Commit_Log(request.strBTID, request.strBOID, "CreateResult[流程发起结果]", ParamInfo, ReturnInfo);
                         _rsp_BaseInfo.RESULT = 0;
                         _rsp_BaseInfo.RSP_STATUS_MSG = "失败";
                         _createResult.MESSAGE = new Bpm_Rsp_Message()
@@ -104,26 +112,43 @@ namespace SunacCADApp
                     {
                         RSP_ITEM = new Bpm_Rsp_Param { Code = 100, Success = 1111 }
                     };
+
+                    string ParamInfo = string.Format(@"strBTID      = {0}||strBOID  = {1}||iProcInstID   = {2}||strStepName    = {3}||
+                                                                            strApproverId   = {4}||eAction = {5}||strComment ={6}||dtTime ={7}
+                                                                            ", param.strBTID, param.strBOID, param.iProcInstID, param.strStepName,
+                                                                             param.strApproverId, param.eAction, param.strComment, param.dtTime);
+                    string ReturnInfo = string.Format(@"Code=100||Success=1111");
+                    CadDrawingMasterDB.Insert_BPM_Commit_Log(param.strBTID, param.strBOID, "Audit[流程审批(通过)]", ParamInfo, ReturnInfo);
                    
                 }
                 else if (param.eAction == "0")
                 {
+                    string ParamInfo = string.Format(@"strBTID      = {0}||strBOID  = {1}||iProcInstID   = {2}||strStepName    = {3}||
+                                                                            strApproverId   = {4}||eAction = {5}||strComment ={6}||dtTime ={7}
+                                                                            ", param.strBTID, param.strBOID, param.iProcInstID, param.strStepName,
+                                                                           param.strApproverId, param.eAction, param.strComment, param.dtTime);
+                    string ReturnInfo = string.Format(@"Code=-100||Success=2222");
+                    CadDrawingMasterDB.Insert_BPM_Commit_Log(param.strBTID, param.strBOID, "Audit[流程审批(通过)]", ParamInfo, ReturnInfo);
                     _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
                     {
                         RSP_ITEM = new Bpm_Rsp_Param { Code = -100, Error = 2222 }
                     };
+
+
                 }
                 else
                 {
+                    string ParamInfo = string.Format(@"strBTID      = {0}||strBOID  = {1}||iProcInstID   = {2}||strStepName    = {3}||
+                                                                            strApproverId   = {4}||eAction = {5}||strComment ={6}||dtTime ={7}
+                                                                            ", param.strBTID, param.strBOID, param.iProcInstID, param.strStepName,
+                                                                           param.strApproverId, param.eAction, param.strComment, param.dtTime);
+                    string ReturnInfo = string.Format(@"Code=-100||Success=10000");
+                    CadDrawingMasterDB.Insert_BPM_Commit_Log(param.strBTID, param.strBOID, "Audit[流程审批(通过)]", ParamInfo, ReturnInfo);
                     _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
                     {
                         RSP_ITEM = new Bpm_Rsp_Param { Code = -100, Error = 10000 }
                     };
                 }
-
-
-               
-               
             }
 
             return _Rsp_Result;
@@ -148,8 +173,14 @@ namespace SunacCADApp
                 Bpm_Req_BaseInfo _Req = I_REQUEST.REQ_BASEINFO;
                 _Rsp_BaseInfo = BpmLibDB.ReqToRspBaseInfo(_Req);
                 _Rsp_Result.RSP_BASEINFO = _Rsp_BaseInfo;
+                string _code = "";
+                string _success = "";
+                string _error = "";
                 if (param.eAction == "1") 
                 {
+                    _code = "100";
+                    _success = "1111";
+                    _error = "";
                     _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
                     {
                         RSP_ITEM = new Bpm_Rsp_Param { Code = 100, Success = 1111 }
@@ -157,6 +188,9 @@ namespace SunacCADApp
                 }
                 else if (param.eAction == "0")
                 {
+                    _code = "-100";
+                    _success = "";
+                    _error = "2222";
                     _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
                     {
                         RSP_ITEM = new Bpm_Rsp_Param { Code = -100, Error = 2222 }
@@ -164,12 +198,22 @@ namespace SunacCADApp
                 }
                 else 
                 {
+                    _code = "-100";
+                    _success = "";
+                    _error = "-1000";
                     _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
                     {
                         RSP_ITEM = new Bpm_Rsp_Param { Code = -100, Error = -1000 }
                     };
 
                 }
+
+                string ParamInfo = string.Format(@"strBTID      = {0}||strBOID  = {1}||iProcInstID   = {2}||strStepName    = {3}||
+                                                                            strApproverId   = {4}||eAction = {5}||strComment ={6}||dtTime ={7}
+                                                                            ", param.strBTID, param.strBOID, param.iProcInstID, param.strStepName,
+                                                                         param.strApproverId, param.eAction, param.strComment, param.dtTime);
+                string ReturnInfo = string.Format(@"Code={0}||Success={1}||Error={2}",_code,_success,_error);
+                CadDrawingMasterDB.Insert_BPM_Commit_Log(param.strBTID, param.strBOID, "Rework[BPM流程审批(退回、发起人取消）]", ParamInfo, ReturnInfo);
             }
             return _Rsp_Result;
         }
@@ -195,12 +239,22 @@ namespace SunacCADApp
                  Bpm_Req_BaseInfo _Req = I_REQUEST.REQ_BASEINFO;
                  _Rsp_BaseInfo = BpmLibDB.ReqToRspBaseInfo(_Req);
                  _Rsp_Result.RSP_BASEINFO = _Rsp_BaseInfo;
+                 string _code = "";
+                 string _success = "";
+                 string _error = "";
+                 int boid = param.strBOID.ConvertToInt32(0);
+                 int status = 1;
                  if (param.eProcessInstanceResult == "1")
                  {
                      _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
                      {
                          RSP_ITEM = new Bpm_Rsp_Param { Code = 100, Success = 1111 }
                      };
+                      _code = "100";
+                      _success = "1111";
+                      _error = "";
+                      status = 3;
+                      
                  }
                  else if (param.eProcessInstanceResult == "0")
                  {
@@ -208,6 +262,10 @@ namespace SunacCADApp
                      {
                          RSP_ITEM = new Bpm_Rsp_Param { Code = -100, Error = 2222 }
                      };
+                     _code = "-100";
+                     _success = "";
+                     _error = "2222";
+                     status = 6;
                  }
                  else
                  {
@@ -215,8 +273,19 @@ namespace SunacCADApp
                      {
                          RSP_ITEM = new Bpm_Rsp_Param { Code = -100, Error = -1000 }
                      };
+                     _code = "-100";
+                     _success = "";
+                     _error = "-1000";
+                     status = 7;
 
                  }
+
+                 string ParamInfo = string.Format(@"strBTID      = {0}||strBOID  = {1}||iProcInstID   = {2}||eProcessInstanceResult    = {3}||
+                                                                           strComment ={4}||dtTime ={5}
+                                                                            ", param.strBTID, param.strBOID, param.iProcInstID, param.eProcessInstanceResult,param.strComment, param.dtTime);
+                 string ReturnInfo = string.Format(@"Code={0}||Success={1}||Error={2}", _code, _success, _error);
+                 CadDrawingMasterDB.ChangeBpmStateusByMId(boid,status);
+                 CadDrawingMasterDB.Insert_BPM_Commit_Log(param.strBTID, param.strBOID, "Rework[BPM流程审批(退回、发起人取消）]", ParamInfo, ReturnInfo);
              }
              return _Rsp_Result;
          }

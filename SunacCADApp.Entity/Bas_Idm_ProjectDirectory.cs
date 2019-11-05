@@ -1,28 +1,36 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 namespace SunacCADApp.Entity
 {
-
-    ///用户与项目
+    ///项目文件目录
     [Serializable]
-    public class Sys_User_Project_Relation
+    public class Bas_Idm_ProjectDirectory
     {
         /// <summary>
         /// 主键
         ///</summary>
         public int Id { get; set; }
         /// <summary>
-        /// 用户ID
+        /// 目录名称
         /// </summary>
-        public int User_ID { get; set; }
+        public string DirName { get; set; }
+
+        /// <summary>
+        /// 父目录ID
+        /// </summary>
+        public int ParentDirId { get; set; }
+
+        /// <summary>
+        /// 父目录名称
+        /// </summary>
+        public string ParentDirName { get; set; }
         /// <summary>
         /// 项目ID
         /// </summary>
-        public int Project_ID { get; set; }
+        public string OID { get; set; }
 
         /// <summary>
         /// 是否有效
@@ -56,36 +64,5 @@ namespace SunacCADApp.Entity
         /// 修改用户
         ///</summary>
         public string ModifiedBy { get; set; }
-
-    }
-
-    public class SysUserAndProject 
-    {
-        /// <summary>
-        /// 项目 ID
-        /// </summary>
-        public string ProjectID { get; set; }
-        /// <summary>
-        /// 项目名称
-        /// </summary>
-        public string ProjectName { get; set; }
-        /// <summary>
-        /// 项目区域
-        /// </summary>
-        public string ProjectArea { get; set; }
-        /// <summary>
-        /// 项目城市
-        /// </summary>
-        public string ProjectCity { get; set; }
-        /// <summary>
-        /// 更新时间
-        /// </summary>
-
-        public string ModifiedOn { get; set; }
     }
 }
-
-
-
-
-
