@@ -17,7 +17,7 @@
     CadDrawingDWG SideDWG = Dwgs.Where(e => e.CADType == "LeftViewFile").SingleOrDefault<CadDrawingDWG>();
     SideDWG = SideDWG == null ? new CadDrawingDWG() : SideDWG;
     string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
-    string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? "" : ExpansionDWG.FileClass;
+    string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? "侧面图文件" : ExpansionDWG.FileClass;
 }
 <div class="row topnav">
     <a>标准部品库</a>
@@ -28,7 +28,7 @@
 </div>
 <div class="row view">
     <div class="left-column">
-        <figure>
+        <figure class="icon-drawing-img">
             <img src="@imagePath" width="238" heigth="200" />
             <p>@imageName</p>
         </figure>
@@ -92,7 +92,7 @@
                     @{
                         string _LeftViewFile = string.IsNullOrEmpty(SideDWG.FileClass) ? "无" : SideDWG.FileClass;
                     }
-                    <input type="text" style="width:378px" name="txt_filename" value="@SideDWG.FileClass" placeholder="@_LeftViewFile" />
+                    <input type="text" style="width:378px" name="txt_filename" value="@SideDWG.FileClass" placeholder="侧面图文件" />
                     <input type="hidden" name="txt_drawingcad" value="@SideDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@SideDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="LeftViewFile" />
@@ -186,9 +186,9 @@
                 <dl class="dynamic_module">
                     <dt class="col-dt"><i>*</i>宽度尺寸范围(mm)：</dt>
                     <dd>
-                        <input type="text" style="width:50px" name="txtWindowSizeMin" value="@doorDetail.WindowSizeMin" />
+                        <input type="text" style="width:100px" name="txtWindowSizeMin" value="@doorDetail.WindowSizeMin" />
                         <i> - &nbsp; </i>
-                        <input type="text" style="width:50px" name="txtWindowSizeMax" value="@doorDetail.WindowSizeMax" />
+                        <input type="text" style="width:100px" name="txtWindowSizeMax" value="@doorDetail.WindowSizeMax" />
                     </dd>
                 </dl>
                 <dl class="dynamic_module">
@@ -208,8 +208,8 @@
                                 <tr>
                                     <th width="80" class="text-center">尺寸代码</th>
                                     <th width="70" class="text-center">值类型</th>
-                                    <th width="70" class="text-center">最大值</th>
                                     <th width="70" class="text-center">最小值</th>
+                                    <th width="70" class="text-center">最大值</th>
                                     <th width="200" class="text-center">值</th>
                                     <th width="60" class="text-center">默认值</th>
                                     <th class="text-center">说明</th>
@@ -273,14 +273,14 @@
                                             case 5:
                                             <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
                                             <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
-                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val" value="@param.Val" /></td>
                                             <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
                                             <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
                                                 break;
                                             case 6:
                                             <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
                                             <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
-                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val"  value="@param.Val" /></td>
                                             <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
                                             <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
                                                 break;
@@ -296,8 +296,8 @@
                 <dl class="static_module" style="display:none">
                     <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
                     <dd>
-                        宽<input type="number" style="width:70px" name="txtSizeMin" value="@doorDetail.WindowSizeMin" />
-                        高<input type="number" style="width:70px" name="txtSizeMax" value="@doorDetail.WindowSizeMax" />
+                        宽<input type="number" style="width:100px" name="txtSizeMin" value="@doorDetail.WindowSizeMin" />
+                        高<input type="number" style="width:100px" name="txtSizeMax" value="@doorDetail.WindowSizeMax" />
                     </dd>
                 </dl>
 
@@ -307,9 +307,9 @@
                 <dl class="dynamic_module" style="display:none">
                     <dt class="col-dt"><i>*</i>宽度尺寸范围(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:70px" name="txtWindowSizeMin" value="@doorDetail.WindowSizeMin" />
+                        <input type="number" style="width:100px" name="txtWindowSizeMin" value="@doorDetail.WindowSizeMin" />
                         <i> - &nbsp; </i>
-                        <input type="number" style="width:70px" name="txtWindowSizeMax" value="@doorDetail.WindowSizeMax" />
+                        <input type="number" style="width:100px" name="txtWindowSizeMax" value="@doorDetail.WindowSizeMax" />
                     </dd>
                 </dl>
                 <dl class="dynamic_module" style="display:none">
@@ -328,9 +328,9 @@
                             <thead>
                                 <tr>
                                     <th width="80" class="text-center">尺寸代码</th>
-                                    <th width="70" class="text-center">值类型</th>
-                                    <th width="70" class="text-center">最大值</th>
+                                    <th width="80" class="text-center">值类型</th>
                                     <th width="70" class="text-center">最小值</th>
+                                    <th width="70" class="text-center">最大值</th>
                                     <th width="200" class="text-center">值</th>
                                     <th width="60" class="text-center">默认值</th>
                                     <th class="text-center">说明</th>
@@ -395,14 +395,14 @@
                                             case 5:
                                             <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
                                             <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
-                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val"  value="@param.Val" /></td>
                                             <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
                                             <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
                                                 break;
                                             case 6:
                                             <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
                                             <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
-                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val"  value="@param.Val" /></td>
                                             <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
                                             <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
                                                 break;
@@ -427,11 +427,10 @@
         </form>
         <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
             <div class="col-md-6 col-sm-6">
-
+                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
             </div>
             <div class="col-md-6 col-sm-6 text-right">
-                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
-                <button type="button" class="btn btn-sunac">删除</button>
+                <button type="button" class="btn btn-sunac btn-delete" data-id="@dMaster.Id">删除</button>
                 <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus">提交审核</button>
                 @if (@dMaster.BillStatus == 2)
                 {
@@ -545,6 +544,25 @@
             $("#myform").resetForm();
         });
 
+        $(".btn-delete").on("click", function () {
+            let Id = $(this).data("id");
+            layer.confirm('是否需要删除', {
+                btn: ['删除', '取消'],
+                shade: false,
+                icon: 3
+            }, function () {
+                $.post("/door/deleteHandlebyid", { Id: Id }, function (data) {
+                    if (data.code == 100) {
+                        layer.alert("删除成功", { icon: 6, shade: false }, function () {
+                            window.location.href = "/door/index";
+                        })
+                    } else {
+                        layer.alert("删除失败", { icon: 6, shade: false });
+                    }
+                }, 'json');
+            });
+
+        })
 
         $(".btn-bpm-submit").on("click", function () {
             let self = $(this);

@@ -131,7 +131,7 @@ namespace SunacCADApp.Controllers
             sys_user.Is_Used = "1";
             sys_user.Used_Begin_DateTime = Request.Form["datetime_used_begin_datetime"].ConverToDataTime();
             sys_user.Used_End_DateTime = Request.Form["datetime_used_end_datetime"].ConverToDataTime();
-            sys_user.Is_Internal = "1";
+            sys_user.Is_Internal = 1;
             sys_user.CompanyID = Request.Form["select_companyid"].ConvertToInt32(0);
             sys_user.RoleID = Request.Form["select_roleid"].ConvertToInt32(0);
             sys_user.CreateOn = DateTime.Now;
@@ -222,7 +222,7 @@ namespace SunacCADApp.Controllers
             sys_user.Is_Used = Request.Form["txt_is_used"].ConventToString(string.Empty);
             sys_user.Used_Begin_DateTime = Request.Form["datetime_used_begin_datetime"].ConverToDataTime();
             sys_user.Used_End_DateTime = Request.Form["datetime_used_end_datetime"].ConverToDataTime();
-            sys_user.Is_Internal = Request.Form["txt_is_internal"].ConventToString(string.Empty);
+            sys_user.Is_Internal = Request.Form["txt_is_internal"].ConvertToInt32(-1);
             sys_user.Orgnazation_Name = Request.Form["txt_orgnazation_name"].ConventToString(string.Empty);
             sys_user.CompanyID = Request.Form["checkbox_companyid"].ConvertToInt32(0);
             sys_user.RoleID = Request.Form["select_roleid"].ConvertToInt32(0);

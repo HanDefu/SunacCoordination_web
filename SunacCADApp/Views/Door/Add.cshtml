@@ -86,13 +86,13 @@
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
-                            <input type="checkbox" id="all" name="chekbox_group" class="select-all" value="1" />
+                            <input type="checkbox" id="all" name="chekbox_group" class="select-all" value="1" checked="checked" />
                             <label for="all">集团</label>
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
                             <span class="online-checkbox">
-                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" />
+                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" checked="checked" />
                                 <label for="area_@Setting.Id">@Setting.ArgumentText</label>
                             </span>
                         }
@@ -127,9 +127,9 @@
             <dl class="dynamic_module">
                 <dt class="col-dt"><i>*</i>宽度尺寸范围(mm)：</dt>
                 <dd>
-                    <input type="number" style="width:70px" name="txtWindowSizeMin" value="0"  />
+                    <input type="number" style="width:100px" name="txtWindowSizeMin" value="0"  />
                     <i style="font-size:18px;"> - </i>
-                    <input type="number" style="width:70px" name="txtWindowSizeMax" value="0" />
+                    <input type="number" style="width:100px" name="txtWindowSizeMax" value="0" />
                 </dd>
             </dl>
             <dl class="dynamic_module">
@@ -148,9 +148,9 @@
                         <thead>
                             <tr>
                                 <th width="80" class="text-center">尺寸代码</th>
-                                <th width="70" class="text-center">值类型</th>
-                                <th width="70" class="text-center">最大值</th>
+                                <th width="80" class="text-center">值类型</th>
                                 <th width="70" class="text-center">最小值</th>
+                                <th width="70" class="text-center">最大值</th>
                                 <th width="200" class="text-center">值</th>
                                 <th width="60" class="text-center">默认值</th>
                                 <th class="text-center">说明</th>

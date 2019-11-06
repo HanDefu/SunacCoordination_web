@@ -8,11 +8,20 @@
         <dd class="dd_area">
             @if (ViewBag.area == 0)
             {
-                <a class="active">集团</a>
+                <a class="active">全部</a>
             }
             else
             {
-                <a>集团</a>
+                <a>全部</a>
+            }
+
+            @if (ViewBag.area == -9999)
+            {
+                <a class="active" data-val="-9999">集团</a>
+            }
+            else
+            {
+                <a data-val="-9999">集团</a>
             }
 
             @foreach (BasArgumentSetting argument in ViewBag.Settings)
@@ -109,7 +118,7 @@
         </dd>
     </dl>
 </div>
-<div class="row search keywords">
+<div class="row search keywords search-bottom">
     <dl>
         <dt> 关键词搜索：</dt>
         <dd>
@@ -120,7 +129,7 @@
 
         </dd>
     </dl>
-    <a class="btn-new" href="/airconditioner/add">新增</a>
+    <a class="btn-new" href="/airconditioner/add" style="margin-right:18px">新增</a>
 </div>
 <div class="row list">
     <ul>
@@ -178,7 +187,7 @@
     var searchparam = function () {
         let param = '1';
         let area = parseInt($(".dd_area .active").data("val"));
-        if (area > 0) {
+        if (area > 0 || area==-9999) {
             param += '&area=' + area;
         }
 

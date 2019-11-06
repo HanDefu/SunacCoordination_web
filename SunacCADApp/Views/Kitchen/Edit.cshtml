@@ -16,7 +16,7 @@
 <div class="row topnav">
     <a>标准部品库</a>
     <i></i>
-    <a>厨房</a>
+    <a href="/kitchen">厨房</a>
     <i></i>
     <a>@Master.DrawingName</a>
 </div>
@@ -32,7 +32,7 @@
             <dl>
                 <dt class="col-dt"><i>*</i>原型编号：</dt>
                 <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" value="@Master.DrawingCode" />
+                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" value="@Master.DrawingCode" disabled="disabled" />
                 </dd>
             </dl>
 
@@ -153,7 +153,7 @@
                 </dd>
             </dl>
             <dl class="dynamic_module">
-                <dt class="col-dt"><i>*</i>是否包含气道：</dt>
+                <dt class="col-dt"><i>*</i>是否包含排气道：</dt>
                 <dd>
                     @if (Kitchen.KitchenIsAirduct == 1)
                     {
@@ -187,27 +187,27 @@
                 <dl class="dynamic_module">
                     <dt class="col-dt"><i>*</i>开间尺寸范围(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:50px" name="txtKitchenOpenSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
+                        <input type="number" style="width:100px" name="txtKitchenOpenSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
                         mm -
-                        <input type="number" style="width:50px" name="txtKitchenOpenSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
+                        <input type="number" style="width:100px" name="txtKitchenOpenSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
                         mm
                     </dd>
                 </dl>
                 <dl class="dynamic_module">
                     <dt class="col-dt"><i>*</i>进深尺寸范围(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:50px" name="txtKitchenDepthsizeMin" value="@Kitchen.KitchenDepthsizeMin" />
+                        <input type="number" style="width:100px" name="txtKitchenDepthsizeMin" value="@Kitchen.KitchenDepthsizeMin" />
                         mm -
-                        <input type="number" style="width:50px" name="txtKitchenDepthsizeMax" value="@Kitchen.KitchenDepthsizeMax" />
+                        <input type="number" style="width:100px" name="txtKitchenDepthsizeMax" value="@Kitchen.KitchenDepthsizeMax" />
                         mm
                     </dd>
                 </dl>
                 <dl class="static_module" style="display:none">
                     <dt class="col-dt"><i>*</i>开间进深(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:50px" name="txtWindowSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
+                        <input type="number" style="width:100px" name="txtWindowSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
                         mm -
-                        <input type="number" style="width:50px" name="txtWindowSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
+                        <input type="number" style="width:100px" name="txtWindowSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
                         mm
                     </dd>
                 </dl>
@@ -274,27 +274,27 @@
                 <dl class="dynamic_module" style="display:none">
                     <dt class="col-dt"><i>*</i>开间尺寸范围(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:50px" name="txtKitchenOpenSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
+                        <input type="number" style="width:100px" name="txtKitchenOpenSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
                         mm -
-                        <input type="number" style="width:50px" name="txtKitchenOpenSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
+                        <input type="number" style="width:100px" name="txtKitchenOpenSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
                         mm
                     </dd>
                 </dl>
                 <dl class="dynamic_module" style="display:none">
                     <dt class="col-dt"><i>*</i>进深尺寸范围(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:50px" name="txtKitchenDepthsizeMin" value="@Kitchen.KitchenDepthsizeMin" />
+                        <input type="number" style="width:100px" name="txtKitchenDepthsizeMin" value="@Kitchen.KitchenDepthsizeMin" />
                         mm -
-                        <input type="number" style="width:50px" name="txtKitchenDepthsizeMax" value="@Kitchen.KitchenDepthsizeMax" />
+                        <input type="number" style="width:100px" name="txtKitchenDepthsizeMax" value="@Kitchen.KitchenDepthsizeMax" />
                         mm
                     </dd>
                 </dl>
                 <dl class="static_module" style="display:block">
                     <dt class="col-dt"><i>*</i>开间进深(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:50px" name="txtWindowSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
+                        <input type="number" style="width:100px" name="txtWindowSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
                         mm -
-                        <input type="number" style="width:50px" name="txtWindowSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
+                        <input type="number" style="width:100px" name="txtWindowSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
                         mm
                     </dd>
                 </dl>
@@ -363,10 +363,10 @@
         </form>
         <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
             <div class="col-md-6 col-sm-6">
-            
+                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
             </div>
             <div class="col-md-6 col-sm-6" style="text-align:right">
-                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
+              
                 <button type="button" class="btn btn-sunac btn-delete" data-id="@Master.Id">删除</button>
                 <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@Master.Id" data-state="@Master.DynamicType" data-billstatus="@Master.BillStatus">提交审核</button>
                 @if (@Master.BillStatus == 2)

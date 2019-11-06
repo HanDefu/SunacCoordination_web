@@ -39,6 +39,11 @@ namespace SunacCADApp.Controllers
                 _search_where += string.Format(@"  AND  EXISTS(SELECT 1 FROM dbo.CadDrawingByArea ba WHERE a.Id=ba.MId AND ba.AreaID={0})", area);
                 _url += "&area=" + area;
             }
+            else if (area == -9999)
+            {
+                _search_where += "  AND Scope=1";
+                _url += "&area=" + area;
+            }
 
             ViewBag.area = area;
 
@@ -53,7 +58,7 @@ namespace SunacCADApp.Controllers
             string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
             if (!string.IsNullOrEmpty(keyword))
             {
-                _where = string.Format(@" a.DrawingCode like  '%{0}%'", keyword);
+                _search_where = string.Format(@" AND a.DrawingCode like  '%{0}%'", keyword);
             }
             ViewBag.Keyword = keyword;
             string _orderby = string.Empty;  //排序

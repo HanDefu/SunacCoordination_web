@@ -14,13 +14,13 @@
 <div class="row topnav">
     <a>标准部品库</a>
     <i></i>
-    <a href="Handrail/Index">栏杆</a>
+    <a href="/handrail/Index">栏杆</a>
     <i></i>
     <a>@dMaster.DrawingCode</a>
 </div>
 <div class="row view">
     <div class="left-column">
-        <figure>
+        <figure class="icon-drawing-img">
             <img src="@imagePath" />
             <p>@imageName</p>
         </figure>
@@ -28,7 +28,7 @@
     <div class="mian-column">
         <form name="myform" id="myform">
             <dl>
-                <dt class="col-dt"><i>*</i>原型编号:</dt>
+                <dt class="col-dt"><i>*</i>原型编号：</dt>
                 <dd>
                     <input type="text" style="width:450px"  disabled="disabled" value="@dMaster.DrawingCode"  />
                     <input type="hidden" name="txt_drawingcode"  value="@dMaster.DrawingCode" />
@@ -49,7 +49,7 @@
             </dl>
 
             <dl>
-                <dt class="col-dt"><i>*</i>使用范围:</dt>
+                <dt class="col-dt"><i>*</i>使用范围：</dt>
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
@@ -104,7 +104,7 @@
         </form>
         <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;margin-top:120px">
             <div class="col-md-6 col-sm-6">
-                <button type="button" class="btn btn-sunac" id="btn_save">修改</button>
+                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
             </div>
             <div class="col-md-6 col-sm-6 text-right">
                 <button type="button" class="btn btn-sunac btn-delete" data-id="@dMaster.Id">删除</button>

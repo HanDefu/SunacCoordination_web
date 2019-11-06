@@ -142,7 +142,7 @@ namespace SunacCADApp.Data
         public static int HasExistsDirectory(string OID, string DrawingDir, int ParentDirId) 
         {
             string sql = string.Format(@"SELECT Id FROM dbo.Bas_Idm_ProjectDirectory 
-                                                        WHERE  OID={0} AND  DirName='{1}'  AND ParentDirId='{2}'", OID, DrawingDir, ParentDirId);
+                                                        WHERE  OID={0} AND  DirName='{1}'  AND ParentDirId='{2}' AND [Enabled]!=-1", OID, DrawingDir, ParentDirId);
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
 

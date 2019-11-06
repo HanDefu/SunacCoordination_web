@@ -42,6 +42,11 @@ namespace SunacCADApp.Controllers
                 _where += string.Format(@" AND EXISTS(SELECT pa.Id FROM dbo.CadDrawingByArea pa WHERE pa.MId=a.Id AND pa.AreaID={0})", area);
                 _url += "&area=" + area;
             }
+            else if (area == -9999)
+            {
+                _where += "  AND Scope=1";
+                _url += "&area=" + area;
+            }
 
             ViewBag.area = area;
 

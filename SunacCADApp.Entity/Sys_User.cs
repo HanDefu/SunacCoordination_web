@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
+using System.Xml;
 namespace SunacCADApp.Entity
 {
 
@@ -50,7 +52,7 @@ namespace SunacCADApp.Entity
         /// <summary>
         /// 是否内部员工
         /// </summary>
-        public string Is_Internal { get; set; }
+        public int Is_Internal { get; set; }
         /// <summary>
         /// 组织名称
         /// </summary>
@@ -106,4 +108,44 @@ namespace SunacCADApp.Entity
         public string ModifiedBy { get; set; }
 
     }
+
+
+    [XmlRoot("User")]
+    [Serializable]
+    public class XMLUser 
+    {
+        /// <summary>
+        /// 用户ID
+        /// </summary>
+        public int Id { get; set; }
+        /// <summary>
+        /// 用户名称
+        /// </summary>
+        public string UserName { get; set; }
+
+        /// <summary>
+        /// 是否内部用户
+        /// </summary>
+        public int IsInternal { get; set; }
+    }
+
+    [XmlRoot("Root")]
+    [Serializable]
+    public class XMLResultUser
+    {
+        /// <summary>
+        /// 编号
+        /// </summary>
+        public int Code{get;set;}
+        /// <summary>
+        /// 返回信息
+        /// </summary>
+        public string Message{get;set;}
+        /// <summary>
+        /// 用户信息
+        /// </summary>
+        public XMLUser User{get;set;}
+
+    }
+
 }

@@ -55,6 +55,19 @@ namespace SunacCADApp.Entity
 
         public string AirconditionerRainPipePositionName { get; set; }
 
+
+        /// <summary>
+        /// 空调宽
+        /// </summary>
+        public int AirconditionerWidth { get; set; }
+        /// <summary>
+        /// 空调高
+        /// </summary>
+        public int AirconditionerHeight { get; set; }
+        /// <summary>
+        /// 空调进深
+        /// </summary>
+        public int AirconditionerDepth { get; set; }
         /// <summary>
         /// 是否有效
         ///</summary>

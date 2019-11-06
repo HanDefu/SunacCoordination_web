@@ -36,7 +36,7 @@ namespace SunacCADApp.Data
 
         public static IList<XML_IDM_File> Get_IDM_File_ListExt(int  DirId, string OID)
         {
-            string sql = string.Format(@"SELECT [Id],[FileName],[SaveName],[FileUrl], CONVERT(NVARCHAR(24), CreateOn,112) AS CreateTime,
+            string sql = string.Format(@"SELECT [Id],[FileName],[SaveName], CONCAT('http://des.sunac.com.cn','/upfile/',CONVERT(NVARCHAR(24), CreateOn,112),'/', SaveName) AS [FileUrl], CONVERT(NVARCHAR(24), CreateOn,112) AS CreateTime,
                                                                     CreateBy AS [Creator], CONVERT(NVARCHAR(24), ModifiedOn,112) AS UpdateTime,ModifiedBy AS Updator
                                                           FROM dbo.Bas_Idm_ProjectFile WHERE DirId='{0}' AND [Enabled]!=-1 AND OID='{1}'", DirId, OID);
             return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<XML_IDM_File>(new XML_IDM_File());
@@ -81,16 +81,6 @@ namespace SunacCADApp.Data
             }
             return _fileDirs;
         }
-
-        public static string GetParentFileDir(string DirId)
-        {
-            string dir = string.Empty;
-            return dir;
- 
-        }
-
-        
-
 
     }
 }

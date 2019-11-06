@@ -42,6 +42,11 @@ namespace SunacCADApp.Controllers
                 _where += string.Format(@" AND EXISTS(SELECT pa.Id FROM dbo.CadDrawingByArea pa WHERE pa.MId=a.Id AND pa.AreaID={0})", area);
                 _url += "&area=" + area;
             }
+            else if (area == -9999) 
+            {
+                _where += "  AND Scope=1";
+                _url += "&area=" + area;
+            }
 
             ViewBag.area = area;
 
@@ -56,7 +61,7 @@ namespace SunacCADApp.Controllers
             int CondensatePipePosition = HttpUtility.UrlDecode(Request.QueryString["CondensatePipePosition"]).ConvertToInt32(0);
             if (CondensatePipePosition > 0)
             {
-                _where += string.Format(@" And  b.AirconditionerRainPipePosition={0}", CondensatePipePosition);
+                _where += string.Format(@" And  b.AirconditionerPipePosition={0}", CondensatePipePosition);
                 _url += "&CondensatePipePosition=" + CondensatePipePosition;
             }
 
@@ -79,7 +84,7 @@ namespace SunacCADApp.Controllers
 
 
             int recordCount = 0;    //记录总数
-            int pageSize = 15;      //每页条数
+            int pageSize = 30;      //每页条数
             int currentPage = 0;    //当前页数
             int pageCount = 0;      //总页数
             int startRowNum = 0;    //开始行数
@@ -223,8 +228,11 @@ namespace SunacCADApp.Controllers
                 int AirconditionerMinWidth = Request.Form["txtAirconditionerMinWidth"].ConvertToInt32(-1);
                 int AirconditionerMinLength = Request.Form["txtAirconditionerMinLength"].ConvertToInt32(-1);
                 int CondensatePipePosition = Request.Form["selectCondensatePipePosition"].ConvertToInt32(-1);
-                int AirconditionerIsRainPipe = Request.Form["Checkbox_AirconditionerIsRainPipe"].ConvertToInt32(-1);
+                int AirconditionerIsRainPipe = Request.Form["Checkbox_AirconditionerIsRainPipe"].ConvertToInt32(0);
                 int RainPipePosition = Request.Form["selectRainPipePosition"].ConvertToInt32(-1);
+                int AirconditionerWidth = Request.Form["txtAirconditionerWidth"].ConvertToInt32(0);
+                int AirconditionerHeight = Request.Form["txtAirconditionerHeight"].ConvertToInt32(0);
+                int AirconditionerDepth = Request.Form["txtAirconditionerDepth"].ConvertToInt32(0);
                 CadDrawingAirconditionerDetail airconditioner = new CadDrawingAirconditionerDetail();
                 airconditioner.MId = mId;
                 airconditioner.AirconditionerIsRainPipe = AirconditionerIsRainPipe;
@@ -233,6 +241,10 @@ namespace SunacCADApp.Controllers
                 airconditioner.AirconditionerPower = AirConditionNumber;
                 airconditioner.AirconditionerPipePosition = CondensatePipePosition;
                 airconditioner.AirconditionerIsRainPipe = AirconditionerIsRainPipe;
+                airconditioner.AirconditionerWidth = AirconditionerWidth;
+                airconditioner.AirconditionerHeight = AirconditionerHeight;
+                airconditioner.AirconditionerDepth = AirconditionerDepth;
+                
                 if (AirconditionerIsRainPipe == 1) 
                 {
                     airconditioner.AirconditionerRainPipePosition = RainPipePosition;
@@ -376,8 +388,11 @@ namespace SunacCADApp.Controllers
                 int AirconditionerMinWidth = Request.Form["txtAirconditionerMinWidth"].ConvertToInt32(-1);
                 int AirconditionerMinLength = Request.Form["txtAirconditionerMinLength"].ConvertToInt32(-1);
                 int CondensatePipePosition = Request.Form["selectCondensatePipePosition"].ConvertToInt32(-1);
-                int AirconditionerIsRainPipe = Request.Form["Checkbox_AirconditionerIsRainPipe"].ConvertToInt32(-1);
+                int AirconditionerIsRainPipe = Request.Form["Checkbox_AirconditionerIsRainPipe"].ConvertToInt32(0);
                 int RainPipePosition = Request.Form["selectRainPipePosition"].ConvertToInt32(-1);
+                int AirconditionerWidth = Request.Form["txtAirconditionerWidth"].ConvertToInt32(0);
+                int AirconditionerHeight = Request.Form["txtAirconditionerHeight"].ConvertToInt32(0);
+                int AirconditionerDepth = Request.Form["txtAirconditionerDepth"].ConvertToInt32(0);
                 CadDrawingAirconditionerDetail airconditioner = new CadDrawingAirconditionerDetail();
                 airconditioner.MId = mId;
                 airconditioner.AirconditionerIsRainPipe = AirconditionerIsRainPipe;
@@ -386,6 +401,9 @@ namespace SunacCADApp.Controllers
                 airconditioner.AirconditionerPower = AirConditionNumber;
                 airconditioner.AirconditionerPipePosition = CondensatePipePosition;
                 airconditioner.AirconditionerIsRainPipe = AirconditionerIsRainPipe;
+                airconditioner.AirconditionerWidth = AirconditionerWidth;
+                airconditioner.AirconditionerHeight = AirconditionerHeight;
+                airconditioner.AirconditionerDepth = AirconditionerDepth;
                 if (AirconditionerIsRainPipe == 1)
                 {
                     airconditioner.AirconditionerRainPipePosition = RainPipePosition;

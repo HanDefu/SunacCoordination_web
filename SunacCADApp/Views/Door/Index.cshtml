@@ -6,13 +6,22 @@
     <dl class="dl_area">
         <dt>区域：</dt>
         <dd>
-            @if (ViewBag.scope == 1 || ViewBag.area > 0)
+            @if (ViewBag.scope == 1 || ViewBag.area > 0 || ViewBag.area == -9999)
             {
                 <a>全部</a>
             }
             else
             {
                 <a class="active">全部</a>
+            }
+
+            @if (ViewBag.area == -9999)
+            {
+                <a class="area active" data-val="-9999">集团</a>
+            }
+            else
+            {
+                <a class="area" data-val="-9999">集团</a>
             }
 
             @foreach (BasArgumentSetting argument in ViewBag.Settings)
@@ -60,18 +69,18 @@
 </div>
 
 
-<div class="row search keywords">
+<div class="row search keywords search-bottom">
     <dl>
         <dt> 关键词搜索：</dt>
         <dd>
             <span class="sear-input">
-                <input type="text" />
+                <input type="text" value="@ViewBag.Keyword" />
                 <em></em>
             </span>
 
         </dd>
     </dl>
-    <a class="btn-new" href="/door/add">新增</a>
+    <a class="btn-new" href="/door/add" style="margin-right:18px">新增</a>
 </div>
 <div class="row list">
     <ul>
@@ -117,12 +126,13 @@
 
     $(".sear-input em").on("click", function () {
 
-        window.location.href = "/"
+        let keyword = $('.sear-input').find('input[type="text"]').val();
+        window.location.href = "/door?keyword=" + keyword;
     });
     var searchparam = function () {
         let param = '1';
         let area = parseInt($(".dl_area .active").data("val"));
-        if (area > 0) {
+        if (area > 0 || area == -9999) {
             param += '&area=' + area;
         }
 

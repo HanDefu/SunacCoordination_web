@@ -9,7 +9,6 @@ using SunacCADApp.Library;
 using Common.Utility;
 using Common.Utility.Extender;
 
-
 namespace SunacCADApp
 {
     /// <summary>
@@ -307,7 +306,7 @@ namespace SunacCADApp
                 }
                 else
                 {
-                    return XmlSerializeHelper.XmlSerialize<XML_Result>(new XML_Result() { Code = -100, Message = "目录创建失败" });
+                    return XmlSerializeHelper.XmlSerialize<XML_Result>(new XML_Result() { Code = -100, Message = "目录创建失败",KeyId=rtv });
                 }
             }
             else
@@ -494,6 +493,86 @@ namespace SunacCADApp
             {
                 return XmlSerializeHelper.XmlSerialize<XML_Result>(new XML_Result() { Code = -100, Message = "目录删除失败" });
             }
+        }
+
+        [WebMethod(Description = "验证用户登陆")]
+        public string CheckUserInfo(string userName, string password) 
+        {
+            XMLResultUser user = new XMLResultUser();
+            Sys_User sysUser = Sys_UserDB.GetSysUserByUserName(userName);
+            if (sysUser.Id < 1)
+            {
+                user = new XMLResultUser() { Code = -100, Message = "登陆名错误" };
+                return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
+            }
+            else if(sysUser.Is_Internal==1)
+            {
+                string _pwd=CommonLib.UserMd5(password);
+                if (sysUser.User_Psd != _pwd)
+                {
+                    user = new XMLResultUser() { Code = -100, Message = "密码不正确" };
+                    return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
+                }
+                else 
+                {
+                    XMLUser xmlUser = new XMLUser();
+                    xmlUser.Id = sysUser.Id;
+                    xmlUser.UserName = sysUser.User_Name;
+                    xmlUser.IsInternal = 1;
+                    user = new XMLResultUser() { Code = 100, Message = "登陆成功", User = xmlUser };
+                    return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
+
+                }
+            }
+            else if (sysUser.Is_Internal == 2) 
+            {
+                WebService932.Header header = new WebService932.Header();
+                header.BIZTRANSACTIONID = "sdfdssdfds";
+                header.COUNT = "";
+                header.CONSUMER = "";
+                header.ACCOUNT = "wdaccount";
+                header.PASSWORD = "wdpwd";
+                WebService932.user webUser = new WebService932.user();
+                webUser.username = userName;
+                webUser.password = password;
+                WebService932.IDM_SUNAC_392_validatePwd_pttbindingQSService client = new WebService932.IDM_SUNAC_392_validatePwd_pttbindingQSService();
+                client.commonHeader = header;
+                string LIST = "";
+                WebService932.HEADER backheader = client.IDM_SUNAC_392_validatePwd(webUser, out LIST);
+                int  resultcode = backheader.RESULT.ConvertToInt32(0);
+                if (resultcode == -1) 
+                {
+                    user = new XMLResultUser() { Code = -100, Message = "其他错误" };
+                    return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
+                }
+                else if (resultcode == 0) 
+                {
+                    XMLUser xmlUser = new XMLUser();
+                    xmlUser.Id = sysUser.Id;
+                    xmlUser.UserName = sysUser.User_Name;
+                    xmlUser.IsInternal = 2;
+                    user = new XMLResultUser() { Code = 100, Message = "用户名密码验证成功", User = xmlUser };
+                    return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
+                }
+                else if (resultcode == 1)
+                {
+                    user = new XMLResultUser() { Code = -100, Message = "用户名不存在" };
+                    return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
+                }
+                else if (resultcode == 2) 
+                {
+                    user = new XMLResultUser() { Code = -100, Message = "密码错误" };
+                    return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
+                }
+                else if (resultcode == 3) 
+                {
+                    user = new XMLResultUser() { Code = -100, Message = "参数不能为空" };
+                    return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
+                }
+
+            }
+            user = new XMLResultUser() { Code = -100, Message = "未知错误" };
+            return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
         }
     }
 

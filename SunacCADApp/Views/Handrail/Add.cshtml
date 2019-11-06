@@ -17,7 +17,7 @@
     <div class="mian-column">
         <form name="myform" id="myform">
             <dl>
-                <dt class="col-dt"><i>*</i>原型编号:</dt>
+                <dt class="col-dt"><i>*</i>原型编号：</dt>
                 <dd>
                     <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" placeholder="原型编号" />
                 </dd>
@@ -37,17 +37,17 @@
                 </dd>
             </dl>
             <dl>
-                <dt class="col-dt"><i>*</i>使用范围:</dt>
+                <dt class="col-dt"><i>*</i>使用范围：</dt>
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
-                            <input type="checkbox" id="all" name="chk_area" class="select-all"  value="1"/>
+                            <input type="checkbox" id="all" name="chk_area" class="select-all"  value="1" checked="checked"/>
                             <label for="all">集团</label>
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
                             <span class="online-checkbox">
-                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" />
+                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" checked="checked" />
                                 <label for="area_@Setting.Id">@Setting.ArgumentText</label>
                             </span>
                         }

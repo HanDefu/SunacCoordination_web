@@ -92,8 +92,9 @@ namespace SunacCADApp.Controllers
         public ActionResult DownFile(string filepath = "") 
         {
             string file = Request.QueryString["file"].ConventToString(string.Empty);
+            string fileName = Request.QueryString["filename"].ConventToString(string.Empty);
             string filePath = Server.MapPath(file);
-            string fileName = Path.GetFileName(file); //客户端保存的文件名            
+            string _fileName = string.IsNullOrEmpty(fileName) ? Path.GetFileName(file) : fileName; //客户端保存的文件名            
             
             //以字符流的形式下载文件
             FileStream fs = new FileStream(filePath, FileMode.Open);
@@ -103,7 +104,7 @@ namespace SunacCADApp.Controllers
             Response.ContentType = "application/octet-stream";
             //通知浏览器下载文件而不是打开
             Response.AddHeader("Content-Disposition",
-                "attachment;  filename=" + HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8));
+                "attachment;  filename=" + HttpUtility.UrlEncode(_fileName, System.Text.Encoding.UTF8));
             Response.BinaryWrite(bytes);
             Response.Flush();
             Response.End();

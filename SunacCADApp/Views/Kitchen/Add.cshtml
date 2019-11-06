@@ -40,13 +40,13 @@
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
                         <span class="online-checkbox">
-                            <input type="checkbox" id="all" name="chk_area" class="select-all" />
+                            <input type="checkbox" id="all" name="chk_area" class="select-all"  checked="checked"/>
                             <label for="all">集团</label>
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
                             <span class="online-checkbox">
-                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" />
+                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" checked="checked" />
                                 <label for="area_@Setting.Id">@Setting.ArgumentText</label>
                             </span>
                         }
@@ -91,7 +91,7 @@
             </dl>
 
             <dl class="dynamic_module">
-                <dt class="col-dt"><i>*</i>是否包含气道：</dt>
+                <dt class="col-dt"><i>*</i>是否包含排气道：</dt>
                 <dd>
                     <span class="online-checkbox">
                         <input type="radio" name="radio_kitchenisairduct" id="radio_static_module" value="1"  checked="checked"/>
@@ -106,25 +106,25 @@
             <dl class="dynamic_module">
                 <dt class="col-dt"><i>*</i>开间尺寸范围(mm)：</dt>
                 <dd>
-                    <input type="number" style="width:70px" name="txtKitchenOpenSizeMin" value="0" />
+                    <input type="number" style="width:100px" name="txtKitchenOpenSizeMin" value="0" />
                     <i> -&nbsp; </i>
-                    <input type="number" style="width:70px" name="txtKitchenOpenSizeMax"  value="0"/>
+                    <input type="number" style="width:100px" name="txtKitchenOpenSizeMax"  value="0"/>
                 </dd>
             </dl>
             <dl class="dynamic_module">
                 <dt class="col-dt"><i>*</i>进深尺寸范围(mm)：</dt>
                 <dd>
-                    <input type="number" style="width:70px" name="txtKitchenDepthsizeMin"  value="0"/>
+                    <input type="number" style="width:100px" name="txtKitchenDepthsizeMin"  value="0"/>
                     <i> -&nbsp; </i>
-                    <input type="number" style="width:70px" name="txtKitchenDepthsizeMax" value="0" />
+                    <input type="number" style="width:100px" name="txtKitchenDepthsizeMax" value="0" />
                 </dd>
             </dl>
             <dl class="static_module">
                 <dt class="col-dt"><i>*</i>开间进深(mm)：</dt>
                 <dd>
-                    <input type="number" style="width:70px" name="txtWindowSizeMin"  value="0"/>
+                    <input type="number" style="width:100px" name="txtWindowSizeMin"  value="0"/>
                     <i> -&nbsp; </i>
-                    <input type="number" style="width:70px" name="txtWindowSizeMax"  value="0"/>
+                    <input type="number" style="width:100px" name="txtWindowSizeMax"  value="0"/>
                 </dd>
             </dl>
             <dl class="static_module">
@@ -208,6 +208,19 @@
         $("#btn_cancel").on('click', function () {
             $("#myform").resetForm();
         });
+
+        $('input[name="txt_drawingcode"]').on('focusout', function () {
+            let that = $(this);
+            let code = that.val();
+            $.post('/CommonLib/HasDradrawingCode', { code: code }, function (data) {
+                if (data.Code != 100) {
+                    layer.alert(data.Message, { icon: 5, shade: 0 }, function () {
+                        that.val('');
+                        layer.closeAll();
+                    });
+                }
+            }, 'json')
+        })
     })
 
 </script>

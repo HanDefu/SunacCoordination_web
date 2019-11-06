@@ -77,11 +77,12 @@
 
             $('.download-upfile').on('click', function () {
                 let upfile = $(this).data("src");
+                let filename = $(this).data("filename");
                 if (_isNull(upfile)) {
                     layer.alert("没有你要下载的文件", { icon: 5, shade: 0 });
                     return;
                 }
-                window.location.href = "/CommonLib/DownFile?file=" + upfile;
+                window.location.href = "/CommonLib/DownFile?file=" + upfile + "&filename=" + filename;
             })
 
             $(".icon-tips").on("mouseenter", function () {

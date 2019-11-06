@@ -1,10 +1,18 @@
-﻿body {
+﻿html,body{
+    height:100%;
+    width:100%;
+    font-family:"Microsoft YaHei";
+}
+body {
+    background-image:url(img/loginbg.jpg);
+    background-repeat: no-repeat;
+	background-size: 100% 100%;
 }
 #header {
    display:block;
    overflow:hidden;
    height:100px;
-   background:url("img/sunac-logo.png")  no-repeat;
+   background:url("img/sunac-logo.png");
    background-position:10px center;
 }
 
@@ -195,6 +203,88 @@
   border-color: #dbac58;
   outline:none;
 }
+
+.bottom-prompt {
+  position:absolute;
+  bottom:8px;
+  left:2.5%;
+  right:2.5%;
+  line-height:35px;
+  background-color:rgba(0,0,0,0.2);
+  text-align:center;
+  border-radius:1px;
+}
+
+.sunac-login {
+    position:absolute;
+    top:50%;
+    margin-top:-190px;
+    right:19.5%;
+    width:350px;
+     background-color:rgba(255,255,255,0.72);
+}
+
+    .sunac-login .login-box {
+      margin:20px;
+      display:block;
+      overflow:hidden;
+      margin-top:30px;
+    }
+
+    .sunac-login .login-logo-item {
+      display:block;
+      overflow:hidden;
+    }
+
+    .sunac-login .login-logo-item input[type=text] ,
+    .sunac-login .login-logo-item input[type=password]{
+         border:solid 1px #ebce9d;
+         line-height:1.5;
+         height:40px;
+         width:100%;
+         padding-left:5px;
+          padding-right:5px;
+          background-color:rgba(255,255,255,0);
+          outline:none;
+         }
+
+
+          .sunac-login .login-logo-item input[type=text]:hover,
+           .sunac-login .login-logo-item input[type=text]:focus,
+          .sunac-login .login-logo-item input[type=password]:hover,
+          .sunac-login .login-logo-item input[type=password]:focus
+         {
+              border-color:#c8994b;
+             -moz-box-shadow:0px 0px 50px #f5eebb; 
+            -webkit-box-shadow:0px 0px 50px #f5eebb; 
+            box-shadow:0px 0px 50px #f5eebb;
+            color:#dbac58;
+        
+        }
+
+        .sunac-login .login-logo-item button {
+          background:#ff9f00;
+          line-height:35px;
+          width:100%;
+          text-align:center;
+          color:#fff;
+          outline:none;
+          border:0;
+          font-size:15px;
+          font-weight:bold;
+          border-radius:4px;
+
+        }
+
+        .sunac-login .login-logo-item a.black {
+          color:#666666;
+        }
+
+            .sunac-login .login-logo-item a.black:hover {
+             text-decoration:none;
+            }
+
+
   
 
 

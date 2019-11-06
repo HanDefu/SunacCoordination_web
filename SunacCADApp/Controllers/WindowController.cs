@@ -46,6 +46,11 @@ namespace SunacCADApp.Controllers
                 _search_where += string.Format(@" AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE pa.MId=a.Id AND pa.AreaID={0})", area);
                 _url += "&area=" + area;
             }
+            else if (area == -9999) 
+            {
+                _search_where += "  AND Scope=1";
+                _url += "&area=" + area;
+            }
 
             ViewBag.area = area;
             int action = HttpUtility.UrlDecode(Request.QueryString["action"]).ConvertToInt32(-1);
@@ -297,6 +302,53 @@ namespace SunacCADApp.Controllers
 
                 }
 
+
+                string operate = Request.Form["hid_operate"].ConventToString(string.Empty);
+                if (operate == "commit")
+                {
+                    int Id = mId;
+                    int _btid = DynamicType;
+                    string BOID = string.Empty,
+                              BTID = "P11",
+                              Bsxml = string.Empty;
+                    if (_btid == 1)
+                    {
+                        BOID = Id.ConventToString(string.Empty);
+                        BTID = "P11";
+                        BPMDynamicWindow window_n = CadDrawingWindowDetailDB.GetBPMDynamicWindowByWhere(Id);
+                        Bsxml = XmlSerializeHelper.XmlSerialize<BPMDynamicWindow>(window_n);
+                    }
+                    else if (_btid == 2)
+                    {
+                        BOID = Id.ConventToString(string.Empty);
+                        BTID = "P12";
+                        BPMStaticWindow window_n = CadDrawingWindowDetailDB.GetBPMStaticWindowByWindowId(Id);
+                        Bsxml = XmlSerializeHelper.XmlSerialize<BPMStaticWindow>(window_n);
+
+                    }
+                    WeService.BPM.WriteSAP.I_REQUEST request = new WeService.BPM.WriteSAP.I_REQUEST();
+                    IList<WeService.BPM.WriteSAP.REQ_ITEM> peq_item = new List<WeService.BPM.WriteSAP.REQ_ITEM>();
+                    WeService.BPM.WriteSAP.REQ_ITEM item = new WeService.BPM.WriteSAP.REQ_ITEM();
+                    item.BSID = "vsheji";
+                    item.BTID = BTID;
+                    item.BOID = BOID;
+                    item.BSXML = Bsxml;
+                    item.procInstID = "0";
+                    item.userid = "zhaoy58";
+                    peq_item.Add(item);
+                    WeService.BPM.WriteSAP.REQ_BASEINFO baseInfo = new WeService.BPM.WriteSAP.REQ_BASEINFO();
+                    baseInfo.REQ_TRACE_ID = API_Common.UUID;
+                    baseInfo.REQ_SEND_TIME = API_Common.SEND_DATETIME;
+                    baseInfo.REQ_SRC_SYS = "BS_CAD_BPM";
+                    baseInfo.REQ_TAR_SYS = "BS_CAD_BPM";
+                    baseInfo.REQ_SERVER_NAME = "CAD_SUNAC_564_WriteSAPXmlToBPM";
+                    baseInfo.REQ_SYN_FLAG = "0";
+                    request.REQ_BASEINFO = baseInfo;
+                    request.MESSAGE = peq_item.ToArray<WeService.BPM.WriteSAP.REQ_ITEM>();
+                    WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService service = new WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService();
+                    WeService.BPM.WriteSAP.E_RESPONSE response = service.CAD_SUNAC_564_WriteSAPXmlToBPM(request);
+                    WeService.BPM.WriteSAP.E_RESPONSERSP_ITEM Message = response.MESSAGE.First();
+                }
                 if (mId > 0 && detail>0)
                 {
                     return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);

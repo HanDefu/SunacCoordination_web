@@ -45,7 +45,7 @@
                 <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
                 <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
                 <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
-                <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath">原型图纸下载</a>
+                <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath" data-filename="@ExpansionDWG.FileClass">原型图纸下载</a>
             </dd>
         </dl>
 
@@ -56,7 +56,7 @@
                 <input type="hidden" name="txt_drawingcad" value="@VerticalDWG.CADPath" />
                 <input type="hidden" name="hid_drawing_img" value="@VerticalDWG.DWGPath" />
                 <input type="hidden" name="hid_drawing_type" value="VerticalView" />
-                <a class="btn-upfile  download-upfile" data-src="@VerticalDWG.CADPath">原型图纸下载</a>
+                <a class="btn-upfile  download-upfile" data-src="@VerticalDWG.CADPath" data-filename="@VerticalDWG.FileClass">原型图纸下载</a>
             </dd>
         </dl>
 
@@ -67,7 +67,7 @@
                 <input type="hidden" name="txt_drawingcad" value="@PlanDWG.CADPath" />
                 <input type="hidden" name="hid_drawing_img" value="@PlanDWG.DWGPath" />
                 <input type="hidden" name="hid_drawing_type" value="PlanView" />
-                <a class="btn-upfile  download-upfile" data-src="@PlanDWG.CADPath">原型图纸下载</a>
+                <a class="btn-upfile  download-upfile" data-src="@PlanDWG.CADPath" data-filename="@PlanDWG.FileClass">原型图纸下载</a>
             </dd>
         </dl>
 
@@ -81,7 +81,7 @@
                 <input type="hidden" name="txt_drawingcad" value="@SideDWG.CADPath" />
                 <input type="hidden" name="hid_drawing_img" value="@SideDWG.DWGPath" />
                 <input type="hidden" name="hid_drawing_type" value="SideView" />
-                <a class="btn-upfile  download-upfile" data-src="@SideDWG.CADPath">原型图纸下载</a>
+                <a class="btn-upfile  download-upfile" data-src="@SideDWG.CADPath" data-filename="@SideDWG.FileClass">原型图纸下载</a>
             </dd>
         </dl>
 
@@ -152,8 +152,8 @@
                             <tr>
                                 <th width="80" class="text-center">尺寸代码</th>
                                 <th width="70" class="text-center">值类型</th>
-                                <th width="70" class="text-center">最大值</th>
                                 <th width="70" class="text-center">最小值</th>
+                                <th width="70" class="text-center">最大值</th>
                                 <th width="200" class="text-center">值</th>
                                 <th width="60" class="text-center">默认值</th>
                                 <th class="text-center">说明</th>

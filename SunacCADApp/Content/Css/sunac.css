@@ -182,7 +182,10 @@ header {
     .main .center .keywords {
         position: relative;
     }
-
+    .main .center .search-bottom {
+       margin-bottom:10px;
+       border-bottom:solid 1px #efefed;
+    }
         .main .center .keywords dl dt {
             line-height: 55px;
             position: relative;
@@ -440,7 +443,7 @@ header {
 
                     .main .center .view .mian-column dl dd .param select {
                         border-width: 0px;
-                        width: 70px;
+                        width: 80px;
                     }
 
 

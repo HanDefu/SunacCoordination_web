@@ -132,6 +132,18 @@ namespace SunacCADApp.Data
                                                                  VALUES ({0},'{1}',getdate(),{2},'{3}')", userID, ObjID, OperateId, Operater);
             return MsSqlHelperEx.Execute(sql);
         }
+
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public static Sys_User GetSysUserByUserName(string userName) 
+        {
+            string sql = string.Format(@"SELECT * FROM dbo.Sys_User WHERE USER_NAME ='{0}'",userName);
+            return MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<Sys_User>(new Sys_User());
+        }
             
     }
 }

@@ -26,7 +26,7 @@
 <div class="row topnav">
     <a>标准部品库</a>
     <i></i>
-    <a>外窗</a>
+    <a href="/window">外窗</a>
 </div>
 <div class="row view">
     <div class="left-column">
@@ -60,7 +60,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt class="col-dt"><i>*</i>立面图文件 </dt>
+                <dt class="col-dt"><i>*</i>立面图文件 ：</dt>
                 <dd>
                     <input type="text" style="width:378px" name="txt_filename" placeholder="立面图文件" value="@VerticalDWG.FileClass" class="required" data-error="立面图文件不能为空" />
                     <input type="hidden" name="txt_drawingcad" value="@VerticalDWG.CADPath" />
@@ -73,7 +73,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt class="col-dt"><i>*</i>平面图文件</dt>
+                <dt class="col-dt"><i>*</i>平面图文件：</dt>
                 <dd>
                     <input type="text" style="width:378px" name="txt_filename" placeholder="平面图文件" class="required" value="@PlanDWG.FileClass" data-error="平面图文件不能为空" />
                     <input type="hidden" name="txt_drawingcad" value="@PlanDWG.CADPath" />
@@ -86,7 +86,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt class="col-dt"><i></i>侧面图文件</dt>
+                <dt class="col-dt"><i></i>侧面图文件：</dt>
                 <dd>
                     <input type="text" style="width:378px" name="txt_filename" placeholder="侧面图文件" value="@SideDWG.FileClass" />
                     <input type="hidden" name="txt_drawingcad" value="@SideDWG.CADPath" />
@@ -105,14 +105,14 @@
                         <span class="online-checkbox">
                             @if (DrawingMaster.Scope == 1)
                             {
-                                <input type="checkbox" id="all" name="chk_area" class="select-all" checked="checked" />
+                                <input type="checkbox" id="all" name="chekbox_group" class="select-all" checked="checked" value="1" />
                             }
                             else
                             {
-                                <input type="checkbox" id="all" name="chk_area" class="select-all" />
+                                <input type="checkbox" id="all" name="chekbox_group" class="select-all" value="1" />
                             }
 
-                            <label for="all">全部</label>
+                            <label for="all">集团</label>
                         </span>
                         @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
@@ -204,7 +204,7 @@
             <dl>
                 <dt class="col-dt"><i></i>是否对称窗型：</dt>
                 <dd>
-                    @if (windowDetail.WindowHasSymmetry == 1)
+                    @if (windowDetail.WindowHasCorner == 1)
                     {
                         <span class="online-checkbox">
                             <input type="radio" name="Radio_WindowHasCorner" id="Radio_WindowHasCorner" checked value="1" />
@@ -232,7 +232,7 @@
             <dl>
                 <dt class="col-dt"><i></i>是否转角窗型：</dt>
                 <dd>
-                    @if (windowDetail.WindowHasCorner == 1)
+                    @if (windowDetail.WindowHasSymmetry == 1)
                     {
                         <span class="online-checkbox">
                             <input type="radio" name="Radio_WindowHasSymmetry" id="Radio_WindowHasSymmetry" checked value="1" />
@@ -262,9 +262,9 @@
                 <dl class="dynamic_module">
                     <dt class="col-dt"><i>*</i>宽度尺寸范围（mm）：</dt>
                     <dd>
-                        <input type="number" style="width:50px" name="txtWindowSizeMin" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" />mm
+                        <input type="number" style="width:100px" name="txtWindowSizeMin" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" />mm
                         <i> -&nbsp; </i>
-                        <input type="number" style="width:50px" name="txtWindowSizeMax" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" />mm
+                        <input type="number" style="width:100px" name="txtWindowSizeMax" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" />mm
                     </dd>
                 </dl>
                 <dl class="dynamic_module">
@@ -285,8 +285,9 @@
                                 <tr>
                                     <th width="80" class="text-center">尺寸代码</th>
                                     <th width="70" class="text-center">值类型</th>
-                                    <th width="70" class="text-center">最大值</th>
                                     <th width="70" class="text-center">最小值</th>
+                                    <th width="70" class="text-center">最大值</th>
+                                 
                                     <th width="200" class="text-center">值</th>
                                     <th width="60" class="text-center">默认值</th>
                                     <th class="text-center">说明</th>
@@ -324,42 +325,42 @@
                                                 <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
                                                 <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
                                                 <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" value="@defaultValue" /></td>
-                                                <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                                <td class="desc"><input type="text" class="input-desc" name="Desc" value="@param.Desc" /></td>
                                                 break;
                                             case 2:
                                             <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
                                             <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
                                             <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
                                             <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
-                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" value="@param.Desc" /></td>
                                                 break;
                                             case 3:
                                             <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
                                             <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
                                             <td class="value"><input type="text" class="input-val" name="Val" value="@param.Val" /></td>
                                             <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
-                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" value="@param.Desc" /></td>
                                                 break;
                                             case 4:
                                             <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
                                             <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
                                             <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
                                             <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
-                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" value="@param.Desc" /></td>
                                                 break;
                                             case 5:
                                             <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
                                             <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
-                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val" value="@param.Val" /></td>
                                             <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
-                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" value="@param.Desc" /></td>
                                                 break;
                                             case 6:
                                             <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
                                             <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
-                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val"  value="@param.Val" /></td>
                                             <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
-                                            <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" value="@param.Desc" /></td>
                                                 break;
                                         }
 
@@ -375,22 +376,22 @@
                     <dt class="col-dt"><i>*</i>尺寸（mm）：</dt>
                     <dd>
                         <em>宽：</em>
-                        <input type="number" style="width:60px" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" name="txt_Window_Width" />&nbsp;
+                        <input type="number" style="width:100px" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" name="txt_Window_Width" />&nbsp;
                         <em>高：</em>
-                        <input type="number" style="width:60px" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" name="txt_Window_Height" />
+                        <input type="number" style="width:100px" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" name="txt_Window_Height" />
                     </dd>
                 </dl>
                 <dl class="static_module">
                     <dt class="col-dt"><i>*</i>通风量：</dt>
                     <dd>
-                        <input type="number" style="width:80px" name="txt_WindowVentilationQuantity" value="@windowDetail.WindowVentilationQuantity" />
+                        <input type="number" style="width:100px" name="txt_WindowVentilationQuantity" value="@windowDetail.WindowVentilationQuantity" />
 
                     </dd>
                 </dl>
                 <dl class="static_module">
                     <dt class="col-dt"><i></i>塞缝尺寸：</dt>
                     <dd>
-                        <input type="text" style="width:80px" name="txtWindowPlugslotSize" value="@windowDetail.WindowPlugslotSize" />
+                        <input type="text" style="width:100px" name="txtWindowPlugslotSize" value="@windowDetail.WindowPlugslotSize" />
 
                     </dd>
                 </dl>
@@ -410,9 +411,9 @@
                 <dl class="dynamic_module" style="display:none">
                     <dt class="col-dt"><i>*</i>宽度尺寸范围（mm）：</dt>
                     <dd>
-                        <input type="number" style="width:50px" name="txtWindowSizeMin" value="@windowDetail.WindowSizeMin" />mm
+                        <input type="number" style="width:100px" name="txtWindowSizeMin" value="@windowDetail.WindowSizeMin" />mm
                         <i> -&nbsp; </i>
-                        <input type="number" style="width:50px" name="txtWindowSizeMax" value="@windowDetail.WindowSizeMax" />mm
+                        <input type="number" style="width:100px" name="txtWindowSizeMax" value="@windowDetail.WindowSizeMax" />mm
                     </dd>
                 </dl>
                 <dl class="dynamic_module" style="display:none">
@@ -433,8 +434,8 @@
                                 <tr>
                                     <th width="80" class="text-center">尺寸代码</th>
                                     <th width="70" class="text-center">值类型</th>
-                                    <th width="70" class="text-center">最大值</th>
                                     <th width="70" class="text-center">最小值</th>
+                                    <th width="70" class="text-center">最大值</th>
                                     <th width="200" class="text-center">值</th>
                                     <th width="60" class="text-center">默认值</th>
                                     <th class="text-center">说明</th>
@@ -467,47 +468,48 @@
                                         </td>
                                         @switch (param.ValueType)
                                         {
+                                               
                                             case 1:
                                                 <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
                                                 <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
                                                 <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
                                                 <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" value="@defaultValue" /></td>
-                                                <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                                <td class="desc"><input type="text" class="input-desc" name="Desc" value="@param.Desc" /></td>
                                                 break;
                                             case 2:
                                             <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
                                             <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
                                             <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
                                             <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
-                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" value="@param.Desc" /></td>
                                                 break;
                                             case 3:
                                             <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@minValue" /></td>
                                             <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@maxValue" /></td>
                                             <td class="value"><input type="text" class="input-val" name="Val" value="@param.Val" /></td>
                                             <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
-                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" value="@param.Desc" /></td>
                                                 break;
                                             case 4:
                                             <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
                                             <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
                                             <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
                                             <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
-                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" value="@param.Desc" /></td>
                                                 break;
                                             case 5:
                                             <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
                                             <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
-                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val" value="@param.Val" /></td>
                                             <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
-                                            <td class="desc"><input type="text" class="input-desc" name="Desc" />@param.Desc</td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" value="@param.Desc" /></td>
                                                 break;
                                             case 6:
                                             <td class="value"><input type="text" class="input-minvalue" name="MinValue" value="@minValue" /></td>
                                             <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" value="@maxValue" /></td>
-                                            <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                            <td class="value"><input type="text" class="input-val" name="Val"  value="@param.Val" /></td>
                                             <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" value="@defaultValue" /></td>
-                                            <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                                            <td class="desc"><input type="text" class="input-desc" name="Desc" value="@param.Desc" /></td>
                                                 break;
                                         }
 
@@ -524,22 +526,22 @@
                     <dt class="col-dt"><i>*</i>尺寸（mm）：</dt>
                     <dd>
                         <em>宽：</em>
-                        <input type="number" style="width:60px" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" name="txt_Window_Width" />&nbsp;
+                        <input type="number" style="width:100px" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" name="txt_Window_Width" />&nbsp;
                         <em>高：</em>
-                        <input type="number" style="width:60px" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" name="txt_Window_Height" />
+                        <input type="number" style="width:100px" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" name="txt_Window_Height" />
                     </dd>
                 </dl>
                 <dl class="static_module" style="display:block">
                     <dt class="col-dt"><i>*</i>通风量：</dt>
                     <dd>
-                        <input type="number" style="width:80px" name="txt_WindowVentilationQuantity" value="@windowDetail.WindowVentilationQuantity" />
+                        <input type="number" style="width:100px" name="txt_WindowVentilationQuantity" value="@windowDetail.WindowVentilationQuantity" />
 
                     </dd>
                 </dl>
                 <dl class="static_module" style="display:block">
                     <dt class="col-dt"><i></i>塞缝尺寸：</dt>
                     <dd>
-                        <input type="text" style="width:80px" name="txtWindowPlugslotSize" value="@windowDetail.WindowPlugslotSize" />
+                        <input type="text" style="width:100px" name="txtWindowPlugslotSize" value="@windowDetail.WindowPlugslotSize" />
 
                     </dd>
                 </dl>

@@ -37,11 +37,11 @@
             <dl>
                 <dt class="col-dt"><i></i>展开图文件：</dt>
                 <dd>
-                    <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
+                    <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" disabled="disabled"  data-error="展开图文件不能为空" />
                     <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
-                    <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath">原型图纸下载</a>
+                    <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath" data-filename="@ExpansionDWG.FileClass">原型图纸下载</a>
                 </dd>
             </dl>
             <dl>
@@ -90,7 +90,7 @@
             </dl>
 
             <dl class="dynamic_module">
-                <dt class="col-dt"><i></i>是否包含气道：</dt>
+                <dt class="col-dt"><i></i>是否包含排气道：</dt>
                 <dd>
                     @{
                         string IsAirduct = Kitchen.KitchenIsAirduct == 1 ? "是" : "否";
