@@ -15,361 +15,363 @@
         </figure>
     </div>
     <div class="mian-column">
-        <form name="myform" id="myform">
-            <dl>
-                <dt class="col-dt"><i>*</i>原型编号：</dt>
-                <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" />
-                    <i class="icon-tips" tips="<p>外窗原型编号规则：<p>">&nbsp;</i>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>展开图文件：</dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
-                    <input type="hidden" name="txt_drawingcad" />
-                    <input type="hidden" name="hid_drawing_img" value="" />
-                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
-                    <a class="btn-upfile" href="javascript:void(0)">
-                        文件上传
-                        <input type="file" class="upload-cad" />
-                    </a>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>立面图文件 ：</dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_filename" placeholder="立面图文件" class="required" data-error="立面图文件不能为空" />
-                    <input type="hidden"  name="txt_drawingcad" />
-                    <input type="hidden" name="hid_drawing_img" value="" />
-                    <input type="hidden" name="hid_drawing_type" value="FrontViewFile" />
-                    <a class="btn-upfile" href="javascript:void(0)">
-                        文件上传
-                        <input type="file" class="upload-cad" />
-                    </a>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>平面图文件：</dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_filename" placeholder="平面图文件" class="required" data-error="平面图文件不能为空" />
-                    <input type="hidden" name="txt_drawingcad" />
-                    <input type="hidden" name="hid_drawing_img" value="" />
-                    <input type="hidden" name="hid_drawing_type" value="TopViewFile" />
-                    <a class="btn-upfile" href="javascript:void(0)">
-                        文件上传
-                        <input type="file" class="upload-cad" />
-                    </a>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i></i>侧面图文件：</dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_filename" placeholder="侧面图文件" />
-                    <input type="hidden" name="txt_drawingcad" />
-                    <input type="hidden" name="hid_drawing_img" value="" />
-                    <input type="hidden" name="hid_drawing_type" value="LeftViewFile" />
-                    <a class="btn-upfile" href="javascript:void(0)">
-                        文件上传
-                        <input type="file" class="upload-cad" />
-                    </a>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>使用范围：</dt>
-                <dd style="width:500px;">
-                    <span style="display:block;padding-top:5px;line-height:35px;">
-                        <span class="online-checkbox">
-                            <input type="checkbox" id="all" name="chekbox_group" class="select-all" value="1" checked />
-                            <label for="all">集团</label>
-                        </span>
-                        @foreach (BasArgumentSetting Setting in ViewBag.Settings)
-                        {
+        <div class="column-tbody">
+            <form name="myform" id="myform">
+                <dl>
+                    <dt class="col-dt"><i>*</i>原型编号：</dt>
+                    <dd>
+                        <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" />
+                        <i class="icon-tips" tips="<p>外窗原型编号规则：门窗原型代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、<br/>NDZC内开内倒转角窗、WC外开窗，<br /> WC外开窗， WZC外开转角窗，TC推拉窗， TLM推拉门，<br />TSTLM提升推拉门，MLC门连窗， WM外开门；</p>">&nbsp;</i>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>展开图文件：</dt>
+                    <dd>
+                        <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
+                        <input type="hidden" name="txt_drawingcad" />
+                        <input type="hidden" name="hid_drawing_img" value="" />
+                        <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
+                        <a class="btn-upfile" href="javascript:void(0)">
+                           上传
+                            <input type="file" class="upload-cad" />
+                        </a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>立面图文件 ：</dt>
+                    <dd>
+                        <input type="text" style="width:378px" name="txt_filename" placeholder="立面图文件" class="required" data-error="立面图文件不能为空" />
+                        <input type="hidden" name="txt_drawingcad" />
+                        <input type="hidden" name="hid_drawing_img" value="" />
+                        <input type="hidden" name="hid_drawing_type" value="FrontViewFile" />
+                        <a class="btn-upfile" href="javascript:void(0)">
+                            上传
+                            <input type="file" class="upload-cad" />
+                        </a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>平面图文件：</dt>
+                    <dd>
+                        <input type="text" style="width:378px" name="txt_filename" placeholder="平面图文件" class="required" data-error="平面图文件不能为空" />
+                        <input type="hidden" name="txt_drawingcad" />
+                        <input type="hidden" name="hid_drawing_img" value="" />
+                        <input type="hidden" name="hid_drawing_type" value="TopViewFile" />
+                        <a class="btn-upfile" href="javascript:void(0)">
+                            上传
+                            <input type="file" class="upload-cad" />
+                        </a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i></i>侧面图文件：</dt>
+                    <dd>
+                        <input type="text" style="width:378px" name="txt_filename" placeholder="侧面图文件" />
+                        <input type="hidden" name="txt_drawingcad" />
+                        <input type="hidden" name="hid_drawing_img" value="" />
+                        <input type="hidden" name="hid_drawing_type" value="LeftViewFile" />
+                        <a class="btn-upfile" href="javascript:void(0)">
+                            上传
+                            <input type="file" class="upload-cad" />
+                        </a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>使用范围：</dt>
+                    <dd style="width:500px;">
+                        <span style="display:block;padding-top:5px;line-height:35px;">
                             <span class="online-checkbox">
-                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" checked />
-                                <label for="area_@Setting.Id">@Setting.ArgumentText</label>
+                                <input type="checkbox" id="all" name="chekbox_group" class="select-all" value="1" checked />
+                                <label for="all">集团</label>
                             </span>
+                            @foreach (BasArgumentSetting Setting in ViewBag.Settings)
+                        {
+                                <span class="online-checkbox">
+                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" checked />
+                                    <label for="area_@Setting.Id">@Setting.ArgumentText</label>
+                                </span>
                         }
-                    </span>
-
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>模块类型：</dt>
-                <dd>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
-                        <label for="radio_dynamic_module">动态模型</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" />
-                        <label for="radio_static_module">静态模型</label>
-                    </span>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i></i>功能区类型：</dt>
-                <dd style="width:500px;">
-                    <span style="display:block;padding-top:5px;line-height:35px;">
-                        <span class="online-checkbox">
-                            <input type="checkbox" id="actiontype_all" name="ActionTypeAll" value="0" class="select-all" checked />
-                            <label for="actiontype_all">全部</label>
                         </span>
-                        @foreach (BasArgumentSetting ActionType in ViewBag.ActionTypes)
-                        {
+
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>模块类型：</dt>
+                    <dd>
+                        <span class="online-checkbox">
+                            <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
+                            <label for="radio_dynamic_module">动态原型</label>
+                        </span>
+                        <span class="online-checkbox">
+                            <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" />
+                            <label for="radio_static_module">静态原型</label>
+                        </span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i></i>功能区类型：</dt>
+                    <dd style="width:500px;">
+                        <span style="display:block;padding-top:5px;line-height:35px;">
                             <span class="online-checkbox">
-                                <input type="checkbox" id="actiontype_@ActionType.Id" name="ActionType" value="@ActionType.Id" class="single-checkbox" checked />
-                                <label for="actiontype_@ActionType.Id">@ActionType.ArgumentText</label>
+                                <input type="checkbox" id="actiontype_all" name="ActionTypeAll" value="0" class="select-all" checked />
+                                <label for="actiontype_all">全部</label>
                             </span>
-                        }
-                    </span>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>开启类型：</dt>
-                <dd>
-                    <select name="OpenType" class="required">
-                        @foreach (BasArgumentSetting OpenType in ViewBag.OpenTypes)
+                            @foreach (BasArgumentSetting ActionType in ViewBag.ActionTypes)
                         {
-                            <option value="@OpenType.Id">@OpenType.ArgumentText</option>
+                                <span class="online-checkbox">
+                                    <input type="checkbox" id="actiontype_@ActionType.Id" name="ActionType" value="@ActionType.Id" class="single-checkbox" checked />
+                                    <label for="actiontype_@ActionType.Id">@ActionType.ArgumentText</label>
+                                </span>
                         }
-                    </select>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>开启扇数量：</dt>
-                <dd>
-                    <select name="OpenWindowNum" class="required">
-                        @foreach (BasArgumentSetting OpenType in ViewBag.OpenWindowNums)
+                        </span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>开启类型：</dt>
+                    <dd>
+                        <select name="OpenType" class="required">
+                            @foreach (BasArgumentSetting OpenType in ViewBag.OpenTypes)
                         {
-                            <option value="@OpenType.Id">@OpenType.ArgumentText 扇</option>
+                                <option value="@OpenType.Id">@OpenType.ArgumentText</option>
                         }
-                    </select>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i></i>是否对称窗型：</dt>
-                <dd>
-                    <span class="online-checkbox">
-                        <input type="radio" name="Radio_WindowHasCorner" id="Radio_WindowHasCorner" value="1"  />
-                        <label for="Radio_WindowHasCorner">是</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="radio" name="Radio_WindowHasCorner" id="Radio_WindowHasCorner1" value="0" checked />
-                        <label for="Radio_WindowHasCorner1">否</label>
-                    </span>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i></i>是否转角窗型：</dt>
-                <dd>
-                    <span class="online-checkbox">
-                        <input type="radio" name="Radio_WindowHasSymmetry" id="Radio_WindowHasSymmetry" value="1" />
-                        <label for="Radio_WindowHasSymmetry">是</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="radio" name="Radio_WindowHasSymmetry" id="Radio_WindowHasSymmetry1" value="0" checked />
-                        <label for="Radio_WindowHasSymmetry1">否</label>
-                    </span>
-                </dd>
-            </dl>
-            <dl class="dynamic_module">
-                <dt class="col-dt"><i>*</i>宽度尺寸范围（mm）：</dt>
-                <dd>
-                    <input type="number" style="width:100px" name="txtWindowSizeMin" value="0" /> mm
-                    <i> -&nbsp; </i>
-                    <input type="number" style="width:100px" name="txtWindowSizeMax" value="0" /> mm
-                </dd>
-            </dl>
-            <dl class="dynamic_module">
-                <dt class="col-dt"><i>*</i>通风量计算公式：</dt>
-                <dd>
-                    <input type="text" style="width:450px" name="txtWindowDesignFormula" />
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>开启扇数量：</dt>
+                    <dd>
+                        <select name="OpenWindowNum" class="required">
+                            @foreach (BasArgumentSetting OpenType in ViewBag.OpenWindowNums)
+                        {
+                                <option value="@OpenType.Id">@OpenType.ArgumentText 扇</option>
+                        }
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i></i>是否对称窗型：</dt>
+                    <dd>
+                        <span class="online-checkbox">
+                            <input type="radio" name="Radio_WindowHasCorner" id="Radio_WindowHasCorner" value="1" />
+                            <label for="Radio_WindowHasCorner">是</label>
+                        </span>
+                        <span class="online-checkbox">
+                            <input type="radio" name="Radio_WindowHasCorner" id="Radio_WindowHasCorner1" value="0" checked />
+                            <label for="Radio_WindowHasCorner1">否</label>
+                        </span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i></i>是否转角窗型：</dt>
+                    <dd>
+                        <span class="online-checkbox">
+                            <input type="radio" name="Radio_WindowHasSymmetry" id="Radio_WindowHasSymmetry" value="1" />
+                            <label for="Radio_WindowHasSymmetry">是</label>
+                        </span>
+                        <span class="online-checkbox">
+                            <input type="radio" name="Radio_WindowHasSymmetry" id="Radio_WindowHasSymmetry1" value="0" checked />
+                            <label for="Radio_WindowHasSymmetry1">否</label>
+                        </span>
+                    </dd>
+                </dl>
+                <dl class="dynamic_module">
+                    <dt class="col-dt"><i>*</i>宽度尺寸范围（mm）：</dt>
+                    <dd>
+                        <input type="number" style="width:100px" name="txtWindowSizeMin" value="0" />
+                        <i> -&nbsp; </i>
+                        <input type="number" style="width:100px" name="txtWindowSizeMax" value="0" />
+                    </dd>
+                </dl>
+                <dl class="dynamic_module">
+                    <dt class="col-dt"><i>*</i>通风量计算公式：</dt>
+                    <dd>
+                        <input type="text" style="width:450px" name="txtWindowDesignFormula" />
 
-                </dd>
-            </dl>
+                    </dd>
+                </dl>
 
 
-            <dl class="static_module">
-                <dt class="col-dt"><i>*</i>尺寸（mm）：</dt>
-                <dd>
-                    <em>宽</em>
-                    <input type="number" style="width:60px" value="0" name="txt_Window_Width" />&nbsp;
-                    <i> -&nbsp; </i>
-                    <em>高 </em>
-                    <input type="number" style="width:60px" value="0" name="txt_Window_Height" />
-                </dd>
-            </dl>
-            <dl class="static_module">
-                <dt class="col-dt"><i>*</i>通风量：</dt>
-                <dd>
-                    <input type="number" style="width:80px" name="txt_WindowVentilationQuantity" value="0" />
+                <dl class="static_module">
+                    <dt class="col-dt"><i>*</i>尺寸（mm）：</dt>
+                    <dd>
+                        <em>宽</em>
+                        <input type="number" style="width:60px" value="0" name="txt_Window_Width" />&nbsp;
+                        <i> -&nbsp; </i>
+                        <em>高 </em>
+                        <input type="number" style="width:60px" value="0" name="txt_Window_Height" />
+                    </dd>
+                </dl>
+                <dl class="static_module">
+                    <dt class="col-dt"><i>*</i>通风量：</dt>
+                    <dd>
+                        <input type="number" style="width:80px" name="txt_WindowVentilationQuantity" value="0" />
 
-                </dd>
-            </dl>
-            <dl class="static_module">
-                <dt class="col-dt"><i></i>塞缝尺寸：</dt>
-                <dd>
-                    <input type="text" style="width:80px" name="txtWindowPlugslotSize" value="0" />
+                    </dd>
+                </dl>
+                <dl class="static_module">
+                    <dt class="col-dt"><i></i>塞缝尺寸：</dt>
+                    <dd>
+                        <input type="text" style="width:80px" name="txtWindowPlugslotSize" value="0" />
 
-                </dd>
-            </dl>
-            <dl class="static_module">
-                <dt class="col-dt">&nbsp;</dt>
-                <dd>
-                    <span class="online-checkbox">
-                        <input type="checkbox" name="Checkbox_WindowAuxiliaryFrame" id="Checkbox_WindowAuxiliaryFrame" value="1" />
-                        <label for="Checkbox_WindowAuxiliaryFrame">是否有附框</label>
-                    </span>
-                </dd>
-            </dl>
-            <dl class="dynamic_module">
-                <dt class="col-dt"><i></i>参数取值：</dt>
-                <dd><i class="icon-tips" tips="<p>参数取值说明：</p><p>取值类型无表示没有此尺寸代号；不限表示取值无限制；<br/>范围表示取值是在最小值、最大值范围内；<br />固定值表示只能用值一栏中的固定值；<br />值系列表示取值可有多个值选项，以逗号分隔，<br />如600,700表示此项可取600或700两个值选项。<p>">&nbsp;</i></dd>
-            </dl>
-            <dl class="dynamic_module">
-                <dd>
-                    <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:720px;">
-                        <thead>
-                            <tr>
-                                <th width="80" class="text-center">尺寸代码</th>
-                                <th width="80" class="text-center">值类型</th>
-                                <th width="70" class="text-center">最小值</th>
-                                <th width="70" class="text-center">最大值</th>
-                                <th width="200" class="text-center">值</th>
-                                <th width="60" class="text-center">默认值</th>
-                                <th class="text-center">说明</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    </dd>
+                </dl>
+                <dl class="static_module">
+                    <dt class="col-dt">&nbsp;</dt>
+                    <dd>
+                        <span class="online-checkbox">
+                            <input type="checkbox" name="Checkbox_WindowAuxiliaryFrame" id="Checkbox_WindowAuxiliaryFrame" value="1" />
+                            <label for="Checkbox_WindowAuxiliaryFrame">是否有附框</label>
+                        </span>
+                    </dd>
+                </dl>
+                <dl class="dynamic_module">
+                    <dt class="col-dt"><i></i>参数取值：</dt>
+                    <dd><i class="icon-tips" tips="<p>参数取值说明：</p><p>取值类型无表示没有此尺寸代号；不限表示取值无限制；<br/>范围表示取值是在最小值、最大值范围内；<br />固定值表示只能用值一栏中的固定值；<br />值系列表示取值可有多个值选项，以逗号分隔，<br />如600,700表示此项可取600或700两个值选项。<p>">&nbsp;</i></dd>
+                </dl>
+                <dl class="dynamic_module">
+                    <dd>
+                        <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:720px;">
+                            <thead>
+                                <tr>
+                                    <th width="80" class="text-center">尺寸代码</th>
+                                    <th width="80" class="text-center">值类型</th>
+                                    <th width="70" class="text-center">最小值</th>
+                                    <th width="70" class="text-center">最大值</th>
+                                    <th width="200" class="text-center">值</th>
+                                    <th width="60" class="text-center">默认值</th>
+                                    <th class="text-center">说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                            <tr sizeno="W1">
-                                <td class="text-center">W1</td>
-                                <td valign="middle">
-                                    <select name="ValueType">
-                                        @foreach (DataSourceMember Member in ViewBag.Members)
+                                <tr sizeno="W1">
+                                    <td class="text-center">W1</td>
+                                    <td valign="middle">
+                                        <select name="ValueType">
+                                            @foreach (DataSourceMember Member in ViewBag.Members)
                                         {
-                                            <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                                <option value="@Member.ValueMember">@Member.DisplayMember</option>
                                         }
-                                    </select>
-                                </td>
-                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
-                                <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
-                            </tr>
-                            <tr sizeno="W2">
-                                <td class="text-center">W2</td>
-                                <td valign="middle">
-                                    <select name="ValueType">
-                                        @foreach (DataSourceMember Member in ViewBag.Members)
+                                        </select>
+                                    </td>
+                                    <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
+                                    <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                                </tr>
+                                <tr sizeno="W2">
+                                    <td class="text-center">W2</td>
+                                    <td valign="middle">
+                                        <select name="ValueType">
+                                            @foreach (DataSourceMember Member in ViewBag.Members)
                                         {
-                                            <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                                <option value="@Member.ValueMember">@Member.DisplayMember</option>
                                         }
-                                    </select>
-                                </td>
-                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
-                                <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
-                            </tr>
-                            <tr sizeno="W3">
-                                <td class="text-center">W3</td>
-                                <td valign="middle">
-                                    <select name="ValueType">
-                                        @foreach (DataSourceMember Member in ViewBag.Members)
+                                        </select>
+                                    </td>
+                                    <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
+                                    <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                                </tr>
+                                <tr sizeno="W3">
+                                    <td class="text-center">W3</td>
+                                    <td valign="middle">
+                                        <select name="ValueType">
+                                            @foreach (DataSourceMember Member in ViewBag.Members)
                                         {
-                                            <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                                <option value="@Member.ValueMember">@Member.DisplayMember</option>
                                         }
-                                    </select>
-                                </td>
+                                        </select>
+                                    </td>
 
-                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
-                                <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
-                            </tr>
+                                    <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
+                                    <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                                </tr>
 
 
-                            <tr sizeno="H1">
-                                <td class="text-center">H1</td>
-                                <td valign="middle">
-                                    <select name="ValueType">
-                                        @foreach (DataSourceMember Member in ViewBag.Members)
+                                <tr sizeno="H1">
+                                    <td class="text-center">H1</td>
+                                    <td valign="middle">
+                                        <select name="ValueType">
+                                            @foreach (DataSourceMember Member in ViewBag.Members)
                                         {
-                                            <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                                <option value="@Member.ValueMember">@Member.DisplayMember</option>
                                         }
-                                    </select>
-                                </td>
+                                        </select>
+                                    </td>
 
-                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
-                                <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
-                            </tr>
-                            <tr sizeno="H2">
-                                <td class="text-center">H2</td>
-                                <td valign="middle">
-                                    <select name="ValueType">
-                                        @foreach (DataSourceMember Member in ViewBag.Members)
+                                    <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
+                                    <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                                </tr>
+                                <tr sizeno="H2">
+                                    <td class="text-center">H2</td>
+                                    <td valign="middle">
+                                        <select name="ValueType">
+                                            @foreach (DataSourceMember Member in ViewBag.Members)
                                         {
-                                            <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                                <option value="@Member.ValueMember">@Member.DisplayMember</option>
                                         }
-                                    </select>
-                                </td>
+                                        </select>
+                                    </td>
 
-                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
-                                <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
-                            </tr>
-                            <tr sizeno="H3">
-                                <td class="text-center">H3</td>
-                                <td valign="middle">
-                                    <select name="ValueType">
-                                        @foreach (DataSourceMember Member in ViewBag.Members)
+                                    <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
+                                    <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                                </tr>
+                                <tr sizeno="H3">
+                                    <td class="text-center">H3</td>
+                                    <td valign="middle">
+                                        <select name="ValueType">
+                                            @foreach (DataSourceMember Member in ViewBag.Members)
                                         {
-                                            <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                                <option value="@Member.ValueMember">@Member.DisplayMember</option>
                                         }
-                                    </select>
-                                </td>
+                                        </select>
+                                    </td>
 
-                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
-                                <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
-                            </tr>
-                            <tr sizeno="R">
-                                <td class="text-center">R</td>
-                                <td valign="middle">
-                                    <select name="ValueType">
-                                        @foreach (DataSourceMember Member in ViewBag.Members)
+                                    <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
+                                    <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                                </tr>
+                                <tr sizeno="R">
+                                    <td class="text-center">R</td>
+                                    <td valign="middle">
+                                        <select name="ValueType">
+                                            @foreach (DataSourceMember Member in ViewBag.Members)
                                         {
-                                            <option value="@Member.ValueMember">@Member.DisplayMember</option>
+                                                <option value="@Member.ValueMember">@Member.DisplayMember</option>
                                         }
-                                    </select>
-                                </td>
+                                        </select>
+                                    </td>
 
-                                <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
-                                <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
-                                <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <input type="hidden" name="param" />
-                    <input type="hidden" name="hid_operate"/>
-                </dd>
-            </dl>
-        </form>
-        <div class="row" style="margin-bottom:20px;padding-left:58px;padding-right:57px;">
+                                    <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" /></td>
+                                    <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" /></td>
+                                    <td class="desc"><input type="text" class="input-desc" name="Desc" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <input type="hidden" name="param" />
+                        <input type="hidden" name="hid_operate" />
+                    </dd>
+                </dl>
+            </form>
+        </div>
+        <div class="row main-column-handle">
             <div class="col-md-6 col-sm-6">
                 <button type="button" class="btn btn-sunac" id="btn_save" data-value="save">保存</button>
             </div>

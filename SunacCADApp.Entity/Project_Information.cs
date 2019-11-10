@@ -110,4 +110,47 @@ namespace SunacCADApp.Entity
         public string ModifiedBy { get; set; }
 
     }
+
+    public class ProjectIDMInfor 
+    {
+        /// <summary>
+        /// 主键
+        ///</summary>
+        public int Id { get; set; }
+        /// <summary>
+        /// 项目编号
+        /// </summary>
+        public string ProjectCode { get; set; }
+        /// <summary>
+        /// 项目名称
+        /// </summary>
+        public string ProjectName { get; set; }
+        /// <summary>
+        /// 区域ID
+        /// </summary>
+        public string AreaID { get; set; }
+        /// <summary>
+        /// 区域名称
+        /// </summary>
+        public string AreaName { get; set; }
+        /// <summary>
+        /// 城市公司编号
+        /// </summary>
+        public string CityCompanyCode { get; set; }
+        /// <summary>
+        /// 城市公司
+        /// </summary>
+        public string CityCompany { get; set; }
+        /// <summary>
+        /// 所属城市ID
+        /// </summary>
+        public string  CityID { get; set; }
+        /// <summary>
+        /// 所属城市名称
+        /// </summary>
+        public string CityName { get; set; }
+
+        public string MTIMESTAMP { get; set; }
+    }
+
 }

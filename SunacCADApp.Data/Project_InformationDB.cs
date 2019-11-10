@@ -137,6 +137,18 @@ namespace SunacCADApp.Data
             return _project_informations;
         }
 
+        public static IList<PArea> GetProjectAreaByList() 
+        {
+            IList<PArea> _area = new List<PArea>();
+            string sql = string.Format(@"SELECT OrgCode AS AreaId,OrgName AS AreaName FROM dbo.Bas_Idm_Organization 
+                                                        WHERE OrgTypeCode='A'  AND UpOrgCode='E01'  AND Id!=352");
+            _area = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<PArea>(new PArea());
+            return _area;
+        }
+
+
+
+
     }
 }
 

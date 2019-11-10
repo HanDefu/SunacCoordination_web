@@ -1,15 +1,39 @@
-﻿@{
+﻿@using SunacCADApp.Entity;
+@{
     Layout = "~/Views/_LayoutPage.cshtml";
+    IList<Bas_Idm_Project> Projects = ViewBag.List;
 }
+
 <div id="sunac">
     <div class="row">
-        <dl class="search-list">
+        <dl class="search-list dl_area" >
             <dt><span>区域：</span></dt>
-            <dd><span>北京</span></dd>
+            @if (string.IsNullOrEmpty(ViewBag.AreaCode))
+            {
+                <dd><span data-areaid="" class="active">全部</span></dd>
+            }
+            else
+            {
+                <dd><span data-areaid="">全部</span></dd>
+            }
+            
+            @foreach (PArea area in ViewBag.Areas)
+            {
+                if (area.AreaId == ViewBag.AreaCode)
+                {
+                    <dd><span data-areaid="@area.AreaId" class="active">@area.AreaName</span></dd>
+                }
+                else
+                {
+                    <dd><span data-areaid="@area.AreaId">@area.AreaName</span></dd>
+                }
+
+            }
+          
         </dl>
         <dl class="search-list">
             <dt><span>关键词搜索：</span></dt>
-            <dd><span><input type="text" /><strong></strong></span> </dd>
+            <dd><span><input type="text" name="keyword" value="@ViewBag.Keyword"/><strong id="btnSeach"></strong></span> </dd>
         </dl>
     </div>
 
@@ -17,19 +41,77 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th  class="selected-all" style="cursor:pointer">项目名称</th>
-                    <th width="80" class="text-center">区域</th>
-                    <th width="120" class="text-center">城市公司</th>
-                    <th width="120" class="text-center">创建时间</th>
-                    <th width="120">更新时间</th>
-                    <th width="80">设计人员</th>
-                    
-                    <th width="120" class="text-center">操作</th>
+                    <th  class="selected-all" style="cursor:pointer;line-height:35px;" >项目名称</th>
+                    <th width="180"  style="line-height:35px;">区域</th>
+                    <th width="200" style="line-height:35px;">城市公司</th>
+                    <th width="180"  style="line-height:35px;">创建时间</th>
+                    <th width="180" style="line-height:35px;">更新时间</th>
+
+                    <th width="80" style="line-height:35px;">设计人员</th>
+                    <th width="120" class="text-center" style="line-height:35px;">操作</th>
                 </tr>
             </thead>
-            <tbody</tbody>
-                </table>
+            <tbody>
+                @{
+                    int i = 1;
+                    foreach (Bas_Idm_Project project in Projects)
+                    {
+                        <tr>
+                          
+                            <td class="text-left">@project.POST1</td>
+                            <td class="text-left">@project.PAREANAME</td>
+                            <td>@project.MTIMESTAMP</td>
+                            <td>@project.CreateOn</td>
+                            <td>@project.ModifiedOn</td>
+                            <td>@project.ModifiedBy</td>
+                            <td align="center" class="operate">
+                                <a data-code="@project.POSID">查看文件</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+         </table>
         </div>
-
-
     </div>
+<script type="text/javascript">
+    $(function () {
+        $(".dl_area span").on("click", function () {
+            $(".dl_area span").removeClass("active");
+            $(this).addClass("active");
+            window.location.href = "/projectInfo?"+searchparam();
+        })
+
+        $("#btnSeach").on("click", function () {
+            window.location.href = "/projectInfo?" + searchparam();
+        })
+
+        $('.operate  a').on("click", function () {
+            let code = $(this).data("code");
+            
+            var index = layer.open({
+                type: 2,
+                skin: 'layer-ext-sunacskin',
+                area: ['70%', '80%'],
+                title: '查看项目文件',
+                shade: 0,
+                content: '/projectInfo/Item?code=' + code
+            });
+        })
+      
+    })
+
+    var searchparam = function () {
+        let param = '1';
+        let area = $(".dl_area .active").data("areaid");
+        if (!_isNull(area)) {
+            param += '&area=' + area;
+        }
+
+        let keyword = $("input[name='keyword']").val();
+        if (!_isNull(keyword)) {
+            param += '&keyword=' + keyword;
+        }
+        return param;
+    }
+</script>

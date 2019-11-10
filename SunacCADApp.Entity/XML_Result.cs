@@ -14,5 +14,6 @@ namespace SunacCADApp.Entity
         public int Code { get; set; }
         public string Message { get; set; }
         public int KeyId { get; set; }
+        public string CadUriPath { get; set; }
     }
 }

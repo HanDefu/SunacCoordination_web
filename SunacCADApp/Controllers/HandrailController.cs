@@ -203,11 +203,11 @@ namespace SunacCADApp.Controllers
 
                 if (mId > 0 && detailId > 0)
                 {
-                    return Json(new { code = 100, message = "栏杆添加成功" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { code = -100, message = "栏杆添加失败" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = -100, message = "添加失败" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -324,11 +324,11 @@ namespace SunacCADApp.Controllers
 
             if (mId > 0 && detailId > 0)
             {
-                return Json(new { code = 100, message = "栏杆原型图纸修改成功" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { code = -100, message = "栏杆原型图纸修改失败" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = -100, message = "修改失败" }, JsonRequestBehavior.AllowGet);
             }
         }
 

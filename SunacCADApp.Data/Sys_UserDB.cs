@@ -144,6 +144,12 @@ namespace SunacCADApp.Data
             string sql = string.Format(@"SELECT * FROM dbo.Sys_User WHERE USER_NAME ='{0}'",userName);
             return MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<Sys_User>(new Sys_User());
         }
+
+        public static int ChangePassword(string password, int userid)
+        {
+            string sql = string.Format(@"UPDATE dbo.Sys_User SET User_Psd='{0}' WHERE Id={1}",password,userid);
+            return MsSqlHelperEx.Execute(sql);
+        }
             
     }
 }

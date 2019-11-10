@@ -43,13 +43,17 @@
                                 <td class="text-center tr-row" valign="middle">
                                     模块管理
                                 </td>
-                                <td class="text-left handle">
+                                <td class="text-left handle  model-manage">
                                     <div class="input-group">
                                         <div class="checkbox-inline">
                                             <label class="checkbox">
                                                 <input type="checkbox" value="0" name="all" />全部
                                             </label>
                                         </div>
+                                        <span style="display:none" class="pclass">
+                                            <input type="checkbox" value="1" class="checkbox" />标准部品库
+                                            <input type="checkbox" value="2" class="checkbox" />标准空间模块库
+                                        </span>
                                         @foreach (Sys_Model model in ModelList)
                                         {
                                             var modelId = model.Id;
@@ -57,7 +61,7 @@
                                             var check_ed = string.Empty;
                                             if (model.Parent_ID == 1 || model.Parent_ID == 2)
                                             {
-                                                <div class="checkbox-inline">
+                                                <div class="checkbox-inline subclass">
                                                     <label class="checkbox">
                                                         @foreach (Sys_Model myMode in myModelList)
                                                         {
@@ -79,23 +83,26 @@
                             </tr>
                             <tr>
                                 <td class="text-center tr-row" valign="middle">原型管理</td>
-                                <td class="text-left handle">
+                                <td class="text-left handle object-manage">
                                     <div class="input-group">
                                         <div class="checkbox-inline">
                                             <label class="checkbox">
                                                 <input type="checkbox" value="0" name="all" />全部
                                             </label>
                                         </div>
+                                        <span style="display:none" class="pclass">
+                                            <input type="checkbox" value="-99" class="checkbox" />项目管理
+                                        </span>
                                         @foreach (Sys_Model model in ModelList)
                                         {
                                             var modelId = model.Id;
                                             var modelName = model.Model_Name;
-                                            var check_ed=string.Empty;
+                                            var check_ed = string.Empty;
                                             if (model.Parent_ID == 16)
                                             {
-                                                <div class="checkbox-inline">
+                                                <div class="checkbox-inline subclass">
                                                     <label class="checkbox">
- 
+
                                                         @foreach (Sys_Model myMode in myModelList)
                                                         {
                                                             if (myMode.Id == modelId)
@@ -105,7 +112,7 @@
                                                             }
                                                         }
 
-                                                        <input type="checkbox" value="@modelId" class="checkbox"  @check_ed />@modelName
+                                                        <input type="checkbox" value="@modelId" class="checkbox" @check_ed />@modelName
 
                                                     </label>
                                                 </div>
@@ -118,11 +125,14 @@
                             <tr>
                                 <td class="text-center tr-row" valign="middle">后台管理</td>
                                 <td class="text-left handle">
-                                    <div class="checkbox-inline">
+                                    <div class="checkbox-inline back-manage">
                                         <label class="checkbox">
                                             <input type="checkbox" value="0" name="all" />全部
                                         </label>
                                     </div>
+                                    <span style="display:none" class="pclass">
+                                        <input type="checkbox" value="4" class="checkbox" />后台管理
+                                    </span>
                                     @foreach (Sys_Model model in ModelList)
                                     {
                                         var modelId = model.Id;
@@ -130,7 +140,7 @@
                                         var check_ed = string.Empty;
                                         if (model.Parent_ID == 4 || model.Id == 3)
                                         {
-                                            <div class="checkbox-inline">
+                                            <div class="checkbox-inline subclass">
                                                 <label class="checkbox">
                                                     @foreach (Sys_Model myMode in myModelList)
                                                     {
@@ -173,6 +183,46 @@
         beforeSerialize: function () {
             var rtv = $("#myform").ValidationInput();
             var arr_modelid = new Array();
+            let is_model = false;
+            $(".model-manage .subclass").find("input[type='checkbox']").each(function (i, v) {
+                if ($(this).prop("checked")) {
+                    is_model = true;
+                    return false;
+                }
+            });
+            if (is_model) {
+                $(".model-manage .pclass").find("input[type='checkbox']").prop("checked", true);
+            } else {
+                $(".model-manage .pclass").find("input[type='checkbox']").prop("checked", false);
+            }
+
+            let is_object = false;
+            $(".object-manage .subclass").find("input[type='checkbox']").each(function (i, v) {
+                if ($(this).prop("checked")) {
+                    is_object = true;
+                    return false;
+                }
+            });
+            if (is_object) {
+                $(".object-manage .pclass").find("input[type='checkbox']").prop("checked", true);
+            } else {
+                $(".object-manage .pclass").find("input[type='checkbox']").prop("checked", false);
+            }
+
+            let is_back = false;
+            $(".back-manage .subclass").find("input[type='checkbox']").each(function (i, v) {
+                if ($(this).prop("checked")) {
+                    is_back = true;
+                    return false;
+                }
+            });
+            if (is_back) {
+                $(".back-manage .pclass").find("input[type='checkbox']").prop("checked", true);
+            } else {
+                $(".back-manage .pclass").find("input[type='checkbox']").prop("checked", false);
+            }
+
+
             $(".checkbox").each(function (i, v) {
                 let checked = $(this).prop("checked");
 

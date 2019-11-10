@@ -15,154 +15,157 @@
         </figure>
     </div>
     <div class="mian-column">
-        <form name="myform" id="myform">
-            <dl>
-                <dt class="col-dt"><i>*</i>原型编号：</dt>
-                <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="厨房原型编号不能为空" />
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>展开图文件：</dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
-                    <input type="hidden" name="txt_drawingcad" />
-                    <input type="hidden" name="hid_drawing_img" value="" />
-                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
-                    <a class="btn-upfile" href="javascript:void(0)">
-                        文件上传
-                        <input type="file" class="upload-cad" />
-                    </a>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>使用范围：</dt>
-                <dd style="width:500px;">
-                    <span style="display:block;padding-top:5px;line-height:35px;">
-                        <span class="online-checkbox">
-                            <input type="checkbox" id="all" name="chk_area" class="select-all"  checked="checked"/>
-                            <label for="all">集团</label>
-                        </span>
-                        @foreach (BasArgumentSetting Setting in ViewBag.Settings)
-                        {
+        <div class="column-tbody">
+            <form name="myform" id="myform">
+                <dl>
+                    <dt class="col-dt"><i>*</i>原型编号：</dt>
+                    <dd>
+                        <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="厨房原型编号不能为空" />
+                        <i class="icon-tips" tips="<p>外窗原型编号规则：门窗原型代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗， WC外开窗， WZC外开转角窗，TC推拉窗， TLM推拉门，TSTLM提升推拉门，MLC门连窗， WM外开门；</p>">&nbsp;</i>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>原型文件：</dt>
+                    <dd>
+                        <input type="text" style="width:378px" name="txt_filename" placeholder="原型文件" class="required" data-error="原型文件不能为空" />
+                        <input type="hidden" name="txt_drawingcad" />
+                        <input type="hidden" name="hid_drawing_img" value="" />
+                        <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
+                        <a class="btn-upfile" href="javascript:void(0)">
+                            上传
+                            <input type="file" class="upload-cad" />
+                        </a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>使用范围：</dt>
+                    <dd style="width:500px;">
+                        <span style="display:block;padding-top:5px;line-height:35px;">
                             <span class="online-checkbox">
-                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" checked="checked" />
-                                <label for="area_@Setting.Id">@Setting.ArgumentText</label>
+                                <input type="checkbox" id="all" name="chk_area" class="select-all" checked="checked" />
+                                <label for="all">集团</label>
                             </span>
+                            @foreach (BasArgumentSetting Setting in ViewBag.Settings)
+                        {
+                                <span class="online-checkbox">
+                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" checked="checked" />
+                                    <label for="area_@Setting.Id">@Setting.ArgumentText</label>
+                                </span>
                         }
-                    </span>
+                        </span>
 
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>厨房类型：</dt>
-                <dd>
-                    <select name="selectKitchenType">
-                        @foreach (BasArgumentSetting KitchenType in ViewBag.KitchenType)
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>厨房类型：</dt>
+                    <dd>
+                        <select name="selectKitchenType">
+                            @foreach (BasArgumentSetting KitchenType in ViewBag.KitchenType)
                         {
-                            <option value="@KitchenType.Id">@KitchenType.ArgumentText</option>
+                                <option value="@KitchenType.Id">@KitchenType.ArgumentText</option>
                         }
-                    </select>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>门窗位置：</dt>
-                <dd>
-                    <select name="selectKitchenPosition">
-                        @foreach (BasArgumentSetting DoorWindowPosition in ViewBag.DoorWindowPositions)
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>门窗位置：</dt>
+                    <dd>
+                        <select name="selectKitchenPosition">
+                            @foreach (BasArgumentSetting DoorWindowPosition in ViewBag.DoorWindowPositions)
                         {
-                            <option value="@DoorWindowPosition.Id">@DoorWindowPosition.ArgumentText</option>
+                                <option value="@DoorWindowPosition.Id">@DoorWindowPosition.ArgumentText</option>
                         }
-                    </select>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>模块类型：</dt>
-                <dd>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
-                        <label for="radio_dynamic_module">动态模型</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" />
-                        <label for="radio_static_module">静态模型</label>
-                    </span>
-                </dd>
-            </dl>
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>模块类型：</dt>
+                    <dd>
+                        <span class="online-checkbox">
+                            <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
+                            <label for="radio_dynamic_module">动态原型</label>
+                        </span>
+                        <span class="online-checkbox">
+                            <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" />
+                            <label for="radio_static_module">静态原型</label>
+                        </span>
+                    </dd>
+                </dl>
 
-            <dl class="dynamic_module">
-                <dt class="col-dt"><i>*</i>是否包含排气道：</dt>
-                <dd>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_kitchenisairduct" id="radio_static_module" value="1"  checked="checked"/>
-                        <label for="radio_static_module">是</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_kitchenisairduct" id="radio_static_module" value="0" />
-                        <label for="radio_static_module">否</label>
-                    </span>
-                </dd>
-            </dl>
-            <dl class="dynamic_module">
-                <dt class="col-dt"><i>*</i>开间尺寸范围(mm)：</dt>
-                <dd>
-                    <input type="number" style="width:100px" name="txtKitchenOpenSizeMin" value="0" />
-                    <i> -&nbsp; </i>
-                    <input type="number" style="width:100px" name="txtKitchenOpenSizeMax"  value="0"/>
-                </dd>
-            </dl>
-            <dl class="dynamic_module">
-                <dt class="col-dt"><i>*</i>进深尺寸范围(mm)：</dt>
-                <dd>
-                    <input type="number" style="width:100px" name="txtKitchenDepthsizeMin"  value="0"/>
-                    <i> -&nbsp; </i>
-                    <input type="number" style="width:100px" name="txtKitchenDepthsizeMax" value="0" />
-                </dd>
-            </dl>
-            <dl class="static_module">
-                <dt class="col-dt"><i>*</i>开间进深(mm)：</dt>
-                <dd>
-                    <input type="number" style="width:100px" name="txtWindowSizeMin"  value="0"/>
-                    <i> -&nbsp; </i>
-                    <input type="number" style="width:100px" name="txtWindowSizeMax"  value="0"/>
-                </dd>
-            </dl>
-            <dl class="static_module">
-                <dt class="col-dt"><i>*</i>台盆尺寸：</dt>
-                <dd>
-                    <select name="selectKitchenBasinSize">
-                        @foreach (BasArgumentSetting KitchenBasinType in ViewBag.KitchenBasinTypes)
+                <dl class="dynamic_module">
+                    <dt class="col-dt"><i>*</i>是否包含排气道：</dt>
+                    <dd>
+                        <span class="online-checkbox">
+                            <input type="radio" name="radio_kitchenisairduct" id="radio_kitchenisairduct01" value="1" checked="checked" />
+                            <label for="radio_kitchenisairduct01">是</label>
+                        </span>
+                        <span class="online-checkbox">
+                            <input type="radio" name="radio_kitchenisairduct" id="radio_kitchenisairduct02" value="0" />
+                            <label for="radio_kitchenisairduct02">否</label>
+                        </span>
+                    </dd>
+                </dl>
+                <dl class="dynamic_module">
+                    <dt class="col-dt"><i>*</i>开间尺寸范围(mm)：</dt>
+                    <dd>
+                        <input type="number" style="width:100px" name="txtKitchenOpenSizeMin" value="0" />
+                        <i> -&nbsp; </i>
+                        <input type="number" style="width:100px" name="txtKitchenOpenSizeMax" value="0" />
+                    </dd>
+                </dl>
+                <dl class="dynamic_module">
+                    <dt class="col-dt"><i>*</i>进深尺寸范围(mm)：</dt>
+                    <dd>
+                        <input type="number" style="width:100px" name="txtKitchenDepthsizeMin" value="0" />
+                        <i> -&nbsp; </i>
+                        <input type="number" style="width:100px" name="txtKitchenDepthsizeMax" value="0" />
+                    </dd>
+                </dl>
+                <dl class="static_module">
+                    <dt class="col-dt"><i>*</i>开间进深(mm)：</dt>
+                    <dd>
+                        <input type="number" style="width:100px" name="txtWindowSizeMin" value="0" />
+                        <i> -&nbsp; </i>
+                        <input type="number" style="width:100px" name="txtWindowSizeMax" value="0" />
+                    </dd>
+                </dl>
+                <dl class="static_module">
+                    <dt class="col-dt"><i>*</i>台盆尺寸：</dt>
+                    <dd>
+                        <select name="selectKitchenBasinSize">
+                            @foreach (BasArgumentSetting KitchenBasinType in ViewBag.KitchenBasinTypes)
                         {
-                            <option value="@KitchenBasinType.Id">@KitchenBasinType.ArgumentText</option>
+                                <option value="@KitchenBasinType.Id">@KitchenBasinType.ArgumentText</option>
                         }
-                    </select>
-                </dd>
-            </dl>
-            <dl class="static_module">
-                <dt class="col-dt"><i>*</i>冰箱尺寸：</dt>
-                <dd>
-                    <select name="selectKitchenFridgSize">
-                        @foreach (BasArgumentSetting RefrigeratorType in ViewBag.RefrigeratorTypes)
+                        </select>
+                    </dd>
+                </dl>
+                <dl class="static_module">
+                    <dt class="col-dt"><i>*</i>冰箱尺寸：</dt>
+                    <dd>
+                        <select name="selectKitchenFridgSize">
+                            @foreach (BasArgumentSetting RefrigeratorType in ViewBag.RefrigeratorTypes)
                         {
-                            <option value="@RefrigeratorType.Id">@RefrigeratorType.ArgumentText</option>
+                                <option value="@RefrigeratorType.Id">@RefrigeratorType.ArgumentText</option>
                         }
-                    </select>
-                </dd>
-            </dl>
-            <dl class="static_module">
-                <dt class="col-dt"><i>*</i>灶台尺寸：</dt>
-                <dd>
-                    <select name="selectKitchenHearthSize">
-                        @foreach (BasArgumentSetting HearthWidth in ViewBag.HearthWidths)
+                        </select>
+                    </dd>
+                </dl>
+                <dl class="static_module">
+                    <dt class="col-dt"><i>*</i>灶台尺寸：</dt>
+                    <dd>
+                        <select name="selectKitchenHearthSize">
+                            @foreach (BasArgumentSetting HearthWidth in ViewBag.HearthWidths)
                         {
-                            <option value="@HearthWidth.Id">@HearthWidth.ArgumentText</option>
+                                <option value="@HearthWidth.Id">@HearthWidth.ArgumentText</option>
                         }
-                    </select>
-                </dd>
-            </dl>
-        </form>
-        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
-            <div class="col-md-6 col-sm-6">
+                        </select>
+                    </dd>
+                </dl>
+            </form>
+        </div>
+        <div class="main-column-handle" >
+            <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
             </div>
             

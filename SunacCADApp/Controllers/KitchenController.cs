@@ -243,11 +243,11 @@ namespace SunacCADApp.Controllers
                 int kitchenid=   CadDrawingKitchenDetailDB.AddHandle(kitchen);
                 if (kitchenid > 0)
                 {
-                    return Json(new { code = 100, message = "厨房原型图纸添加成功" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else 
                 {
-                    return Json(new { code = -100, message = "厨房原型图纸添加失败" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = -100, message = "添加失败" }, JsonRequestBehavior.AllowGet);
                 }
                
                
@@ -404,11 +404,11 @@ namespace SunacCADApp.Controllers
                 int kitchenid = CadDrawingKitchenDetailDB.AddHandle(kitchen);
                 if (kitchenid > 0)
                 {
-                    return Json(new { code = 100, message = "厨房原型图纸修改成功" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { code = -100, message = "厨房原型图纸修改失败" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = -100, message = "修改失败" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)

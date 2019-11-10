@@ -159,6 +159,14 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.ExecuteScalar(sql).ConventToString(string.Empty);
         }
 
+
+
+        public static IList<Bas_Idm_ProjectDirectory> GetIdmProjectDirectoryByOID(int  OID)
+        {
+            string sql = string.Format(@"SELECT Id,DirName,ParentDirName,ParentDirId FROM dbo.Bas_Idm_ProjectDirectory WHERE OID={0} And  Enabled=0", OID);
+            return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Bas_Idm_ProjectDirectory>(new Bas_Idm_ProjectDirectory());
+        }
+
         
 
     }

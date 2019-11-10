@@ -147,6 +147,65 @@ namespace SunacCADApp.Data
             return projects;
 
         }
+
+
+        ///<summary>
+        /// 项目信息表 分页查询
+        ///</summary>
+        public static IList<Bas_Idm_Project> GetBasIdmProjectByParameterList(string _where, string orderby, int start, int end)
+        {
+
+            IList<Bas_Idm_Project> _bas_idm_projects = new List<Bas_Idm_Project>();
+            string sql = string.Format(@"SELECT  * FROM 
+                                                   ( SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber ,
+                                                                    a.Id,a.POSID,a.POST1,a.PLONG_TX,a.PBUKRS,a.COMP_NAME,a.PAREA_GS_NAME,
+                                                                   a.STEP_ID,a.PLFAZ,a.PCITY,a.CITY_NAME,a.STUFE,a.DK_POSID,a.DK_NAME,
+                                                                   a.MTIMESTAMP,b.OrgName AS PAREANAME,c.OrgName AS PCITYNAME
+                                                              FROM  dbo.Bas_Idm_Project a  
+                                                         LEFT JOIN dbo.Bas_Idm_Organization   b ON a.PAREA_GS_NAME=b.OrgCode AND b.UpOrgCode='E01' AND b.OrgTypeCode='A'
+                                                         LEFT JOIN dbo.Bas_Idm_Organization   c ON c.OrgTypeCode='C'  AND c.OrgCode=a.PCITY
+                                                         WHERE a.STUFE=1 {0}
+                                                    ) T
+                                                   WHERE    T.RowNumber BETWEEN {1} AND {2}  {3}", _where, start, end, orderby);
+
+            _bas_idm_projects = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Bas_Idm_Project>(new Bas_Idm_Project());
+            return _bas_idm_projects;
+        }
+
+        ///<summary>
+        /// 项目信息表  分页数据总数量
+        ///<summary>
+        public static int GetPageCountBasIdmProjectByParameter(string _where)
+        {
+            string sql = string.Format(@"SELECT   count(*) as cnt
+                                                          FROM  dbo.Bas_Idm_Project a  
+                                                    LEFT JOIN dbo.Bas_Idm_Organization   b ON a.PAREA_GS_NAME=b.OrgCode AND b.UpOrgCode='E01' AND b.OrgTypeCode='A'
+                                                    LEFT JOIN dbo.Bas_Idm_Organization   c ON c.OrgTypeCode='C'  AND c.OrgCode=a.PCITY
+                                                        WHERE a.STUFE=1 {0}", _where);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
+        }
+
+        public static Bas_Idm_Project GetBasIdmProjectByProjectId(string _where) 
+        {
+            Bas_Idm_Project _bas_idm_project = new Bas_Idm_Project();
+            string sql = string.Format(@"SELECT 
+                                                                    a.Id,a.POSID,a.POST1,a.PLONG_TX,a.PBUKRS,a.COMP_NAME,a.PAREA_GS_NAME,
+                                                                   a.STEP_ID,a.PLFAZ,a.PCITY,a.CITY_NAME,a.STUFE,a.DK_POSID,a.DK_NAME,
+                                                                   a.MTIMESTAMP,b.OrgName AS PAREANAME,c.OrgName AS PCITYNAME
+                                                              FROM  dbo.Bas_Idm_Project a  
+                                                         LEFT JOIN dbo.Bas_Idm_Organization   b ON a.PAREA_GS_NAME=b.OrgCode AND b.UpOrgCode='E01' AND b.OrgTypeCode='A'
+                                                         LEFT JOIN dbo.Bas_Idm_Organization   c ON c.OrgTypeCode='C'  AND c.OrgCode=a.PCITY
+                                                         WHERE a.STUFE=1 {0}
+                                                    ", _where);
+
+            _bas_idm_project = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<Bas_Idm_Project>(new Bas_Idm_Project());
+            return _bas_idm_project;
+        }
+
+
+
+
+         
     }
 }
 

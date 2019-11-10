@@ -11,6 +11,7 @@ using SunacCADApp.Data;
 using System.Data;
 using SunacCADApp.Library;
 
+
 namespace SunacCADApp.Controllers
 {
     public class WindowController : Controller
@@ -18,6 +19,11 @@ namespace SunacCADApp.Controllers
         public WindowController() 
         {
             ViewBag.SelectModel = 5;
+            int  userId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
+            if (userId < 1) 
+            {
+                Redirect("/home");
+            }
         }
         // GET: /window/index
         public ActionResult Index()
@@ -553,11 +559,11 @@ namespace SunacCADApp.Controllers
 
                 if (mId > 0 && detail > 0)
                 {
-                    return Json(new { code = 100, message = "外窗修改成功" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { code = -100, message = "外窗修改失败" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = -100, message = "修改失败" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)

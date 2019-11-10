@@ -81,8 +81,8 @@ namespace SunacCADApp.Controllers
             header.PASSWORD = "idmpass";
             header.BIZTRANSACTIONID = "vsheji";
             WebService.Idm.User.queryDto dto = new WebService.Idm.User.queryDto();
-            dto.beginDate = "2019-07-30 00:00:00.000";
-            dto.endDate = "2019-08-01 00:00:00.000";
+            dto.beginDate = "2019-06-26 00:00:00.000";
+            dto.endDate = "2019-06-28 00:00:00.000";
             dto.systemID = "CADSJXTUser";
             dto.pageNo = "1";
             dto.pageRowNo = "20";
@@ -90,6 +90,7 @@ namespace SunacCADApp.Controllers
             WebService.Idm.User.PUBLIC_SUNAC_300_queryIdmUserData_pttbindingQSService service = new WebService.Idm.User.PUBLIC_SUNAC_300_queryIdmUserData_pttbindingQSService();
             service.commonHeader = header;
             WebService.Idm.User.HEADER head =   service.PUBLIC_SUNAC_300_queryIdmUserData(dto,out list);
+            
             return Json(new { Code = 100, Message = "测试成功" }, JsonRequestBehavior.AllowGet);
         }
 

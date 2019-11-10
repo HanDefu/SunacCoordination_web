@@ -48,9 +48,15 @@
                                 List<string> strList = new List<string>();
                                 foreach (Sys_Model model in models)
                                 {
-                                    string modelName = model.Model_Name;
-                                    strList.Add(modelName);
-
+                                    if (model.Id == 1 || model.Id == 2 || model.Id == 4)
+                                    {
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        string modelName = model.Model_Name;
+                                        strList.Add(modelName);
+                                    }
                                 }
                                 string strName = string.Join("、", strList);
                                 <span>@strName</span>
@@ -75,7 +81,7 @@
             var index = layer.open({
                 type: 2,
                 skin: 'layer-ext-sunacskin',
-                area: ['840px', '570px'],
+                area: ['850px', '570px'],
                 title: '新增角色',
                 shade:0,
                 scrollbar :true,

@@ -514,6 +514,10 @@ body .layui-ext-sunacskin .layui-layer-btn .layui-layer-btn1{background:#ffffff;
     min-height:500px;
 }
 
+#sunac-wapper {
+  display:block;
+}
+
 
 
 

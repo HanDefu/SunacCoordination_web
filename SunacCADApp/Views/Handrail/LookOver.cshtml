@@ -25,53 +25,51 @@
         </figure>
     </div>
     <div class="mian-column">
-        <dl>
-            <dt class="col-dt"><i>*</i>原型编号：</dt>
-            <dd>
-                 @Drawing.DrawingCode
-            </dd>
-        </dl>
-        <dl>
-            <dt class="col-dt"><i></i>展开图文件：</dt>
-            <dd>
-                <input type="text" style="width:378px" name="txt_filename" disabled="disabled" value="@ExpansionDWG.FileClass"/>
-                <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
-                <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
-                <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
-                <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath" data-filename="@ExpansionDWG.FileClass">原型图纸下载</a>
-            </dd>
-        </dl>
+        <div class="column-tbody">
+            <dl>
+                <dt class="col-dt"><i>*</i>原型编号：</dt>
+                <dd>
+                    @Drawing.DrawingCode
+                </dd>
+            </dl>
+            <dl>
+                <dt class="col-dt"><i></i>原型文件：</dt>
+                <dd>
+                    <input style="width:378px" name="txt_filename" disabled="disabled" value="@ExpansionDWG.FileClass" />
+                    <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
+                    <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
+                    <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
+                    <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath" data-filename="@ExpansionDWG.FileClass">下载</a>
+                </dd>
+            </dl>
 
-        <dl>
-            <dt class="col-dt"><i>*</i>使用范围：</dt>
-            <dd style="width:500px;">
-                <span style="display:block;padding-top:5px;line-height:35px;">
-                    @foreach (CadDrawingByArea Area in ByAreas)
+            <dl>
+                <dt class="col-dt"><i>*</i>使用范围：</dt>
+                <dd style="width:500px;">
+                    <span style="display:block;padding-top:5px;line-height:35px;">
+                        @foreach (CadDrawingByArea Area in ByAreas)
                         {
-                        <span class="online-checkbox">
-                            <label>@Area.AreaName</label>
-                        </span>
+                            <span class="online-checkbox">
+                                <label>@Area.AreaName</label>
+                            </span>
                         }
 
-                </span>
-            </dd>
-        </dl>
-       <dl>
-           <dt class="col-dt"><i></i>栏杆类型：</dt>
-           <dd>
-               @Handrail.HandrailTypeName
-           </dd>
-       </dl>
-      
-        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
+                    </span>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="col-dt"><i></i>栏杆类型：</dt>
+                <dd>
+                    @Handrail.HandrailTypeName
+                </dd>
+            </dl>
+        </div>
+        <div class="main-column-handle">
 
-            <div class="col-md-6 col-sm-6">
-                
+
+            <div class="column-handle">
+                <a class="btn btn-sunac" href="/handrail/Edit/@Drawing.Id">编辑</a>
             </div>
-           <div class="col-md-6 col-sm-6" style="text-align:right">
-               <a class="btn btn-sunac" href="/handrail/Edit/@Drawing.Id">编辑</a>
-           </div>
-              
         </div>
     </div>
     

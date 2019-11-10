@@ -411,6 +411,8 @@ namespace SunacCADApp
             string DirName = BasIdmProjectDirectoryDB.GetDirNameByDirID(DrawingDirId);
             int rtnFlag = 0;
             int keyid = 0;
+            DateTime dateTime = DateTime.Now;
+            string CadFilePath = string.Concat(API_Common.WebURL, "/upfile/", dateTime.ToString("yyyyMMdd"), "/", FileSaveName);
             if (hasDrawing == 0)
             {
               
@@ -421,7 +423,7 @@ namespace SunacCADApp
                 file.FileName = DrawingFile;
                 file.SaveName = FileSaveName;
                 file.CreateUserId = UID.ConvertToInt32(0);
-                file.CreateOn = DateTime.Now;
+                file.CreateOn = dateTime;
                 rtnFlag = BasIdmProjectFileDB.AddHandle(file);
                 keyid = rtnFlag;
 
@@ -435,14 +437,14 @@ namespace SunacCADApp
                 file.FileName = DrawingFile;
                 file.SaveName = FileSaveName;
                 file.ModifiedUserId = UID.ConvertToInt32(0);
-                file.ModifiedOn = DateTime.Now;
+                file.ModifiedOn = dateTime;
                 file.Id = hasDrawing;
                 rtnFlag = BasIdmProjectFileDB.EditHandle(file,string.Empty);
                 keyid = hasDrawing;
             }
             if (rtnFlag > 0)
             {
-                return XmlSerializeHelper.XmlSerialize<XML_Result>(new XML_Result() { Code = 100, Message = "文件上传成功" ,KeyId=keyid});
+                return XmlSerializeHelper.XmlSerialize<XML_Result>(new XML_Result() { Code = 100, Message = "文件上传成功", KeyId = keyid, CadUriPath = CadFilePath });
             }
             else
             {

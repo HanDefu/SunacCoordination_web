@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace SunacCADApp.Library
 {
@@ -19,6 +20,14 @@ namespace SunacCADApp.Library
             get 
             {
                 return Guid.NewGuid().ToString("N").ToUpper();
+            }
+        }
+
+        public static string WebURL 
+        {
+            get 
+            {
+                return ConfigurationSettings.AppSettings["WebURL"];
             }
         }
 

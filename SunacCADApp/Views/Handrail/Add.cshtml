@@ -15,65 +15,65 @@
         </figure>
     </div>
     <div class="mian-column">
-        <form name="myform" id="myform">
-            <dl>
-                <dt class="col-dt"><i>*</i>原型编号：</dt>
-                <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" placeholder="原型编号" />
-                </dd>
-            </dl>
-            
-            <dl>
-                <dt class="col-dt"><i>*</i>展开图文件：</dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
-                    <input type="hidden" name="txt_drawingcad" />
-                    <input type="hidden" name="hid_drawing_img" value="" />
-                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
-                    <a class="btn-upfile" href="javascript:void(0)">
-                        文件上传
-                        <input type="file" class="upload-cad" />
-                    </a>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>使用范围：</dt>
-                <dd style="width:500px;">
-                    <span style="display:block;padding-top:5px;line-height:35px;">
-                        <span class="online-checkbox">
-                            <input type="checkbox" id="all" name="chk_area" class="select-all"  value="1" checked="checked"/>
-                            <label for="all">集团</label>
-                        </span>
-                        @foreach (BasArgumentSetting Setting in ViewBag.Settings)
-                        {
-                            <span class="online-checkbox">
-                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" checked="checked" />
-                                <label for="area_@Setting.Id">@Setting.ArgumentText</label>
-                            </span>
-                        }
-                    </span>
+        <div class="column-tbody">
+            <form name="myform" id="myform">
+                <dl>
+                    <dt class="col-dt"><i>*</i>原型编号：</dt>
+                    <dd>
+                        <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" placeholder="原型编号" />
+                        <i class="icon-tips" tips="<p>外窗原型编号规则：门窗原型代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗， WC外开窗， WZC外开转角窗，TC推拉窗， TLM推拉门，TSTLM提升推拉门，MLC门连窗， WM外开门；<p>">&nbsp;</i>
+                    </dd>
+                </dl>
 
-                </dd>
-            </dl>
-            
-            <dl>
-                <dt class="col-dt"><i>*</i>栏杆类型：</dt>
-                <dd>
-                    <select name="HandRailType" class="required" data-error="栏杆类型不能为空">
-                        @foreach (BasArgumentSetting HandRail in ViewBag.HandRails)
+                <dl>
+                    <dt class="col-dt"><i>*</i>原型文件：</dt>
+                    <dd>
+                        <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
+                        <input type="hidden" name="txt_drawingcad" />
+                        <input type="hidden" name="hid_drawing_img" value="" />
+                        <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
+                        <a class="btn-upfile" href="javascript:void(0)">
+                            上传
+                            <input type="file" class="upload-cad" />
+                        </a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>使用范围：</dt>
+                    <dd style="width:500px;">
+                        <span style="display:block;padding-top:5px;line-height:35px;">
+                            <span class="online-checkbox">
+                                <input type="checkbox" id="all" name="chk_area" class="select-all" value="1" checked="checked" />
+                                <label for="all">集团</label>
+                            </span>
+                            @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
-                            <option value="@HandRail.Id">@HandRail.ArgumentText</option>
+                                <span class="online-checkbox">
+                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" checked="checked" />
+                                    <label for="area_@Setting.Id">@Setting.ArgumentText</label>
+                                </span>
                         }
-                    </select>
-                </dd>
-            </dl>
-        </form>
-        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;margin-top:120px">
-            <div class="col-md-6 col-sm-6">
+                        </span>
+
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt class="col-dt"><i>*</i>栏杆类型：</dt>
+                    <dd>
+                        <select name="HandRailType" class="required" data-error="栏杆类型不能为空">
+                            @foreach (BasArgumentSetting HandRail in ViewBag.HandRails)
+                        {
+                                <option value="@HandRail.Id">@HandRail.ArgumentText</option>
+                        }
+                        </select>
+                    </dd>
+                </dl>
+            </form>
+        </div>
+        <div class="main-column-handle">
+            <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
-            </div>
-            <div class="col-md-6 col-sm-6 text-right">
-               
             </div>
         </div>
     </div>

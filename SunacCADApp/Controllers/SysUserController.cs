@@ -9,11 +9,15 @@ using SunacCADApp.Entity;
 using SunacCADApp.Data;
 namespace SunacCADApp.Controllers
 {
-
+  
     public class SysUserController : Controller
     {
+        private int UserId = 0;
+        private string UserName = string.Empty;
         public SysUserController() 
         {
+            UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
+            UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 11;
         }
 
@@ -26,6 +30,10 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Index()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string _where = "1=1";  //查询
             string _orderby = string.Empty;  //排序
             string _url = string.Empty;
@@ -91,6 +99,10 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Add()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string _wh = " a.Enabled=1";
             string _order = string.Empty;
             IList<BaseCompanyInfo> companyInfo = BaseCompanyInfoDB.GetPageInfoByParameter(_wh, _order, 1, 1000);
@@ -115,6 +127,10 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Addhandle()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
              string userName = Request.Form["txt_user_name"].ConventToString(string.Empty);
              int hasUser = Sys_UserDB.HasSysUserByUserName(userName);
             if (hasUser > 0) 
@@ -134,13 +150,17 @@ namespace SunacCADApp.Controllers
             sys_user.Is_Internal = 1;
             sys_user.CompanyID = Request.Form["select_companyid"].ConvertToInt32(0);
             sys_user.RoleID = Request.Form["select_roleid"].ConvertToInt32(0);
-            sys_user.CreateOn = DateTime.Now;
             sys_user.Reorder = 0;
             sys_user.Enabled =1;
-            sys_user.CreateUserId = 0;
-            sys_user.CreateBy = "admin";
-            int UserId = Sys_UserDB.AddHandle(sys_user);
-            if (UserId > 0)
+            sys_user.CreateUserId = UserId;
+            sys_user.CreateBy = UserName;
+            sys_user.CreateOn = DateTime.Now;
+            sys_user.ModifiedUserId = UserId;
+            sys_user.ModifiedBy = UserName;
+            sys_user.ModifiedOn = DateTime.Now;
+
+            int _userId = Sys_UserDB.AddHandle(sys_user);
+            if (_userId > 0)
             {
                 if(!string.IsNullOrEmpty(areaids))
                 {
@@ -148,8 +168,14 @@ namespace SunacCADApp.Controllers
                     foreach (string areaid in areas) 
                     {
                         Sys_User_Area_Relation userArea = new Sys_User_Area_Relation();
-                        userArea.User_ID = UserId;
+                        userArea.User_ID = _userId;
                         userArea.Area_ID = areaid.ConvertToInt32(-1);
+                        userArea.CreateUserId = UserId;
+                        userArea.CreateBy = UserName;
+                        userArea.CreateOn = DateTime.Now;
+                        userArea.ModifiedUserId = UserId;
+                        userArea.ModifiedBy = UserName;
+                        userArea.ModifiedOn = DateTime.Now;
                         Sys_User_Area_RelationDB.AddHandle(userArea);
                     }
                 }
@@ -178,6 +204,10 @@ namespace SunacCADApp.Controllers
         /// <author>alon<84789887@qq.com></author>  
         public ActionResult Edit(int Id)
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string _wh = " a.Enabled=1";
             string _order = string.Empty;
             IList<BaseCompanyInfo> companyInfo = BaseCompanyInfoDB.GetPageInfoByParameter(_wh, _order, 1, 1000);
@@ -211,6 +241,10 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Edithandle()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             Sys_User sys_user = new Sys_User();
             int Id = Request.Form["hid_id"].ConvertToInt32(0);
             sys_user.Id = Id;
@@ -227,11 +261,14 @@ namespace SunacCADApp.Controllers
             sys_user.CompanyID = Request.Form["checkbox_companyid"].ConvertToInt32(0);
             sys_user.RoleID = Request.Form["select_roleid"].ConvertToInt32(0);
             sys_user.AreaID = Request.Form["checkbox_areaid"].ConvertToInt32(0);
-            sys_user.CreateOn = DateTime.Now;
             sys_user.Reorder = Request.Form["txt_reorder"].ConvertToInt32(0);
             sys_user.Enabled = Request.Form["select_enabled"].ConvertToInt32(0);
-            sys_user.CreateUserId = 0;
-            sys_user.CreateBy = "admin";
+            sys_user.CreateUserId = UserId;
+            sys_user.CreateBy = UserName;
+            sys_user.CreateOn = DateTime.Now;
+            sys_user.ModifiedUserId = UserId;
+            sys_user.ModifiedBy = UserName;
+            sys_user.ModifiedOn = DateTime.Now;
             int rtv = Sys_UserDB.EditHandle(sys_user, string.Empty);
             if (rtv > 0)
             {
@@ -250,10 +287,12 @@ namespace SunacCADApp.Controllers
         /// <author>alon<84789887@qq.com></author>  
         public ActionResult DeleteHandleById()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             int Id = Request.QueryString["id"].ConvertToInt32(0);
             int rtv = Sys_UserDB.DeleteHandleById(Id);
-
-
             if (rtv > 0)
             {
                 return Json(new { code = 100, message = "删除成功" }, JsonRequestBehavior.AllowGet);
@@ -271,6 +310,10 @@ namespace SunacCADApp.Controllers
         /// <author>alon<84789887@qq.com></author> 
         public ActionResult DeleteHandleByIds()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string ids = Request.Form["ids"].ConventToString(string.Empty);
             if (string.IsNullOrEmpty(ids)) 
             {
@@ -288,8 +331,12 @@ namespace SunacCADApp.Controllers
         }
 
 
-        public ActionResult SelectedProjectInfo() 
+        public ActionResult SelectedProjectInfo()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             IList<BasIdmOrganization> IdmOrganizations = new List<BasIdmOrganization>();
             IdmOrganizations = IdmCommonLibDB.GetPageInfoByParameter(string.Empty);
             ViewBag.IdmOrganizations = IdmOrganizations;
@@ -305,6 +352,10 @@ namespace SunacCADApp.Controllers
 
         public ActionResult GetJsonProjectInfoByAreaName()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string areaName = Request.QueryString["AreaName"].ConventToString(string.Empty);
             if (string.IsNullOrEmpty(areaName))
             {
@@ -330,6 +381,10 @@ namespace SunacCADApp.Controllers
 
         public ActionResult GetJsonProjectInfoBySearch()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string areaName = Request.Form["AreaName"].ConventToString(string.Empty);
             string cityCompany = Request.Form["CityCompany"].ConventToString(string.Empty);
             string keyword = Request.Form["Keyword"].ConventToString(string.Empty);
@@ -348,6 +403,10 @@ namespace SunacCADApp.Controllers
 
         public ActionResult GetIdmCityByAreaCode() 
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string areaCode = Request.Form["areaCode"].ConventToString(string.Empty);
             IList<BasIdmOrganization> cities = IdmCommonLibDB.GetIdmCityAndCompanyByArea(areaCode);
             if (cities.Count() > 0)
@@ -359,9 +418,68 @@ namespace SunacCADApp.Controllers
                 return Json(new { code = -100, message = "查询失败" }, JsonRequestBehavior.AllowGet);
             }
         }
-        
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ChangePassword() 
+        {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
+            return View();
+        }
 
+        /// <summary>
+        ///  /
+        /// </summary>
+        /// <returns></returns>
+        /// <http_post>/SysUser/ChangePasswordHandle</http_post>
+        public ActionResult ChangePasswordHandle() 
+        {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
 
+            string password = Request.Form["txt_password"].ConventToString(string.Empty);
+            if (string.IsNullOrEmpty(password)) 
+            {
+                return Json(new { code = -100, message = "用户密码输入不能为空" }, JsonRequestBehavior.AllowGet);
+            }
+            string once_password = Request.Form["txt_once_password"].ConventToString(string.Empty);
+            if (password!=once_password) 
+            {
+                return Json(new { code = -100, message = "两次输入密码不同" }, JsonRequestBehavior.AllowGet);
+            }
+
+            password = CommonLib.UserMd5(password);
+            int flag = Sys_UserDB.ChangePassword(password,UserId);
+            if (flag > 0)
+            {
+                return Json(new { code = 100, message = "密码成功"}, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { code = -100, message = "密码失败" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// <http_post>/SysUser/MyEdit</http_post>
+        public ActionResult MyEdit()
+        {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
+            return View();
+        }
+    
     }
 }

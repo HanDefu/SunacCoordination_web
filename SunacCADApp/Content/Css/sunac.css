@@ -17,7 +17,79 @@ header {
     margin-right: -15px;
     background: url('img/sunac-head-logo.png') 25px center no-repeat;
     background-size: 285px 30px;
+    position:relative;
 }
+
+ header .userinfo {
+    float:right;
+    margin-right:20px;
+    margin-top:20px;
+    position:relative;
+
+ }
+
+    header .userinfo .username {
+       color:#666666;
+       font-size:14px;
+       text-align:center;
+       width:150px;
+       height:30px;
+       line-height:30px;
+       background:url("img/icon-user-profile.png") center left no-repeat;
+       background-position-x:25px;
+       display:block;
+
+    }
+
+
+    
+    header .userinfo .user-operate {
+        position:absolute;
+        left:1px;
+        top:20px;
+        width:150px;
+        height:80px;
+        background: url("img/headerinfo.png") top center no-repeat;  
+        display:none;
+        z-index:9999;
+    }
+       header .userinfo:hover .user-operate,
+       header .userinfo:focus .user-operate
+        {
+
+         display:block;
+        }
+        header .userinfo .user-operate .cnt {
+         display:block;
+         overflow:hidden;
+         margin-top:20px;
+         border:solid 1px #dadada;
+         border-top:0px;
+         background-color:#ffffff;
+         padding-bottom:5px;
+         padding-top:5px;
+         padding-left:8px;
+         padding-right:8px;
+         
+        }
+
+            header .userinfo .user-operate .cnt a {
+              display:block;
+              line-height:35px;
+              text-align:center;
+              font-size:14px;
+              color:#505050;
+              text-decoration:none;
+
+
+            }
+                header .userinfo .user-operate .cnt a:hover {
+                   color:#b58d59;
+                }
+                header .userinfo .user-operate .cnt a.border-bottom {
+                   border-bottom:solid 1px #dadada;
+                }
+
 
 .main {
     display: block;
@@ -134,7 +206,7 @@ header {
     margin-left: 170px;
     padding-left: 36px;
     padding-right: 36px;
-    padding-top: 5px;
+    padding-top: 15px;
 }
 
 
@@ -148,6 +220,9 @@ header {
 
 
     .main .center .search dl {
+       overflow:hidden;
+       margin-top: 0px;
+       margin-bottom: 0px;
     }
 
         .main .center .search dl dt,
@@ -183,8 +258,8 @@ header {
         position: relative;
     }
     .main .center .search-bottom {
-       margin-bottom:10px;
        border-bottom:solid 1px #efefed;
+       
     }
         .main .center .keywords dl dt {
             line-height: 55px;
@@ -235,7 +310,15 @@ header {
         }
 
     .main .center .list {
+        margin-top:10px;
     }
+
+        .main .center .list .no-record {
+          display:block;
+          text-align:center;
+          color:#b58d59;
+          line-height:80px;
+        }
 
         .main .center .list ul {
             list-style: none;
@@ -246,15 +329,15 @@ header {
 
             .main .center .list ul li {
                 float: left;
-                width: 215px;
-                margin-right: 10px;
+                width: 15.666666%;
                 margin-bottom: 30px;
+                margin-right:1.1%;
                 position: relative;
             }
 
-                .main .center .list ul li:nth-child(5n+0) {
-                    /*margin-right:0px;*/
-                }
+              .main .center .list ul li:nth-child(6n+0) {
+                   margin-right:0px;
+              }
 
             .main .center .list ul a,
             .main .center .list ul a:hover {
@@ -264,7 +347,7 @@ header {
 
             .main .center .list ul li figure img {
                 width: 100%;
-                height: 155px;
+                height: 160px;
                 border: solid 1px #e3e3e3;
             }
 
@@ -325,8 +408,26 @@ header {
 
         .main .center .view .mian-column {
             margin-left: 285px;
-            border: solid 1px #e3e3e3;
         }
+            .main .center .view .mian-column .column-tbody {
+                 display:block;
+                 overflow:hidden;
+                 border: solid 1px #e3e3e3;
+                 }
+            .main .center .view .mian-column .main-column-handle {
+               display:block;
+               overflow:hidden;
+               margin-top:15px;
+               padding-left:58px;
+               padding-right:57px;
+               margin-bottom:15px;
+            }
+                .main .center .view .mian-column .main-column-handle .column-handle {
+                  float:left;
+                  width:750px;
+                  overflow:hidden;
+                  text-align:right;
+                }
 
             .main .center .view .mian-column dl {
                 display: block;
@@ -368,6 +469,11 @@ header {
                     line-height: 45px;
                 }
 
+                    .main .center .view .mian-column dl dd input[disabled="disabled"] {
+                       background-color:#ffffff;
+                       border: solid 0px #ffffff;
+
+                    }
                     .main .center .view .mian-column dl dd input[type="text"],
                     .main .center .view .mian-column dl dd input[type="number"] {
                         display: inline-block;
@@ -597,6 +703,10 @@ header {
 
         .main .center .topnav .state-unchecked {
             color: #ad6800;
+        }
+
+        .main .center .topnav .state-a-checked {
+          color:#e1a054;
         }
 
 .btn-sunac {
@@ -1133,8 +1243,14 @@ body .layui-ext-sunacskin .layui-layer-btn {
             line-height:35px;
             margin-right:10px;
             position:relative;
+            cursor:pointer;
 
         }
+            #sunac dl.search-list dd span.active {
+              color:#b58d59;
+          
+            }
+
 
             #sunac dl.search-list dd span input[type="text"] {
                 line-height: 23px;
@@ -1159,6 +1275,149 @@ body .layui-ext-sunacskin .layui-layer-btn {
               background-size:16px;
               cursor:pointer;
             }
+
+#sunac-sub {
+     display:block;
+     overflow:hidden;
+     margin:5px 15px;
+}
+
+
+    #sunac-sub .sub-header {
+        display: block;
+        overflow: hidden;
+        line-height: 45px;
+        border-bottom: solid 1px #d9d9d9;
+    }   
+    
+
+#sunac-sub .sub-header .item
+{
+    display:inline-block;
+    padding-right:45px;
+}
+
+#sunac-sub .sub-tbody {
+   display:block;
+   overflow:hidden;
+    margin-top:20px;
+ }
+
+    #sunac-sub .sub-tbody .item-left {
+      float:left;
+      width:205px;
+      border:solid 1px #ececec;
+    }
+
+
+    #sunac-sub .sub-tbody .item-left .thead {
+      display:block;
+      line-height:35px;
+      background-color:#f6f7f2;
+      color:#3b3c37;
+      padding-left:15px;
+    }
+
+    #sunac-sub .sub-tbody .item-left {
+      display:block;
+      padding:0px;
+      margin:0px;
+
+    }
+
+    #sunac-sub .sub-tbody .item-left dt {
+      margin:0px;
+      line-height:35px;
+      background-image:url("img/icon-folder.png");
+      background-repeat:no-repeat;
+      background-size:16px 16px;
+      background-position:15px center;
+      padding-left:35px;
+      font-weight:normal;
+
+    }
+
+        #sunac-sub .sub-tbody .item-left dd {
+            margin:0px;
+            line-height:30px;
+            background-image:url("img/icon-file.png");
+            background-repeat:no-repeat;
+            background-size:16px 16px;
+            background-position:40px center;
+            font-weight:normal;
+            padding-left:60px;
+        }
+
+            #sunac-sub .sub-tbody .item-left dt.cls {
+              background-color:#f6f7f2;
+            }
+
+
+            
+    #sunac-sub .sub-tbody .item-centre {
+     margin-left:206px;
+     display:block;
+     overflow:hidden;
+    }
+
+        #sunac-sub .sub-tbody .item-centre .item-center-operation {
+           display:block;
+           overflow:hidden;
+           margin-left:20px;
+           text-align:right;
+           font-size:14px;
+
+        }
+
+        #sunac-sub .sub-tbody .item-centre .item-center-tbody {
+             display:block;
+           overflow:hidden;
+            margin-left:20px;
+        }
+
+   #sunac-sub .sub-tbody .item-centre  .panel-table {
+        margin-top: 20px;
+    }
+    #sunac-sub .sub-tbody .item-centre .panel-table .panel-table-thead {
+         margin-top: 0px;
+         display:block;
+    }
+
+        #sunac-sub .sub-tbody .item-centre .panel-table .panel-table-thead .table {
+           margin-bottom:0px;
+        }
+
+
+    #sunac-sub .sub-tbody .item-centre .panel-table .panel-table-thead table {
+          margin-right:15px;
+    }
+
+  
+     #sunac-sub .sub-tbody .item-centre .panel-table .panel-table-tbody {
+          margin-top: 0px;
+          display:block;
+    }
+
+        #sunac-sub .sub-tbody .item-centre .panel-table .panel-table-tbody table {
+         overflow-y:scroll;
+    }
+
+           #sunac-sub .sub-tbody .item-centre  .panel-table thead th {
+            background-color: #efefe8;
+            border-bottom-width: 0px;
+        }
+
+           #sunac-sub .sub-tbody .item-centre  .panel-table tbody td {
+            border-bottom: solid 1px #cfc6df;
+        }
+
+
+
+
+
+
+
+
 
 
 

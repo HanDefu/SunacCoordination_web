@@ -17,6 +17,12 @@
     <a href="/handrail/Index">栏杆</a>
     <i></i>
     <a>@dMaster.DrawingCode</a>
+    <span class="check-state">
+        @if (@dMaster.BillStatus == 2)
+        {
+            <a href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=P51&BOID=@dMaster.Id" target="_blank">审批流程查看</a>
+        }
+    </span>
 </div>
 <div class="row view">
     <div class="left-column">
@@ -26,65 +32,66 @@
         </figure>
     </div>
     <div class="mian-column">
-        <form name="myform" id="myform">
-            <dl>
-                <dt class="col-dt"><i>*</i>原型编号：</dt>
-                <dd>
-                    <input type="text" style="width:450px"  disabled="disabled" value="@dMaster.DrawingCode"  />
-                    <input type="hidden" name="txt_drawingcode"  value="@dMaster.DrawingCode" />
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>展开图文件：</dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
-                    <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
-                    <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
-                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
-                    <a class="btn-upfile" href="javascript:void(0)">
-                        文件上传
-                        <input type="file" class="upload-cad" />
-                    </a>
-                </dd>
-            </dl>
+        <div class="column-tbody">
+            <form name="myform" id="myform">
+                <dl>
+                    <dt class="col-dt"><i>*</i>原型编号：</dt>
+                    <dd>
+                        <input type="text" style="width:450px" disabled="disabled" value="@dMaster.DrawingCode" />
+                        <input type="hidden" name="txt_drawingcode" value="@dMaster.DrawingCode" />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>原型文件：</dt>
+                    <dd>
+                        <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
+                        <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
+                        <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
+                        <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
+                        <a class="btn-upfile" href="javascript:void(0)">
+                            上传
+                            <input type="file" class="upload-cad" />
+                        </a>
+                    </dd>
+                </dl>
 
-            <dl>
-                <dt class="col-dt"><i>*</i>使用范围：</dt>
-                <dd style="width:500px;">
-                    <span style="display:block;padding-top:5px;line-height:35px;">
-                        <span class="online-checkbox">
-                            @if (dMaster.Scope == 1)
+                <dl>
+                    <dt class="col-dt"><i>*</i>使用范围：</dt>
+                    <dd style="width:500px;">
+                        <span style="display:block;padding-top:5px;line-height:35px;">
+                            <span class="online-checkbox">
+                                @if (dMaster.Scope == 1)
                             {
-                                <input type="checkbox" id="all" name="chk_area" class="select-all"  value="1" checked="checked"/>
+                                    <input type="checkbox" id="all" name="chk_area" class="select-all" value="1" checked="checked" />
                             }
                             else
                             {
-                                <input type="checkbox" id="all" name="chk_area" class="select-all"  value="1"/>
+                                    <input type="checkbox" id="all" name="chk_area" class="select-all" value="1" />
                             }
-                           
-                            <label for="all">集团</label>
-                        </span>
-    
-                        @foreach (BasArgumentSetting Setting in ViewBag.Settings)
+
+                                <label for="all">集团</label>
+                            </span>
+
+                            @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
                             string str_check = string.Empty;
                             int hasArea = ByAreas.Where(e => e.AreaID == Setting.Id).Count();
                             str_check = hasArea > 0 ? "checked" : string.Empty;
-                            <span class="online-checkbox">
-                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" @str_check />
-                                <label for="area_@Setting.Id">@Setting.ArgumentText</label>
-                            </span>
+                                <span class="online-checkbox">
+                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" @str_check />
+                                    <label for="area_@Setting.Id">@Setting.ArgumentText</label>
+                                </span>
                         }
-                    </span>
+                        </span>
 
-                </dd>
-            </dl>
+                    </dd>
+                </dl>
 
-            <dl>
-                <dt class="col-dt"><i>*</i>栏杆类型：</dt>
-                <dd>
-                    <select name="HandRailType" class="required" data-error="栏杆类型不能为空">
-                        @foreach (BasArgumentSetting HandRailType in ViewBag.HandRails)
+                <dl>
+                    <dt class="col-dt"><i>*</i>栏杆类型：</dt>
+                    <dd>
+                        <select name="HandRailType" class="required" data-error="栏杆类型不能为空">
+                            @foreach (BasArgumentSetting HandRailType in ViewBag.HandRails)
                         {
                             if (HandRailType.Id == Handrail.HandrailType)
                             {
@@ -97,24 +104,19 @@
                             }
 
                         }
-                    </select>
-                </dd>
-            </dl>
-            <input  type="hidden" name="Id" value="@dMaster.Id"/>
-        </form>
-        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;margin-top:120px">
-            <div class="col-md-6 col-sm-6">
+                        </select>
+                    </dd>
+                </dl>
+                <input type="hidden" name="Id" value="@dMaster.Id" />
+            </form>
+        </div>
+        <div class="main-column-handle" >
+            <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
-            </div>
-            <div class="col-md-6 col-sm-6 text-right">
                 <button type="button" class="btn btn-sunac btn-delete" data-id="@dMaster.Id">删除</button>
                 <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus">提交审核</button>
-                @if (@dMaster.BillStatus == 2)
-                {
-
-                    <a class="btn btn-sunac" href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=P51&BOID=@dMaster.Id" target="_blank">BPM查看</a>
-                }
             </div>
+            
         </div>
     </div>
 
@@ -179,7 +181,7 @@
                 $.post("/door/deleteHandlebyid", { Id: Id }, function (data) {
                     if (data.code == 100) {
                         layer.alert("删除成功", { icon: 6, shade: false }, function () {
-                            window.location.href = "/door/index";
+                            window.location.href = "/handrail/index";
                         })
                     } else {
                         layer.alert("删除失败", { icon: 6, shade: false });

@@ -27,143 +27,143 @@
         </figure>
     </div>
     <div class="mian-column">
-        <form name="myform" id="myform">
-            <dl>
-                <dt class="col-dt"><i></i>原型编号：</dt>
-                <dd>
-                   @Master.DrawingCode
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i></i>展开图文件：</dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" disabled="disabled"  data-error="展开图文件不能为空" />
-                    <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
-                    <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
-                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
-                    <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath" data-filename="@ExpansionDWG.FileClass">原型图纸下载</a>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>使用范围：</dt>
-                <dd style="width:500px;">
-                    <span style="display:block;padding-top:5px;line-height:35px;">
-                        @foreach (CadDrawingByArea Area in ViewBag.ByAreas)
+        <div class="column-tbody">
+            <form name="myform" id="myform">
+                <dl>
+                    <dt class="col-dt"><i></i>原型编号：</dt>
+                    <dd>
+                        @Master.DrawingCode
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i></i>原型文件：</dt>
+                    <dd>
+                        <input style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" disabled="disabled" data-error="展开图文件不能为空" />
+                        <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
+                        <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
+                        <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
+                        <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath" data-filename="@ExpansionDWG.FileClass">下载</a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>使用范围：</dt>
+                    <dd style="width:500px;">
+                        <span style="display:block;padding-top:5px;line-height:35px;">
+                            @foreach (CadDrawingByArea Area in ViewBag.ByAreas)
                         {
-                            <span class="online-checkbox">
-                                <label>@Area.AreaName</label>
-                            </span>
+                                <span class="online-checkbox">
+                                    <label>@Area.AreaName</label>
+                                </span>
                         }
-                    </span>
-
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i></i>厨房类型：</dt>
-                <dd>
-                     @Kitchen.KitchenTypeName
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i></i>门窗位置：</dt>
-                <dd>
-                   @Kitchen.KitchenPositionName
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i></i>模块类型：</dt>
-                <dd>
-                    @if (Master.DynamicType == 1)
-                    {
-                        <span class="online-checkbox">
-                            <label for="radio_dynamic_module">动态模型</label>
                         </span>
+
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i></i>厨房类型：</dt>
+                    <dd>
+                        @Kitchen.KitchenTypeName
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i></i>门窗位置：</dt>
+                    <dd>
+                        @Kitchen.KitchenPositionName
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i></i>模块类型：</dt>
+                    <dd>
+                        @if (Master.DynamicType == 1)
+                    {
+                            <span class="online-checkbox">
+                                <label for="radio_dynamic_module">动态原型</label>
+                            </span>
                     }
                     else
                     {
-                        <span class="online-checkbox">
+                            <span class="online-checkbox">
 
-                            <label for="radio_static_module">静态模型</label>
-                        </span>
+                                <label for="radio_static_module">静态原型</label>
+                            </span>
                     }
-                </dd>
-            </dl>
+                    </dd>
+                </dl>
 
-            <dl class="dynamic_module">
-                <dt class="col-dt"><i></i>是否包含排气道：</dt>
-                <dd>
-                    @{
+                <dl class="dynamic_module">
+                    <dt class="col-dt"><i></i>是否包含排气道：</dt>
+                    <dd>
+                        @{
                         string IsAirduct = Kitchen.KitchenIsAirduct == 1 ? "是" : "否";
-                    }
-                    @IsAirduct
-                </dd>
-            </dl>
-             @if (Master.DynamicType == 1)
+                        }
+                        @IsAirduct
+                    </dd>
+                </dl>
+                @if (Master.DynamicType == 1)
                     {
-            <dl class="dynamic_module">
-                <dt class="col-dt"><i></i>开间尺寸范围(mm)：</dt>
-                <dd>
-                    @Kitchen.KitchenOpenSizeMin
-                    mm
-                       -
-                    @Kitchen.KitchenOpenSizeMax
-                    mm
-                </dd>
-            </dl>
-            <dl class="dynamic_module">
-                <dt class="col-dt"><i></i>进深尺寸范围(mm)：</dt>
-                <dd>
-                    @Kitchen.KitchenDepthsizeMin
-                    mm
-                    -
-                    @Kitchen.KitchenDepthsizeMax
-                    mm
-                </dd>
-            </dl>
+                    <dl class="dynamic_module">
+                        <dt class="col-dt"><i></i>开间尺寸范围(mm)：</dt>
+                        <dd>
+                            @Kitchen.KitchenOpenSizeMin
+                            mm
+                            -
+                            @Kitchen.KitchenOpenSizeMax
+                            mm
+                        </dd>
+                    </dl>
+                    <dl class="dynamic_module">
+                        <dt class="col-dt"><i></i>进深尺寸范围(mm)：</dt>
+                        <dd>
+                            @Kitchen.KitchenDepthsizeMin
+                            mm
+                            -
+                            @Kitchen.KitchenDepthsizeMax
+                            mm
+                        </dd>
+                    </dl>
                     }
 else
 {
 
-    <dl class="dynamic_module">
-        <dt class="col-dt"><i></i>开间进深(mm)：</dt>
-        <dd>
-            @Kitchen.KitchenOpenSizeMin
-            mm -
-            @Kitchen.KitchenOpenSizeMax
-            mm
-        </dd>
-    </dl>
-    <dl class="dynamic_module">
-        <dt class="col-dt"><i></i>台盆尺寸：</dt>
-        <dd>
-            @Kitchen.KitchenBasinSizeName
+                    <dl class="dynamic_module">
+                        <dt class="col-dt"><i></i>开间进深(mm)：</dt>
+                        <dd>
+                            @Kitchen.KitchenOpenSizeMin
+                            mm -
+                            @Kitchen.KitchenOpenSizeMax
+                            mm
+                        </dd>
+                    </dl>
+                    <dl class="dynamic_module">
+                        <dt class="col-dt"><i></i>台盆尺寸：</dt>
+                        <dd>
+                            @Kitchen.KitchenBasinSizeName
 
-        </dd>
-    </dl>
-    <dl class="dynamic_module">
-        <dt class="col-dt"><i></i>冰箱尺寸：</dt>
-        <dd>
-            @Kitchen.KitchenFridgSizeName
-        </dd>
-    </dl>
-    <dl class="dynamic_module">
-        <dt class="col-dt"><i></i>灶台尺寸：</dt>
-        <dd>
-            @Kitchen.KitchenHearthSizeName
+                        </dd>
+                    </dl>
+                    <dl class="dynamic_module">
+                        <dt class="col-dt"><i></i>冰箱尺寸：</dt>
+                        <dd>
+                            @Kitchen.KitchenFridgSizeName
+                        </dd>
+                    </dl>
+                    <dl class="dynamic_module">
+                        <dt class="col-dt"><i></i>灶台尺寸：</dt>
+                        <dd>
+                            @Kitchen.KitchenHearthSizeName
 
-        </dd>
-    </dl>
+                        </dd>
+                    </dl>
 }
 
-           
-        </form>
-        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
-            <div class="col-md-6 col-sm-6">
-              
-            </div>
-            <div class="col-md-6 col-sm-6" style="text-align:right">
+
+            </form>
+        </div>
+        <div class="main-column-handle" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
+            <div class="column-handle">
                 <a class="btn btn-sunac" id="btn_save" href="/Kitchen/Edit/@Master.Id">编辑</a>
             </div>
+          
         </div>
     </div>
 </div>

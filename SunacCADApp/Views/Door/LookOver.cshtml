@@ -31,182 +31,180 @@
         </figure>
     </div>
     <div class="mian-column">
-        <dl>
-            <dt class="col-dt"><i></i>原型编号：</dt>
-            <dd>
-                @dMaster.DrawingCode
+        <div class="column-tbody">
+            <dl>
+                <dt class="col-dt"><i></i>原型编号：</dt>
+                <dd>
+                    @dMaster.DrawingCode
 
-        </dl>
+            </dl>
 
-        <dl>
-            <dt class="col-dt"><i></i>展开图文件：</dt>
-            <dd>
-                <input type="text" style="width:378px" name="txt_filename" disabled="disabled" value="@ExpansionDWG.FileClass" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
-                <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
-                <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
-                <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
-                <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath" data-filename="@ExpansionDWG.FileClass">原型图纸下载</a>
-            </dd>
-        </dl>
+            <dl>
+                <dt class="col-dt"><i></i>展开图文件：</dt>
+                <dd>
+                    <input style="width:378px" name="txt_filename" disabled="disabled" value="@ExpansionDWG.FileClass" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
+                    <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
+                    <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
+                    <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
+                    <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath" data-filename="@ExpansionDWG.FileClass">下载</a>
+                </dd>
+            </dl>
 
-        <dl>
-            <dt class="col-dt"><i></i>立面图文件：</dt>
-            <dd>
-                <input type="text" style="width:378px" name="txt_filename" disabled="disabled" value="@VerticalDWG.FileClass" placeholder="立面图文件" class="required" data-error="立面图文件不能为空" />
-                <input type="hidden" name="txt_drawingcad" value="@VerticalDWG.CADPath" />
-                <input type="hidden" name="hid_drawing_img" value="@VerticalDWG.DWGPath" />
-                <input type="hidden" name="hid_drawing_type" value="VerticalView" />
-                <a class="btn-upfile  download-upfile" data-src="@VerticalDWG.CADPath" data-filename="@VerticalDWG.FileClass">原型图纸下载</a>
-            </dd>
-        </dl>
+            <dl>
+                <dt class="col-dt"><i></i>立面图文件：</dt>
+                <dd>
+                    <input style="width:378px" name="txt_filename" disabled="disabled" value="@VerticalDWG.FileClass" placeholder="立面图文件" class="required" data-error="立面图文件不能为空" />
+                    <input type="hidden" name="txt_drawingcad" value="@VerticalDWG.CADPath" />
+                    <input type="hidden" name="hid_drawing_img" value="@VerticalDWG.DWGPath" />
+                    <input type="hidden" name="hid_drawing_type" value="VerticalView" />
+                    <a class="btn-upfile  download-upfile" data-src="@VerticalDWG.CADPath" data-filename="@VerticalDWG.FileClass">下载</a>
+                </dd>
+            </dl>
 
-        <dl>
-            <dt class="col-dt"><i></i>平面图文件：</dt>
-            <dd>
-                <input type="text" style="width:378px" name="txt_filename" disabled="disabled" value="@PlanDWG.FileClass" placeholder="平面图文件" class="required" data-error="平面图文件不能为空" />
-                <input type="hidden" name="txt_drawingcad" value="@PlanDWG.CADPath" />
-                <input type="hidden" name="hid_drawing_img" value="@PlanDWG.DWGPath" />
-                <input type="hidden" name="hid_drawing_type" value="PlanView" />
-                <a class="btn-upfile  download-upfile" data-src="@PlanDWG.CADPath" data-filename="@PlanDWG.FileClass">原型图纸下载</a>
-            </dd>
-        </dl>
+            <dl>
+                <dt class="col-dt"><i></i>平面图文件：</dt>
+                <dd>
+                    <input style="width:378px" name="txt_filename" disabled="disabled" value="@PlanDWG.FileClass" placeholder="平面图文件" class="required" data-error="平面图文件不能为空" />
+                    <input type="hidden" name="txt_drawingcad" value="@PlanDWG.CADPath" />
+                    <input type="hidden" name="hid_drawing_img" value="@PlanDWG.DWGPath" />
+                    <input type="hidden" name="hid_drawing_type" value="PlanView" />
+                    <a class="btn-upfile  download-upfile" data-src="@PlanDWG.CADPath" data-filename="@PlanDWG.FileClass">下载</a>
+                </dd>
+            </dl>
 
-        <dl>
-            <dt class="col-dt"><i></i>侧面图文件：</dt>
-            <dd>
-                @{
-                    string _LeftViewFile = string.IsNullOrEmpty(SideDWG.FileClass) ? "无" : SideDWG.FileClass;
-                }
-                <input type="text" style="width:378px" name="txt_filename" disabled="disabled" value="@SideDWG.FileClass" placeholder="@_LeftViewFile" />
-                <input type="hidden" name="txt_drawingcad" value="@SideDWG.CADPath" />
-                <input type="hidden" name="hid_drawing_img" value="@SideDWG.DWGPath" />
-                <input type="hidden" name="hid_drawing_type" value="SideView" />
-                <a class="btn-upfile  download-upfile" data-src="@SideDWG.CADPath" data-filename="@SideDWG.FileClass">原型图纸下载</a>
-            </dd>
-        </dl>
+            <dl>
+                <dt class="col-dt"><i></i>侧面图文件：</dt>
+                <dd>
+                    @{
+                        string _LeftViewFile = string.IsNullOrEmpty(SideDWG.FileClass) ? "无" : SideDWG.FileClass;
+                    }
+                    <input style="width:378px" name="txt_filename" disabled="disabled" value="@SideDWG.FileClass" placeholder="@_LeftViewFile" />
+                    <input type="hidden" name="txt_drawingcad" value="@SideDWG.CADPath" />
+                    <input type="hidden" name="hid_drawing_img" value="@SideDWG.DWGPath" />
+                    <input type="hidden" name="hid_drawing_type" value="SideView" />
+                    <a class="btn-upfile  download-upfile" data-src="@SideDWG.CADPath" data-filename="@SideDWG.FileClass">下载</a>
+                </dd>
+            </dl>
 
-        <dl>
-            <dt class="col-dt"><i></i>使用范围：</dt>
-            <dd style="width:500px;">
-                <span style="display:block;padding-top:5px;line-height:35px;">
-                    
+            <dl>
+                <dt class="col-dt"><i></i>使用范围：</dt>
+                <dd style="width:500px;">
+                    <span style="display:block;padding-top:5px;line-height:35px;">
 
-                    @foreach (CadDrawingByArea Area in ViewBag.ByAreas)
+
+                        @foreach (CadDrawingByArea Area in ViewBag.ByAreas)
+                        {
+                            <span class="online-checkbox">
+                                <label>@Area.AreaName</label>
+                            </span>
+                        }
+
+                    </span>
+
+                </dd>
+            </dl>
+            <dl>
+                <dt class="col-dt"> <i></i>模块类型：</dt>
+                <dd>
+                    @if (dMaster.DynamicType == 1)
                     {
                         <span class="online-checkbox">
-                            <label>@Area.AreaName</label>
+                            <label for="radio_dynamic_module">动态原型</label>
                         </span>
                     }
-
-                </span>
-
-            </dd>
-        </dl>
-        <dl>
-            <dt class="col-dt"> <i></i>模块类型：</dt>
-            <dd>
-                @if (dMaster.DynamicType == 1)
-                {
-                    <span class="online-checkbox">
-                        <label for="radio_dynamic_module">动态模块</label>
-                    </span>
-                }
-                else if (dMaster.DynamicType == 2)
-                {
-                    <span class="online-checkbox">
-                        <label for="radio_static_module">静态模块</label>
-                    </span>
-                }
-            </dd>
-        </dl>
-        <dl>
-            <dt class="col-dt"><i></i>门类型：</dt>
-            <dd>
-                @doorDetail.DoorTypeName
-            </dd>
-        </dl>
-
-        @if (dMaster.DynamicType == 1)
-        {
-            <dl>
-                <dt class="col-dt"><i></i>宽度尺寸范围（mm）：</dt>
-                <dd>
-                    @doorDetail.WindowSizeMin
-                    <i>-</i>
-                    @doorDetail.WindowSizeMax
+                    else if (dMaster.DynamicType == 2)
+                    {
+                        <span class="online-checkbox">
+                            <label for="radio_static_module">静态原型</label>
+                        </span>
+                    }
                 </dd>
             </dl>
             <dl>
-                <dt class="col-dt"><i></i>通风量计算公式：</dt>
+                <dt class="col-dt"><i></i>门类型：</dt>
                 <dd>
-                    @doorDetail.WindowDesignFormula
+                    @doorDetail.DoorTypeName
                 </dd>
             </dl>
-            <dl>
-                <dt class="col-dt"><i></i>参数取值：</dt>
-            </dl>
-            <dl>
-                <dd>
-                    <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:720px;">
-                        <thead>
-                            <tr>
-                                <th width="80" class="text-center">尺寸代码</th>
-                                <th width="70" class="text-center">值类型</th>
-                                <th width="70" class="text-center">最小值</th>
-                                <th width="70" class="text-center">最大值</th>
-                                <th width="200" class="text-center">值</th>
-                                <th width="60" class="text-center">默认值</th>
-                                <th class="text-center">说明</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (CadDrawingParameter param in ViewBag.CadDrawingParams)
-                            {
-                                string _minValue = param.MinValue == 0 ? string.Empty : param.MinValue.ToString();
-                                string _maxValue = param.MaxValue == 0 ? string.Empty : param.MaxValue.ToString();
-                                string _val = param.DefaultValue == 0 ? string.Empty : param.DefaultValue.ToString();
-                                <tr sizeno="@param.SizeNo">
-                                    <td class="text-center">@param.SizeNo</td>
-                                    <td valign="middle">
-                                        <input type="text" class="input-val" name="Val" disabled="disabled" value="@param.ValueTypeName" />
-                                    </td>
-                                    <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@_minValue" /></td>
-                                    <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@_maxValue" /></td>
-                                    <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
-                                    <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" value="@_val" /></td>
-                                    <td class="desc"><input type="text" class="input-desc" name="Desc" value="@param.Desc" /></td>
+
+            @if (dMaster.DynamicType == 1)
+            {
+                <dl>
+                    <dt class="col-dt"><i></i>宽度尺寸范围（mm）：</dt>
+                    <dd>
+                        @doorDetail.WindowSizeMin
+                        <i>-</i>
+                        @doorDetail.WindowSizeMax
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i></i>通风量计算公式：</dt>
+                    <dd>
+                        @doorDetail.WindowDesignFormula
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i></i>参数取值：</dt>
+                </dl>
+                <dl>
+                    <dd>
+                        <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:750px;">
+                            <thead>
+                                <tr>
+                                    <th width="80" class="text-center">尺寸代码</th>
+                                    <th width="70" class="text-center">值类型</th>
+                                    <th width="70" class="text-center">最小值</th>
+                                    <th width="70" class="text-center">最大值</th>
+                                    <th width="200" class="text-center">值</th>
+                                    <th width="60" class="text-center">默认值</th>
+                                    <th class="text-center">说明</th>
                                 </tr>
-                            }
+                            </thead>
+                            <tbody>
+                                @foreach (CadDrawingParameter param in ViewBag.CadDrawingParams)
+                                {
+                                    string _minValue = param.MinValue == 0 ? string.Empty : param.MinValue.ToString();
+                                    string _maxValue = param.MaxValue == 0 ? string.Empty : param.MaxValue.ToString();
+                                    string _val = param.DefaultValue == 0 ? string.Empty : param.DefaultValue.ToString();
+                                    <tr sizeno="@param.SizeNo">
+                                        <td class="text-center">@param.SizeNo</td>
+                                        <td valign="middle">
+                                            <input type="text" class="input-val" name="Val" disabled="disabled" value="@param.ValueTypeName" />
+                                        </td>
+                                        <td class="value"><input type="text" class="input-minvalue" name="MinValue" disabled="disabled" value="@_minValue" /></td>
+                                        <td class="value"><input type="text" class="input-maxvalue" name="MaxValue" disabled="disabled" value="@_maxValue" /></td>
+                                        <td class="value"><input type="text" class="input-val" name="Val" disabled="disabled" value="@param.Val" /></td>
+                                        <td class="value"><input type="text" class="input-defaultvalue" name="DefaultValue" disabled="disabled" value="@_val" /></td>
+                                        <td class="desc"><input type="text" class="input-desc" name="Desc" value="@param.Desc" /></td>
+                                    </tr>
+                                }
 
 
-                        </tbody>
-                    </table>
-                </dd>
-            </dl>
-        }
-        else
-        {
-            <dl>
-                <dt class="col-dt"><i></i>尺寸（mm）：</dt>
-                <dd>
-                    @doorDetail.WindowSizeMin
-                    <i>-</i>
-                    @doorDetail.WindowSizeMax
-                </dd>
-            </dl>
+                            </tbody>
+                        </table>
+                    </dd>
+                </dl>
+            }
+            else
+            {
+                <dl>
+                    <dt class="col-dt"><i></i>尺寸（mm）：</dt>
+                    <dd>
+                        @doorDetail.WindowSizeMin
+                        <i>-</i>
+                        @doorDetail.WindowSizeMax
+                    </dd>
+                </dl>
 
-        }
+            }
+        </div>
 
+        <div class="main-column-handle">
 
-        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
-
-            <div class="col-md-6 col-sm-6">
-
-            </div>
-            <div class="col-md-6 col-sm-6" style="text-align:right">
+            <div class="column-handle">
                 <a class="btn btn-sunac" href="/Door/Edit/@dMaster.Id">编辑</a>
-               
             </div>
+           
         </div>
     </div>
 

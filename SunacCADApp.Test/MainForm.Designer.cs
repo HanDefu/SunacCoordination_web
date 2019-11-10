@@ -31,6 +31,9 @@
             this.button1 = new System.Windows.Forms.Button();
             this.btn_ok = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.btn_Rework = new System.Windows.Forms.Button();
+            this.btnApproveClose = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -45,7 +48,7 @@
             // 
             // btn_ok
             // 
-            this.btn_ok.Location = new System.Drawing.Point(71, 121);
+            this.btn_ok.Location = new System.Drawing.Point(71, 102);
             this.btn_ok.Name = "btn_ok";
             this.btn_ok.Size = new System.Drawing.Size(81, 23);
             this.btn_ok.TabIndex = 1;
@@ -63,11 +66,44 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(71, 145);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(279, 23);
+            this.button3.TabIndex = 3;
+            this.button3.Text = "流程审批(通过)";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // btn_Rework
+            // 
+            this.btn_Rework.Location = new System.Drawing.Point(71, 184);
+            this.btn_Rework.Name = "btn_Rework";
+            this.btn_Rework.Size = new System.Drawing.Size(279, 23);
+            this.btn_Rework.TabIndex = 4;
+            this.btn_Rework.Text = "3)\t流程审批(退回、发起人取消）";
+            this.btn_Rework.UseVisualStyleBackColor = true;
+            this.btn_Rework.Click += new System.EventHandler(this.btn_Rework_Click);
+            // 
+            // btnApproveClose
+            // 
+            this.btnApproveClose.Location = new System.Drawing.Point(71, 224);
+            this.btnApproveClose.Name = "btnApproveClose";
+            this.btnApproveClose.Size = new System.Drawing.Size(279, 23);
+            this.btnApproveClose.TabIndex = 5;
+            this.btnApproveClose.Text = "4)流程审批结束(通过、拒绝、作废)";
+            this.btnApproveClose.UseVisualStyleBackColor = true;
+            this.btnApproveClose.Click += new System.EventHandler(this.btnApproveClose_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(433, 261);
+            this.ClientSize = new System.Drawing.Size(433, 277);
+            this.Controls.Add(this.btnApproveClose);
+            this.Controls.Add(this.btn_Rework);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.btn_ok);
             this.Controls.Add(this.button1);
@@ -82,6 +118,9 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btn_ok;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btn_Rework;
+        private System.Windows.Forms.Button btnApproveClose;
     }
 }
 

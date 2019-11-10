@@ -6,6 +6,9 @@ using System.Web.Mvc;
 using SunacCADApp.Entity;
 using SunacCADApp.Data;
 using SunacCADApp.PI;
+using SunacCADApp;
+using Common.Utility;
+using Common.Utility.Extender;
 
 
 namespace SunacCADApp.Controllers
@@ -36,21 +39,100 @@ namespace SunacCADApp.Controllers
         /// Home/CheckUser
         /// </summary>
         /// <returns></returns>
-        public ActionResult CheckUser() 
+        public ActionResult CheckUser()
         {
             string username = Request.Form["username"];
             string password = CommonLib.UserMd5(Request.Form["password"]);
-            Sys_User user = Sys_UserDB.GetSingleEntityByparam(" And User_Name='"+username+"'");
-            if (string.IsNullOrEmpty(user.User_Psd)) 
+            if (string.IsNullOrEmpty(username)) 
             {
-                return Json(new { code = -100, message = "用户名不正确" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = -100, message = "用户名不能为空" }, JsonRequestBehavior.AllowGet);
             }
-            if (user.User_Psd!= password) 
+
+            Sys_User user = Sys_UserDB.GetSingleEntityByparam(" And User_Name='" + username + "'");
+          
+            if (user.Is_Internal == 1) {
+                if (user.User_Psd != password)
+                {
+                    return Json(new { code = -101, message = "用户密码不能为空" }, JsonRequestBehavior.AllowGet);
+                }
+                else 
+                {
+                    string userid = user.Id.ConventToString(string.Empty);
+                    string roleId=user.RoleID.ConventToString(string.Empty);
+                    string isInternal=user.Is_Internal.ConventToString(string.Empty);
+                    InitUtility.Instance.InitSessionHelper.Add("UserID", userid);
+                    InitUtility.Instance.InitSessionHelper.Add("UserName",user.User_Name);
+                    InitUtility.Instance.InitSessionHelper.Add("RoleId", roleId);
+                    InitUtility.Instance.InitSessionHelper.Add("IsInternal", isInternal);
+                    return Json(new { code = 100, message = "内部用户登陆成功" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else if (user.Is_Internal == 2)
             {
-                return Json(new { code = -100, message = "密码不正确" }, JsonRequestBehavior.AllowGet);
+                WebService932.Header header = new WebService932.Header();
+                header.BIZTRANSACTIONID = "sdfdssdfds";
+                header.COUNT = "";
+                header.CONSUMER = "";
+                header.ACCOUNT = "wdaccount";
+                header.PASSWORD = "wdpwd";
+                WebService932.user webUser = new WebService932.user();
+                webUser.username = username;
+                webUser.password = password;
+                WebService932.IDM_SUNAC_392_validatePwd_pttbindingQSService client = new WebService932.IDM_SUNAC_392_validatePwd_pttbindingQSService();
+                client.commonHeader = header;
+                string LIST = "";
+                WebService932.HEADER backheader = client.IDM_SUNAC_392_validatePwd(webUser, out LIST);
+                int resultcode = backheader.RESULT.ConvertToInt32(0);
+                if (resultcode == -1)
+                {
+                    return Json(new { code = -101, message = "其他错误" }, JsonRequestBehavior.AllowGet);
+                }
+                else if (resultcode == 0)
+                {
+                    string userid = user.Id.ConventToString(string.Empty);
+                    string roleId = user.RoleID.ConventToString(string.Empty);
+                    string isInternal = user.Is_Internal.ConventToString(string.Empty);
+                    InitUtility.Instance.InitSessionHelper.Add("UserID", userid);
+                    InitUtility.Instance.InitSessionHelper.Add("UserName", user.User_Name);
+                    InitUtility.Instance.InitSessionHelper.Add("RoleId", roleId);
+                    InitUtility.Instance.InitSessionHelper.Add("IsInternal", isInternal);
+                    return Json(new { code = 100, message = "用户名密码验证成功" }, JsonRequestBehavior.AllowGet);
+                }
+                else if (resultcode == 1)
+                {
+                    return Json(new { code = 100, message = "用户名不存在" }, JsonRequestBehavior.AllowGet);
+                }
+                else if (resultcode == 2)
+                {
+                    return Json(new { code = 100, message = "密码错误" }, JsonRequestBehavior.AllowGet);
+                }
+                else if (resultcode == 3)
+                {
+                    return Json(new { code = 100, message = "参数不能为空" }, JsonRequestBehavior.AllowGet);
+                }
+                else {
+                    return Json(new { code = -101, message = "接口异常" }, JsonRequestBehavior.AllowGet);
+                }
+
             }
-            return Json(new { code = 100, message = "用户登陆成功" }, JsonRequestBehavior.AllowGet);
-            
+            else 
+            {
+                return Json(new { code = -100, message = "用户名不能为空" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <returns></returns>
+        /// <web> /home/loginout </web>
+        public ActionResult LoginOut() 
+        {
+            InitUtility.Instance.InitSessionHelper.Del("UserID");
+            InitUtility.Instance.InitSessionHelper.Del("UserName");
+            InitUtility.Instance.InitSessionHelper.Del("RoleId");
+            InitUtility.Instance.InitSessionHelper.Del("IsInternal");
+            return Redirect("/home");
         }
 
 

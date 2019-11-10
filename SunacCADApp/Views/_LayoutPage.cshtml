@@ -1,5 +1,12 @@
 ﻿@using SunacCADApp.Entity;
 @using SunacCADApp.Data;
+@using Common.Utility;
+@using Common.Utility.Extender;
+@{
+     int UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
+      string UserName = InitUtility.Instance.InitSessionHelper.Get("UserName").ConventToString(string.Empty);
+
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +27,7 @@
         $(function () {
             let win_height = $(window).height();
             console.log(win_height);
-            $('.mian-column').css("min-height", (win_height - 130));
+            //$('.mian-column').css("min-height", (win_height - 130));
             $('.center').css("min-height", (win_height - 70));
             $(".btn-upfile  .upload-cad").on("change", function () {
                 let file_info = $(this).val();
@@ -93,16 +100,60 @@
             $('.icon-tips').on('mouseleave', function (e) {
                 mTips.h();
             })
+
+            $(".user-operate .loginout").on("click", function () {
+                layer.confirm('是否确认退出？', {shade:0,icon:3,title:"退出"},function () {
+                    window.location.href = "/home/loginout";
+                });
+            });
+
+            $(".user-operate  .user-change").on("click", function () {
+                var index = layer.open({
+                    type: 2,
+                    skin: 'layer-ext-sunacskin',
+                    area: ['350px', '270px'],
+                    shade: 0,
+                    title: '密码修改',
+                    content: ['/sysuser/changepassword', 'no']
+                });
+            });
+
+            ///SysUser/MyEdit
+            $(".user-operate  .myedit").on("click", function () {
+                var index = layer.open({
+                    type: 2,
+                    skin: 'layer-ext-sunacskin',
+                    area: ['350px', '400px'],
+                    shade: 0,
+                    title: '用户资料修改',
+                    content: ['/sysuser/myedit', 'no']
+                });
+            });
+
         });
     </script>
 </head>
 <body>
     <div class="container-fluid">
-        <header> </header>
+        <header>
+            <span class="userinfo">
+               
+                <span class="username">@UserName</span>
+                <span class="user-operate">
+                    <span class="cnt">
+                        <a href="javascript:void(0)" class="border-bottom myedit">个人资料</a>
+                        <a href="javascript:void(0)" class="border-bottom user-change">修改密码</a>
+                        <a href="javascript:void(0)" class="loginout">退出</a>
+                    </span>
+                </span>
+            </span>
+        </header>
         <div class="main">
             <div class="leftsidebar">
                 @{
-                    IList<Sys_Model> models = Sys_ModelDB.GetSysModeByRoleID(-8888);
+                    int roleID = InitUtility.Instance.InitSessionHelper.Get("RoleId").ConvertToInt32(0);
+                    roleID = -8888;
+                    IList<Sys_Model> models = Sys_ModelDB.GetSysModeByRoleID( roleID);
                 }
                 @foreach (Sys_Model m in models)
                 {

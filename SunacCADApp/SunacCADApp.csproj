@@ -175,17 +175,28 @@
     <Content Include="Content\Css\bootstrap-select\js\i18n\defaults-zh_CN.min.js" />
     <Content Include="Content\Css\bootstrap-select\js\i18n\defaults-zh_TW.js" />
     <Content Include="Content\Css\bootstrap-select\js\i18n\defaults-zh_TW.min.js" />
+    <Content Include="Content\Css\img\add %281%29.png" />
     <Content Include="Content\Css\img\file-upload.png" />
+    <Content Include="Content\Css\img\headerinfo.png" />
+    <Content Include="Content\Css\img\icon-add-extend.png" />
+    <Content Include="Content\Css\img\icon-add-handle.png" />
     <Content Include="Content\Css\img\icon-arrows-right.png" />
     <Content Include="Content\Css\img\icon-background.png" />
+    <Content Include="Content\Css\img\icon-datetime-bak.png" />
     <Content Include="Content\Css\img\icon-delete-yellow.png" />
+    <Content Include="Content\Css\img\icon-file.png" />
+    <Content Include="Content\Css\img\icon-folder.png" />
     <Content Include="Content\Css\img\icon-no-image.png" />
     <Content Include="Content\Css\img\icon-project.png" />
     <Content Include="Content\Css\img\icon-tips.png" />
     <Content Include="Content\Css\img\icon-topnav-arrows.png" />
+    <Content Include="Content\Css\img\icon-user-profile.png" />
+    <Content Include="Content\Css\img\loginbg.jpg" />
     <Content Include="Content\Css\img\main-bg.png" />
     <Content Include="Content\Css\img\sunac-head-logo.png" />
+    <Content Include="Content\Css\img\sunac-login-separater.png" />
     <Content Include="Content\Css\img\sunac-logo.png" />
+    <Content Include="Content\Css\img\sunac-logo01.png" />
     <Content Include="Content\Css\sunac.css" />
     <Content Include="Content\Plugins\mtips\mTips.css" />
     <Content Include="Content\Plugins\mtips\mTips.js" />
@@ -563,6 +574,9 @@
     <Content Include="Views\SysUser\Index.cshtml" />
     <Content Include="Views\ProjectInfo\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\ProjectInfo\Item.cshtml" />
+    <Content Include="Views\SysUser\ChangePassword.cshtml" />
+    <Content Include="Views\SysUser\MyEdit.cshtml" />
     <None Include="Views\_LayoutPage-marster.cshtml.bak" />
     <Content Include="Web References\cn.com.sunac.sappoqas\DT_MDM_Landpublic_RESP.datasource">
       <DependentUpon>Reference.map</DependentUpon>
@@ -580,6 +594,7 @@
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
+    <Content Include="Views\_SubLayoutPage.cshtml" />
     <None Include="Web References\cn.com.sunac.sappoqas\SI_MD_COMMON_OUT.wsdl" />
     <Content Include="Web References\WebService.Idm.User\HEADER.datasource">
       <DependentUpon>Reference.map</DependentUpon>
