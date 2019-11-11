@@ -81,8 +81,8 @@ namespace SunacCADApp.Controllers
             header.PASSWORD = "idmpass";
             header.BIZTRANSACTIONID = "vsheji";
             WebService.Idm.User.queryDto dto = new WebService.Idm.User.queryDto();
-            dto.beginDate = "2019-06-26 00:00:00.000";
-            dto.endDate = "2019-06-28 00:00:00.000";
+            dto.beginDate = "2016-12-09 00:00:00.000";
+            dto.endDate = "2016-12-10 00:00:00.000";
             dto.systemID = "CADSJXTUser";
             dto.pageNo = "1";
             dto.pageRowNo = "20";
@@ -106,8 +106,8 @@ namespace SunacCADApp.Controllers
             head.PASSWORD = "idmpass";
             head.BIZTRANSACTIONID = "vsheji";
             WebService.IDM.Public.queryDto dto = new WebService.IDM.Public.queryDto();
-            dto.beginDate = "2019-07-31 00:00:00.000";
-            dto.endDate = "2019-08-01  00:00:00.000";
+            dto.beginDate = "2016-12-09 00:00:00.000";
+            dto.endDate = "2016-12-10 00:00:00.000";
             dto.systemID = "CADSJXTOrg";
             dto.pageNo = "1";
             dto.pageRowNo = "100";

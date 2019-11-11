@@ -18,6 +18,13 @@
     <a href="/airconditioner/Index">空调</a>
     <i></i>
     <a>@dMaster.DrawingCode</a>
+    <span class="check-state">
+        @if (@dMaster.BillStatus == 2)
+        {
+            string BTID = dMaster.DynamicType == 1 ? "P61" : "P61";
+            <a class="btn btn-sunac" href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=@BTID&BOID=@dMaster.Id" target="_blank">BPM查看</a>
+        }
+    </span>
 </div>
 <div class="row view">
     <div class="left-column">
@@ -27,65 +34,66 @@
         </figure>
     </div>
     <div class="mian-column">
-        <form name="myform" id="myform">
-            <dl>
-                <dt class="col-dt"><i>*</i>原型编号：</dt>
-                <dd>
-                    <input type="text" style="width:450px" disabled="disabled"  value="@dMaster.DrawingCode"/>
-                    <input type="hidden" name="txt_drawingcode" value="@dMaster.DrawingCode" />
-                    <i class="icon-tips" tips="<p>外窗原型编号规则：<p>">&nbsp;</i>
-                </dd>
-            </dl>
+        <div class="column-tbody">
+            <form name="myform" id="myform">
+                <dl>
+                    <dt class="col-dt"><i>*</i>原型编号：</dt>
+                    <dd>
+                        <input type="text" style="width:450px" disabled="disabled" value="@dMaster.DrawingCode" />
+                        <input type="hidden" name="txt_drawingcode" value="@dMaster.DrawingCode" />
+                        <i class="icon-tips" tips="<p>外窗原型编号规则：<p>">&nbsp;</i>
+                    </dd>
+                </dl>
 
-            <dl>
-                <dt class="col-dt"><i>*</i>展开图文件：</dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" />
-                    <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
-                    <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
-                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
-                    <a class="btn-upfile" href="javascript:void(0)">
-                        文件上传
-                        <input type="file" class="upload-cad" />
-                    </a>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>使用范围：</dt>
-                <dd style="width:500px;">
-                    <span style="display:block;padding-top:5px;line-height:35px;">
-                        <span class="online-checkbox">
-                            @if (dMaster.Scope == 1)
+                <dl>
+                    <dt class="col-dt"><i>*</i>展开图文件：</dt>
+                    <dd>
+                        <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" />
+                        <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
+                        <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
+                        <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
+                        <a class="btn-upfile" href="javascript:void(0)">
+                            文件上传
+                            <input type="file" class="upload-cad" />
+                        </a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>使用范围：</dt>
+                    <dd style="width:500px;">
+                        <span style="display:block;padding-top:5px;line-height:35px;">
+                            <span class="online-checkbox">
+                                @if (dMaster.Scope == 1)
                             {
-                                <input type="checkbox" id="all_group" name="chk_area" class="single-checkbox" value="1" checked />
-                                <label for="all_group">集团</label>
+                                    <input type="checkbox" id="all_group" name="chk_area" class="single-checkbox" value="1" checked />
+                                    <label for="all_group">集团</label>
                             }
                             else
                             {
-                                <input type="checkbox" id="all_group" name="chk_area" class="single-checkbox" value="1" />
-                                <label for="all_group">集团</label>
+                                    <input type="checkbox" id="all_group" name="chk_area" class="single-checkbox" value="1" />
+                                    <label for="all_group">集团</label>
                             }
-                        </span>
-                        @foreach (BasArgumentSetting Setting in ViewBag.Settings)
+                            </span>
+                            @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
                             string str_check = string.Empty;
                             int hasArea = ByAreas.Where(e => e.AreaID == Setting.Id).Count();
                             str_check = hasArea > 0 ? "checked" : string.Empty;
-                            <span class="online-checkbox">
-                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" @str_check />
-                                <label for="area_@Setting.Id">@Setting.ArgumentText</label>
-                            </span>
+                                <span class="online-checkbox">
+                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" @str_check />
+                                    <label for="area_@Setting.Id">@Setting.ArgumentText</label>
+                                </span>
                         }
-                    </span>
+                        </span>
 
-                </dd>
-            </dl>
+                    </dd>
+                </dl>
 
-            <dl>
-                <dt class="col-dt"><i>*</i>空调匹数：</dt>
-                <dd>
-                    <select name="AirConditionNumber" class="required" data-error="请选择空调匹数不能为空">
-                        @foreach (BasArgumentSetting AirConditionNumber in ViewBag.AirConditionNumbers)
+                <dl>
+                    <dt class="col-dt"><i>*</i>空调匹数：</dt>
+                    <dd>
+                        <select name="AirConditionNumber" class="required" data-error="请选择空调匹数不能为空">
+                            @foreach (BasArgumentSetting AirConditionNumber in ViewBag.AirConditionNumbers)
                         {
                             if (Airconditioner.AirconditionerPower == AirConditionNumber.Id)
                             {
@@ -97,25 +105,25 @@
                             }
 
                         }
-                    </select>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>净尺寸：</dt>
-                <dd>
-                    <b style="font-weight:normal">W:</b>
-                    <input type="number" style="width:100px" name="txtAirconditionerWidth" value="@Airconditioner.AirconditionerWidth" />
-                    <b style="font-weight:normal">H:</b>
-                    <input type="number" style="width:100px" name="txtAirconditionerHeight" value="@Airconditioner.AirconditionerHeight" />
-                    <b style="font-weight:normal">D:</b>
-                    <input type="number" style="width:100px" name="txtAirconditionerDepth" value="@Airconditioner.AirconditionerDepth" />
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>冷凝水管位置：</dt>
-                <dd>
-                    <select name="selectCondensatePipePosition">
-                        @foreach (BasArgumentSetting CondensatePipePosition in ViewBag.CondensatePipePositions)
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>净尺寸：</dt>
+                    <dd>
+                        <b style="font-weight:normal">W:</b>
+                        <input type="number" style="width:100px" name="txtAirconditionerWidth" value="@Airconditioner.AirconditionerWidth" />
+                        <b style="font-weight:normal">H:</b>
+                        <input type="number" style="width:100px" name="txtAirconditionerHeight" value="@Airconditioner.AirconditionerHeight" />
+                        <b style="font-weight:normal">D:</b>
+                        <input type="number" style="width:100px" name="txtAirconditionerDepth" value="@Airconditioner.AirconditionerDepth" />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>冷凝水管位置：</dt>
+                    <dd>
+                        <select name="selectCondensatePipePosition">
+                            @foreach (BasArgumentSetting CondensatePipePosition in ViewBag.CondensatePipePositions)
                         {
                             if (Airconditioner.AirconditionerPipePosition == CondensatePipePosition.Id)
                             {
@@ -127,34 +135,34 @@
                             }
 
                         }
-                    </select>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>是否包含雨水管：</dt>
-                <dd>
-                    <span class="online-checkbox">
-                        @if (Airconditioner.AirconditionerIsRainPipe == 1)
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>是否包含雨水管：</dt>
+                    <dd>
+                        <span class="online-checkbox">
+                            @if (Airconditioner.AirconditionerIsRainPipe == 1)
                         {
-                            <input type="checkbox" name="Checkbox_AirconditionerIsRainPipe" id="Checkbox_AirconditionerIsRainPipe" value="1"  checked="checked"/>
+                                <input type="checkbox" name="Checkbox_AirconditionerIsRainPipe" id="Checkbox_AirconditionerIsRainPipe" value="1" checked="checked" />
                         }
                         else
                         {
-                            <input type="checkbox" name="Checkbox_AirconditionerIsRainPipe" id="Checkbox_AirconditionerIsRainPipe" value="1" />
+                                <input type="checkbox" name="Checkbox_AirconditionerIsRainPipe" id="Checkbox_AirconditionerIsRainPipe" value="1" />
                         }
-                        
-                        <label for="Checkbox_AirconditionerIsRainPipe">是</label>
-                    </span>
 
-                </dd>
-            </dl>
-            @if (Airconditioner.AirconditionerIsRainPipe == 1)
+                            <label for="Checkbox_AirconditionerIsRainPipe">是</label>
+                        </span>
+
+                    </dd>
+                </dl>
+                @if (Airconditioner.AirconditionerIsRainPipe == 1)
             {
-                <dl style="display:none" class="dlRainPipePosition">
-                    <dt class="col-dt"><i>*</i>雨水管位置：</dt>
-                    <dd>
-                        <select name="selectRainPipePosition">
-                            @foreach (BasArgumentSetting RainPipePosition in ViewBag.RainPipePositions)
+                    <dl class="dlRainPipePosition">
+                        <dt class="col-dt"><i>*</i>雨水管位置：</dt>
+                        <dd>
+                            <select name="selectRainPipePosition">
+                                @foreach (BasArgumentSetting RainPipePosition in ViewBag.RainPipePositions)
                             {
                                 if (Airconditioner.AirconditionerPipePosition == RainPipePosition.Id)
                                 {
@@ -166,25 +174,43 @@
                                 }
 
                             }
-                        </select>
-                    </dd>
-                </dl>
-            }
-            <input type="hidden" name="Id"  value="@dMaster.Id"/>
-        </form>
-        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
-            <div class="col-md-6 col-sm-6">
+                            </select>
+                        </dd>
+                    </dl>
+                }
+                else
+                {
+                    <dl style="display:none" class="dlRainPipePosition">
+                        <dt class="col-dt"><i>*</i>雨水管位置：</dt>
+                        <dd>
+                            <select name="selectRainPipePosition">
+                                @foreach (BasArgumentSetting RainPipePosition in ViewBag.RainPipePositions)
+                                {
+                                    if (Airconditioner.AirconditionerPipePosition == RainPipePosition.Id)
+                                    {
+                                        <option value="@RainPipePosition.Id" selected="selected">@RainPipePosition.ArgumentText</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@RainPipePosition.Id">@RainPipePosition.ArgumentText</option>
+                                    }
 
-            </div>
-            <div class="col-md-6 col-sm-6 text-right">
+                                }
+                            </select>
+                        </dd>
+                    </dl>
+
+                }
+                <input type="hidden" name="Id" value="@dMaster.Id" />
+            </form>
+        </div>
+        <div class="main-column-handle">
+   
+            <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save" style="margin-left:30px;">保存</button>
                 <button type="button" class="btn btn-sunac btn-delete" data-id="@dMaster.Id">删除</button>
                 <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus">提交审核</button>
-                @if (@dMaster.BillStatus == 2)
-                {
-                    string BTID = dMaster.DynamicType == 1 ? "P61" : "P61";
-                    <a class="btn btn-sunac" href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=@BTID&BOID=@dMaster.Id" target="_blank">BPM查看</a>
-                }
+             
             </div>
         </div>
     </div>

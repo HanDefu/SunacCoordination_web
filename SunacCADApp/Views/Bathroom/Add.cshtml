@@ -17,152 +17,149 @@
         </figure>
     </div>
     <div class="mian-column">
-        <form name="myform" id="myform">
-            <dl>
-                <dt class="col-dt"><i>*</i>原型编号：</dt>
-                <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error ="原型编号不能为空"/>
-                    <i class="icon-tips" tips="<p>外窗原型编号规则：门窗原型代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗， WC外开窗， WZC外开转角窗，TC推拉窗， TLM推拉门，TSTLM提升推拉门，MLC门连窗， WM外开门；<p>">&nbsp;</i>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>展开图文件：</dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
-                    <input type="hidden" name="txt_drawingcad" />
-                    <input type="hidden" name="hid_drawing_img" value="" />
-                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
-                    <a class="btn-upfile" href="javascript:void(0)">
-                        文件上传
-                        <input type="file" class="upload-cad" />
-                    </a>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>使用范围：</dt>
-                <dd style="width:500px;">
-                    <span style="display:block;padding-top:5px;line-height:35px;">
-                        <span class="online-checkbox">
-                            <input type="checkbox" id="all" name="chk_area" class="select-all"  value="1" checked="checked"/>
-                            <label for="all">集团</label>
-                        </span>
-                        @foreach (BasArgumentSetting Setting in ViewBag.Settings)
-                        {
+        <div class="column-tbody">
+            <form name="myform" id="myform">
+                <dl>
+                    <dt class="col-dt"><i>*</i>原型编号：</dt>
+                    <dd>
+                        <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" />
+                        <i class="icon-tips" tips="<p>外窗原型编号规则：门窗原型代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗， WC外开窗， WZC外开转角窗，TC推拉窗， TLM推拉门，TSTLM提升推拉门，MLC门连窗， WM外开门；<p>">&nbsp;</i>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>原型文件：</dt>
+                    <dd>
+                        <input type="text" style="width:378px" name="txt_filename" placeholder="原型文件" class="required" data-error="原型文件不能为空" />
+                        <input type="hidden" name="txt_drawingcad" />
+                        <input type="hidden" name="hid_drawing_img" value="" />
+                        <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
+                        <a class="btn-upfile" href="javascript:void(0)">
+                           上传
+                            <input type="file" class="upload-cad" />
+                        </a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>使用范围：</dt>
+                    <dd style="width:500px;">
+                        <span style="display:block;padding-top:5px;line-height:35px;">
                             <span class="online-checkbox">
-                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" checked="checked" />
-                                <label for="area_@Setting.Id">@Setting.ArgumentText</label>
+                                <input type="checkbox" id="all" name="chk_area" class="select-all" value="1" checked="checked" />
+                                <label for="all">集团</label>
                             </span>
-                        }
-                    </span>
-
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>卫生间类型：</dt>
-                <dd>
-                    <select name="ToiletType" class="required">
-                        @foreach (BasArgumentSetting ToiletType in ViewBag.ToiletTypes)
+                            @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
-                            <option value="@ToiletType.Id">@ToiletType.ArgumentText</option>
+                                <span class="online-checkbox">
+                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" checked="checked" />
+                                    <label for="area_@Setting.Id">@Setting.ArgumentText</label>
+                                </span>
                         }
-                    </select>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>门窗位置：</dt>
-                <dd>
-                    <select name="selectBathroomDoorWindowPosition" class="required">
-                        @foreach (BasArgumentSetting BathroomDoorWindowPosition in ViewBag.BathroomDoorWindowPositions)
-                        {
-                            <option value="@BathroomDoorWindowPosition.Id">@BathroomDoorWindowPosition.ArgumentText</option>
-                        }
-                    </select>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>模块类型：</dt>
-                <dd>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
-                        <label for="radio_dynamic_module">动态模型</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" />
-                        <label for="radio_static_module">静态模型</label>
-                    </span>
-                </dd>
-            </dl>
+                        </span>
 
-            <dl>
-                <dt class="col-dt"><i>*</i>是否含排气道：</dt>
-                <dd>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_bathroomisairduct" id="radio_bathroomisairduct" value="1" checked="checked" />
-                        <label for="radio_bathroomisairduct">是</label>
-                    </span>
-                    <span class="online-checkbox">
-                        <input type="radio" name="radio_bathroomisairduct" id="radio_bathroomisairduct1" value="0" />
-                        <label for="radio_bathroomisairduct1">否</label>
-                    </span>
-                </dd>
-            </dl>
-
-            <dl class="dynamic_module">
-                <dt class="col-dt"><i>*</i>短边尺寸范围(mm)：</dt>
-                <dd>
-                    <input type="number" style="width:70px" name="txtBathroomShortSideMin" value="0" />
-                    <i> - &nbsp; </i>
-                    <input type="number" style="width:70px" name="txtBathroomShortSideMax" value="0" />
-                </dd>
-            </dl>
-            <dl class="dynamic_module">
-                <dt class="col-dt"><i>*</i>长边尺寸范围(mm)：</dt>
-                <dd>
-                    <input type="number" style="width:70px" name="txtBathroomLongSizeMin" value="0" />
-                    <i> - &nbsp; </i>
-                    <input type="number" style="width:70px" name="txtBathroomLongSizeMax" value="0" />
-                </dd>
-            </dl>
-
-            <dl class="static_module">
-                <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
-                <dd>
-                    <input type="number" style="width:70px" name="txtSizeSideMin" value="0" />
-                    <i> - &nbsp; </i>
-                    <input type="number" style="width:70px" name="txtSizeSideMax"  value="0"/>
-                </dd>
-            </dl>
-            <dl class="static_module">
-                <dt class="col-dt"><i>*</i>马桶尺寸：</dt>
-                <dd>
-                    <select name="selectClosesToolWidth">
-                        @foreach (BasArgumentSetting ClosesToolWidth in ViewBag.ClosesToolWidths)
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>卫生间类型：</dt>
+                    <dd>
+                        <select name="ToiletType" class="required">
+                            @foreach (BasArgumentSetting ToiletType in ViewBag.ToiletTypes)
                         {
-                            <option value="@ClosesToolWidth.Id">@ClosesToolWidth.ArgumentText</option>
+                                <option value="@ToiletType.Id">@ToiletType.ArgumentText</option>
                         }
-                    </select>
-                </dd>
-            </dl>
-            <dl class="static_module">
-                <dt class="col-dt"><i>*</i>水盆柜宽：</dt>
-                <dd>
-                    <select name="selectBathroomBasinSize">
-                        @foreach (BasArgumentSetting ToiletBasinWidth in ViewBag.ToiletBasinWidths)
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>门窗位置：</dt>
+                    <dd>
+                        <select name="selectBathroomDoorWindowPosition" class="required">
+                            @foreach (BasArgumentSetting BathroomDoorWindowPosition in ViewBag.BathroomDoorWindowPositions)
                         {
-                            <option value="@ToiletBasinWidth.Id">@ToiletBasinWidth.ArgumentText</option>
+                                <option value="@BathroomDoorWindowPosition.Id">@BathroomDoorWindowPosition.ArgumentText</option>
                         }
-                    </select>
-                </dd>
-            </dl>
-    
-          
-        </form>
-        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
-            <div class="col-md-6 col-sm-6">
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>模块类型：</dt>
+                    <dd>
+                        <span class="online-checkbox">
+                            <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
+                            <label for="radio_dynamic_module">动态模型</label>
+                        </span>
+                        <span class="online-checkbox">
+                            <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" />
+                            <label for="radio_static_module">静态模型</label>
+                        </span>
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt class="col-dt"><i>*</i>是否含排气道：</dt>
+                    <dd>
+                        <span class="online-checkbox">
+                            <input type="radio" name="radio_bathroomisairduct" id="radio_bathroomisairduct" value="1" checked="checked" />
+                            <label for="radio_bathroomisairduct">是</label>
+                        </span>
+                        <span class="online-checkbox">
+                            <input type="radio" name="radio_bathroomisairduct" id="radio_bathroomisairduct1" value="0" />
+                            <label for="radio_bathroomisairduct1">否</label>
+                        </span>
+                    </dd>
+                </dl>
+
+                <dl class="dynamic_module">
+                    <dt class="col-dt"><i>*</i>短边尺寸范围(mm)：</dt>
+                    <dd>
+                        <input type="number" style="width:70px" name="txtBathroomShortSideMin" value="0" />
+                        <i> - &nbsp; </i>
+                        <input type="number" style="width:70px" name="txtBathroomShortSideMax" value="0" />
+                    </dd>
+                </dl>
+                <dl class="dynamic_module">
+                    <dt class="col-dt"><i>*</i>长边尺寸范围(mm)：</dt>
+                    <dd>
+                        <input type="number" style="width:70px" name="txtBathroomLongSizeMin" value="0" />
+                        <i> - &nbsp; </i>
+                        <input type="number" style="width:70px" name="txtBathroomLongSizeMax" value="0" />
+                    </dd>
+                </dl>
+
+                <dl class="static_module">
+                    <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
+                    <dd>
+                        <input type="number" style="width:70px" name="txtSizeSideMin" value="0" />
+                        <i> - &nbsp; </i>
+                        <input type="number" style="width:70px" name="txtSizeSideMax" value="0" />
+                    </dd>
+                </dl>
+                <dl class="static_module">
+                    <dt class="col-dt"><i>*</i>马桶尺寸：</dt>
+                    <dd>
+                        <select name="selectClosesToolWidth">
+                            @foreach (BasArgumentSetting ClosesToolWidth in ViewBag.ClosesToolWidths)
+                        {
+                                <option value="@ClosesToolWidth.Id">@ClosesToolWidth.ArgumentText</option>
+                        }
+                        </select>
+                    </dd>
+                </dl>
+                <dl class="static_module">
+                    <dt class="col-dt"><i>*</i>水盆柜宽：</dt>
+                    <dd>
+                        <select name="selectBathroomBasinSize">
+                            @foreach (BasArgumentSetting ToiletBasinWidth in ViewBag.ToiletBasinWidths)
+                        {
+                                <option value="@ToiletBasinWidth.Id">@ToiletBasinWidth.ArgumentText</option>
+                        }
+                        </select>
+                    </dd>
+                </dl>
+            </form>
+        </div>
+        <div class="main-column-handle">
+            <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save" style="margin-left:10px;">保存</button>
-            </div>
-            <div class="col-md-6 col-sm-6 text-right">
-               
             </div>
         </div>
     </div>

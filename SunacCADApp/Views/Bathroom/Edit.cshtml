@@ -17,6 +17,13 @@
     <a href="/bathroom/index">卫生间</a>
     <i></i>
     <a>@dMaster.DrawingCode</a>
+    <span class="check-state">
+        @if (@dMaster.BillStatus == 2)
+        {
+        string BTID = dMaster.DynamicType == 1 ? "P41" : "P42";
+        <a class="btn btn-sunac" href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=@BTID&BOID=@dMaster.Id" target="_blank">BPM查看</a>
+        }
+     </span>
 </div>
 <div class="row view">
     <div class="left-column">
@@ -26,61 +33,62 @@
         </figure>
     </div>
     <div class="mian-column">
-        <form name="myform" id="myform">
-            <dl>
-                <dt class="col-dt"><i>*</i>原型编号：</dt>
-                <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" value="@dMaster.DrawingCode" />
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i></i>展开图文件：</dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" />
-                    <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
-                    <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
-                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
-                    <a class="btn-upfile" href="javascript:void(0)">
-                        文件上传
-                        <input type="file" class="upload-cad" />
-                    </a>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>使用范围：</dt>
-                <dd style="width:500px;">
-                    <span style="display:block;padding-top:5px;line-height:35px;">
-                        <span class="online-checkbox">
-                            @if (dMaster.Scope == 1)
+        <div class="column-tbody">
+            <form name="myform" id="myform">
+                <dl>
+                    <dt class="col-dt"><i>*</i>原型编号：</dt>
+                    <dd>
+                        <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" value="@dMaster.DrawingCode" />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i></i>原型文件：</dt>
+                    <dd>
+                        <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" />
+                        <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
+                        <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
+                        <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
+                        <a class="btn-upfile" href="javascript:void(0)">
+                           上传
+                            <input type="file" class="upload-cad" />
+                        </a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>使用范围：</dt>
+                    <dd style="width:500px;">
+                        <span style="display:block;padding-top:5px;line-height:35px;">
+                            <span class="online-checkbox">
+                                @if (dMaster.Scope == 1)
                             {
-                                <input type="checkbox" id="all_group" name="chk_area" class="single-checkbox" value="1" checked />
-                                <label for="all_group">集团</label>
+                                    <input type="checkbox" id="all_group" name="chk_area" class="single-checkbox" value="1" checked />
+                                    <label for="all_group">集团</label>
                             }
                             else
                             {
-                                <input type="checkbox" id="all_group" name="chk_area" class="single-checkbox" value="1" />
-                                <label for="all_group">集团</label>
+                                    <input type="checkbox" id="all_group" name="chk_area" class="single-checkbox" value="1" />
+                                    <label for="all_group">集团</label>
                             }
-                        </span>
-                        @foreach (BasArgumentSetting Setting in ViewBag.Settings)
+                            </span>
+                            @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
                             string str_check = string.Empty;
                             int hasArea = ByAreas.Where(e => e.AreaID == Setting.Id).Count();
                             str_check = hasArea > 0 ? "checked" : string.Empty;
-                            <span class="online-checkbox">
-                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" @str_check />
-                                <label for="area_@Setting.Id">@Setting.ArgumentText</label>
-                            </span>
+                                <span class="online-checkbox">
+                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" @str_check />
+                                    <label for="area_@Setting.Id">@Setting.ArgumentText</label>
+                                </span>
                         }
-                    </span>
+                        </span>
 
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>卫生间类型：</dt>
-                <dd>
-                    <select name="ToiletType" class="required">
-                        @foreach (BasArgumentSetting ToiletType in ViewBag.ToiletTypes)
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>卫生间类型：</dt>
+                    <dd>
+                        <select name="ToiletType" class="required">
+                            @foreach (BasArgumentSetting ToiletType in ViewBag.ToiletTypes)
                         {
                             if (ToiletType.Id == Bathroom.BathroomType)
                             {
@@ -92,14 +100,14 @@
                             }
 
                         }
-                    </select>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>门窗位置：</dt>
-                <dd>
-                    <select name="selectBathroomDoorWindowPosition" class="required">
-                        @foreach (BasArgumentSetting BathroomDoorWindowPosition in ViewBag.BathroomDoorWindowPositions)
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>门窗位置：</dt>
+                    <dd>
+                        <select name="selectBathroomDoorWindowPosition" class="required">
+                            @foreach (BasArgumentSetting BathroomDoorWindowPosition in ViewBag.BathroomDoorWindowPositions)
                         {
                             if (BathroomDoorWindowPosition.Id == Bathroom.BathroomDoorWindowPosition)
                             {
@@ -111,50 +119,50 @@
                             }
 
                         }
-                    </select>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>是否含排气道：</dt>
-                <dd>
-                    @if (Bathroom.BathroomIsAirduct == 1)
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>是否含排气道：</dt>
+                    <dd>
+                        @if (Bathroom.BathroomIsAirduct == 1)
                     {
-                        <span class="online-checkbox">
-                            <input type="radio" name="radio_bathroomisairduct" id="radio_bathroomisairduct" value="1" checked="checked" />
-                            <label for="radio_bathroomisairduct">是</label>
-                        </span>
-                        <span class="online-checkbox">
-                            <input type="radio" name="radio_bathroomisairduct" id="radio_bathroomisairduct1" value="0" />
-                            <label for="radio_bathroomisairduct1">否</label>
-                        </span>
+                            <span class="online-checkbox">
+                                <input type="radio" name="radio_bathroomisairduct" id="radio_bathroomisairduct" value="1" checked="checked" />
+                                <label for="radio_bathroomisairduct">是</label>
+                            </span>
+                            <span class="online-checkbox">
+                                <input type="radio" name="radio_bathroomisairduct" id="radio_bathroomisairduct1" value="0" />
+                                <label for="radio_bathroomisairduct1">否</label>
+                            </span>
                     }
                     else
                     {
-                        <span class="online-checkbox">
-                            <input type="radio" name="radio_bathroomisairduct" id="radio_bathroomisairduct" value="1" />
-                            <label for="radio_bathroomisairduct">是</label>
-                        </span>
-                        <span class="online-checkbox">
-                            <input type="radio" name="radio_bathroomisairduct" id="radio_bathroomisairduct1" value="0" checked="checked" />
-                            <label for="radio_bathroomisairduct1">否</label>
-                        </span>
+                            <span class="online-checkbox">
+                                <input type="radio" name="radio_bathroomisairduct" id="radio_bathroomisairduct" value="1" />
+                                <label for="radio_bathroomisairduct">是</label>
+                            </span>
+                            <span class="online-checkbox">
+                                <input type="radio" name="radio_bathroomisairduct" id="radio_bathroomisairduct1" value="0" checked="checked" />
+                                <label for="radio_bathroomisairduct1">否</label>
+                            </span>
                     }
 
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>模块类型：</dt>
-                <dd>
-                    @if (dMaster.DynamicType == 1)
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>模块类型：</dt>
+                    <dd>
+                        @if (dMaster.DynamicType == 1)
                     {
-                        <span class="online-checkbox">
-                            <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
-                            <label for="radio_dynamic_module">动态模型</label>
-                        </span>
-                        <span class="online-checkbox">
-                            <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" />
-                            <label for="radio_static_module">静态模型</label>
-                        </span>
+                            <span class="online-checkbox">
+                                <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
+                                <label for="radio_dynamic_module">动态模型</label>
+                            </span>
+                            <span class="online-checkbox">
+                                <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" />
+                                <label for="radio_static_module">静态模型</label>
+                            </span>
                     }
                     else if (dMaster.DynamicType == 2)
                     {
@@ -162,46 +170,46 @@
                             <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" data-model=".dynamic_module" />
                             <label for="radio_dynamic_module">动态模型</label>
                         </span>
-                        <span class="online-checkbox">
-                            <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" checked />
-                            <label for="radio_static_module">静态模型</label>
-                        </span>
+                            <span class="online-checkbox">
+                                <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" checked />
+                                <label for="radio_static_module">静态模型</label>
+                            </span>
 
                     }
-                </dd>
-            </dl>
-         
-            @if (dMaster.DynamicType == 1)
+                    </dd>
+                </dl>
+
+                @if (dMaster.DynamicType == 1)
             {
-                <dl class="dynamic_module">
-                    <dt class="col-dt"><i>*</i>短边尺寸范围(mm)：</dt>
-                    <dd>
-                        <input type="number" style="width:70px" name="txtBathroomShortSideMin" value="@Bathroom.BathroomShortSideMin" />
-                        <i> - &nbsp; </i>
-                        <input type="number" style="width:70px" name="txtBathroomShortSideMax" value="@Bathroom.BathroomShortSideMax" />
-                    </dd>
-                </dl>
-                <dl class="dynamic_module">
-                    <dt class="col-dt"><i>*</i>长边尺寸范围(mm)：</dt>
-                    <dd>
-                        <input type="number" style="width:70px" name="txtBathroomLongSizeMin" value="@Bathroom.BathroomLongSizeMin" />
-                        <i> - &nbsp; </i>
-                        <input type="number" style="width:70px" name="txtBathroomLongSizeMax" value="@Bathroom.BathroomLongSizeMax" />
-                    </dd>
-                </dl>
-                <dl class="static_module" style="display:none">
-                    <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
-                    <dd>
-                        <input type="number" style="width:70px" name="txtSizeSideMin" value="@Bathroom.BathroomShortSideMin" />
-                        <i> - &nbsp; </i>
-                        <input type="number" style="width:70px" name="txtSizeSideMax" value="@Bathroom.BathroomShortSideMax" />
-                    </dd>
-                </dl>
-                <dl class="static_module" style="display:none">
-                    <dt class="col-dt"><i>*</i>马桶尺寸：</dt>
-                    <dd>
-                        <select name="selectClosesToolWidth">
-                            @foreach (BasArgumentSetting ClosesToolWidth in ViewBag.ClosesToolWidths)
+                    <dl class="dynamic_module">
+                        <dt class="col-dt"><i>*</i>短边尺寸范围(mm)：</dt>
+                        <dd>
+                            <input type="number" style="width:70px" name="txtBathroomShortSideMin" value="@Bathroom.BathroomShortSideMin" />
+                            <i> - &nbsp; </i>
+                            <input type="number" style="width:70px" name="txtBathroomShortSideMax" value="@Bathroom.BathroomShortSideMax" />
+                        </dd>
+                    </dl>
+                    <dl class="dynamic_module">
+                        <dt class="col-dt"><i>*</i>长边尺寸范围(mm)：</dt>
+                        <dd>
+                            <input type="number" style="width:70px" name="txtBathroomLongSizeMin" value="@Bathroom.BathroomLongSizeMin" />
+                            <i> - &nbsp; </i>
+                            <input type="number" style="width:70px" name="txtBathroomLongSizeMax" value="@Bathroom.BathroomLongSizeMax" />
+                        </dd>
+                    </dl>
+                    <dl class="static_module" style="display:none">
+                        <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
+                        <dd>
+                            <input type="number" style="width:70px" name="txtSizeSideMin" value="@Bathroom.BathroomShortSideMin" />
+                            <i> - &nbsp; </i>
+                            <input type="number" style="width:70px" name="txtSizeSideMax" value="@Bathroom.BathroomShortSideMax" />
+                        </dd>
+                    </dl>
+                    <dl class="static_module" style="display:none">
+                        <dt class="col-dt"><i>*</i>马桶尺寸：</dt>
+                        <dd>
+                            <select name="selectClosesToolWidth">
+                                @foreach (BasArgumentSetting ClosesToolWidth in ViewBag.ClosesToolWidths)
                             {
                                 if (ClosesToolWidth.Id == Bathroom.BathroomClosestoolSize)
                                 {
@@ -213,14 +221,14 @@
                                 }
 
                             }
-                        </select>
-                    </dd>
-                </dl>
-                <dl class="static_module" style="display:none">
-                    <dt class="col-dt"><i>*</i>水盆柜宽：</dt>
-                    <dd>
-                        <select name="selectBathroomBasinSize">
-                            @foreach (BasArgumentSetting ToiletBasinWidth in ViewBag.ToiletBasinWidths)
+                            </select>
+                        </dd>
+                    </dl>
+                    <dl class="static_module" style="display:none">
+                        <dt class="col-dt"><i>*</i>水盆柜宽：</dt>
+                        <dd>
+                            <select name="selectBathroomBasinSize">
+                                @foreach (BasArgumentSetting ToiletBasinWidth in ViewBag.ToiletBasinWidths)
                             {
                                 if (ToiletBasinWidth.Id == Bathroom.BathroomBasinSize)
                                 {
@@ -232,41 +240,41 @@
                                 }
 
                             }
-                        </select>
-                    </dd>
-                </dl>
+                            </select>
+                        </dd>
+                    </dl>
             }
             else
             {
-                <dl class="dynamic_module" style="display:none">
-                    <dt class="col-dt"><i>*</i>短边尺寸范围(mm)：</dt>
-                    <dd>
-                        <input type="number" style="width:70px" name="txtBathroomShortSideMin" value="@Bathroom.BathroomShortSideMin" />
-                        <i> - &nbsp; </i>
-                        <input type="number" style="width:70px" name="txtBathroomShortSideMax" value="@Bathroom.BathroomShortSideMax" />
-                    </dd>
-                </dl>
-                <dl class="dynamic_module" style="display:none">
-                    <dt class="col-dt"><i>*</i>长边尺寸范围(mm)：</dt>
-                    <dd>
-                        <input type="number" style="width:70px" name="txtBathroomLongSizeMin" value="@Bathroom.BathroomLongSizeMin" />
-                        <i> - &nbsp; </i>
-                        <input type="number" style="width:70px" name="txtBathroomLongSizeMax" value="@Bathroom.BathroomLongSizeMax" />
-                    </dd>
-                </dl>
-                <dl class="static_module" style="display:block">
-                    <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
-                    <dd>
-                        <input type="number" style="width:70px" name="txtSizeSideMin" value="@Bathroom.BathroomShortSideMin" />
-                        <i> - &nbsp; </i>
-                        <input type="number" style="width:70px" name="txtSizeSideMax" value="@Bathroom.BathroomShortSideMax" />
-                    </dd>
-                </dl>
-                <dl class="static_module" style="display:block">
-                    <dt class="col-dt"><i>*</i>马桶尺寸：</dt>
-                    <dd>
-                        <select name="selectClosesToolWidth">
-                            @foreach (BasArgumentSetting ClosesToolWidth in ViewBag.ClosesToolWidths)
+                    <dl class="dynamic_module" style="display:none">
+                        <dt class="col-dt"><i>*</i>短边尺寸范围(mm)：</dt>
+                        <dd>
+                            <input type="number" style="width:70px" name="txtBathroomShortSideMin" value="@Bathroom.BathroomShortSideMin" />
+                            <i> - &nbsp; </i>
+                            <input type="number" style="width:70px" name="txtBathroomShortSideMax" value="@Bathroom.BathroomShortSideMax" />
+                        </dd>
+                    </dl>
+                    <dl class="dynamic_module" style="display:none">
+                        <dt class="col-dt"><i>*</i>长边尺寸范围(mm)：</dt>
+                        <dd>
+                            <input type="number" style="width:70px" name="txtBathroomLongSizeMin" value="@Bathroom.BathroomLongSizeMin" />
+                            <i> - &nbsp; </i>
+                            <input type="number" style="width:70px" name="txtBathroomLongSizeMax" value="@Bathroom.BathroomLongSizeMax" />
+                        </dd>
+                    </dl>
+                    <dl class="static_module" style="display:block">
+                        <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
+                        <dd>
+                            <input type="number" style="width:70px" name="txtSizeSideMin" value="@Bathroom.BathroomShortSideMin" />
+                            <i> - &nbsp; </i>
+                            <input type="number" style="width:70px" name="txtSizeSideMax" value="@Bathroom.BathroomShortSideMax" />
+                        </dd>
+                    </dl>
+                    <dl class="static_module" style="display:block">
+                        <dt class="col-dt"><i>*</i>马桶尺寸：</dt>
+                        <dd>
+                            <select name="selectClosesToolWidth">
+                                @foreach (BasArgumentSetting ClosesToolWidth in ViewBag.ClosesToolWidths)
                             {
                                 if (ClosesToolWidth.Id == Bathroom.BathroomClosestoolSize)
                                 {
@@ -278,14 +286,14 @@
                                 }
 
                             }
-                        </select>
-                    </dd>
-                </dl>
-                <dl class="static_module" style="display:block">
-                    <dt class="col-dt"><i>*</i>水盆柜宽：</dt>
-                    <dd>
-                        <select name="selectBathroomBasinSize">
-                            @foreach (BasArgumentSetting ToiletBasinWidth in ViewBag.ToiletBasinWidths)
+                            </select>
+                        </dd>
+                    </dl>
+                    <dl class="static_module" style="display:block">
+                        <dt class="col-dt"><i>*</i>水盆柜宽：</dt>
+                        <dd>
+                            <select name="selectBathroomBasinSize">
+                                @foreach (BasArgumentSetting ToiletBasinWidth in ViewBag.ToiletBasinWidths)
                             {
                                 if (ToiletBasinWidth.Id == Bathroom.BathroomBasinSize)
                                 {
@@ -297,24 +305,20 @@
                                 }
 
                             }
-                        </select>
-                    </dd>
-                </dl>
+                            </select>
+                        </dd>
+                    </dl>
             }
-            <input type="hidden" name="Id" value="@dMaster.Id" />
-        </form>
-        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;">
-            <div class="col-md-6 col-sm-6">
-            </div>
-            <div class="col-md-6 col-sm-6 text-right">
+                <input type="hidden" name="Id" value="@dMaster.Id" />
+            </form>
+        </div>
+        <div class="main-column-handle" >
+
+            <div class="column-handle">
                 <a class="btn btn-sunac" id="btn_save">保存</a>
                 <button type="button" class="btn btn-sunac btn-delete" data-id="@dMaster.Id">删除</button>
                 <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus">提交审核</button>
-                @if (@dMaster.BillStatus == 2)
-                {
-                    string BTID = dMaster.DynamicType == 1 ? "P41" : "P42";
-                    <a class="btn btn-sunac" href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=@BTID&BOID=@dMaster.Id" target="_blank">BPM查看</a>
-                }
+             
             </div>
         </div>
     </div>

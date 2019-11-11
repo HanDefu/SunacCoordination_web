@@ -747,6 +747,16 @@ header {
             position: relative;
         }
 
+         #ArgumentSetting dl.operate a {
+             color:#a98d5b;
+             text-decoration:none;
+         }
+            #ArgumentSetting dl.operate a:hover {
+               color:#d08f3c;
+               text-decoration:underline;
+            }
+
+
             #ArgumentSetting dl.operate strong {
                 display: block;
                 overflow: hidden;
@@ -1276,6 +1286,18 @@ body .layui-ext-sunacskin .layui-layer-btn {
               cursor:pointer;
             }
 
+
+#sunac .panel-table tr td.operate a {
+   color:#b38e64;
+   text-decoration:none;
+}
+
+    #sunac .panel-table tr td.operate a:hover {
+      color:#da8525;
+      text-decoration:underline;
+    
+    }
+
 #sunac-sub {
      display:block;
      overflow:hidden;
@@ -1375,16 +1397,16 @@ body .layui-ext-sunacskin .layui-layer-btn {
             margin-left:20px;
         }
 
-   #sunac-sub .sub-tbody .item-centre  .panel-table {
-        margin-top: 20px;
-    }
-    #sunac-sub .sub-tbody .item-centre .panel-table .panel-table-thead {
-         margin-top: 0px;
-         display:block;
-    }
+        #sunac-sub .sub-tbody .item-centre .panel-table {
+            margin-top: 20px;
+        }
+            #sunac-sub .sub-tbody .item-centre .panel-table .panel-table-thead {
+                margin-top: 0px;
+                display: block;
+            }
 
         #sunac-sub .sub-tbody .item-centre .panel-table .panel-table-thead .table {
-           margin-bottom:0px;
+            margin-bottom: 0px;
         }
 
 
@@ -1392,24 +1414,24 @@ body .layui-ext-sunacskin .layui-layer-btn {
           margin-right:15px;
     }
 
-  
-     #sunac-sub .sub-tbody .item-centre .panel-table .panel-table-tbody {
-          margin-top: 0px;
-          display:block;
+
+    #sunac-sub .sub-tbody .item-centre .panel-table .panel-table-tbody {
+        margin-top: 0px;
+        display: block;
     }
 
         #sunac-sub .sub-tbody .item-centre .panel-table .panel-table-tbody table {
-         overflow-y:scroll;
+            overflow-y: scroll;
+        }
+
+    #sunac-sub .sub-tbody .item-centre .panel-table thead th {
+        background-color: #efefe8;
+        border-bottom-width: 0px;
     }
 
-           #sunac-sub .sub-tbody .item-centre  .panel-table thead th {
-            background-color: #efefe8;
-            border-bottom-width: 0px;
-        }
-
-           #sunac-sub .sub-tbody .item-centre  .panel-table tbody td {
-            border-bottom: solid 1px #cfc6df;
-        }
+    #sunac-sub .sub-tbody .item-centre .panel-table tbody td {
+        border-bottom: solid 1px #cfc6df;
+    }
 
 
 

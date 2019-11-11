@@ -15,109 +15,108 @@
         </figure>
     </div>
     <div class="mian-column">
-        <form name="myform" id="myform">
-            <dl>
-                <dt class="col-dt"><i>*</i>原型编号：</dt>
-                <dd>
-                    <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="空调原型编号不能为空" />
-                    <i class="icon-tips" tips="<p>外窗原型编号规则：门窗原型代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗， WC外开窗， WZC外开转角窗，TC推拉窗， TLM推拉门，TSTLM提升推拉门，MLC门连窗， WM外开门；<p>">&nbsp;</i>
-                </dd>
-            </dl>
-         
-            <dl>
-                <dt class="col-dt"><i>*</i>展开图文件：</dt>
-                <dd>
-                    <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
-                    <input type="hidden" name="txt_drawingcad" />
-                    <input type="hidden" name="hid_drawing_img" value="" />
-                    <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
-                    <a class="btn-upfile" href="javascript:void(0)">
-                        文件上传
-                        <input type="file" class="upload-cad" />
-                    </a>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>使用范围：</dt>
-                <dd style="width:500px;">
-                    <span style="display:block;padding-top:5px;line-height:35px;">
-                        <span class="online-checkbox">
-                            <input type="checkbox" id="all" name="chk_area" class="select-all"  value="1"/>
-                            <label for="all">集团</label>
-                        </span>
-                        @foreach (BasArgumentSetting Setting in ViewBag.Settings)
-                        {
-                            <span class="online-checkbox">
-                                <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" />
-                                <label for="area_@Setting.Id">@Setting.ArgumentText</label>
-                            </span>
-                        }
-                    </span>
+        <div class="column-tbody">
+            <form name="myform" id="myform">
+                <dl>
+                    <dt class="col-dt"><i>*</i>原型编号：</dt>
+                    <dd>
+                        <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="空调原型编号不能为空" />
+                        <i class="icon-tips" tips="<p>外窗原型编号规则：门窗原型代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗， WC外开窗， WZC外开转角窗，TC推拉窗， TLM推拉门，TSTLM提升推拉门，MLC门连窗， WM外开门；<p>">&nbsp;</i>
+                    </dd>
+                </dl>
 
-                </dd>
-            </dl>
-   
-            <dl>
-                <dt class="col-dt"><i>*</i>空调匹数：</dt>
-                <dd>
-                    <select name="AirConditionNumber">
-                        @foreach (BasArgumentSetting AirConditionNumber in ViewBag.AirConditionNumbers)
+                <dl>
+                    <dt class="col-dt"><i>*</i>原型文件：</dt>
+                    <dd>
+                        <input type="text" style="width:378px" name="txt_filename" placeholder="原型文件" class="required" data-error="原型文件不能为空" />
+                        <input type="hidden" name="txt_drawingcad" />
+                        <input type="hidden" name="hid_drawing_img" value="" />
+                        <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
+                        <a class="btn-upfile" href="javascript:void(0)">
+                            上传
+                            <input type="file" class="upload-cad" />
+                        </a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>使用范围：</dt>
+                    <dd style="width:500px;">
+                        <span style="display:block;padding-top:5px;line-height:35px;">
+                            <span class="online-checkbox">
+                                <input type="checkbox" id="all" name="chk_area" class="select-all" value="1" />
+                                <label for="all">集团</label>
+                            </span>
+                            @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
-                            <option value="@AirConditionNumber.Id">@AirConditionNumber.ArgumentText</option>
+                                <span class="online-checkbox">
+                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" />
+                                    <label for="area_@Setting.Id">@Setting.ArgumentText</label>
+                                </span>
                         }
-                    </select>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>净尺寸：</dt>
-                <dd>
-                    <b style="font-weight:normal">W:</b>
-                    <input type="number" style="width:100px" name="txtAirconditionerWidth"  value="0"/>
-                    <b style="font-weight:normal">H:</b>
-                    <input type="number" style="width:100px" name="txtAirconditionerHeight" value="0" />
-                    <b style="font-weight:normal">D:</b>
-                    <input type="number" style="width:100px" name="txtAirconditionerDepth" value="0" />
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>冷凝水管位置：</dt>
-                <dd>
-                    <select name="selectCondensatePipePosition">
-                        @foreach (BasArgumentSetting CondensatePipePosition in ViewBag.CondensatePipePositions)
+                        </span>
+
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt class="col-dt"><i>*</i>空调匹数：</dt>
+                    <dd>
+                        <select name="AirConditionNumber">
+                            @foreach (BasArgumentSetting AirConditionNumber in ViewBag.AirConditionNumbers)
                         {
-                            <option value="@CondensatePipePosition.Id">@CondensatePipePosition.ArgumentText</option>
+                                <option value="@AirConditionNumber.Id">@AirConditionNumber.ArgumentText</option>
                         }
-                    </select>
-                </dd>
-            </dl>
-            <dl>
-                <dt class="col-dt"><i>*</i>是否包含雨水管：</dt>
-                <dd>
-                    <span class="online-checkbox">
-                        <input type="checkbox" name="Checkbox_AirconditionerIsRainPipe" id="Checkbox_AirconditionerIsRainPipe" value="1" />
-                        <label for="Checkbox_AirconditionerIsRainPipe">是</label>
-                    </span>
-                  
-                </dd>
-            </dl>
-            <dl style="display:none" class="dlRainPipePosition">
-                <dt class="col-dt"><i>*</i>雨水管位置：</dt>
-                <dd>
-                    <select name="selectRainPipePosition">
-                        @foreach (BasArgumentSetting RainPipePosition in ViewBag.RainPipePositions)
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>净尺寸：</dt>
+                    <dd>
+                        <b style="font-weight:normal">W:</b>
+                        <input type="number" style="width:100px" name="txtAirconditionerWidth" value="0" />
+                        <b style="font-weight:normal">H:</b>
+                        <input type="number" style="width:100px" name="txtAirconditionerHeight" value="0" />
+                        <b style="font-weight:normal">D:</b>
+                        <input type="number" style="width:100px" name="txtAirconditionerDepth" value="0" />
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>冷凝水管位置：</dt>
+                    <dd>
+                        <select name="selectCondensatePipePosition">
+                            @foreach (BasArgumentSetting CondensatePipePosition in ViewBag.CondensatePipePositions)
                         {
-                            <option value="@RainPipePosition.Id">@RainPipePosition.ArgumentText</option>
+                                <option value="@CondensatePipePosition.Id">@CondensatePipePosition.ArgumentText</option>
                         }
-                    </select>
-                </dd>
-            </dl>
-        </form>
-        <div class="row" style="margin-bottom:20px;padding-left:15px;padding-right:30px;margin-top:40px">
-            <div class="col-md-6 col-sm-6">
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="col-dt"><i>*</i>是否包含雨水管：</dt>
+                    <dd>
+                        <span class="online-checkbox">
+                            <input type="checkbox" name="Checkbox_AirconditionerIsRainPipe" id="Checkbox_AirconditionerIsRainPipe" value="1" />
+                            <label for="Checkbox_AirconditionerIsRainPipe">是</label>
+                        </span>
+
+                    </dd>
+                </dl>
+                <dl style="display:none" class="dlRainPipePosition">
+                    <dt class="col-dt"><i>*</i>雨水管位置：</dt>
+                    <dd>
+                        <select name="selectRainPipePosition">
+                            @foreach (BasArgumentSetting RainPipePosition in ViewBag.RainPipePositions)
+                        {
+                                <option value="@RainPipePosition.Id">@RainPipePosition.ArgumentText</option>
+                        }
+                        </select>
+                    </dd>
+                </dl>
+            </form>
+        </div>
+        <div class="main-column-handle">
+            <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save"  style="margin-left:30px;">保存</button>
-            </div>
-            <div class="col-md-6 col-sm-6 text-right">
-               
             </div>
         </div>
     </div>

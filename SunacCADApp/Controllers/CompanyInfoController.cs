@@ -12,9 +12,12 @@ namespace SunacCADApp.Controllers
 
     public class CompanyInfoController : Controller
     {
-
+        private int UserId = 0;
+        private string UserName = string.Empty;
         public CompanyInfoController() 
         {
+            UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
+            UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 14;
         }
 
@@ -27,6 +30,10 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Index()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string _where = "1=1";  //查询
             string _orderby = string.Empty;  //排序
             string _url = "1";
@@ -65,6 +72,10 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Add()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             ViewBag.companynameSource = BaseCompanyInfoDB.GetInstitutionData();
             return View();
         }
@@ -77,13 +88,16 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Addhandle()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             BaseCompanyInfo basecompanyinfo = new BaseCompanyInfo();
             int companyId = Request.Form["select_companyname"].ConvertToInt32(0);
             if (BaseCompanyInfoDB.IsExistsInstitutionDataById(companyId)>0) 
             {
                 return Json(new { code = -100, message = "机构已添加不能重复添加" }, JsonRequestBehavior.AllowGet);
             }
-
             basecompanyinfo.CompanyID = Request.Form["select_companyname"].ConvertToInt32(0);
             basecompanyinfo.CompanyName = Request.Form["hid_companyname"].ConventToString(string.Empty);
             basecompanyinfo.CompanyCode = "00000";
@@ -111,9 +125,13 @@ namespace SunacCADApp.Controllers
         /// <author>alon<84789887@qq.com></author>  
         public ActionResult Edit(int Id)
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             if (Id < 1) 
             {
-                return Redirect("/CompanyInfo/Index");
+                return Redirect("/companyinfo/index");
             }
             ViewBag.companynameSource = BaseCompanyInfoDB.GetInstitutionData();
             BaseCompanyInfo basecompanyinfo = BaseCompanyInfoDB.GetSingleEntityById(Id);
@@ -129,6 +147,10 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Edithandle()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             BaseCompanyInfo basecompanyinfo = new BaseCompanyInfo();
             int Id = Request.Form["hid_id"].ConvertToInt32(0);
             int new_companyid = Request.Form["select_companyname"].ConvertToInt32(0);
@@ -168,6 +190,10 @@ namespace SunacCADApp.Controllers
         /// <author>alon<84789887@qq.com></author>  
         public ActionResult DeleteHandleById()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             int Id = Request.QueryString["id"].ConvertToInt32(0);
             int rtv = BaseCompanyInfoDB.DeleteHandleById(Id);
             if (rtv > 0)
@@ -187,6 +213,10 @@ namespace SunacCADApp.Controllers
         /// <author>alon<84789887@qq.com></author> 
         public ActionResult DeleteHandleByIds()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string ids = Request.QueryString["ids"].ConventToString(string.Empty);
             int rtv = BaseCompanyInfoDB.DeleteHandleByIds(ids);
             if (rtv > 0)
@@ -206,6 +236,10 @@ namespace SunacCADApp.Controllers
         /// <returns></returns>
         public ActionResult ChangeCompanyEnabled() 
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             int id = Request.Form["id"].ConvertToInt32(0);
             int enabled = Request.Form["enabled"].ConvertToInt32(0);
             int flag = BaseCompanyInfoDB.IsChangeCompanyInfo(id, enabled);
@@ -219,9 +253,5 @@ namespace SunacCADApp.Controllers
             }
 
         }
-
-
-
-
     }
 }

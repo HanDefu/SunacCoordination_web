@@ -46,7 +46,7 @@
                 </dl>
 
                 <dl>
-                    <dt class="col-dt"><i></i>原型文件：</dt>
+                    <dt class="col-dt"><i>*</i>原型文件：</dt>
                     <dd>
                         <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass" placeholder="原型文件" class="required" data-error="原型文件不能为空" />
                         <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
@@ -92,38 +92,38 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>厨房类型：</dt>
                     <dd>
-                        <select name="selectKitchenType">
+                        <select name="selectKitchenType" style="width:110px;">
                             @foreach (BasArgumentSetting KitchenType in ViewBag.KitchenType)
-                        {
-                            if (KitchenType.Id == Kitchen.KitchenType)
                             {
-                                <option value="@KitchenType.Id" selected>@KitchenType.ArgumentText</option>
-                            }
-                            else
-                            {
-                                <option value="@KitchenType.Id">@KitchenType.ArgumentText</option>
-                            }
+                                if (KitchenType.Id == Kitchen.KitchenType)
+                                {
+                                    <option value="@KitchenType.Id" selected>@KitchenType.ArgumentText</option>
+                                }
+                                else
+                                {
+                                    <option value="@KitchenType.Id">@KitchenType.ArgumentText</option>
+                                }
 
-                        }
+                            }
                         </select>
                     </dd>
                 </dl>
                 <dl>
                     <dt class="col-dt"><i>*</i>门窗位置：</dt>
                     <dd>
-                        <select name="selectKitchenPosition">
+                        <select name="selectKitchenPosition" style="width:110px;">
                             @foreach (BasArgumentSetting DoorWindowPosition in ViewBag.DoorWindowPositions)
-                        {
-                            if (DoorWindowPosition.Id == Kitchen.KitchenPosition)
                             {
-                                <option value="@DoorWindowPosition.Id" selected>@DoorWindowPosition.ArgumentText</option>
-                            }
-                            else
-                            {
-                                <option value="@DoorWindowPosition.Id">@DoorWindowPosition.ArgumentText</option>
-                            }
+                                if (DoorWindowPosition.Id == Kitchen.KitchenPosition)
+                                {
+                                    <option value="@DoorWindowPosition.Id" selected>@DoorWindowPosition.ArgumentText</option>
+                                }
+                                else
+                                {
+                                    <option value="@DoorWindowPosition.Id">@DoorWindowPosition.ArgumentText</option>
+                                }
 
-                        }
+                            }
                         </select>
                     </dd>
                 </dl>
@@ -223,57 +223,57 @@
                     <dl class="static_module" style="display:none">
                         <dt class="col-dt"><i>*</i>台盆尺寸：</dt>
                         <dd>
-                            <select name="selectKitchenBasinSize">
+                            <select name="selectKitchenBasinSize" style="width:110px;">
                                 @foreach (BasArgumentSetting KitchenBasinType in ViewBag.KitchenBasinTypes)
-                            {
-                                if (KitchenBasinType.Id == Kitchen.KitchenBasinSize)
                                 {
-                                    <option value="@KitchenBasinType.Id" selected>@KitchenBasinType.ArgumentText</option>
-                                }
-                                else
-                                {
-                                    <option value="@KitchenBasinType.Id">@KitchenBasinType.ArgumentText</option>
-                                }
+                                    if (KitchenBasinType.Id == Kitchen.KitchenBasinSize)
+                                    {
+                                        <option value="@KitchenBasinType.Id" selected>@KitchenBasinType.ArgumentText</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@KitchenBasinType.Id">@KitchenBasinType.ArgumentText</option>
+                                    }
 
-                            }
+                                }
                             </select>
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:none">
                         <dt class="col-dt"><i>*</i>冰箱尺寸：</dt>
                         <dd>
-                            <select name="selectKitchenFridgSize">
+                            <select name="selectKitchenFridgSize" style="width:110px;">
                                 @foreach (BasArgumentSetting RefrigeratorType in ViewBag.RefrigeratorTypes)
-                            {
-                                if (RefrigeratorType.Id == Kitchen.KitchenFridgSize)
                                 {
-                                    <option value="@RefrigeratorType.Id" selected>@RefrigeratorType.ArgumentText</option>
-                                }
-                                else
-                                {
-                                    <option value="@RefrigeratorType.Id">@RefrigeratorType.ArgumentText</option>
-                                }
+                                    if (RefrigeratorType.Id == Kitchen.KitchenFridgSize)
+                                    {
+                                        <option value="@RefrigeratorType.Id" selected>@RefrigeratorType.ArgumentText</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@RefrigeratorType.Id">@RefrigeratorType.ArgumentText</option>
+                                    }
 
-                            }
+                                }
                             </select>
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:none">
                         <dt class="col-dt"><i>*</i>灶台尺寸：</dt>
                         <dd>
-                            <select name="selectKitchenHearthSize">
+                            <select name="selectKitchenHearthSize" style="width:110px;">
                                 @foreach (BasArgumentSetting HearthWidth in ViewBag.HearthWidths)
-                            {
-                                if (HearthWidth.Id == Kitchen.KitchenHearthSize)
                                 {
-                                    <option value="@HearthWidth.Id" selected>@HearthWidth.ArgumentText</option>
-                                }
-                                else
-                                {
-                                    <option value="@HearthWidth.Id">@HearthWidth.ArgumentText</option>
-                                }
+                                    if (HearthWidth.Id == Kitchen.KitchenHearthSize)
+                                    {
+                                        <option value="@HearthWidth.Id" selected>@HearthWidth.ArgumentText</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@HearthWidth.Id">@HearthWidth.ArgumentText</option>
+                                    }
 
-                            }
+                                }
                             </select>
                         </dd>
                     </dl>
@@ -310,57 +310,57 @@
                     <dl class="static_module">
                         <dt class="col-dt"><i>*</i>台盆尺寸：</dt>
                         <dd>
-                            <select name="selectKitchenBasinSize">
+                            <select name="selectKitchenBasinSize" style="width:110px;">
                                 @foreach (BasArgumentSetting KitchenBasinType in ViewBag.KitchenBasinTypes)
-                            {
-                                if (KitchenBasinType.Id == Kitchen.KitchenBasinSize)
                                 {
-                                    <option value="@KitchenBasinType.Id" selected>@KitchenBasinType.ArgumentText</option>
-                                }
-                                else
-                                {
-                                    <option value="@KitchenBasinType.Id">@KitchenBasinType.ArgumentText</option>
-                                }
+                                    if (KitchenBasinType.Id == Kitchen.KitchenBasinSize)
+                                    {
+                                        <option value="@KitchenBasinType.Id" selected>@KitchenBasinType.ArgumentText</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@KitchenBasinType.Id">@KitchenBasinType.ArgumentText</option>
+                                    }
 
-                            }
+                                }
                             </select>
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:block">
                         <dt class="col-dt"><i>*</i>冰箱尺寸：</dt>
                         <dd>
-                            <select name="selectKitchenFridgSize">
+                            <select name="selectKitchenFridgSize" style="width:110px;">
                                 @foreach (BasArgumentSetting RefrigeratorType in ViewBag.RefrigeratorTypes)
-                            {
-                                if (RefrigeratorType.Id == Kitchen.KitchenFridgSize)
                                 {
-                                    <option value="@RefrigeratorType.Id" selected>@RefrigeratorType.ArgumentText</option>
-                                }
-                                else
-                                {
-                                    <option value="@RefrigeratorType.Id">@RefrigeratorType.ArgumentText</option>
-                                }
+                                    if (RefrigeratorType.Id == Kitchen.KitchenFridgSize)
+                                    {
+                                        <option value="@RefrigeratorType.Id" selected>@RefrigeratorType.ArgumentText</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@RefrigeratorType.Id">@RefrigeratorType.ArgumentText</option>
+                                    }
 
-                            }
+                                }
                             </select>
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:block">
                         <dt class="col-dt"><i>*</i>灶台尺寸：</dt>
                         <dd>
-                            <select name="selectKitchenHearthSize">
+                            <select name="selectKitchenHearthSize" style="width:110px;">
                                 @foreach (BasArgumentSetting HearthWidth in ViewBag.HearthWidths)
-                            {
-                                if (HearthWidth.Id == Kitchen.KitchenHearthSize)
                                 {
-                                    <option value="@HearthWidth.Id" selected>@HearthWidth.ArgumentText</option>
-                                }
-                                else
-                                {
-                                    <option value="@HearthWidth.Id">@HearthWidth.ArgumentText</option>
-                                }
+                                    if (HearthWidth.Id == Kitchen.KitchenHearthSize)
+                                    {
+                                        <option value="@HearthWidth.Id" selected>@HearthWidth.ArgumentText</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@HearthWidth.Id">@HearthWidth.ArgumentText</option>
+                                    }
 
-                            }
+                                }
                             </select>
                         </dd>
                     </dl>
