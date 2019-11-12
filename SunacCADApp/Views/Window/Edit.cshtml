@@ -193,7 +193,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>开启类型：</dt>
                     <dd>
-                        <select name="OpenType" class="required">
+                        <select name="OpenType" class="required" style="width:105px;">
                             @foreach (BasArgumentSetting OpenType in ViewBag.OpenTypes)
                         {
                             string strChecked = OpenType.Id == windowDetail.WindowOpenTypeId ? "selected=\"selected\"" : string.Empty;
@@ -205,11 +205,11 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>开启扇数量：</dt>
                     <dd>
-                        <select name="OpenWindowNum" class="required">
+                        <select name="OpenWindowNum" class="required" style="width:105px;">
                             @foreach (BasArgumentSetting OpenType in ViewBag.OpenWindowNums)
                         {
                             string strChecked = OpenType.Id == windowDetail.WindowOpenQtyId ? "selected=\"selected\"" : string.Empty;
-                                <option value="@OpenType.Id" @strChecked>@OpenType.ArgumentText 扇</option>
+                                <option value="@OpenType.Id" @strChecked>@OpenType.ArgumentText</option>
                         }
                         </select>
                     </dd>
@@ -275,9 +275,9 @@
                     <dl class="dynamic_module">
                         <dt class="col-dt"><i>*</i>宽度尺寸范围（mm）：</dt>
                         <dd>
-                            <input type="number" style="width:100px" name="txtWindowSizeMin" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" />
-                            <i> -&nbsp; </i>
-                            <input type="number" style="width:100px" name="txtWindowSizeMax" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" />
+                            <input type="number" style="width:105px" name="txtWindowSizeMin" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" />
+                            <i>  × </i>
+                            <input type="number" style="width:105px" name="txtWindowSizeMax" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" />
                         </dd>
                     </dl>
                     <dl class="dynamic_module">
@@ -388,22 +388,22 @@
                         <dt class="col-dt"><i>*</i>尺寸（mm）：</dt>
                         <dd>
                             <em>宽：</em>
-                            <input type="number" style="width:100px" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" name="txt_Window_Width" />&nbsp;
+                            <input type="number" style="width:105px" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" name="txt_Window_Width" />&nbsp;
                             <em>高：</em>
-                            <input type="number" style="width:100px" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" name="txt_Window_Height" />
+                            <input type="number" style="width:105px" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" name="txt_Window_Height" />
                         </dd>
                     </dl>
                     <dl class="static_module">
                         <dt class="col-dt"><i>*</i>通风量：</dt>
                         <dd>
-                            <input type="number" style="width:100px" name="txt_WindowVentilationQuantity" value="@windowDetail.WindowVentilationQuantity" />
+                            <input type="number" style="width:105px" name="txt_WindowVentilationQuantity" value="@windowDetail.WindowVentilationQuantity" />
 
                         </dd>
                     </dl>
                     <dl class="static_module">
                         <dt class="col-dt"><i></i>塞缝尺寸：</dt>
                         <dd>
-                            <input type="text" style="width:100px" name="txtWindowPlugslotSize" value="@windowDetail.WindowPlugslotSize" />
+                            <input type="text" style="width:105px" name="txtWindowPlugslotSize" value="@windowDetail.WindowPlugslotSize" />
 
                         </dd>
                     </dl>
@@ -424,7 +424,7 @@
                         <dt class="col-dt"><i>*</i>宽度尺寸范围（mm）：</dt>
                         <dd>
                             <input type="number" style="width:100px" name="txtWindowSizeMin" value="@windowDetail.WindowSizeMin" />
-                            <i> -&nbsp; </i>
+                            <i>  × </i>
                             <input type="number" style="width:100px" name="txtWindowSizeMax" value="@windowDetail.WindowSizeMax" />
                         </dd>
                     </dl>
@@ -538,22 +538,22 @@
                         <dt class="col-dt"><i>*</i>尺寸（mm）：</dt>
                         <dd>
                             <em>宽：</em>
-                            <input type="number" style="width:100px" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" name="txt_Window_Width" />&nbsp;
+                            <input type="number" style="width:105px" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" name="txt_Window_Width" />&nbsp;
                             <em>高：</em>
-                            <input type="number" style="width:100px" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" name="txt_Window_Height" />
+                            <input type="number" style="width:105px" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" name="txt_Window_Height" />
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:block">
                         <dt class="col-dt"><i>*</i>通风量：</dt>
                         <dd>
-                            <input type="number" style="width:100px" name="txt_WindowVentilationQuantity" value="@windowDetail.WindowVentilationQuantity" />
+                            <input type="number" style="width:105px" name="txt_WindowVentilationQuantity" value="@windowDetail.WindowVentilationQuantity" />
 
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:block">
                         <dt class="col-dt"><i></i>塞缝尺寸：</dt>
                         <dd>
-                            <input type="text" style="width:100px" name="txtWindowPlugslotSize" value="@windowDetail.WindowPlugslotSize" />
+                            <input type="text" style="width:105px" name="txtWindowPlugslotSize" value="@windowDetail.WindowPlugslotSize" />
 
                         </dd>
                     </dl>

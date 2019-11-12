@@ -19,7 +19,7 @@
     <i></i>
     <a href="/kitchen">厨房</a>
     <i></i>
-    <a>@Master.DrawingName</a>
+    <a>@Master.DrawingCode</a>
     <span class="check-state">
         @if (@Master.BillStatus == 2)
         {
@@ -94,7 +94,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>厨房类型：</dt>
                     <dd>
-                        <select name="selectKitchenType" style="width:110px;">
+                        <select name="selectKitchenType" style="width:105px;">
                             @foreach (BasArgumentSetting KitchenType in ViewBag.KitchenType)
                             {
                                 if (KitchenType.Id == Kitchen.KitchenType)
@@ -113,7 +113,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>门窗位置：</dt>
                     <dd>
-                        <select name="selectKitchenPosition" style="width:110px;">
+                        <select name="selectKitchenPosition" style="width:105px;">
                             @foreach (BasArgumentSetting DoorWindowPosition in ViewBag.DoorWindowPositions)
                             {
                                 if (DoorWindowPosition.Id == Kitchen.KitchenPosition)
@@ -198,34 +198,34 @@
                     <dl class="dynamic_module">
                         <dt class="col-dt"><i>*</i>开间尺寸范围(mm)：</dt>
                         <dd>
-                            <input type="number" style="width:100px" name="txtKitchenOpenSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
-                           -
-                            <input type="number" style="width:100px" name="txtKitchenOpenSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
+                            <input type="number" style="width:105px" name="txtKitchenOpenSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
+                           <i>×</i>
+                            <input type="number" style="width:105px" name="txtKitchenOpenSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
                           
                         </dd>
                     </dl>
                     <dl class="dynamic_module">
                         <dt class="col-dt"><i>*</i>进深尺寸范围(mm)：</dt>
                         <dd>
-                            <input type="number" style="width:100px" name="txtKitchenDepthsizeMin" value="@Kitchen.KitchenDepthsizeMin" />
-                            -
-                            <input type="number" style="width:100px" name="txtKitchenDepthsizeMax" value="@Kitchen.KitchenDepthsizeMax" />
+                            <input type="number" style="width:105px" name="txtKitchenDepthsizeMin" value="@Kitchen.KitchenDepthsizeMin" />
+                            <i>×</i>
+                            <input type="number" style="width:105px" name="txtKitchenDepthsizeMax" value="@Kitchen.KitchenDepthsizeMax" />
                           
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:none">
                         <dt class="col-dt"><i>*</i>开间进深(mm)：</dt>
                         <dd>
-                            <input type="number" style="width:100px" name="txtWindowSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
-                         -
-                            <input type="number" style="width:100px" name="txtWindowSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
+                            <input type="number" style="width:105px" name="txtWindowSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
+                            <i>×</i>
+                            <input type="number" style="width:105px" name="txtWindowSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
                          
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:none">
                         <dt class="col-dt"><i>*</i>台盆尺寸：</dt>
                         <dd>
-                            <select name="selectKitchenBasinSize" style="width:110px;">
+                            <select name="selectKitchenBasinSize" style="width:105px;">
                                 @foreach (BasArgumentSetting KitchenBasinType in ViewBag.KitchenBasinTypes)
                                 {
                                     if (KitchenBasinType.Id == Kitchen.KitchenBasinSize)
@@ -244,7 +244,7 @@
                     <dl class="static_module" style="display:none">
                         <dt class="col-dt"><i>*</i>冰箱尺寸：</dt>
                         <dd>
-                            <select name="selectKitchenFridgSize" style="width:110px;">
+                            <select name="selectKitchenFridgSize" style="width:105px;">
                                 @foreach (BasArgumentSetting RefrigeratorType in ViewBag.RefrigeratorTypes)
                                 {
                                     if (RefrigeratorType.Id == Kitchen.KitchenFridgSize)
@@ -263,7 +263,7 @@
                     <dl class="static_module" style="display:none">
                         <dt class="col-dt"><i>*</i>灶台尺寸：</dt>
                         <dd>
-                            <select name="selectKitchenHearthSize" style="width:110px;">
+                            <select name="selectKitchenHearthSize" style="width:105px;">
                                 @foreach (BasArgumentSetting HearthWidth in ViewBag.HearthWidths)
                                 {
                                     if (HearthWidth.Id == Kitchen.KitchenHearthSize)
@@ -285,34 +285,31 @@
                     <dl class="dynamic_module" style="display:none">
                         <dt class="col-dt"><i>*</i>开间尺寸范围(mm)：</dt>
                         <dd>
-                            <input type="number" style="width:100px" name="txtKitchenOpenSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
-                            mm -
-                            <input type="number" style="width:100px" name="txtKitchenOpenSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
-                            mm
+                            <input type="number" style="width:105px" name="txtKitchenOpenSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
+                            <i>×</i>
+                            <input type="number" style="width:105px" name="txtKitchenOpenSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
                         </dd>
                     </dl>
                     <dl class="dynamic_module" style="display:none">
                         <dt class="col-dt"><i>*</i>进深尺寸范围(mm)：</dt>
                         <dd>
-                            <input type="number" style="width:100px" name="txtKitchenDepthsizeMin" value="@Kitchen.KitchenDepthsizeMin" />
-                            mm -
-                            <input type="number" style="width:100px" name="txtKitchenDepthsizeMax" value="@Kitchen.KitchenDepthsizeMax" />
-                            mm
+                            <input type="number" style="width:105px" name="txtKitchenDepthsizeMin" value="@Kitchen.KitchenDepthsizeMin" />
+                            <i>×</i>
+                            <input type="number" style="width:105px" name="txtKitchenDepthsizeMax" value="@Kitchen.KitchenDepthsizeMax" />
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:block">
                         <dt class="col-dt"><i>*</i>开间进深(mm)：</dt>
                         <dd>
-                            <input type="number" style="width:100px" name="txtWindowSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
-                            mm -
-                            <input type="number" style="width:100px" name="txtWindowSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
-                            mm
+                            <input type="number" style="width:105px" name="txtWindowSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
+                            <i>×</i>
+                            <input type="number" style="width:105px" name="txtWindowSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
                         </dd>
                     </dl>
                     <dl class="static_module">
                         <dt class="col-dt"><i>*</i>台盆尺寸：</dt>
                         <dd>
-                            <select name="selectKitchenBasinSize" style="width:110px;">
+                            <select name="selectKitchenBasinSize" style="width:105px;">
                                 @foreach (BasArgumentSetting KitchenBasinType in ViewBag.KitchenBasinTypes)
                                 {
                                     if (KitchenBasinType.Id == Kitchen.KitchenBasinSize)
@@ -331,7 +328,7 @@
                     <dl class="static_module" style="display:block">
                         <dt class="col-dt"><i>*</i>冰箱尺寸：</dt>
                         <dd>
-                            <select name="selectKitchenFridgSize" style="width:110px;">
+                            <select name="selectKitchenFridgSize" style="width:105px;">
                                 @foreach (BasArgumentSetting RefrigeratorType in ViewBag.RefrigeratorTypes)
                                 {
                                     if (RefrigeratorType.Id == Kitchen.KitchenFridgSize)
@@ -350,7 +347,7 @@
                     <dl class="static_module" style="display:block">
                         <dt class="col-dt"><i>*</i>灶台尺寸：</dt>
                         <dd>
-                            <select name="selectKitchenHearthSize" style="width:110px;">
+                            <select name="selectKitchenHearthSize" style="width:105px;">
                                 @foreach (BasArgumentSetting HearthWidth in ViewBag.HearthWidths)
                                 {
                                     if (HearthWidth.Id == Kitchen.KitchenHearthSize)

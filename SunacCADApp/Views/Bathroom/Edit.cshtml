@@ -89,7 +89,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>卫生间类型：</dt>
                     <dd>
-                        <select name="ToiletType" class="required">
+                        <select name="ToiletType" class="required" style="width:105px;">
                             @foreach (BasArgumentSetting ToiletType in ViewBag.ToiletTypes)
                         {
                             if (ToiletType.Id == Bathroom.BathroomType)
@@ -108,19 +108,19 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>门窗位置：</dt>
                     <dd>
-                        <select name="selectBathroomDoorWindowPosition" class="required">
+                        <select name="selectBathroomDoorWindowPosition" class="required" style="width:105px;">
                             @foreach (BasArgumentSetting BathroomDoorWindowPosition in ViewBag.BathroomDoorWindowPositions)
-                        {
-                            if (BathroomDoorWindowPosition.Id == Bathroom.BathroomDoorWindowPosition)
                             {
-                                <option value="@BathroomDoorWindowPosition.Id" selected="selected">@BathroomDoorWindowPosition.ArgumentText</option>
-                            }
-                            else
-                            {
-                                <option value="@BathroomDoorWindowPosition.Id">@BathroomDoorWindowPosition.ArgumentText</option>
-                            }
+                                if (BathroomDoorWindowPosition.Id == Bathroom.BathroomDoorWindowPosition)
+                                {
+                                    <option value="@BathroomDoorWindowPosition.Id" selected="selected">@BathroomDoorWindowPosition.ArgumentText</option>
+                                }
+                                else
+                                {
+                                    <option value="@BathroomDoorWindowPosition.Id">@BathroomDoorWindowPosition.ArgumentText</option>
+                                }
 
-                        }
+                            }
                         </select>
                     </dd>
                 </dl>
@@ -186,31 +186,31 @@
                     <dl class="dynamic_module">
                         <dt class="col-dt"><i>*</i>短边尺寸范围(mm)：</dt>
                         <dd>
-                            <input type="number" style="width:70px" name="txtBathroomShortSideMin" value="@Bathroom.BathroomShortSideMin" />
-                            <i> - &nbsp; </i>
-                            <input type="number" style="width:70px" name="txtBathroomShortSideMax" value="@Bathroom.BathroomShortSideMax" />
+                            <input type="number" style="width:105px" name="txtBathroomShortSideMin" value="@Bathroom.BathroomShortSideMin" />
+                            <i> × </i>
+                            <input type="number" style="width:105px" name="txtBathroomShortSideMax" value="@Bathroom.BathroomShortSideMax" />
                         </dd>
                     </dl>
                     <dl class="dynamic_module">
                         <dt class="col-dt"><i>*</i>长边尺寸范围(mm)：</dt>
                         <dd>
-                            <input type="number" style="width:70px" name="txtBathroomLongSizeMin" value="@Bathroom.BathroomLongSizeMin" />
-                            <i> - &nbsp; </i>
-                            <input type="number" style="width:70px" name="txtBathroomLongSizeMax" value="@Bathroom.BathroomLongSizeMax" />
+                            <input type="number" style="width:105px" name="txtBathroomLongSizeMin" value="@Bathroom.BathroomLongSizeMin" />
+                            <i> × </i>
+                            <input type="number" style="width:105px" name="txtBathroomLongSizeMax" value="@Bathroom.BathroomLongSizeMax" />
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:none">
                         <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
                         <dd>
-                            <input type="number" style="width:70px" name="txtSizeSideMin" value="@Bathroom.BathroomShortSideMin" />
-                            <i> - &nbsp; </i>
-                            <input type="number" style="width:70px" name="txtSizeSideMax" value="@Bathroom.BathroomShortSideMax" />
+                            <input type="number" style="width:105px" name="txtSizeSideMin" value="@Bathroom.BathroomShortSideMin" />
+                            <i> × </i>
+                            <input type="number" style="width:105px" name="txtSizeSideMax" value="@Bathroom.BathroomShortSideMax" />
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:none">
                         <dt class="col-dt"><i>*</i>马桶尺寸：</dt>
                         <dd>
-                            <select name="selectClosesToolWidth">
+                            <select name="selectClosesToolWidth" style="width:105px;">
                                 @foreach (BasArgumentSetting ClosesToolWidth in ViewBag.ClosesToolWidths)
                             {
                                 if (ClosesToolWidth.Id == Bathroom.BathroomClosestoolSize)
@@ -226,87 +226,87 @@
                             </select>
                         </dd>
                     </dl>
-                    <dl class="static_module" style="display:none">
-                        <dt class="col-dt"><i>*</i>水盆柜宽：</dt>
-                        <dd>
-                            <select name="selectBathroomBasinSize">
-                                @foreach (BasArgumentSetting ToiletBasinWidth in ViewBag.ToiletBasinWidths)
-                            {
-                                if (ToiletBasinWidth.Id == Bathroom.BathroomBasinSize)
-                                {
-                                    <option value="@ToiletBasinWidth.Id" selected="selected">@ToiletBasinWidth.ArgumentText</option>
-                                }
-                                else
-                                {
-                                    <option value="@ToiletBasinWidth.Id">@ToiletBasinWidth.ArgumentText</option>
-                                }
+    <dl class="static_module" style="display:none;width:105px;">
+        <dt class="col-dt"><i>*</i>水盆柜宽：</dt>
+        <dd>
+            <select name="selectBathroomBasinSize">
+                @foreach (BasArgumentSetting ToiletBasinWidth in ViewBag.ToiletBasinWidths)
+                {
+                    if (ToiletBasinWidth.Id == Bathroom.BathroomBasinSize)
+                    {
+                        <option value="@ToiletBasinWidth.Id" selected="selected">@ToiletBasinWidth.ArgumentText</option>
+                    }
+                    else
+                    {
+                        <option value="@ToiletBasinWidth.Id">@ToiletBasinWidth.ArgumentText</option>
+                    }
 
-                            }
-                            </select>
-                        </dd>
-                    </dl>
+                }
+            </select>
+        </dd>
+    </dl>
             }
-            else
-            {
+                else
+                {
                     <dl class="dynamic_module" style="display:none">
                         <dt class="col-dt"><i>*</i>短边尺寸范围(mm)：</dt>
                         <dd>
-                            <input type="number" style="width:70px" name="txtBathroomShortSideMin" value="@Bathroom.BathroomShortSideMin" />
-                            <i> - &nbsp; </i>
-                            <input type="number" style="width:70px" name="txtBathroomShortSideMax" value="@Bathroom.BathroomShortSideMax" />
+                            <input type="number" style="width:105px" name="txtBathroomShortSideMin" value="@Bathroom.BathroomShortSideMin" />
+                            <i> × </i>
+                            <input type="number" style="width:105px" name="txtBathroomShortSideMax" value="@Bathroom.BathroomShortSideMax" />
                         </dd>
                     </dl>
                     <dl class="dynamic_module" style="display:none">
                         <dt class="col-dt"><i>*</i>长边尺寸范围(mm)：</dt>
                         <dd>
-                            <input type="number" style="width:70px" name="txtBathroomLongSizeMin" value="@Bathroom.BathroomLongSizeMin" />
-                            <i> - &nbsp; </i>
-                            <input type="number" style="width:70px" name="txtBathroomLongSizeMax" value="@Bathroom.BathroomLongSizeMax" />
+                            <input type="number" style="width:105px" name="txtBathroomLongSizeMin" value="@Bathroom.BathroomLongSizeMin" />
+                            <i> × </i>
+                            <input type="number" style="width:105px" name="txtBathroomLongSizeMax" value="@Bathroom.BathroomLongSizeMax" />
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:block">
                         <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
                         <dd>
-                            <input type="number" style="width:70px" name="txtSizeSideMin" value="@Bathroom.BathroomShortSideMin" />
-                            <i> - &nbsp; </i>
-                            <input type="number" style="width:70px" name="txtSizeSideMax" value="@Bathroom.BathroomShortSideMax" />
+                            <input type="number" style="width:105px" name="txtSizeSideMin" value="@Bathroom.BathroomShortSideMin" />
+                            <i>× </i>
+                            <input type="number" style="width:105px" name="txtSizeSideMax" value="@Bathroom.BathroomShortSideMax" />
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:block">
                         <dt class="col-dt"><i>*</i>马桶尺寸：</dt>
                         <dd>
-                            <select name="selectClosesToolWidth">
+                            <select name="selectClosesToolWidth" style="width:105px">
                                 @foreach (BasArgumentSetting ClosesToolWidth in ViewBag.ClosesToolWidths)
-                            {
-                                if (ClosesToolWidth.Id == Bathroom.BathroomClosestoolSize)
                                 {
-                                    <option value="@ClosesToolWidth.Id" selected="selected">@ClosesToolWidth.ArgumentText</option>
-                                }
-                                else
-                                {
-                                    <option value="@ClosesToolWidth.Id">@ClosesToolWidth.ArgumentText</option>
-                                }
+                                    if (ClosesToolWidth.Id == Bathroom.BathroomClosestoolSize)
+                                    {
+                                        <option value="@ClosesToolWidth.Id" selected="selected">@ClosesToolWidth.ArgumentText</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@ClosesToolWidth.Id">@ClosesToolWidth.ArgumentText</option>
+                                    }
 
-                            }
+                                }
                             </select>
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:block">
                         <dt class="col-dt"><i>*</i>水盆柜宽：</dt>
                         <dd>
-                            <select name="selectBathroomBasinSize">
+                            <select name="selectBathroomBasinSize" style="width:105px">
                                 @foreach (BasArgumentSetting ToiletBasinWidth in ViewBag.ToiletBasinWidths)
-                            {
-                                if (ToiletBasinWidth.Id == Bathroom.BathroomBasinSize)
                                 {
-                                    <option value="@ToiletBasinWidth.Id" selected="selected">@ToiletBasinWidth.ArgumentText</option>
-                                }
-                                else
-                                {
-                                    <option value="@ToiletBasinWidth.Id">@ToiletBasinWidth.ArgumentText</option>
-                                }
+                                    if (ToiletBasinWidth.Id == Bathroom.BathroomBasinSize)
+                                    {
+                                        <option value="@ToiletBasinWidth.Id" selected="selected">@ToiletBasinWidth.ArgumentText</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@ToiletBasinWidth.Id">@ToiletBasinWidth.ArgumentText</option>
+                                    }
 
-                            }
+                                }
                             </select>
                         </dd>
                     </dl>

@@ -61,22 +61,22 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>卫生间类型：</dt>
                     <dd>
-                        <select name="ToiletType" class="required">
+                        <select name="ToiletType" class="required" style="width:105px;">
                             @foreach (BasArgumentSetting ToiletType in ViewBag.ToiletTypes)
-                        {
+                            {
                                 <option value="@ToiletType.Id">@ToiletType.ArgumentText</option>
-                        }
+                            }
                         </select>
                     </dd>
                 </dl>
                 <dl>
                     <dt class="col-dt"><i>*</i>门窗位置：</dt>
                     <dd>
-                        <select name="selectBathroomDoorWindowPosition" class="required">
+                        <select name="selectBathroomDoorWindowPosition" class="required" style="width:105px;">
                             @foreach (BasArgumentSetting BathroomDoorWindowPosition in ViewBag.BathroomDoorWindowPositions)
-                        {
+                            {
                                 <option value="@BathroomDoorWindowPosition.Id">@BathroomDoorWindowPosition.ArgumentText</option>
-                        }
+                            }
                         </select>
                     </dd>
                 </dl>
@@ -111,47 +111,47 @@
                 <dl class="dynamic_module">
                     <dt class="col-dt"><i>*</i>短边尺寸范围(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:70px" name="txtBathroomShortSideMin" value="0" />
-                        <i> - &nbsp; </i>
-                        <input type="number" style="width:70px" name="txtBathroomShortSideMax" value="0" />
+                        <input type="number" style="width:105px" name="txtBathroomShortSideMin" value="0" />
+                        <i> × </i>
+                        <input type="number" style="width:105px" name="txtBathroomShortSideMax" value="0" />
                     </dd>
                 </dl>
                 <dl class="dynamic_module">
                     <dt class="col-dt"><i>*</i>长边尺寸范围(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:70px" name="txtBathroomLongSizeMin" value="0" />
-                        <i> - &nbsp; </i>
-                        <input type="number" style="width:70px" name="txtBathroomLongSizeMax" value="0" />
+                        <input type="number" style="width:105px" name="txtBathroomLongSizeMin" value="0" />
+                        <i> ×</i>
+                        <input type="number" style="width:105px" name="txtBathroomLongSizeMax" value="0" />
                     </dd>
                 </dl>
 
                 <dl class="static_module">
                     <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:70px" name="txtSizeSideMin" value="0" />
-                        <i> - &nbsp; </i>
-                        <input type="number" style="width:70px" name="txtSizeSideMax" value="0" />
+                        <input type="number" style="width:105px" name="txtSizeSideMin" value="0" />
+                        <i> × </i>
+                        <input type="number" style="width:105px" name="txtSizeSideMax" value="0" />
                     </dd>
                 </dl>
                 <dl class="static_module">
                     <dt class="col-dt"><i>*</i>马桶尺寸：</dt>
                     <dd>
-                        <select name="selectClosesToolWidth">
+                        <select name="selectClosesToolWidth" style="width:105px">
                             @foreach (BasArgumentSetting ClosesToolWidth in ViewBag.ClosesToolWidths)
-                        {
+                            {
                                 <option value="@ClosesToolWidth.Id">@ClosesToolWidth.ArgumentText</option>
-                        }
+                            }
                         </select>
                     </dd>
                 </dl>
                 <dl class="static_module">
                     <dt class="col-dt"><i>*</i>水盆柜宽：</dt>
                     <dd>
-                        <select name="selectBathroomBasinSize">
+                        <select name="selectBathroomBasinSize" style="width:105px">
                             @foreach (BasArgumentSetting ToiletBasinWidth in ViewBag.ToiletBasinWidths)
-                        {
+                            {
                                 <option value="@ToiletBasinWidth.Id">@ToiletBasinWidth.ArgumentText</option>
-                        }
+                            }
                         </select>
                     </dd>
                 </dl>

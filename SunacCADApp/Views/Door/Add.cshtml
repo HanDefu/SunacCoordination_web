@@ -117,7 +117,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>门类型：</dt>
                     <dd>
-                        <select name="selectDoorType">
+                        <select name="selectDoorType" style="width:105px">
                             @foreach (BasArgumentSetting DoorType in ViewBag.DoorTypes)
                             {
                                 <option value="@DoorType.Id">@DoorType.ArgumentText</option>
@@ -128,9 +128,9 @@
                 <dl class="dynamic_module">
                     <dt class="col-dt"><i>*</i>宽度尺寸范围(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:100px" name="txtWindowSizeMin" value="0" />
-                        <i style="font-size:18px;"> - </i>
-                        <input type="number" style="width:100px" name="txtWindowSizeMax" value="0" />
+                        <input type="number" style="width:105px" name="txtWindowSizeMin" value="0" />
+                        <i>  × </i>
+                        <input type="number" style="width:105px" name="txtWindowSizeMax" value="0" />
                     </dd>
                 </dl>
                 <dl class="dynamic_module">
@@ -269,9 +269,9 @@
                 <dl class="static_module">
                     <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
                     <dd>
-                        宽：<input type="number" style="width:70px" name="txtSizeMin" value="0" />
-                        <i style="font-size:18px;"> - </i>
-                        高：<input type="number" style="width:70px" name="txtSizeMax" value="0" />
+                        宽：<input type="number" style="width:105px" name="txtSizeMin" value="0" />
+                        <i>  × </i>
+                        高：<input type="number" style="width:105px" name="txtSizeMax" value="0" />
                     </dd>
                 </dl>
 

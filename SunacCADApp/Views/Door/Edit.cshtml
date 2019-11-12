@@ -174,7 +174,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>门类型：</dt>
                     <dd>
-                        <select name="selectDoorType">
+                        <select name="selectDoorType" style="width:105px">
                             @foreach (BasArgumentSetting DoorType in ViewBag.DoorTypes)
                         {
                             if (DoorType.Id == doorDetail.DoorType)
@@ -196,9 +196,9 @@
                     <dl class="dynamic_module">
                         <dt class="col-dt"><i>*</i>宽度尺寸范围(mm)：</dt>
                         <dd>
-                            <input type="text" style="width:100px" name="txtWindowSizeMin" value="@doorDetail.WindowSizeMin" />
-                            <i> - &nbsp; </i>
-                            <input type="text" style="width:100px" name="txtWindowSizeMax" value="@doorDetail.WindowSizeMax" />
+                            <input type="text" style="width:105px" name="txtWindowSizeMin" value="@doorDetail.WindowSizeMin" />
+                            <i>  × </i>
+                            <input type="text" style="width:105px" name="txtWindowSizeMax" value="@doorDetail.WindowSizeMax" />
                         </dd>
                     </dl>
                     <dl class="dynamic_module">
@@ -306,8 +306,8 @@
                     <dl class="static_module" style="display:none">
                         <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
                         <dd>
-                            宽<input type="number" style="width:100px" name="txtSizeMin" value="@doorDetail.WindowSizeMin" />
-                            高<input type="number" style="width:100px" name="txtSizeMax" value="@doorDetail.WindowSizeMax" />
+                            宽<input type="number" style="width:105px" name="txtSizeMin" value="@doorDetail.WindowSizeMin" />
+                            高<input type="number" style="width:105px" name="txtSizeMax" value="@doorDetail.WindowSizeMax" />
                         </dd>
                     </dl>
 
@@ -317,9 +317,9 @@
                 <dl class="dynamic_module" style="display:none">
                     <dt class="col-dt"><i>*</i>宽度尺寸范围(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:100px" name="txtWindowSizeMin" value="@doorDetail.WindowSizeMin" />
-                        <i> - &nbsp; </i>
-                        <input type="number" style="width:100px" name="txtWindowSizeMax" value="@doorDetail.WindowSizeMax" />
+                        <input type="number" style="width:105px" name="txtWindowSizeMin" value="@doorDetail.WindowSizeMin" />
+                        <i>  × </i>
+                        <input type="number" style="width:105px" name="txtWindowSizeMax" value="@doorDetail.WindowSizeMax" />
                     </dd>
                 </dl>
                     <dl class="dynamic_module" style="display:none">
@@ -427,8 +427,8 @@
                     <dl class="dynamic_module">
                         <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
                         <dd>
-                            宽<input type="number" style="width:70px" name="txtSizeMin" value="@doorDetail.WindowSizeMin" />
-                            高<input type="number" style="width:70px" name="txtSizeMax" value="@doorDetail.WindowSizeMax" />
+                            宽<input type="number" style="width:105px" name="txtSizeMin" value="@doorDetail.WindowSizeMin" />
+                            高<input type="number" style="width:105px" name="txtSizeMax" value="@doorDetail.WindowSizeMax" />
                         </dd>
                     </dl>
             }

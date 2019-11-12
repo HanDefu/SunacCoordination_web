@@ -59,7 +59,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>厨房类型：</dt>
                     <dd>
-                        <select name="selectKitchenType">
+                        <select name="selectKitchenType" style="width:105px;">
                             @foreach (BasArgumentSetting KitchenType in ViewBag.KitchenType)
                         {
                                 <option value="@KitchenType.Id">@KitchenType.ArgumentText</option>
@@ -70,11 +70,11 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>门窗位置：</dt>
                     <dd>
-                        <select name="selectKitchenPosition">
+                        <select name="selectKitchenPosition" style="width:105px;">
                             @foreach (BasArgumentSetting DoorWindowPosition in ViewBag.DoorWindowPositions)
-                        {
+                            {
                                 <option value="@DoorWindowPosition.Id">@DoorWindowPosition.ArgumentText</option>
-                        }
+                            }
                         </select>
                     </dd>
                 </dl>
@@ -108,31 +108,31 @@
                 <dl class="dynamic_module">
                     <dt class="col-dt"><i>*</i>开间尺寸范围(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:100px" name="txtKitchenOpenSizeMin" value="0" />
-                        <i> -&nbsp; </i>
-                        <input type="number" style="width:100px" name="txtKitchenOpenSizeMax" value="0" />
+                        <input type="number" style="width:105px" name="txtKitchenOpenSizeMin" value="0" />
+                        <i> × </i>
+                        <input type="number" style="width:105px" name="txtKitchenOpenSizeMax" value="0" />
                     </dd>
                 </dl>
                 <dl class="dynamic_module">
                     <dt class="col-dt"><i>*</i>进深尺寸范围(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:100px" name="txtKitchenDepthsizeMin" value="0" />
-                        <i> -&nbsp; </i>
-                        <input type="number" style="width:100px" name="txtKitchenDepthsizeMax" value="0" />
+                        <input type="number" style="width:105px" name="txtKitchenDepthsizeMin" value="0" />
+                        <i> × </i>
+                        <input type="number" style="width:105px" name="txtKitchenDepthsizeMax" value="0" />
                     </dd>
                 </dl>
                 <dl class="static_module">
                     <dt class="col-dt"><i>*</i>开间进深(mm)：</dt>
                     <dd>
-                        <input type="number" style="width:100px" name="txtWindowSizeMin" value="0" />
-                        <i> -&nbsp; </i>
-                        <input type="number" style="width:100px" name="txtWindowSizeMax" value="0" />
+                        <input type="number" style="width:105px" name="txtWindowSizeMin" value="0" />
+                        <i>  × </i>
+                        <input type="number" style="width:105px" name="txtWindowSizeMax" value="0" />
                     </dd>
                 </dl>
                 <dl class="static_module">
                     <dt class="col-dt"><i>*</i>台盆尺寸：</dt>
                     <dd>
-                        <select name="selectKitchenBasinSize" style="width:100px;">
+                        <select name="selectKitchenBasinSize" style="width:105px;">
                             @foreach (BasArgumentSetting KitchenBasinType in ViewBag.KitchenBasinTypes)
                         {
                                 <option value="@KitchenBasinType.Id">@KitchenBasinType.ArgumentText</option>
@@ -143,7 +143,7 @@
                 <dl class="static_module">
                     <dt class="col-dt"><i>*</i>冰箱尺寸：</dt>
                     <dd>
-                        <select name="selectKitchenFridgSize" style="width:100px;">
+                        <select name="selectKitchenFridgSize" style="width:105px;">
                             @foreach (BasArgumentSetting RefrigeratorType in ViewBag.RefrigeratorTypes)
                         {
                                 <option value="@RefrigeratorType.Id">@RefrigeratorType.ArgumentText</option>
@@ -154,7 +154,7 @@
                 <dl class="static_module">
                     <dt class="col-dt"><i>*</i>灶台尺寸：</dt>
                     <dd>
-                        <select name="selectKitchenHearthSize" style="width:100px;">
+                        <select name="selectKitchenHearthSize" style="width:105px;">
                             @foreach (BasArgumentSetting HearthWidth in ViewBag.HearthWidths)
                             {
                                 <option value="@HearthWidth.Id">@HearthWidth.ArgumentText</option>

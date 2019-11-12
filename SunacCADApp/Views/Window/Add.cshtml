@@ -129,7 +129,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>开启类型：</dt>
                     <dd>
-                        <select name="OpenType" class="required">
+                        <select name="OpenType" class="required" style="width:105px">
                             @foreach (BasArgumentSetting OpenType in ViewBag.OpenTypes)
                         {
                                 <option value="@OpenType.Id">@OpenType.ArgumentText</option>
@@ -140,10 +140,10 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>开启扇数量：</dt>
                     <dd>
-                        <select name="OpenWindowNum" class="required">
+                        <select name="OpenWindowNum" class="required" style="width:105px;">
                             @foreach (BasArgumentSetting OpenType in ViewBag.OpenWindowNums)
                         {
-                                <option value="@OpenType.Id">@OpenType.ArgumentText 扇</option>
+                                <option value="@OpenType.Id">@OpenType.ArgumentText</option>
                         }
                         </select>
                     </dd>
@@ -178,7 +178,7 @@
                     <dt class="col-dt"><i>*</i>宽度尺寸范围（mm）：</dt>
                     <dd>
                         <input type="number" style="width:100px" name="txtWindowSizeMin" value="0" />
-                        <i> -&nbsp; </i>
+                        <i>  × </i>
                         <input type="number" style="width:100px" name="txtWindowSizeMax" value="0" />
                     </dd>
                 </dl>
@@ -196,7 +196,7 @@
                     <dd>
                         <em>宽</em>
                         <input type="number" style="width:60px" value="0" name="txt_Window_Width" />&nbsp;
-                        <i> -&nbsp; </i>
+                        <i>  × </i>
                         <em>高 </em>
                         <input type="number" style="width:60px" value="0" name="txt_Window_Height" />
                     </dd>
@@ -204,14 +204,14 @@
                 <dl class="static_module">
                     <dt class="col-dt"><i>*</i>通风量：</dt>
                     <dd>
-                        <input type="number" style="width:80px" name="txt_WindowVentilationQuantity" value="0" />
+                        <input type="number" style="width:105px" name="txt_WindowVentilationQuantity" value="0" />
 
                     </dd>
                 </dl>
                 <dl class="static_module">
                     <dt class="col-dt"><i></i>塞缝尺寸：</dt>
                     <dd>
-                        <input type="text" style="width:80px" name="txtWindowPlugslotSize" value="0" />
+                        <input type="text" style="width:105px" name="txtWindowPlugslotSize" value="0" />
 
                     </dd>
                 </dl>
