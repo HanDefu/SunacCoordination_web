@@ -196,6 +196,28 @@ namespace SunacCADApp
                         RSP_ITEM = new Bpm_Rsp_Param { Code = -100, Error = 2222 }
                     };
                 }
+                else if (param.eAction == "2")
+                {
+                    _code = "100";
+                    _success = "1111";
+                    _error = "";
+                    _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
+                    {
+                        RSP_ITEM = new Bpm_Rsp_Param { Code = 100, Success = 1111 }
+                    };
+                    
+
+                }
+                else if (param.eAction == "3")
+                {
+                    _code = "100";
+                    _success = "1111";
+                    _error = "";
+                    _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
+                    {
+                        RSP_ITEM = new Bpm_Rsp_Param { Code = 100, Success = 1111 }
+                    };
+                }
                 else 
                 {
                     _code = "-100";

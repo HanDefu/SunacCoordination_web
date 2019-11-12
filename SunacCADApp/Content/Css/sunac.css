@@ -472,6 +472,7 @@ header {
                     .main .center .view .mian-column dl dd input[disabled="disabled"] {
                        background-color:#ffffff;
                        border: solid 0px #ffffff;
+                       line-height:1.2;
 
                     }
                     .main .center .view .mian-column dl dd input[type="text"],
@@ -993,6 +994,20 @@ header {
 }
 
 
+#sunac .panel-table td .disabled{
+   color:#606163;
+   font-weight:normal;
+   cursor:pointer;
+}
+
+#sunac .panel-table td .enabled {
+   color:#c8c8c8;
+   font-weight:normal;
+   cursor:pointer;
+}
+
+
+
 #sunac .input-control-group dl,
 #sunac .input-control-group dl dt,
 #sunac .input-control-group dl dd {
@@ -1107,6 +1122,11 @@ header {
     #sunac .form-bottom button {
         min-width: 120px;
     }
+
+#sunac .cursor-pointer {
+    cursor:pointer;
+    text-decoration:none;
+}
 
 
 

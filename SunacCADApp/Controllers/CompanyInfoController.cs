@@ -19,6 +19,7 @@ namespace SunacCADApp.Controllers
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 14;
+            ViewBag.Title = "机构管理";
         }
 
         /// <summary>
@@ -102,11 +103,15 @@ namespace SunacCADApp.Controllers
             basecompanyinfo.CompanyName = Request.Form["hid_companyname"].ConventToString(string.Empty);
             basecompanyinfo.CompanyCode = "00000";
             basecompanyinfo.CompanyRemark = Request.Form["area_companyremark"].ConventToString(string.Empty);
-            basecompanyinfo.CreateOn = DateTime.Now;
+    
             basecompanyinfo.Reorder = 0;
             basecompanyinfo.Enabled = Request.Form["select_enabled"].ConvertToInt32(0);
-            basecompanyinfo.CreateUserId = 0;
-            basecompanyinfo.CreateBy = "admin";
+            basecompanyinfo.CreateUserId = UserId;
+            basecompanyinfo.CreateBy = UserName;
+            basecompanyinfo.CreateOn = DateTime.Now;
+            basecompanyinfo.ModifiedUserId = UserId;
+            basecompanyinfo.ModifiedBy = UserName;
+            basecompanyinfo.ModifiedOn = DateTime.Now;
             int rtv = BaseCompanyInfoDB.AddHandle(basecompanyinfo);
             if (rtv > 0)
             {
@@ -169,8 +174,8 @@ namespace SunacCADApp.Controllers
             basecompanyinfo.CompanyRemark = Request.Form["area_companyremark"].ConventToString(string.Empty);
             basecompanyinfo.Reorder = 0;
             basecompanyinfo.Enabled = Request.Form["select_enabled"].ConvertToInt32(0);
-            basecompanyinfo.CreateUserId = 0;
-            basecompanyinfo.CreateBy = "admin";
+            basecompanyinfo.ModifiedUserId = UserId;
+            basecompanyinfo.ModifiedBy = UserName;
             basecompanyinfo.ModifiedOn = DateTime.Now;
             int rtv = BaseCompanyInfoDB.EditHandle(basecompanyinfo, string.Empty);
             if (rtv > 0)

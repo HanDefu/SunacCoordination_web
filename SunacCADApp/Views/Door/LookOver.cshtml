@@ -14,6 +14,7 @@
     CadDrawingDWG SideDWG = Dwgs.Where(e => e.CADType == "LeftViewFile").SingleOrDefault<CadDrawingDWG>();
     SideDWG = SideDWG == null ? new CadDrawingDWG() : SideDWG;
     string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
+    string cadName = dMaster.DrawingCode;
 
 }
 <div class="row topnav">
@@ -27,7 +28,7 @@
     <div class="left-column">
         <figure>
             <img src="@imagePath" />
-            <p>@ExpansionDWG.FileClass</p>
+            <p>@cadName</p>
         </figure>
     </div>
     <div class="mian-column">
@@ -57,7 +58,7 @@
                     <input type="hidden" name="txt_drawingcad" value="@VerticalDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@VerticalDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="VerticalView" />
-                    <a class="btn-upfile  download-upfile" data-src="@VerticalDWG.CADPath" data-filename="@VerticalDWG.FileClass">下载</a>
+                    <a class="btn-upfile  download-upfile" data-src="@VerticalDWG.CADPath" data-filename="@cadName">下载</a>
                 </dd>
             </dl>
 
@@ -68,7 +69,7 @@
                     <input type="hidden" name="txt_drawingcad" value="@PlanDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@PlanDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="PlanView" />
-                    <a class="btn-upfile  download-upfile" data-src="@PlanDWG.CADPath" data-filename="@PlanDWG.FileClass">下载</a>
+                    <a class="btn-upfile  download-upfile" data-src="@PlanDWG.CADPath" data-filename="@cadName">下载</a>
                 </dd>
             </dl>
 
@@ -82,7 +83,10 @@
                     <input type="hidden" name="txt_drawingcad" value="@SideDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@SideDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="SideView" />
-                    <a class="btn-upfile  download-upfile" data-src="@SideDWG.CADPath" data-filename="@SideDWG.FileClass">下载</a>
+                    @if (string.IsNullOrEmpty(SideDWG.CADPath))
+                    {
+                        <a class="btn-upfile  download-upfile" data-src="@SideDWG.CADPath" data-filename="@cadName">下载</a>
+                    }
                 </dd>
             </dl>
 

@@ -1,0 +1,74 @@
+﻿@using SunacCADApp.Entity
+@using Common.Utility
+@using Common.Utility.Extender
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>项目相关人员</title>
+    <link href="~/Content/Plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Plugins/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" />
+    <link href="~/Content/Css/site.css" rel="stylesheet" />
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="~/Content/Plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Content/Plugins/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+    <script src="~/Content/Js/jquery.form.js"></script>
+    <script src="~/Content/Js/goyeer.validation.js"></script>
+    <script src="~/Content/Plugins/layer/layer.js"></script>
+    <script src="~/Content/Plugins/laydate/laydate.js"></script>
+    <style type="text/css">
+        #inner {
+          margin-top:-22px;
+          margin-bottom:-22px;
+        }
+        .panel-table {
+            padding-left:0px;
+            padding-right:0px;
+        }
+
+    </style>
+</head>
+<body id="inner">
+    <div id="sunac" style="margin-top:0px;margin-bottom:0px;">
+        <div class="row panel-table">
+            <table class="table" id="product-table">
+                <thead>
+                    <tr>
+                        <th width="60">序号</th>
+                        <th width="100">账户</th>
+                        <th width="100">姓名</th>
+                        <th>机构</th>
+                        <th width="100">手机号</th>
+                        <th width="200">邮箱</th>
+                        <th width="90">有效期</th>
+                        <th width="60">状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                        foreach (Sys_User user in ViewBag.SysUserList)
+                        {
+                            string IsUsed = user.Is_Used;
+                            string _used = int.Parse(IsUsed) == 1 ? "开启" : "禁用";
+                            
+                            <tr>
+                                <td>@(++i)</td>
+                                <td>@user.User_Name</td>
+                                <td>@user.True_Name</td>
+                                <td>@user.CompanyName</td>
+                                <td>@user.Telephone</td>
+                                <td>@user.Email</td>
+                                <td>@user.Used_End_DateTime.ToShortDateString()</td>
+                                <td>@_used</td>
+                            </tr>
+                          
+                        }
+                    }
+             
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

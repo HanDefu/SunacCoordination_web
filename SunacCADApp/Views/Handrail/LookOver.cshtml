@@ -9,6 +9,7 @@
     ExpansionDWG = ExpansionDWG == null ? new CadDrawingDWG() : ExpansionDWG;
     string imagePath   = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
     string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? string.Empty : ExpansionDWG.FileClass;
+    string cadName = Drawing.DrawingCode;
 }
 <div class="row topnav">
      <a>标准部品库</a>
@@ -39,7 +40,7 @@
                     <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
-                    <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath" data-filename="@ExpansionDWG.FileClass">下载</a>
+                    <a class="btn-upfile  download-upfile" data-src="@ExpansionDWG.CADPath" data-filename="@cadName">下载</a>
                 </dd>
             </dl>
 

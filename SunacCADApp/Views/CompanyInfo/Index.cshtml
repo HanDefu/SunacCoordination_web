@@ -25,14 +25,14 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th width="60" class="text-center">选择</th>
-                    <th width="60" class="text-center">序号</th>
+                    <th width="60">选择</th>
+                    <th width="60">序号</th>
                     <th width="180">组织机构代码</th>
                     <th>公司名称</th>
-                    <th width="160" class="text-center">创建时间</th>
-                    <th width="100" class="text-center">人员</th>
-                    <th width="60" class="text-center">状态</th>
-                    <th width="120" class="text-center">操作</th>
+                    <th width="160">创建时间</th>
+                    <th width="100">人员</th>
+                    <th width="60">状态</th>
+                    <th width="120">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,27 +41,34 @@
                     foreach (BaseCompanyInfo basecompanyinfo in ViewBag.List)
                     {
                         <tr>
-                            <td align="center">
+                            <td>
                                 <input type="checkbox" class="checkbox" />
                             </td>
-                            <td class="text-center">@(i++)</td>
+                            <td>@(i++)</td>
                             <td>@basecompanyinfo.InsEnCode</td>
                             <td>@basecompanyinfo.CompanyName</td>
-                            <td class="text-center">@basecompanyinfo.ModifiedOn.ToString("yyyy-MM-dd  HH:mm:ss")</td>
-                            <td class="text-center">查看人员</td>
-                            <td class="text-center handle-enabled">
+                            <td>@basecompanyinfo.ModifiedOn.ToString("yyyy-MM-dd  HH:mm:ss")</td>
+                            <td class="viewpersonnel cursor-pointer" data-companyid="@basecompanyinfo.Id">查看人员</td>
+                            <td class="handle-enabled">
                                 @if (@basecompanyinfo.Enabled == 1)
                                 {
-                                    <b style="color:#60efe9;font-weight:normal;cursor:pointer" data-id="@basecompanyinfo.Id" data-enabled="0">开启</b>
+                                    <b class="disabled" data-id="@basecompanyinfo.Id" data-enabled="0">开启</b>
                                 }
                                 else
                                 {
-                                    <b style="color:#cccccc;font-weight:normal;cursor:pointer" data-id="@basecompanyinfo.Id" data-enabled="1">禁用</b>
+                                    <b class="enabled" data-id="@basecompanyinfo.Id" data-enabled="1">禁用</b>
                                 }
                             </td>
-                            <td align="center" class="operate">
+                            <td class="operate">
                                 <a href="javascript:void(0)" class="handle-modify" data-id="@basecompanyinfo.Id">修改</a> |
-                                <a data-id="@basecompanyinfo.Id" title="删除" class="handle-delete" href="javascript:void(0)">删除</a>
+                                @if (basecompanyinfo.Enabled == 1)
+                                {
+                                    <a data-id="@basecompanyinfo.Id" data-enabled="0" title="禁用" href="javascript:void(0)" class="btn-enabled">禁用</a>
+                                }
+                                else
+                                {
+                                    <a data-id="@basecompanyinfo.Id" data-enabled="1" title="开启" href="javascript:void(0)" class="btn-enabled">开启</a>
+                                }
                             </td>
                         </tr>
                     }
@@ -146,11 +153,11 @@
             }
         });
 
-        $('.handle-enabled b').on('click', function () {
+        $('.handle-enabled b,.btn-enabled').on('click', function () {
             let id = $(this).data("id");
             let enabled = $(this).data("enabled");
             let tip_msg = enabled == 0 ? "是否禁用" : "是否开启";
-            layer.confirm(tip_msg,{icon:3,title:"提示"}, function (index) {
+            layer.confirm(tip_msg, { icon: 3, title: "禁用提示", shade: false }, function (index) {
                 $.post("/companyinfo/ChangeCompanyEnabled", { id: id, enabled: enabled }, function (data) {
                     if (data.code == 100) {
                         layer.alert(data.message, { icon: 6, shade: false }, function () {
@@ -170,22 +177,33 @@
         $('.icon-search').on('click', function () {
             var keyword = $('input[name="search-keyword"]').val();
             window.location.href = "?keyword=" + keyword;
-        })
+        });
 
         $('#btnskip').on('click', function () {
-            var currentpage = parseInt($('#currentpage').val());
-            var pageCount = parseInt(@ViewBag.PageCount);
-            if (currentpage < 1)
-            {
+             var currentpage = parseInt($('#currentpage').val());
+             var pageCount = parseInt(@ViewBag.PageCount);
+             if (currentpage < 1)
+             {
                 currentpage = 1;
-            }
+             }
             if (currentpage >= pageCount)
             {
                 currentpage = pageCount;
             }
             window.location.href="?@Html.Raw(ViewBag.URL)&page="+currentpage;
-        });
+       })
 
+        $('.viewpersonnel').on('click', function () {
+            let companyid = $(this).data("companyid");
+            var index = layer.open({
+                type: 2,
+                skin: 'layer-ext-sunacskin',
+                area: ['73%', '80%'],
+                title: '机构人员',
+                shade: 0,
+                content: '/sysuser/viewprojectuserbyid?companyid=' + companyid
+            });
+        })
 
     })
 </script>

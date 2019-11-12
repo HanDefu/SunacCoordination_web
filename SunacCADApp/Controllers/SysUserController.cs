@@ -480,6 +480,27 @@ namespace SunacCADApp.Controllers
             }
             return View();
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+
+        public ActionResult ViewProjectUserById() 
+        {
+           int companyid = Request.QueryString["companyid"].ConvertToInt32(0);
+            if (UserId < 1 || companyid<1)
+            {
+                return Redirect("/home");
+            }
+            string _where = string.Format(@" a.CompanyID='{0}'",companyid);
+            IList<Sys_User> lst = Sys_UserDB.GetPageInfoByParameter(_where, string.Empty, 0, 200);
+            ViewBag.SysUserList = lst;
+            return View();
+        }
+
+
     
     }
 }
