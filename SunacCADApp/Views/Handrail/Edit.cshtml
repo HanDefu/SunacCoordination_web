@@ -9,6 +9,7 @@
     ExpansionDWG = ExpansionDWG == null ? new CadDrawingDWG() : ExpansionDWG;
     string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
     string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? string.Empty : ExpansionDWG.FileClass;
+    imageName = dMaster.DrawingCode;
 }
 
 <div class="row topnav">

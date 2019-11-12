@@ -226,10 +226,10 @@
                             </select>
                         </dd>
                     </dl>
-    <dl class="static_module" style="display:none;width:105px;">
+    <dl class="static_module" style="display:none;">
         <dt class="col-dt"><i>*</i>水盆柜宽：</dt>
         <dd>
-            <select name="selectBathroomBasinSize">
+            <select name="selectBathroomBasinSize" style="width: 105px;">
                 @foreach (BasArgumentSetting ToiletBasinWidth in ViewBag.ToiletBasinWidths)
                 {
                     if (ToiletBasinWidth.Id == Bathroom.BathroomBasinSize)
