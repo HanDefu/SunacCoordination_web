@@ -252,11 +252,11 @@ namespace SunacCADApp.Controllers
                 int rtv = CadDrawingAirconditionerDetailDB.AddHandle(airconditioner);
                 if (rtv > 0 && mId > 0)
                 {
-                    return Json(new { code = 100, message = "空调原型图纸添加成功" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { code = -100, message = "空调原型图纸添加失败" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = -100, message = "添加失败" }, JsonRequestBehavior.AllowGet);
 
                 }
 
@@ -411,11 +411,11 @@ namespace SunacCADApp.Controllers
                 int rtv = CadDrawingAirconditionerDetailDB.AddHandle(airconditioner);
                 if (rtv > 0 && mId > 0)
                 {
-                    return Json(new { code = 100, message = "空调原型图纸修改成功" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { code = -100, message = "空调原型图纸修改失败" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = -100, message = "修改失败" }, JsonRequestBehavior.AllowGet);
 
                 }
             }

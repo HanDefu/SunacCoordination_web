@@ -9,6 +9,7 @@
     ExpansionDWG = ExpansionDWG == null ? new CadDrawingDWG() : ExpansionDWG;
     string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
     string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? "" : ExpansionDWG.FileClass;
+    string drawingCode = dMaster.DrawingCode;
 
 }
 <div class="row topnav">
@@ -29,7 +30,7 @@
     <div class="left-column">
         <figure class="icon-drawing-img">
             <img src="@imagePath" width="238" heigth="200" />
-            <p>@imageName</p>
+            <p>@drawingCode</p>
         </figure>
     </div>
     <div class="mian-column">
@@ -38,7 +39,8 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>原型编号：</dt>
                     <dd>
-                        <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" value="@dMaster.DrawingCode" />
+                        <input type="text" style="width:450px" name="dis_drawingcode" class="required" data-error="原型编号不能为空" value="@dMaster.DrawingCode" />
+                        <input type="hidden" value="@dMaster.DrawingCode" name="txt_drawingcode" />
                     </dd>
                 </dl>
                 <dl>

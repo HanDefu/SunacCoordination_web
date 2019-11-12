@@ -83,7 +83,7 @@
                     <input type="hidden" name="txt_drawingcad" value="@SideDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@SideDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="SideView" />
-                    @if (string.IsNullOrEmpty(SideDWG.CADPath))
+                    @if (!string.IsNullOrEmpty(SideDWG.CADPath))
                     {
                         <a class="btn-upfile  download-upfile" data-src="@SideDWG.CADPath" data-filename="@cadName">下载</a>
                     }

@@ -93,6 +93,7 @@ namespace SunacCADApp.Controllers
         {
             string file = Request.QueryString["file"].ConventToString(string.Empty);
             string fileName = Request.QueryString["filename"].ConventToString(string.Empty);
+            fileName=string.Format(@"{0}.DWG",fileName.ToUpper());
             string filePath = Server.MapPath(file);
             string _fileName = string.IsNullOrEmpty(fileName) ? Path.GetFileName(file) : fileName; //客户端保存的文件名            
             

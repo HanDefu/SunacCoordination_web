@@ -12,6 +12,7 @@
     ExpansionDWG = ExpansionDWG == null ? new CadDrawingDWG() : ExpansionDWG;
     string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
     string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? "" : ExpansionDWG.FileClass;
+    string cadName = Master.DrawingCode;
 }
 <div class="row topnav">
     <a>标准部品库</a>
@@ -31,7 +32,7 @@
     <div class="left-column">
         <figure class="icon-drawing-img">
             <img src="@imagePath" width="238" heigth="200" />
-            <p>@imageName</p>
+            <p>@cadName</p>
         </figure>
     </div>
     <div class="mian-column">
@@ -40,7 +41,8 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>原型编号：</dt>
                     <dd>
-                        <input type="text" style="width:450px" name="txt_drawingcode" class="required" value="@Master.DrawingCode" disabled="disabled" />
+                        <input type="text" style="width:450px" name="dis_drawingcode" class="required" value="@Master.DrawingCode" disabled="disabled" />
+                        <input type="hidden" value="@Master.DrawingCode" name="txt_drawingcode" />
                         <i class="icon-tips" tips="<p>外窗原型编号规则：门窗原型代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗， WC外开窗， WZC外开转角窗，TC推拉窗， TLM推拉门，TSTLM提升推拉门，MLC门连窗， WM外开门；</p>">&nbsp;</i>
                     </dd>
                 </dl>
