@@ -150,6 +150,12 @@ namespace SunacCADApp.Data
             string sql = string.Format(@"UPDATE dbo.Sys_User SET User_Psd='{0}' WHERE Id={1}",password,userid);
             return MsSqlHelperEx.Execute(sql);
         }
+
+        public static IList<Sys_Role> GetSysRoleListByWh(string wh) 
+        {
+            string sql = string.Format(@"SELECT Id,Role_Name,Role_Remark FROM dbo.Sys_Role WHERE {0}",wh);
+            return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Sys_Role>(new Sys_Role());
+        }
             
     }
 }

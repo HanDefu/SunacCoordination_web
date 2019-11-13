@@ -114,7 +114,7 @@ namespace SunacCADApp.Data
             _str_file = _str_file.TrimEnd(',');
 
             window.region = _str_area;
-            window.functionAreas = _str_function;
+            window.functionalAreas = _str_function;
             window.filePath = _str_file;
             window.SizeParas = CadDrawingParameterDB.GetBPMSizeParamList(_where).ToArray<SizePara>();
             return window;

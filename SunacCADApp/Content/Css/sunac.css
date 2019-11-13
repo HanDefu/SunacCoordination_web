@@ -204,8 +204,8 @@ header {
     margin-top: 0px;
     background: #ffffff url("img/main-bg.png") repeat-x top;
     margin-left: 170px;
-    padding-left: 36px;
-    padding-right: 36px;
+    padding-left: 55px;
+    padding-right: 55px;
     padding-top: 15px;
 }
 
@@ -225,23 +225,30 @@ header {
        margin-bottom: 0px;
     }
 
-        .main .center .search dl dt,
+        .main .center .search dl dt
         .main .center .search dl dd {
-            float: left;
             position: relative;
         }
 
         .main .center .search dl dt {
             width: 85px;
-            line-height: 35px;
+            line-height: 55px;
             text-align: right;
             font-weight: normal;
             color: #5e5e5d;
+            float:left;
         }
+        .main .center .search dl dd {
+           display:block;
+           overflow:hidden;
+           margin-left:86px;
+        }
+
 
         .main .center .search dl dd a {
             display: inline-block;
-            line-height: 35px;
+            line-height: 55px;
+            min-width:90px;
             padding-left: 15px;
             padding-right: 15px;
             text-decoration: none;
@@ -921,9 +928,11 @@ header {
                background-image:url("img/icon-add-extend.png");
             }
 
-            #sunac .panel-search .panel-button .icon-search {
+           #sunac .panel-button .icon-search {
                background-image:url("img/icon-search.png");
             }
+
+
             
 
     #sunac .panel-table {
@@ -1016,13 +1025,15 @@ header {
 }
 
 #sunac .input-control-group.search-btn {
-    float: right;
+    float: left;
     margin-right: 0px;
+    position:relative;
 }
 
 #sunac .search-btn input[type="text"] {
-    border-radius: 50px;
-    width: 250px;
+    border-radius: 5px;
+    width: 290px;
+    line-height:1.2;
 }
 
 #sunac .input-control-group strong {
@@ -1033,20 +1044,30 @@ header {
     background-size: 18px 18px;
     right: 0px;
     top: 0px;
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
     cursor: pointer;
 }
 
 #sunac .input-control-group {
-    margin-right: 30px;
+    margin-right: 10px;
 }
 
     #sunac .input-control-group dl dt {
         line-height: 35px;
         font-weight: normal;
         font-size: 15px;
+      padding-left:15px;
+        text-align:right;
     }
+
+        #sunac .input-control-group dl dt.dt-title {
+           min-width:110px;
+        }
+
+#sunac .row-margin-top {
+    margin-top: 12px;
+}
 
         #sunac .input-control-group dl dt.lbl-title {
             width: 120px;

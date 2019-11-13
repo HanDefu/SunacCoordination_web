@@ -122,13 +122,13 @@ namespace SunacCADApp.Data
             IList<Sys_Model> _sys_models = new List<Sys_Model>();
             if (roleID == -8888)
             {
-                string sql = string.Format(@"SELECT *  FROM dbo.Sys_Model where 1=1", roleID);
+                string sql = string.Format(@"SELECT *  FROM dbo.Sys_Model where 1=1 ORDER BY b.Id ASC", roleID);
                 _sys_models = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Sys_Model>(new Sys_Model());
             }
             else 
             {
                 string sql = string.Format(@"select b.*  from dbo.Sys_Role_Model_Relation a 
-                                                       inner join Sys_Model b on a.Model_Id=b.Id where a.Role_Id='{0}'", roleID);
+                                                       inner join Sys_Model b on a.Model_Id=b.Id where a.Role_Id='{0}' ORDER BY b.Id ASC", roleID);
                 _sys_models = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Sys_Model>(new Sys_Model());
             }
             return _sys_models;

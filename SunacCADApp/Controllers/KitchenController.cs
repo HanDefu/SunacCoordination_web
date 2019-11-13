@@ -13,13 +13,21 @@ namespace SunacCADApp.Controllers
 {
     public class KitchenController : Controller
     {
+        private int UserId = 0;
+        private string UserName = string.Empty;
         public KitchenController()
         {
+            UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
+            UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 8;
         }
         // GET: Kitchen
         public ActionResult Index()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string _where = "TypeCode='Area' And ParentID!=0";
             IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.Settings = Settings;
@@ -108,6 +116,10 @@ namespace SunacCADApp.Controllers
         /// <returns></returns>
         public ActionResult LookOver(int Id=0)
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
              if (Id < 1)
             {
                 return Redirect("/Kitchen/Index");
@@ -134,6 +146,10 @@ namespace SunacCADApp.Controllers
         /// <returns></returns>
         public ActionResult Add()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string _where = "TypeCode='Area' And ParentID!=0";
             IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.Settings = Settings;
@@ -168,6 +184,10 @@ namespace SunacCADApp.Controllers
         {
             try 
             {
+                if (UserId < 1)
+                {
+                    return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+                }
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
                 string cadFile = Request.Form["txt_drawingcad"];
                 string imgFile = Request.Form["hid_drawing_img"];
@@ -180,11 +200,13 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
-                caddrawingmaster.CreateOn = DateTime.Now;
+             
                 caddrawingmaster.Reorder = 2;
                 caddrawingmaster.Enabled = 1;
                 caddrawingmaster.CreateUserId = 0;
                 caddrawingmaster.CreateBy = "admin";
+                caddrawingmaster.CreateOn = DateTime.Now;
+
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
                 string[] arr_CADFile = cadFile.Split(',');
                 string[] arr_IMGFile = imgFile.Split(',');
@@ -267,6 +289,10 @@ namespace SunacCADApp.Controllers
         /// <returns></returns>
         public ActionResult Edit(int Id=0)
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             if (Id < 1)
             {
                return  Redirect("/Kitchen/Index");
@@ -321,6 +347,10 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Edithandle()
         {
+            if (UserId < 1)
+            {
+                return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
             try
             {
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
@@ -428,6 +458,10 @@ namespace SunacCADApp.Controllers
         /// <author>alon<84789887@qq.com></author>  
         public ActionResult DeleteHandleById()
         {
+            if (UserId < 1)
+            {
+                return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
             int Id = Request.Form["id"].ConvertToInt32(0);
             int rtv = CadDrawingKitchenDetailDB.DeleteHandleById(Id);
             if (rtv > 0)
@@ -447,6 +481,10 @@ namespace SunacCADApp.Controllers
         /// <author>alon<84789887@qq.com></author> 
         public ActionResult DeleteHandleByIds()
         {
+            if (UserId < 1)
+            {
+                return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
             string ids = Request.QueryString["ids"].ConventToString(string.Empty);
             int rtv = CadDrawingKitchenDetailDB.DeleteHandleByIds(ids);
             if (rtv > 0)
@@ -468,7 +506,10 @@ namespace SunacCADApp.Controllers
         {
             try
             {
-
+                if (UserId < 1)
+                {
+                    return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+                }
                 int kitchenID = Request.Form["Id"].ConvertToInt32(0);
                 string BOID = kitchenID.ConventToString("0");
                 string State = Request.Form["State"].ConventToString(string.Empty);

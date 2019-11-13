@@ -31,6 +31,7 @@
                              <dt class="lbl-title"><i>*</i>账户：</dt>
                              <dd>
                                  <input type="text" class="form-control required" name="txt_user_name" data-error="用户名不能为空" value="@user.User_Name" />
+                                 <input type="hidden"  value="@user.Id" name="hid_id"/>
                              </dd>
                              <dd class="explain">
                                  默认密码为:123456
@@ -238,7 +239,7 @@
 
   
     var options = {
-        url: '/sysuser/addhandle',
+        url: '/sysuser/edithandle',
         type: 'post',
         data: $("#myform").serialize(),
         dataType: 'json',

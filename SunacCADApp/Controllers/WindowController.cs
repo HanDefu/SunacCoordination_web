@@ -16,18 +16,22 @@ namespace SunacCADApp.Controllers
 {
     public class WindowController : Controller
     {
+        private int UserId = 0;
+        private string UserName = string.Empty;
         public WindowController() 
         {
             ViewBag.SelectModel = 5;
-            int  userId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
-            if (userId < 1) 
-            {
-                Redirect("/home");
-            }
+            UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
+            UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
+
         }
         // GET: /window/index
         public ActionResult Index()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string _where = "TypeCode='Area' And ParentID!=0";
             IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.Settings = Settings;
@@ -121,6 +125,10 @@ namespace SunacCADApp.Controllers
         /// <returns></returns>
         public ActionResult LookOver(int Id=0)
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             if (Id < 1) 
             {
                return   Redirect("/Window/Index");
@@ -155,7 +163,10 @@ namespace SunacCADApp.Controllers
 
         public ActionResult Add()
         {
-
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string _where = "TypeCode='Area' And ParentID!=0";
             IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.Settings = Settings;
@@ -190,6 +201,10 @@ namespace SunacCADApp.Controllers
         {
             try
             {
+                if (UserId < 1)
+                {
+                    return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+                }
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
                 string filenames = Request.Form["txt_filename"];
                 string cadFile     = Request.Form["txt_drawingcad"];
@@ -379,6 +394,10 @@ namespace SunacCADApp.Controllers
         /// <url>/Window/Edit</url>
         public ActionResult Edit(int Id=0)
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             if (Id < 1)
             {
                return  Redirect("/Window/Index");
@@ -434,6 +453,10 @@ namespace SunacCADApp.Controllers
         {
             try
             {
+                if (UserId < 1)
+                {
+                    return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+                }
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
                 string filenames = Request.Form["txt_filename"];
                 string cadFile = Request.Form["txt_drawingcad"];
@@ -621,7 +644,10 @@ namespace SunacCADApp.Controllers
         {
             try
             {
-
+                if (UserId < 1)
+                {
+                    return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+                }
                 int Id   = Request.Form["Id"].ConvertToInt32(0);
                 int _btid = Request.Form["State"].ConvertToInt32(0);
                 string BOID=string.Empty,

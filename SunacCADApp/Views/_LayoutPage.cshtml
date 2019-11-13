@@ -154,7 +154,7 @@
             <div class="leftsidebar">
                 @{
                     int roleID = InitUtility.Instance.InitSessionHelper.Get("RoleId").ConvertToInt32(0);
-                    //roleID = -8888;
+                   // roleID = -8888;
                     IList<Sys_Model> models = Sys_ModelDB.GetSysModeByRoleID( roleID);
                 }
                 @foreach (Sys_Model m in models)

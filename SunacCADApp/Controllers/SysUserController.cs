@@ -81,11 +81,14 @@ namespace SunacCADApp.Controllers
                 _url += "roleid=" + roleid + "&";
             }
             ViewBag.roleid = roleid;
+            string where = "  [Enabled]=1";
+            IList<Sys_Role> RoleList = Sys_UserDB.GetSysRoleListByWh(where);
             IList<Sys_User> lst = Sys_UserDB.GetPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
             recordCount = Sys_UserDB.GetPageCountByParameter(_where);
             pageCount = recordCount % pageSize == 0 ? recordCount / pageSize : ((recordCount / pageSize) + 1);
             ViewBag.URL = _url;
-            ViewBag.List = lst;
+            ViewBag.SysUserList = lst;
+            ViewBag.RoleList = RoleList;
             ViewBag.RecordCount = recordCount;
             ViewBag.CurrentPage = currentPage;
          
@@ -202,7 +205,7 @@ namespace SunacCADApp.Controllers
         /// <returns></returns>
         /// <get>/manage/Sys_User/edit/id</get> 
         /// <author>alon<84789887@qq.com></author>  
-        public ActionResult Edit(int Id)
+        public ActionResult Edit(int Id=0)
         {
             if (UserId < 1)
             {

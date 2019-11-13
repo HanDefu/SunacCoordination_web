@@ -29,7 +29,7 @@ namespace SunacCADApp.Entity
         /// <summary>
         /// 功能区类型
         /// </summary>
-        public string functionAreas { get; set; }
+        public string functionalAreas { get; set; }
         /// <summary>
         /// 开启类型
         /// </summary>
