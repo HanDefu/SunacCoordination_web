@@ -24,7 +24,7 @@ namespace SunacCADApp.Data
             IList<Sys_User> _sys_users = new List<Sys_User>();
             string sql = string.Format(@"SELECT  * FROM 
                                                    ( SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber , a.*,b.CompanyName
-                                                      FROM    dbo.Sys_User  a inner join baseCompanyInfo b on a.CompanyID=B.Id
+                                                      FROM    dbo.Sys_User  a left join baseCompanyInfo b on a.CompanyID=B.Id
                                                       WHERE   {0}
                                                     ) T
                                                    WHERE    T.RowNumber BETWEEN {1} AND {2}  ORDER BY T.Reorder DESC,T.CreateOn DESC {3}", _where, start, end, orderby);
@@ -38,7 +38,7 @@ namespace SunacCADApp.Data
         ///<summary>
         public static int GetPageCountByParameter(string _where)
         {
-            string sql = string.Format(@"SELECT COUNT(*) AS RowNum  FROM dbo.Sys_User WHERE 1=1 AND {0}", _where);
+            string sql = string.Format(@"SELECT COUNT(*) AS RowNum  FROM dbo.Sys_User a WHERE 1=1 AND {0}", _where);
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
 
@@ -86,7 +86,7 @@ namespace SunacCADApp.Data
 
 
             string _wh = string.IsNullOrEmpty(editparam) ? " and id=" + sys_user.Id : editparam;
-            string sql = "UPDATE [dbo].[Sys_User] SET [User_Name]='" + sys_user.User_Name + "',[User_Psd]='" + sys_user.User_Psd + "',[True_Name]='" + sys_user.True_Name + "',[Telephone]='" + sys_user.Telephone + "',[Email]='" + sys_user.Email + "',[Is_Used]='" + sys_user.Is_Used + "',[Used_Begin_DateTime]='" + sys_user.Used_Begin_DateTime + "',[Used_End_DateTime]='" + sys_user.Used_End_DateTime + "',[Is_Internal]='" + sys_user.Is_Internal + "',[Orgnazation_Name]='" + sys_user.Orgnazation_Name + "',[CompanyID]=" + sys_user.CompanyID + ",[RoleID]=" + sys_user.RoleID + ",[AreaID]=" + sys_user.AreaID + ",[Enabled]=" + sys_user.Enabled + ",[Reorder]=" + sys_user.Reorder + ",[ModifiedUserId]=" + sys_user.ModifiedUserId + ",[ModifiedBy]='" + sys_user.ModifiedBy + "'  where 1=1 " + _wh;
+            string sql = "UPDATE [dbo].[Sys_User] SET [True_Name]='" + sys_user.True_Name + "',[Telephone]='" + sys_user.Telephone + "',[Email]='" + sys_user.Email + "',[Is_Used]='" + sys_user.Is_Used + "',[Used_Begin_DateTime]='" + sys_user.Used_Begin_DateTime + "',[Used_End_DateTime]='" + sys_user.Used_End_DateTime + "',[Is_Internal]='" + sys_user.Is_Internal + "',[Orgnazation_Name]='" + sys_user.Orgnazation_Name + "',[CompanyID]=" + sys_user.CompanyID + ",[RoleID]=" + sys_user.RoleID + ",[AreaID]=" + sys_user.AreaID + ",[Enabled]=" + sys_user.Enabled + ",[Reorder]=" + sys_user.Reorder + ",[ModifiedUserId]=" + sys_user.ModifiedUserId + ",[ModifiedBy]='" + sys_user.ModifiedBy + "'  where 1=1 " + _wh;
             return MsSqlHelperEx.Execute(sql);
         }
 
@@ -132,6 +132,14 @@ namespace SunacCADApp.Data
                                                                  VALUES ({0},'{1}',getdate(),{2},'{3}')", userID, ObjID, OperateId, Operater);
             return MsSqlHelperEx.Execute(sql);
         }
+
+        public static int DeleteSysUserProjectRelationByUId(int userId) 
+        {
+            string sql = string.Format(@"DELETE FROM dbo.sys_user_project_relation WHERE  [User_ID] = {0}", userId);
+            return MsSqlHelperEx.Execute(sql);
+        }
+
+       
 
 
         /// <summary>

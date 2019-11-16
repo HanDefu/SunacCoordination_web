@@ -98,6 +98,7 @@
     <Compile Include="Handrail.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Kitchen.cs" />
+    <Compile Include="PageNum.cs" />
     <Compile Include="ProjectInfo.cs" />
     <Compile Include="Project_Information.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

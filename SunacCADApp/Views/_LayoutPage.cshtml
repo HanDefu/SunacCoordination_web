@@ -17,6 +17,7 @@
     <link href="~/Content/Css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/Css/sunac.css" rel="stylesheet" />
     <link href="~/Content/Plugins/mtips/mTips.css" rel="stylesheet" />
+    <link href="~/Content/Plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <script src="~/Content/Js/jquery-1.12.4.min.js" type="text/javascript"></script>
     <script src="~/Content/Js/jquery.form.js" type="text/javascript"></script>
     <script src="~/Content/Js/goyeer.validation.js" type="text/javascript"></script>
@@ -24,7 +25,7 @@
     <script src="~/Content/Plugins/laydate/laydate.js" type="text/javascript"></script>
     <script src="~/Content/Plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="~/Content/Plugins/mtips/mTips.js" type="text/javascript"></script>
-
+    
     <script type="text/javascript">
         $(function () {
             let win_height = $(window).height();
@@ -136,10 +137,10 @@
     </script>
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid bwidth">
         <header>
             <span class="userinfo">
-               
+
                 <span class="username">@UserName</span>
                 <span class="user-operate">
                     <span class="cnt">
@@ -154,8 +155,8 @@
             <div class="leftsidebar">
                 @{
                     int roleID = InitUtility.Instance.InitSessionHelper.Get("RoleId").ConvertToInt32(0);
-                   // roleID = -8888;
-                    IList<Sys_Model> models = Sys_ModelDB.GetSysModeByRoleID( roleID);
+                    // roleID = -8888;
+                    IList<Sys_Model> models = Sys_ModelDB.GetSysModeByRoleID(roleID);
                 }
                 @foreach (Sys_Model m in models)
                 {
@@ -166,7 +167,7 @@
                         <dl>
                             @if (m.Id == 3)
                             {
-                        
+
                                 <dt class="@m.Model_ICON">
                                     <a href="@m.Model_URL">@m.Model_Name</a>
                                 </dt>

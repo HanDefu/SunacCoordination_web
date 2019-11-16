@@ -116,6 +116,47 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.Execute(sql);
         }
 
+        /// <summary>
+        /// 状态修改
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="enabled"></param>
+        /// <returns></returns>
+        public static int IsChangeCompanyInfo(int id, int enabled, int ModifiedUserId, string ModifiedBy)
+        {
+            string sql = string.Format(@"UPDATE dbo.BasInstitutionData SET [Enabled]={0},
+                                                                      ModifiedUserId={1},
+                                                                      ModifiedBy='{2}',
+                                                                      ModifiedOn=GETDATE() WHERE Id={3}", enabled,ModifiedUserId,ModifiedBy,id);
+            return MsSqlHelperEx.Execute(sql).ConvertToInt32(0);
+        }
+
+        public static IList<BasInstitutionData> GetBasInstitutionDataByKeyword(string keyword)
+        {
+
+            IList<BasInstitutionData> _basinstitutiondatas = new List<BasInstitutionData>();
+            string where = string.Empty;
+            if (string.IsNullOrEmpty(keyword)) 
+            {
+                where = string.Format(@"  and InsName LIKE '{0}%'", keyword);
+            }
+            string sql = string.Format(@"SELECT Id,InsName FROM dbo.BasInstitutionData WHERE 1=1  {0}
+                                                                  AND Enabled=1 ORDER BY ModifiedOn DESC", where);
+
+            _basinstitutiondatas = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<BasInstitutionData>(new BasInstitutionData());
+            return _basinstitutiondatas;
+        }
+
+        public static IList<BasInstitutionData> GetTop10InstitutionInit() 
+        {
+            IList<BasInstitutionData> _basinstitutiondatas = new List<BasInstitutionData>();
+            string sql = string.Format(@"SELECT Id,InsName FROM dbo.BasInstitutionData WHERE 1=1 
+                                                                  AND Enabled=1 ORDER BY ModifiedOn DESC");
+
+            _basinstitutiondatas = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<BasInstitutionData>(new BasInstitutionData());
+            return _basinstitutiondatas;
+        }
+
  
     }
 }

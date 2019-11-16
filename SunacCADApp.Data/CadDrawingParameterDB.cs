@@ -149,7 +149,7 @@ namespace SunacCADApp.Data
                                                            FROM dbo.CadDrawingParameter  a 
                                                    INNER JOIN dbo.Sys_State b ON a.ValueType=b.StateId 
                                                                                              AND b.StateFixFlag='WindowArgument' 
-                                                            WHERE {0}",_where);
+                                                            WHERE {0}", _where);
             _param = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<SizePara>(new SizePara());
             return _param;
         }

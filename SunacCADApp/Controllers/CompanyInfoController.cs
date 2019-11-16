@@ -45,24 +45,34 @@ namespace SunacCADApp.Controllers
             int startRowNum = 0;    //开始行数
             int endRowNum = 0;      //结束行数
             currentPage = string.IsNullOrEmpty(Request.QueryString["page"]) ? 1 : Request.QueryString["page"].ConvertToInt32(0);
+            pageSize = string.IsNullOrEmpty(Request.QueryString["pagesize"]) ? pageSize : Request.QueryString["pagesize"].ConvertToInt32(0);
             startRowNum = ((currentPage - 1) * pageSize) + 1;
             endRowNum = currentPage * pageSize;
             string companyname = HttpUtility.UrlDecode(Request.QueryString["keyword"]);
             if (!string.IsNullOrEmpty(companyname))
             {
-                _where += " and  companyname like '" + companyname + "%'";
-                _url += "&companyname=" + companyname;
+                _where += " and  InsName like '" + companyname + "%'";
+                _url += "&InsName=" + companyname;
             }
             ViewBag.Keyword = companyname;
-          
-            IList<BaseCompanyInfo> lst = BaseCompanyInfoDB.GetPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
-            recordCount = BaseCompanyInfoDB.GetPageCountByParameter(_where);
+            //IList<BaseCompanyInfo> lst = BaseCompanyInfoDB.GetPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
+            //recordCount = BaseCompanyInfoDB.GetPageCountByParameter(_where);
+            IList<BasInstitutionData> InstitutionInfo = BasInstitutionDataDB.GetPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
+            recordCount = BasInstitutionDataDB.GetPageCountByParameter(_where);
             pageCount =  (int)Math.Ceiling((Double)recordCount / (Double)pageSize);
+            int[] page = CommonLib.PageHelper(pageCount, currentPage);
+            IList<PageNum> pageNumList = CommonLib.GetPageNum();
             ViewBag.URL = _url;
-            ViewBag.List = lst;
+            ViewBag.List = InstitutionInfo;
             ViewBag.RecordCount = recordCount;
             ViewBag.PageCount = pageCount;
+            ViewBag.PageNumList = pageNumList;
             ViewBag.CurrentPage = currentPage;
+            ViewBag.NextPage = currentPage + 1;
+            ViewBag.PreviousPage = currentPage - 1;
+            ViewBag.StartPage = page[0];
+            ViewBag.EndPage = page[1];
+            ViewBag.PageSize = pageSize;
             return View();
         }
         /// <summary>
@@ -143,6 +153,28 @@ namespace SunacCADApp.Controllers
             ViewBag.BaseCompanyInfo = basecompanyinfo;
             return View();
         }
+
+
+
+        public ActionResult View(int Id) 
+        {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
+            if (Id < 1)
+            {
+                return Redirect("/companyinfo/index");
+            }
+
+            BasInstitutionData Ins = BasInstitutionDataDB.GetSingleEntityById(Id);
+            ViewBag.Ins = Ins;
+            return View();
+
+        }
+
+
+
         /// <summary>
         ///   机构信息-修改方法
         /// </summary>
@@ -247,7 +279,7 @@ namespace SunacCADApp.Controllers
             }
             int id = Request.Form["id"].ConvertToInt32(0);
             int enabled = Request.Form["enabled"].ConvertToInt32(0);
-            int flag = BaseCompanyInfoDB.IsChangeCompanyInfo(id, enabled);
+            int flag = BasInstitutionDataDB.IsChangeCompanyInfo(id, enabled, UserId, UserName);
             if (flag > 0)
             {
                 return Json(new { code = 100, message = "状态更改成功" }, JsonRequestBehavior.AllowGet);

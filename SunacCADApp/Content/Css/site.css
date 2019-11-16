@@ -1,5 +1,11 @@
 ﻿        body {
         }
+
+.bwidth {
+  min-width:1024px;
+}
+.container-fluid {
+}
         #header {
             display: block;
             overflow: hidden;
@@ -488,8 +494,8 @@
     left:0px;
     right:0px;
     text-align:center;
-    padding-bottom:15px;
-    padding-top:15px;
+    padding-bottom:8px;
+    padding-top:8px;
     background-color:#ffffff;
 }
 
@@ -500,7 +506,7 @@
 
 
 
-body .layer-ext-sunacskin .layui-layer-title{background:#dbac58; color:#fff; border: none; text-align:center;font-size:18px;}
+body .layer-ext-sunacskin .layui-layer-title{background:#b58d59; color:#fff; border: none; text-align:center;font-size:18px;background-color:#b58d59;}
 body .layui-ext-sunacskin .layui-layer-btn{border-top:1px solid #E9E7E7}
 body .layui-ext-sunacskin .layui-layer-btn a{background:#ffffff;}
 body .layui-ext-sunacskin .layui-layer-btn .layui-layer-btn1{background:#ffffff;color:#ffffff;}
@@ -514,9 +520,123 @@ body .layui-ext-sunacskin .layui-layer-btn .layui-layer-btn1{background:#ffffff;
     min-height:500px;
 }
 
+#sunac.inner {
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+#sunac .uitem {
+  display:block;
+  margin-top:8px;
+  
+}
+#sunac .uitem dl,
+#sunac .uitem dl dt,
+#sunac .uitem dl dd
+ {
+    display:block;
+    margin:0px;
+    padding:0px;
+}
+#sunac .uitem dl {
+   margin-left:-15px;
+   margin-right:-15px;
+  
+}
+#sunac .uitem dl dt {
+     float:left;
+     width:100px;
+     line-height:35px;
+     text-align:right;
+     font-size:14px;
+}
+
+#sunac .uitem dl dd {
+   margin-left:100px;
+   line-height:35px;
+}
+
+
+  #sunac .uitem dl dd .sub-item {
+      float:left;
+      overflow:hidden;
+      line-height:35px;
+    
+ }
+
+    #sunac .uitem dl dd .sub-item input[type=checkbox],
+    #sunac .uitem dl dd .sub-item input[type=radio] {
+      margin:0px;
+      display:inline-block;
+      font-weight:normal;
+      vertical-align:middle;
+    }
+
+    #sunac .uitem dl dd .sub-item label {
+     display:inline-block;
+     margin-left:2px;
+     font-weight:normal;
+     margin-right:5px;
+     margin-bottom: 0px;
+    }
+
+    #sunac .uitem dl dd .sub-item.split {
+      padding-left:7px;
+      padding-right:7px;
+    }
+    #sunac .uitem dl dd .control-len {
+      width:280px;
+    }
+
+    #sunac .uitem:nth-child(2) dl dt {
+       width:60px;
+    }
+
+    #sunac .uitem:nth-child(2) dl dd {
+      margin-left:60px;
+    }
+    #sunac .uitem dl dd .icon-layer-date {
+        width:130px;
+    }
+
+#sunac .btn-inner {
+  padding:0px;
+  padding:2px 5px;
+  font-size:12px; 
+  line-height:20px;
+  background-color:#ffffff;
+  border:solid 1px #b58d59;
+  color:#b58d59;
+}
+
+#sunac .sunac-border-top {
+    border-top:dashed 1px #dddddd;
+    margin-top:8px;
+    margin-bottom:8px;
+    margin-left:-15px;
+    margin-right:-15px;
+}
 #sunac-wapper {
   display:block;
 }
+
+
+#sunac .sunac-select {
+
+}
+.delete-style {
+   color:#b58d59;
+}
+.tip-color-rad {
+  display:inline-block;
+  padding-right:5px;
+  color:#f00;
+  font-size:12px;
+  font-style:normal;
+}
+
+
+
 
 
 

@@ -12,17 +12,12 @@
     <script src="~/Content/Plugins/laydate/laydate.js"></script>
     <style type="text/css">
         #sunac .input-control-group strong {
-             width: 45px;
-              height: 34px;
-
-            }
-
+            width: 45px;
+            height: 34px;
+        }
         .table tr {
            cursor:pointer;
         }
-
-
-
     </style>
     <script type="text/javascript">
         var ProjectInfo = null;
@@ -49,21 +44,7 @@
 
 
             $(".search-control strong").on("click", function () {
-                let areaname = $("#select_area").val();
-                let citycompany = $("#select_citycompany").val();
-                let keyword = $("#keyword").val();
-                $(".table tbody").empty();
-                $.post("/SysUser/GetJsonProjectInfoBySearch", { AreaName: areaname, CityCompany: citycompany, Keyword: keyword }, function (data) {
-                    if (data.code == 100) {
-                        ProjectInfo = data.list;
-                        init_company(ProjectInfo);
-                    
-                    } else {
-                        ProjectInfo = null;
-                        $(".table tbody").html("<tr><td colspan=\"5\" class=\"not-record-num\"> 暂未有项目信息</td></tr>")
-                    }
-                }, "json")
-                 
+                search_com();
             })
 
 
@@ -103,7 +84,7 @@
                               "   <td class=\"text-center\">" + row.PAREANAME + "</td>" +
                               "   <td class=\"text-center\">" + row.PCITYNAME + "</td>" +
                               "   <td class=\"text-center\">" + row.MTIMESTAMP + "</td>" +
-                               "   <td class=\"text-center btn-delete-project\">删除</td>" +
+                               "   <td class=\"text-center btn-delete-project delete-style\">删除</td>" +
                              "</tr>";
                             parent.$("#product-table").append(_html);
                         }
@@ -118,11 +99,23 @@
                 let _checked = that.find("input[name='productid']").prop("checked");
                 if(_checked==false)
                 {
-                    that.find("input[name='productid']").attr("checked",true);
+                    that.find("input[type='checkbox']").prop("checked", true);
                 } else {
-                    that.find("input[name='productid']").attr("checked", false);
+                    that.find("input[type='checkbox']").prop("checked", false);
                 }
-               
+            })
+
+            $("#box_all").on("click", function () {
+                let checked = $(this).prop("checked");
+                $(".table tbody").find("input[type='checkbox']").prop("checked", checked);
+            })
+
+            $("#select_citycompany").on("change", function () {
+                search_com();
+            })
+
+            $("#select_area").on("change", function () {
+                search_com();
             })
         })
 
@@ -139,6 +132,22 @@
             })
         }
 
+        var search_com = function () {
+            let areaname = $("#select_area").val();
+            let citycompany = $("#select_citycompany").val();
+            let keyword = $("#keyword").val();
+            $(".table tbody").empty();
+            $.post("/SysUser/GetJsonProjectInfoBySearch", { AreaName: areaname, CityCompany: citycompany, Keyword: keyword }, function (data) {
+                if (data.code == 100) {
+                    ProjectInfo = data.list;
+                    init_company(ProjectInfo);
+
+                } else {
+                    ProjectInfo = null;
+                    $(".table tbody").html("<tr><td colspan=\"5\" class=\"not-record-num\"> 暂未有项目信息</td></tr>")
+                }
+            }, "json")
+        }
 
         var getParentTable = function () {
             var tr = parent.$("#product-table").find("tbody").find('tr');
@@ -155,7 +164,7 @@
                     <dl>
                         <dt>区域：</dt>
                         <dd>
-                            <select class="form-control" style="width:150px;" name="select_area" id="select_area">
+                            <select class="form-control" style="width:130px;" name="select_area" id="select_area">
                                 <option value="">选择区域</option>
                                 @foreach (BasIdmOrganization organization in ViewBag.IdmOrganizations)
                                 {
@@ -170,7 +179,7 @@
                     <dl>
                         <dt>城市公司：</dt>
                         <dd>
-                            <select class="form-control" style="width:200px;" id="select_citycompany">
+                            <select class="form-control" style="width:150px;" id="select_citycompany">
                                 <option value="">不限制</option>
                             </select>
                         </dd>
@@ -192,7 +201,9 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th width="50" class="text-center" >选中</th>
+                        <th width="50" class="text-center" >
+                            <input type="checkbox"  name="box_all" id="box_all"/>
+                        </th>
                         <th>项目名称</th>
                         <th width="160" class="text-center">区域</th>
                         <th width="120" class="text-center">城市公司</th>
@@ -207,7 +218,7 @@
      </div>
     <div style="height:45px;"></div>
     <div class="form-bottom">
-          <button type="button" class="btn btn-sunac" id="btn-ok">添加项目</button>
+          <button type="button" class="btn btn-sunac" id="btn-ok">确定</button>
           <button type="button" class="btn btn-sunac" id="btn-close">关闭</button>
     </div>
 </body>

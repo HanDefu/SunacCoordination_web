@@ -5,6 +5,13 @@
 @{
     IList<Sys_User> users = ViewBag.SysUserList;
     IList<Sys_Role>  roles = ViewBag.RoleList;
+    IList<PageNum> pageNumList = ViewBag.PageNumList;
+    int pageCount = ViewBag.PageCount;
+    int recordCount = ViewBag.RecordCount;
+    int current = ViewBag.CurrentPage;
+    
+    
+  
 }
 
 <div id="sunac">
@@ -51,8 +58,8 @@
                 <dl>
                     <dd>
                         <button class="btn btn-sunac btn-add">新增外部账户</button>
-                        <button class="btn btn-sunac btn-delete">删除</button>
-                        <button class="btn btn-sunac btn-disabled">禁用</button>
+                        <button class="btn btn-sunac btn-delete">批量删除</button>
+                        <button class="btn btn-sunac btn-disabled">批量禁用</button>
                     </dd>
                 </dl>
             </div>
@@ -77,16 +84,16 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th width="50" class="text-center selected-all" style="cursor:pointer">选中</th>
-                    <th width="50">序号</th>
-                    <th width="100">账户</th>
-                    <th width="100">姓名</th>
-                    <th>机构</th>
-                    <th width="120">手机</th>
-                    <th>邮箱</th>
-                    <th width="120">有效期</th>
-                    <th width="60">状态</th>
-                    <th width="120">操作</th>
+                    <th width="50" class="text-center selected-all" style="cursor:pointer"><input type="checkbox" name="chk_all"/></th>
+                    <th width="50" class="text-center">序号</th>
+                    <th width="100" class="text-center">账户</th>
+                    <th width="100" class="text-center">姓名</th>
+                    <th class="text-center">机构</th>
+                    <th width="120" class="text-center">手机</th>
+                    <th class="text-center">邮箱</th>
+                    <th width="120" class="text-center">有效期</th>
+                    <th width="60" class="text-center">状态</th>
+                    <th width="120" class="text-center">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -100,9 +107,9 @@
                             <td class="text-left">@row.User_Name</td>
                             <td class="text-left">@row.True_Name</td>
                             <td>@row.CompanyName</td>
-                            <td>@row.Telephone</td>
+                            <td class="text-center">@row.Telephone</td>
                             <td>@row.Email</td>
-                            <td>@row.Used_Begin_DateTime.ToShortDateString()</td>
+                            <td class="text-center">@row.Used_Begin_DateTime.ToShortDateString()</td>
                             <td>启用</td>
                             <td align="center" class="operate">
                                 <a href="javascript:void(0)" class="handle-modify" data-id="@row.Id">修改</a> |
@@ -120,7 +127,63 @@
             </div>
         }
     </div>
+    <div class="row" id="sunac-paging">
+        <b>共<span>@ViewBag.recordCount</span>条</b>
+        <b>
+            <select class="form-control control-page-size">
+                @foreach (PageNum page in pageNumList)
+                {
+                    if (page.Code == ViewBag.PageSize)
+                    {
+                        <option value="@page.Code" selected="selected">@page.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@page.Code">@page.Text</option>
+                    }
 
+                }
+              
+            </select>
+        </b>
+        @if (ViewBag.PreviousPage < 1)
+        {
+            <a class="none"><i class="fa  fa-angle-left fa-lg"></i></a>
+        }
+        else
+        {
+            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PreviousPage"><i class="fa  fa-angle-left fa-lg"></i></a>
+        }
+      
+        @for (int page = ViewBag.StartPage; page <= ViewBag.EndPage; page++)
+        {
+            if (page == current)
+            {
+                <a class="current">@page</a>
+            }
+            else
+            {
+                <a href="?pagesize=@ViewBag.PageSize&page=@page">@page</a>
+            }
+
+        }
+        @if (ViewBag.EndPage != ViewBag.PageCount)
+        {
+            <a>...</a>
+            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PageCount">@ViewBag.PageCount</a>
+            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.NextPage"><i class="fa  fa-angle-right fa-lg"></i></a>
+        }
+        else
+        {
+            <a class="none"><i class="fa  fa-angle-right fa-lg"></i></a>
+        }
+       
+       
+       
+        <strong>
+            前往<input type="text" class="form-control" value="@ViewBag.CurrentPage">页
+        </strong>
+    </div>
 
 </div>
 <script type="text/javascript">
@@ -130,7 +193,7 @@
                 type: 2,
                 shade: 0,
                 skin: 'layer-ext-sunacskin',
-                area: ['900px', '650px'],
+                area: ['800px', '580px'],
                 title: '新增外部用户',
                 scrollbar :true,
                 content: ['/sysuser/add', 'yes']
@@ -143,7 +206,7 @@
                 type: 2,
                 shade: 0,
                 skin: 'layer-ext-sunacskin',
-                area: ['900px', '560px'],
+                area: ['800px', '580px'],
                 title: '修改外部用户',
                 content: ['/sysuser/edit/' + id, 'yes']
             });
@@ -201,7 +264,10 @@
             });
            
         })
-
+       
+        $('.control-page-size').on('change', function () {
+            window.location.href = "?pagesize=" + $(this).val();
+        });
     })
 
 

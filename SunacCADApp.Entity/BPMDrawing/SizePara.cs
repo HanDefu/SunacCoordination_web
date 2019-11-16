@@ -37,7 +37,7 @@ namespace SunacCADApp.Entity
         /// <summary>
         /// 说明
         /// </summary>
-        public string valueDescriptione { get; set; }
+        public string valueDescription { get; set; }
        
     }
 }

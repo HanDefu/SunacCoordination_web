@@ -37,6 +37,57 @@ namespace SunacCADApp.Data
            return members;
        }
 
+       public static IList<PageNum> GetPageNum()
+       {
+           IList<PageNum> pages = new List<PageNum>();
+           PageNum page = new PageNum { Code = 10, Text = "10 条/页" };
+           pages.Add(page);
+           page = new PageNum { Code = 20, Text = "20 条/页" };
+           pages.Add(page);
+           page = new PageNum { Code = 40, Text = "40 条/页" };
+           pages.Add(page);
+           page = new PageNum { Code = 100, Text = "100 条/页" };
+           pages.Add(page);
+           return pages;
+
+       }
+
+       public static int[] PageHelper(int pageCount, int currentPage, int showPage = 5) 
+       {
+           int[] page = new int[2];
+           int _show=(int)(showPage / 2);
+           int _current = (int)Math.Ceiling(currentPage / 2.0);
+           if (pageCount >= showPage)
+           {
+               if (currentPage <showPage)
+               {
+                   page[0] = 1;
+                   page[1] = showPage;
+               }
+               else 
+               {
+                   if (pageCount - showPage >= currentPage)
+                   {
+                       page[0] = currentPage - _show;
+                       page[1] = currentPage + _show;
+                   }
+                   else 
+                   {
+                       page[0] = pageCount-showPage-1;
+                       page[1] = pageCount;
+                   }
+               }
+           }
+           else
+           {
+               page[0] = 1;
+               page[1] = pageCount;
+           }
+
+
+           return page;
+       }
+
 
         
     }

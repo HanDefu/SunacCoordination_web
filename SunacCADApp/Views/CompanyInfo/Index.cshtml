@@ -1,7 +1,14 @@
-﻿@{
+﻿@using SunacCADApp.Entity;
+@{
     Layout = "~/Views/_LayoutPage.cshtml";
+
+    IList<BasInstitutionData> InstitutionList = ViewBag.List;
+    IList<PageNum> pageNumList = ViewBag.PageNumList;
+    int pageCount = ViewBag.PageCount;
+    int recordCount = ViewBag.RecordCount;
+    int current = ViewBag.CurrentPage;
 }
-@using SunacCADApp.Entity;
+
 <div id="sunac">
     <div class="row">
         <div class="col-lg-12 panel-search">
@@ -13,11 +20,6 @@
                     查询
                 </button>
             </span>
-            <span class="panel-item panel-button icon-add">
-                <button class="btn btn-sunac icon-add-extend btn-add" type="button">
-                    新增
-                </button>
-            </span>
         </div>
     </div>
 
@@ -25,49 +27,49 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th width="60">选择</th>
-                    <th width="60">序号</th>
+                    <th width="60" class="text-center">选择</th>
+                    <th width="60" class="text-center">序号</th>
                     <th width="180">组织机构代码</th>
                     <th>公司名称</th>
-                    <th width="160">创建时间</th>
-                    <th width="100">人员</th>
-                    <th width="60">状态</th>
-                    <th width="120">操作</th>
+                    <th width="160" class="text-center">创建时间</th>
+                    <th width="100" class="text-center">人员</th>
+                    <th width="60" class="text-center">状态</th>
+                    <th width="120" class="text-center">操作</th>
                 </tr>
             </thead>
             <tbody>
                 @{
                     int i = 1;
-                    foreach (BaseCompanyInfo basecompanyinfo in ViewBag.List)
+                    foreach (BasInstitutionData Ins in InstitutionList)
                     {
                         <tr>
-                            <td>
+                            <td  align="center">
                                 <input type="checkbox" class="checkbox" />
                             </td>
-                            <td>@(i++)</td>
-                            <td>@basecompanyinfo.InsEnCode</td>
-                            <td>@basecompanyinfo.CompanyName</td>
-                            <td>@basecompanyinfo.ModifiedOn.ToString("yyyy-MM-dd  HH:mm:ss")</td>
-                            <td class="viewpersonnel cursor-pointer" data-companyid="@basecompanyinfo.Id">查看人员</td>
-                            <td class="handle-enabled">
-                                @if (@basecompanyinfo.Enabled == 1)
+                            <td class="text-center">@(i++)</td>
+                            <td>@Ins.InsEnCode</td>
+                            <td>@Ins.InsName</td>
+                            <td class="text-center">@Ins.ModifiedOn.ToString("yyyy-MM-dd  HH:mm:ss")</td>
+                            <td class="viewpersonnel cursor-pointer text-center" data-companyid="@Ins.Id">查看人员</td>
+                            <td class="handle-enabled text-center">
+                                @if (Ins.Enabled == 1)
                                 {
-                                    <b class="disabled" data-id="@basecompanyinfo.Id" data-enabled="0">开启</b>
+                                    <b class="disabled" data-id="@Ins.Id" data-enabled="0">开启</b>
                                 }
                                 else
                                 {
-                                    <b class="enabled" data-id="@basecompanyinfo.Id" data-enabled="1">禁用</b>
+                                    <b class="enabled" data-id="@Ins.Id" data-enabled="1">禁用</b>
                                 }
                             </td>
-                            <td class="operate">
-                                <a href="javascript:void(0)" class="handle-modify" data-id="@basecompanyinfo.Id">修改</a> |
-                                @if (basecompanyinfo.Enabled == 1)
+                            <td class="operate text-center">
+                                @*<a href="javascript:void(0)" class="handle-modify" data-id="@Ins.Id">查看</a> |*@
+                                @if (Ins.Enabled == 1)
                                 {
-                                    <a data-id="@basecompanyinfo.Id" data-enabled="0" title="禁用" href="javascript:void(0)" class="btn-enabled">禁用</a>
+                                    <a data-id="@Ins.Id" data-enabled="0" title="禁用" href="javascript:void(0)" class="btn-enabled">禁用</a>
                                 }
                                 else
                                 {
-                                    <a data-id="@basecompanyinfo.Id" data-enabled="1" title="开启" href="javascript:void(0)" class="btn-enabled">开启</a>
+                                    <a data-id="@Ins.Id" data-enabled="1" title="开启" href="javascript:void(0)" class="btn-enabled">开启</a>
                                 }
                             </td>
                         </tr>
@@ -75,32 +77,66 @@
                 }
             </tbody>
         </table>
-    </div>
-    <div class="row pagination">
-        @if (ViewBag.CurrentPage > 1)
+        @if (InstitutionList.Count == 0)
         {
-            int page = ViewBag.CurrentPage - 1;
-            <a href="?@ViewBag.URL&page=@page">上一页</a>
+            <div class="no-record">
+                暂无记录信息
+            </div>
+        }
+    </div>
+    <div class="row" id="sunac-paging">
+        <b>共<span>@ViewBag.recordCount</span>条</b>
+        <b>
+            <select class="form-control control-page-size">
+                @foreach (PageNum page in pageNumList)
+                {
+                    if (page.Code == ViewBag.PageSize)
+                    {
+                        <option value="@page.Code" selected="selected">@page.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@page.Code">@page.Text</option>
+                    }
+
+                }
+
+            </select>
+        </b>
+        @if (ViewBag.PreviousPage < 1)
+        {
+            <a class="none"><i class="fa  fa-angle-left fa-lg"></i></a>
         }
         else
         {
-            <a class="dispaly">上一页</a>
+            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PreviousPage"><i class="fa  fa-angle-left fa-lg"></i></a>
         }
-        
-        <b>@ViewBag.CurrentPage</b>/
-        <strong>@ViewBag.PageCount</strong>
-       @if (ViewBag.CurrentPage < ViewBag.PageCount)
-       {
-          int page=ViewBag.CurrentPage+1;
-        <a href="?@ViewBag.URL&page=@page">下一页</a>
-       }
-       else
-       {
-        <a class="dispaly">下一页</a>
-       }
-        
-        <input type="text" style="width:40px;"  id="currentpage" value="@ViewBag.CurrentPage"/>
-        <a id="btnskip">跳转</a>
+
+        @for (int page = ViewBag.StartPage; page <= ViewBag.EndPage; page++)
+        {
+            if (page == current)
+            {
+                <a class="current">@page</a>
+            }
+            else
+            {
+                <a href="?pagesize=@ViewBag.PageSize&page=@page">@page</a>
+            }
+
+        }
+        @if (ViewBag.EndPage != ViewBag.PageCount)
+        {
+            <a>...</a>
+            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PageCount">@ViewBag.PageCount</a>
+            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.NextPage"><i class="fa  fa-angle-right fa-lg"></i></a>
+        }
+        else
+        {
+            <a class="none"><i class="fa  fa-angle-right fa-lg"></i></a>
+        }
+        <strong>
+            前往<input type="text" class="form-control" value="@ViewBag.CurrentPage">页
+        </strong>
     </div>
 
 </div>

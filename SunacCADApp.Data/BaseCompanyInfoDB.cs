@@ -140,6 +140,7 @@ namespace SunacCADApp.Data
         /// <returns></returns>
         public static int IsChangeCompanyInfo(int id,int enabled) 
         {
+
             string sql = string.Format(@"UPDATE dbo.BaseCompanyInfo SET [Enabled]={0} WHERE Id={1}",enabled,id);
             return MsSqlHelperEx.Execute(sql).ConvertToInt32(0);
         }

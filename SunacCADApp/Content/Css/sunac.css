@@ -1,7 +1,9 @@
 ﻿* {
-    font-family: "Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;
+    font-family: "Microsoft YaHei",微软雅黑;
 }
-
+.bwidth {
+  min-width:1024px;
+}
 .container-fluid {
     display: block;
     overflow: hidden;
@@ -939,6 +941,10 @@ header {
         margin-top: 20px;
     }
 
+        #sunac .panel-table .table {
+          margin-bottom:5px;
+        }
+
         #sunac .panel-table thead th {
             background-color: #efefe8;
             border-bottom-width: 0px;
@@ -1062,7 +1068,8 @@ header {
     }
 
         #sunac .input-control-group dl dt.dt-title {
-           min-width:110px;
+           min-width:90px;
+           padding-left:0px;
         }
 
 #sunac .row-margin-top {
@@ -1148,6 +1155,39 @@ header {
     cursor:pointer;
     text-decoration:none;
 }
+#sunac .uitem {
+  display:block;
+  
+}
+#sunac .uitem dl,
+#sunac .uitem dl dt,
+#sunac .uitem dl dd
+ {
+    display:block;
+    overflow:hidden;
+    margin:0px;
+    padding:0px;
+}
+#sunac .uitem dl {
+   margin-left:-15px;
+   margin-right:-15px;
+   overflow:hidden;
+  
+}
+#sunac .uitem dl dt {
+     float:left;
+     width:80px;
+     line-height:30px;
+     text-align:right;
+}
+
+#sunac .uitem dl dd {
+   margin-left:130px;
+   line-height:30px;
+}
+
+
+
 
 .main .mian-column .column-tbody dd i {
      font-style:normal;
@@ -1159,9 +1199,8 @@ header {
 
 
 
-
 body .layer-ext-sunacskin .layui-layer-title {
-    background: #dbac58;
+    background: #b58d59;
     color: #fff;
     border: none;
     text-align: center;
@@ -1267,9 +1306,12 @@ body .layui-ext-sunacskin .layui-layer-btn {
        vertical-align:middle;
        border-radius:3px;
        
+       
     }
 
-
+    #sunac .pagination .form-control {
+      padding:3px 5px;
+    }
 #sunac dl.search-list,
 #sunac dl.search-list dd,
 #sunac dl.search-list dt
@@ -1481,6 +1523,88 @@ body .layui-ext-sunacskin .layui-layer-btn {
     #sunac-sub .sub-tbody .item-centre .panel-table tbody td {
         border-bottom: solid 1px #cfc6df;
     }
+
+
+#sunac-paging {
+     display:block;
+     overflow:hidden;
+     text-align:center;
+}
+
+    #sunac-paging em,
+    #sunac-paging strong,
+    #sunac-paging a,
+    #sunac-paging b {
+       display:inline-block;
+       overflow:hidden;
+       line-height:35px;
+       padding-left:8px;
+       padding-right:8px;
+       color:#606266;
+       font-size:14px;
+       font-weight:normal;
+
+    }
+
+    #sunac-paging a {
+       font-size:15px;
+       color:#666666;
+       font-weight:500;
+       text-decoration:none;
+       cursor:pointer;
+       padding-left:10px;
+       padding-right:10px;
+       height:35px;
+    }
+
+        #sunac-paging a.none {
+           color:#c0c4ce;
+           cursor:default;
+        }
+        #sunac-paging a.current {
+            color:#c29e6c;
+            cursor:default;
+            font-weight:600;
+        }
+
+        #sunac-paging b select {
+            padding: 2px 5px;
+            outline:hidden;
+            height:28px;
+            line-height:1.2;
+            font-size:12px;
+            display:inline-block;
+            width:90px;
+        }
+            #sunac-paging b select:hover,
+            #sunac-paging b select:focus {
+               border:solid 1px #c29e6c;
+              outline:none;
+            }
+
+            #sunac-paging b select option {
+                display:inline-block;
+              padding:5px 4px;
+            }
+        #sunac-paging strong input[type="text"] {
+           width:40px;
+           padding:1px 2px;
+           text-align:center;
+           display: inline-block;
+           margin-left:5px;
+           margin-right:5px;
+           overflow:hidden;
+           line-height:1.2;
+           outline:none;
+           height:28px;
+           
+        }
+
+            #sunac-paging strong input[type="text"]:hover,
+            #sunac-paging strong input[type="text"]:focus {
+             border:solid 1px #c29e6c;
+             outline:none;
+            }
 
 
 
