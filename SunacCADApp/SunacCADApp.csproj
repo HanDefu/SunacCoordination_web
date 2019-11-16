@@ -495,9 +495,7 @@
     <Content Include="Views\SysUser\Index.bak.cshtml" />
     <Content Include="Views\SysUser\Add.cshtml" />
     <Content Include="Views\SysUser\Edit.cshtml" />
-    <None Include="Views\SysUser\Add.cshtml.bak" />
     <Content Include="Views\SysUser\SelectedProjectInfo.cshtml" />
-    <Content Include="Views\SysUser\Edit.bak.cshtml" />
     <None Include="Properties\PublishProfiles\配置一.pubxml" />
     <Content Include="Views\_LayoutPage.cshtml" />
     <Content Include="Views\Window\Index.cshtml" />

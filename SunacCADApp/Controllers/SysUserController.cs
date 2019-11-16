@@ -47,47 +47,48 @@ namespace SunacCADApp.Controllers
             pageSize = string.IsNullOrEmpty(Request.QueryString["pagesize"]) ? pageSize : Request.QueryString["pagesize"].ConvertToInt32(0);
             startRowNum = ((currentPage - 1) * pageSize) + 1;
             endRowNum = currentPage * pageSize;
-            string username = HttpUtility.UrlDecode(Request.QueryString["username"]);
-            if (!string.IsNullOrEmpty(username))
+            string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"]);
+            
+            if (!string.IsNullOrEmpty(keyword))
             {
-                _where += " and  username='" + username + "'";
-                _url += "username=" + username + "&";
+                _where += " and  (a.[User_Name] like '" + keyword + "%' OR a.[True_Name] like '" + keyword + "%') ";
+                _url += "keyword=" + keyword + "&";
             }
-            ViewBag.username = username;
-            string truename = HttpUtility.UrlDecode(Request.QueryString["truename"]);
-            if (!string.IsNullOrEmpty(truename))
-            {
-                _where += " and  truename='" + truename + "'";
-                _url += "truename=" + truename + "&";
-            }
-            ViewBag.truename = truename;
+            ViewBag.keyword = keyword;
             string isinternal = HttpUtility.UrlDecode(Request.QueryString["isinternal"]);
             if (!string.IsNullOrEmpty(isinternal))
             {
-                _where += " and  isinternal='" + isinternal + "'";
+                _where += " and  a.Is_Internal='" + isinternal + "'";
                 _url += "isinternal=" + isinternal + "&";
             }
             ViewBag.isinternal = isinternal;
-            string professionid = HttpUtility.UrlDecode(Request.QueryString["professionid"]);
-            if (!string.IsNullOrEmpty(professionid))
+
+            string institutionid = HttpUtility.UrlDecode(Request.QueryString["institutionid"]);
+            if (!string.IsNullOrEmpty(institutionid))
             {
-                _where += " and  professionid='" + professionid + "'";
-                _url += "professionid=" + professionid + "&";
+                _where += " and  a.companyid='" + institutionid + "'";
+                _url += "companyid=" + institutionid + "&";
             }
-            ViewBag.professionid = professionid;
+            ViewBag.institutionid = institutionid;
             string roleid = HttpUtility.UrlDecode(Request.QueryString["roleid"]);
             if (!string.IsNullOrEmpty(roleid))
             {
-                _where += " and  roleid='" + roleid + "'";
+                _where += " and  a.roleid='" + roleid + "'";
                 _url += "roleid=" + roleid + "&";
             }
             ViewBag.roleid = roleid;
             string where = "  [Enabled]=1";
             IList<Sys_Role> RoleList = Sys_UserDB.GetSysRoleListByWh(where);
+
+            IList<BasInstitutionData> InstitutionData = BasInstitutionDataDB.GetTop10InstitutionInit();
+            ViewBag.InstitutionList = InstitutionData;
+  
             IList<Sys_User> lst = Sys_UserDB.GetPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
             recordCount = Sys_UserDB.GetPageCountByParameter(_where);
             pageCount = recordCount % pageSize == 0 ? recordCount / pageSize : ((recordCount / pageSize) + 1);
+                      
             int[] page = CommonLib.PageHelper(pageCount,currentPage);
+         
             IList<PageNum> pageNumList = CommonLib.GetPageNum();
             ViewBag.URL = _url;
             ViewBag.SysUserList = lst;
@@ -101,6 +102,7 @@ namespace SunacCADApp.Controllers
             ViewBag.StartPage = page[0];
             ViewBag.EndPage = page[1];
             ViewBag.PageSize = pageSize;
+            
             return View();
         }
         /// <summary>
@@ -357,7 +359,7 @@ namespace SunacCADApp.Controllers
         {
             if (UserId < 1)
             {
-                return Redirect("/home");
+                return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
             }
             string ids = Request.Form["ids"].ConventToString(string.Empty);
             if (string.IsNullOrEmpty(ids)) 
@@ -543,6 +545,34 @@ namespace SunacCADApp.Controllers
             IList<Sys_User> lst = Sys_UserDB.GetPageInfoByParameter(_where, string.Empty, 0, 200);
             ViewBag.SysUserList = lst;
             return View();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// <get>/sysuser/changeisusedbyid</get>
+        public ActionResult ChangeIsUsedById() 
+        {
+            if (UserId < 1)
+            {
+                return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
+
+            string uids = Request.Form["uids"].ConventToString(string.Empty);
+            int used = Request.Form["used"].ConvertToInt32(0);
+            int flag = Sys_UserDB.ChangeSysUsedByIds(uids, used);
+            
+            if (flag > 0)
+            {
+                string message = used == 1 ? "启用成功" : "禁用成功";
+                return Json(new { code = 100, message = message}, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                string message = used == 1 ? "启用失败" : "禁用失败";
+                return Json(new { code = -100, message = message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
 

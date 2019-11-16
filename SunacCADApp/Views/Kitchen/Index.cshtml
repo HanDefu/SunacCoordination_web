@@ -3,7 +3,7 @@
     IList<CadDrawingWindowSearch> listCadDrawing = ViewBag.List;
 }
 @using SunacCADApp.Entity
-<div class="row search search-bottom">
+<div class="row search search-bottom" style="margin-top:-15px;">
     <dl class="dl_area">
         <dt>区域：</dt>
         <dd>
@@ -24,7 +24,7 @@
             {
                 <a data-val="-9999" class="area">集团</a>
             }
-            
+
             @foreach (BasArgumentSetting argument in ViewBag.Settings)
             {
                 if (ViewBag.area == argument.Id)

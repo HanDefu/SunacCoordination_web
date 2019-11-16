@@ -1,4 +1,6 @@
-﻿@{
+﻿
+
+@{
     Layout = "~/Views/_LayoutPage.cshtml";
 }
 @using SunacCADApp.Entity
@@ -64,8 +66,20 @@
                             </td>
                             <td class="text-center">@row.ModifiedOn.ToString("yyyy-MM-dd  HH:mm:ss")</td>
                             <td align="center" class="operate">
-                                <a href="javascript:void(0)" class="handle-modify" data-id="@row.Id">修改</a> |
-                                <a data-id="@row.Id" title="删除" class="handle-delete" href="javascript:void(0)">删除</a>
+                                
+                                @if (row.Id == 22)
+                                {
+                                    <a href="javascript:void(0)" style="color:#e9e9e9" title="修改">修改</a>
+                                    <b style="font-weight:normal">|</b>
+                                    <a  title="删除"  href="javascript:void(0)" style="color:#e9e9e9">删除</a>
+                                }
+                                else
+                                {
+                                    <a href="javascript:void(0)" class="handle-modify" data-id="@row.Id">修改</a>
+                                    <b style="font-weight:normal">|</b>
+                                    <a data-id="@row.Id" title="删除" class="handle-delete" href="javascript:void(0)">删除</a>
+                                }
+                               
                             </td>
                         </tr>
                     }

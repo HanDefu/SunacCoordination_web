@@ -23,8 +23,8 @@ namespace SunacCADApp.Data
 
             IList<Sys_User> _sys_users = new List<Sys_User>();
             string sql = string.Format(@"SELECT  * FROM 
-                                                   ( SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber , a.*,b.CompanyName
-                                                      FROM    dbo.Sys_User  a left join baseCompanyInfo b on a.CompanyID=B.Id
+                                                   ( SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber , a.*,b.InsName AS CompanyName
+                                                      FROM    dbo.Sys_User  a left join BasInstitutionData b on a.CompanyID=B.Id
                                                       WHERE   {0}
                                                     ) T
                                                    WHERE    T.RowNumber BETWEEN {1} AND {2}  ORDER BY T.Reorder DESC,T.CreateOn DESC {3}", _where, start, end, orderby);
@@ -163,6 +163,23 @@ namespace SunacCADApp.Data
         {
             string sql = string.Format(@"SELECT Id,Role_Name,Role_Remark FROM dbo.Sys_Role WHERE {0}",wh);
             return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Sys_Role>(new Sys_Role());
+        }
+
+        /// <summary>
+        /// 是否禁用用户
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public static int ChangeSysUsedById(int Ids,int used) 
+        {
+            string sql = string.Format(@"UPDATE dbo.Sys_User SET Is_Used={0} WHERE Id ={1};",used,Ids);
+            return MsSqlHelperEx.Execute(sql);
+        }
+
+        public static int ChangeSysUsedByIds(string ids, int used) 
+        {
+            string sql = string.Format(@"UPDATE dbo.Sys_User SET Is_Used={0} WHERE Id in ({1});", used, ids);
+            return MsSqlHelperEx.Execute(sql);
         }
             
     }

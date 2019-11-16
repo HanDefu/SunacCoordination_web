@@ -2,10 +2,14 @@
     Layout = "~/Views/_LayoutPage.cshtml";
 }
 @using SunacCADApp.Entity;
+@using Common.Utility;
+@using Common.Utility.Extender;
 @{
     IList<Sys_User> users = ViewBag.SysUserList;
     IList<Sys_Role>  roles = ViewBag.RoleList;
     IList<PageNum> pageNumList = ViewBag.PageNumList;
+
+    IList<BasInstitutionData> institutionList = ViewBag.InstitutionList;
     int pageCount = ViewBag.PageCount;
     int recordCount = ViewBag.RecordCount;
     int current = ViewBag.CurrentPage;
@@ -21,10 +25,24 @@
                 <dl>
                     <dt class="dt-title">账户类型：</dt>
                     <dd>
-                        <select class="form-control">
+                        <select class="form-control usertype" >
                             <option value="">账户类型</option>
-                            <option value="">内部账户</option>
-                            <option value="">外部账户</option>
+                            @if (ViewBag.isinternal == "1")
+                            {
+                                <option value="1" selected="selected">内部账户</option>
+                                <option value="2">外部账户</option>
+                            }
+                            else if (ViewBag.isinternal == "2")
+                            {
+                                <option value="1">内部账户</option>
+                                <option value="2" selected="selected">外部账户</option>
+                            }
+                            else
+                            {
+                                <option value="1">内部账户</option>
+                                <option value="2">外部账户</option>
+                            }
+                           
                         </select>
                     </dd>
                 </dl>
@@ -33,11 +51,20 @@
                 <dl>
                     <dt>角色：</dt>
                     <dd>
-                        <select class="form-control">
+                        <select class="form-control roletype">
                             <option value="">选择角色</option>
                             @foreach (Sys_Role role in roles)
                             {
-                                <option value="@role.Id">@role.Role_Name</option>
+                               string roleid=role.Id.ConventToString(string.Empty);
+                                if ( roleid== ViewBag.roleid)
+                                {
+                                    <option value="@role.Id" selected="selected">@role.Role_Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@role.Id">@role.Role_Name</option>
+                                }
+
                             }
                         </select>
                     </dd>
@@ -47,9 +74,27 @@
                 <dl>
                     <dt>机构：</dt>
                     <dd>
-                        <select class="form-control">
-                            <option value="">选择结构</option>
-                         
+                        <select class="form-control select_institution"
+                                name="select_companyid"
+                                data-error="机构不能为空"
+                                title="请选择机构"
+                                data-live-search="true"
+                                data-size="12"
+                                data-width="280px">
+                            @foreach (BasInstitutionData Ins in institutionList)
+                            {
+                                string InsId=Ins.Id.ConventToString(string.Empty);
+                                if (InsId == ViewBag.institutionid)
+                                {
+                                    <option value="@Ins.Id" selected="selected">@Ins.InsName</option>
+                                }
+                                else
+                                {
+                                    <option value="@Ins.Id">@Ins.InsName</option>
+                                }
+
+                            }
+
                         </select>
                     </dd>
                 </dl>
@@ -71,8 +116,8 @@
                 <dl>
                     <dt class="dt-title">关键字搜索：</dt>
                     <dd>
-                        <input type="text" class="form-control" placeholder="搜关键字试试" />
-                        <strong></strong>
+                        <input type="text" class="form-control keyword" placeholder="搜关键字试试" value="@ViewBag.keyword" />
+                        <strong id="btnSearch"></strong>
                     </dd>
                 </dl>
             </div>
@@ -104,14 +149,23 @@
                         <tr>
                             <td align="center"><input type="checkbox" class="checkbox"  value="@row.Id"/></td>
                             <td class="text-center">@(i++)</td>
-                            <td class="text-left">@row.User_Name</td>
-                            <td class="text-left">@row.True_Name</td>
+                            <td class="text-center">@row.User_Name</td>
+                            <td class="text-center">@row.True_Name</td>
                             <td>@row.CompanyName</td>
                             <td class="text-center">@row.Telephone</td>
                             <td>@row.Email</td>
                             <td class="text-center">@row.Used_Begin_DateTime.ToShortDateString()</td>
-                            <td>启用</td>
-                            <td align="center" class="operate">
+                            <td class="text-center btn-used">
+                            @if (row.Is_Used == "1")
+                            {
+                                <b style="font-weight:normal;cursor:pointer" data-id="@row.Id" data-used="0">启用</b>
+                            }
+                            else
+                            {
+                                <b style="font-weight:normal;color:#666;cursor:pointer" data-id="@row.Id" data-used="1">禁用</b>
+                            }
+                            </td>
+                            <td  class="operate text-center">
                                 <a href="javascript:void(0)" class="handle-modify" data-id="@row.Id">修改</a> |
                                 <a data-id="@row.Id" title="删除" class="handle-delete" href="javascript:void(0)">删除</a>
                             </td>
@@ -188,6 +242,8 @@
 </div>
 <script type="text/javascript">
     $(function () {
+        $(".select_institution").selectpicker()
+
         $(".btn-add").on("click", function () {
             var index = layer.open({
                 type: 2,
@@ -198,7 +254,7 @@
                 scrollbar :true,
                 content: ['/sysuser/add', 'yes']
             });
-        });
+        })
 
         $(".handle-modify").on("click", function () {
             let id = $(this).data("id");
@@ -210,7 +266,7 @@
                 title: '修改外部用户',
                 content: ['/sysuser/edit/' + id, 'yes']
             });
-        });
+        })
 
         $('.handle-delete').on('click', function () {
             var id = $(this).data('id');
@@ -234,22 +290,18 @@
             } else {
                 layer.msg('非法操作', { icon: 5, shade: false });
             }
-        });
+        })
        
-        $('.table .selected-all').on('click', function () {
-            let checked = $(this).attr("checked");
-            if (checked === undefined) {
-                $(this).attr("checked", true);
-                $('.table .checkbox').prop('checked', true);
-            } else {
-                $('.table .checkbox').prop('checked', false);
-                $(this).removeAttr("checked", true);
-            }
+        $('.table input[name="chk_all"]').on('click', function () {
+          
+            let checked = $(this).prop("checked");
+            console.log(checked);
+            $('.table .checkbox').prop('checked', checked);
         })
 
         $('.btn-delete').on('click', function () {
             let ids = getObjectId();
-            layer.confirm('是否需要删除', {
+            layer.confirm('是否需批量删除', {
                 btn: ['删除', '取消'],
                 shade: false,
                 icon: 3
@@ -264,10 +316,57 @@
             });
            
         })
+
+        $('.btn-disabled').on('click',function () {
+            let ids = getObjectId();
+            layer.confirm('是否需批量禁用', {
+                btn: ['禁用', '取消'],
+                shade: false,
+                icon: 3
+            }, function () {
+                $.post("/sysuser/changeisusedbyid", { uids: ids,used:0}, function (data) {
+                    if (data.code == 100) {
+                        window.location.reload();
+                    } else {
+                        layer.msg(data.message, { icon: 5, shade: false });
+                    }
+                }, 'json')
+            });
+        })
        
         $('.control-page-size').on('change', function () {
             window.location.href = "?pagesize=" + $(this).val();
-        });
+        })
+
+        $('.btn-used').on('click','b',function () {
+            let id = $(this).data('id');
+            let used = $(this).data('used');
+            let msg = used == "1" ? "是否启用" : "是否禁用";
+            let btn = used == "1" ? "启用" : "禁用";
+            layer.confirm(msg, {
+                btn: [btn, '取消'],
+                shade: false,
+                icon: 3
+            }, function () {
+                $.post("/sysuser/changeisusedbyid", { uids: id, used: used }, function (data) {
+                    if (data.code == 100) {
+                        window.location.reload();
+                    } else {
+                        layer.msg(data.message, { icon: 5, shade: false });
+                    }
+                }, 'json')
+            });
+        })
+
+        $('#btnSearch').on('click', function () {
+            let usertype = $(".usertype").val();
+            let roletype = $(".roletype").val();
+            let select_institution = $(".select_institution").selectpicker('val');
+            let keyword = $(".keyword").val();
+
+            window.location.href = "?isinternal=" + usertype + "&roleid=" + roletype + "&institutionid=" + select_institution + "&keyword=" + keyword;
+        })
+
     })
 
 
