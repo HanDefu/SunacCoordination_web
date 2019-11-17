@@ -769,12 +769,19 @@ header {
             #ArgumentSetting dl.operate strong {
                 display: block;
                 overflow: hidden;
-                width: 30px;
-                height: 30px;
-                text-align: center;
+                width: 150px;
+                text-align: left;
                 background-color: #b98837;
                 background: url(img/icon-add.png) center center no-repeat;
+                background-position-x:8px;
+                padding:1px 8px;
+                padding-left:35px;
                 cursor: pointer;
+                border:solid 1px #b58d59;
+                border-radius:5px;
+                color: #b58d59;
+                line-height:30px;
+                font-size:14px;
             }
 
 

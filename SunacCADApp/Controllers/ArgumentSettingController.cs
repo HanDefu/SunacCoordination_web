@@ -12,9 +12,12 @@ namespace SunacCADApp.Controllers
 
     public class ArgumentSettingController : Controller
     {
-
+        private int UserId = 0;
+        private string UserName = string.Empty;
         public ArgumentSettingController()
         {
+            UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
+            UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 13;
         }
         /// <summary>
@@ -26,9 +29,10 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Index()
         {
-
-            
-
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             IList<BasArgumentSetting> parentBasArgumentSetting = BasArgumentSettingDB.GetBasArgumentSettingParent();
             IList<BasArgumentSetting> childBasArgumentSetting = BasArgumentSettingDB.GetBasArgumentSettingChild();
             ViewBag.parentBasArgumentSetting = parentBasArgumentSetting;
@@ -43,6 +47,10 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Add()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             return View();
         }
         /// <summary>
@@ -54,6 +62,10 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Addhandle()
         {
+            if (UserId < 1)
+            {
+                return Json(new { code = 100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
             BasArgumentSetting basargumentsetting = new BasArgumentSetting();
             basargumentsetting.ArgumentText = Request.Form["argumenttext"].ConventToString(string.Empty);
             basargumentsetting.TypeCode = Request.Form["typecode"].ConventToString(string.Empty);
@@ -96,6 +108,10 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Edithandle()
         {
+            if (UserId < 1)
+            {
+                return Json(new { code = 100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
             BasArgumentSetting basargumentsetting = new BasArgumentSetting();
             int Id = Request.Form["hid_id"].ConvertToInt32(0);
             basargumentsetting.Id = Id;
@@ -126,6 +142,10 @@ namespace SunacCADApp.Controllers
         /// <author>alon<84789887@qq.com></author>  
         public ActionResult DeleteHandleById()
         {
+            if (UserId < 1)
+            {
+                return Json(new { code = 100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
             int Id = Request.QueryString["id"].ConvertToInt32(0);
             int rtv = BasArgumentSettingDB.DeleteHandleById(Id);
             if (rtv > 0)
@@ -145,6 +165,10 @@ namespace SunacCADApp.Controllers
         /// <author>alon<84789887@qq.com></author> 
         public ActionResult DeleteHandleByIds()
         {
+            if (UserId < 1)
+            {
+                return Json(new { code = 100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
             string ids = Request.QueryString["ids"].ConventToString(string.Empty);
             int rtv = BasArgumentSettingDB.DeleteHandleByIds(ids);
             if (rtv > 0)
@@ -164,6 +188,10 @@ namespace SunacCADApp.Controllers
         /// <returns></returns>
         public ActionResult DeleteHandleByTo() 
         {
+            if (UserId < 1)
+            {
+                return Json(new { code = 100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
             int Id = Request.Form["supid"].ConvertToInt32(0);
             if (Id < 1) 
             {
@@ -182,6 +210,10 @@ namespace SunacCADApp.Controllers
 
         public ActionResult AddSuperArgumentSetting() 
         {
+            if (UserId < 1)
+            {
+                return Json(new { code = 100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
             string ArgumentText = Request.Form["ArgumentText"];
             string ArgumentCode = BasArgumentSettingDB.GetArgumentSettingCode();
             BasArgumentSetting setting = new BasArgumentSetting();
@@ -189,11 +221,14 @@ namespace SunacCADApp.Controllers
             setting.TypeCode = ArgumentCode;
             setting.TypeName = ArgumentText;
             setting.ParentID = 0;
-            setting.CreateOn = DateTime.Now;
+            
             setting.Reorder = 0;
             setting.Enabled = 1;
-            setting.CreateUserId = 0;
-            setting.CreateBy = "admin";
+            setting.CreateUserId = UserId;
+            setting.CreateBy = UserName;
+            setting.CreateOn = DateTime.Now;
+            setting.ModifiedUserId = UserId;
+            setting.ModifiedBy = UserName;
             setting.ModifiedOn = DateTime.Now;
             int rtv = BasArgumentSettingDB.AddHandle(setting);
             if (rtv > 0)
