@@ -143,5 +143,15 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.Execute(sql);
         }
 
+        /// <summary>
+        /// 获取集团信息
+        /// </summary>
+        /// <param name="mid"></param>
+        /// <returns></returns>
+        public static string GetScopeNameByMId(int mid)
+        {
+            string sql = string.Format(@"SELECT CASE WHEN a.Scope=1 THEN '集团' ELSE '' END AS ScopeName FROM dbo.CaddrawingMaster a WHERE  a.Id={0}", mid);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToTrim();
+        }
     }
 }

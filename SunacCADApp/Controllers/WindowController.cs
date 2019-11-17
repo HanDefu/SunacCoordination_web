@@ -23,6 +23,7 @@ namespace SunacCADApp.Controllers
             ViewBag.SelectModel = 5;
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
+            ViewBag.StateList = CommonLib.GetBPMStateInfo();
 
         }
         // GET: /window/index
@@ -86,6 +87,14 @@ namespace SunacCADApp.Controllers
                 _url += "&openwindownum=" + openwindownum;
             }
             ViewBag.openwindownum = openwindownum;
+
+            int bpmstate = HttpUtility.UrlDecode(Request.QueryString["bpmstate"]).ConvertToInt32(0);
+            if (bpmstate > 0) 
+            {
+                _search_where += " and   a.BillStatus=" + bpmstate;
+                _url += "&bpmstate=" + bpmstate;
+            }
+            ViewBag.bpmstate = bpmstate.ConvertToTrim();
 
 
             _where = _search_where;  //查询

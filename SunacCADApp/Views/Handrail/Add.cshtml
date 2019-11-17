@@ -28,7 +28,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>原型文件：</dt>
                     <dd>
-                        <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
+                        <input type="text" style="width:378px" name="txt_filename" placeholder="原型文件" class="required" data-error="原型文件不能为空" />
                         <input type="hidden" name="txt_drawingcad" />
                         <input type="hidden" name="hid_drawing_img" value="" />
                         <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
@@ -43,13 +43,13 @@
                     <dd style="width:500px;">
                         <span style="display:block;padding-top:5px;line-height:35px;">
                             <span class="online-checkbox">
-                                <input type="checkbox" id="all" name="chk_area" class="select-all" value="1" checked="checked" />
+                                <input type="checkbox" id="all" name="chk_area" class="select-all  select-area" value="1" checked="checked" />
                                 <label for="all">集团</label>
                             </span>
                             @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
                                 <span class="online-checkbox">
-                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" checked="checked" />
+                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox select-area" />
                                     <label for="area_@Setting.Id">@Setting.ArgumentText</label>
                                 </span>
                         }
@@ -69,11 +69,13 @@
                         </select>
                     </dd>
                 </dl>
+                <input type="hidden" name="hid_operate" />
             </form>
         </div>
         <div class="main-column-handle">
             <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
+                <button type="button" class="btn btn-sunac" id="btn_save01" data-value="commit">提交审核</button>
             </div>
         </div>
     </div>
@@ -90,7 +92,7 @@
             if (rtv == false) {
                 return false;
             }
-            var areaid = $('input[name="checkbox_areaid" ]').is(':checked')
+            var areaid = $('.select-area').is(':checked')
             if (areaid == false) {
                 layer.msg("请选择使用范围");
                 return false;
@@ -119,6 +121,11 @@
      
 
         $("#btn_save").on('click', function () {
+            $("#myform").ajaxSubmit(options);
+        });
+
+        $("#btn_save01").on('click', function () {
+            $('input[name="hid_operate"]').val($(this).data("value"));
             $("#myform").ajaxSubmit(options);
         });
 

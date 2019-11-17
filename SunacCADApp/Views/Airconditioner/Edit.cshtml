@@ -23,7 +23,7 @@
         @if (@dMaster.BillStatus == 2)
         {
             string BTID = dMaster.DynamicType == 1 ? "P61" : "P61";
-            <a class="btn btn-sunac" href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=@BTID&BOID=@dMaster.Id" target="_blank">BPM查看</a>
+            <a class="state-a-checked" href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=@BTID&BOID=@dMaster.Id" target="_blank">审批流程查看</a>
         }
     </span>
 </div>
@@ -49,7 +49,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>原型文件：</dt>
                     <dd>
-                        <input type="text" style="width:378px" name="txt_filename" value="@ExpansionDWG.FileClass"  placeholder="原型文件"/>
+                        <input type="text" style="width:450px" name="txt_filename" value="@ExpansionDWG.FileClass"  placeholder="原型文件"/>
                         <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
                         <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
                         <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
@@ -208,7 +208,7 @@
         <div class="main-column-handle">
    
             <div class="column-handle">
-                <button type="button" class="btn btn-sunac" id="btn_save" style="margin-left:30px;">保存</button>
+                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
                 <button type="button" class="btn btn-sunac btn-delete" data-id="@dMaster.Id">删除</button>
                 <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus">提交审核</button>
              

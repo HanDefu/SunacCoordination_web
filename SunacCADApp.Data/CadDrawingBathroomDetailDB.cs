@@ -196,13 +196,19 @@ namespace SunacCADApp.Data
             {
                 _str_area += area.AreaName + ",";
             }
+
+            string scopeName = CadDrawingMasterDB.GetScopeNameByMId(bathroomId);
+            if (!string.IsNullOrEmpty(scopeName)) 
+            {
+                _str_area += "集团" + ",";
+            }
             _str_area = _str_area.TrimEnd(',');
             bathroom.region = _str_area;
             string _str_file = string.Empty;
             IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
             foreach (Drawing drawing in DWGS)
             {
-                _str_file += string.Format(@"http://10.4.64.91{0},", drawing.CADPath);
+                _str_file += string.Format(@"{1}/{0},", CommonLib.WebURL, drawing.CADPath);
             }
             _str_file = _str_file.TrimEnd(',');
             bathroom.filePath = _str_file;
@@ -236,13 +242,18 @@ namespace SunacCADApp.Data
             {
                 _str_area += area.AreaName + ",";
             }
+            string scopeName = CadDrawingMasterDB.GetScopeNameByMId(bathroomId);
+            if (!string.IsNullOrEmpty(scopeName))
+            {
+                _str_area += "集团" + ",";
+            }
             _str_area = _str_area.TrimEnd(',');
             bathroom.region = _str_area;
             string _str_file = string.Empty;
             IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
             foreach (Drawing drawing in DWGS)
             {
-                _str_file += string.Format(@"http://10.4.64.91{0},", drawing.CADPath);
+                _str_file += string.Format(@"{1}/{0},",CommonLib.WebURL, drawing.CADPath);
             }
             _str_file = _str_file.TrimEnd(',');
             bathroom.filePath = _str_file;

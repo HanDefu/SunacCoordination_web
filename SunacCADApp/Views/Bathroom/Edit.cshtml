@@ -21,8 +21,8 @@
     <span class="check-state">
         @if (@dMaster.BillStatus == 2)
         {
-        string BTID = dMaster.DynamicType == 1 ? "P41" : "P42";
-        <a class="btn btn-sunac" href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=@BTID&BOID=@dMaster.Id" target="_blank">BPM查看</a>
+            string BTID = dMaster.DynamicType == 1 ? "P41" : "P42";
+            <a class="state-a-checked" href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=@BTID&BOID=@dMaster.Id" target="_blank">审批流程查看</a>
         }
      </span>
 </div>
@@ -159,22 +159,22 @@
                     {
                             <span class="online-checkbox">
                                 <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" checked data-model=".dynamic_module" />
-                                <label for="radio_dynamic_module">动态模型</label>
+                                <label for="radio_dynamic_module">动态原型</label>
                             </span>
                             <span class="online-checkbox">
                                 <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" />
-                                <label for="radio_static_module">静态模型</label>
+                                <label for="radio_static_module">定型原型</label>
                             </span>
                     }
                     else if (dMaster.DynamicType == 2)
                     {
                         <span class="online-checkbox">
                             <input type="radio" name="radio_module" id="radio_dynamic_module" value="1" data-model=".dynamic_module" />
-                            <label for="radio_dynamic_module">动态模型</label>
+                            <label for="radio_dynamic_module">动态原型</label>
                         </span>
                             <span class="online-checkbox">
                                 <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" checked />
-                                <label for="radio_static_module">静态模型</label>
+                                <label for="radio_static_module">定型原型</label>
                             </span>
 
                     }
@@ -187,7 +187,7 @@
                         <dt class="col-dt"><i>*</i>短边尺寸范围(mm)：</dt>
                         <dd>
                             <input type="number" style="width:105px" name="txtBathroomShortSideMin" value="@Bathroom.BathroomShortSideMin" />
-                            <i> × </i>
+                            <i> - </i>
                             <input type="number" style="width:105px" name="txtBathroomShortSideMax" value="@Bathroom.BathroomShortSideMax" />
                         </dd>
                     </dl>
@@ -195,7 +195,7 @@
                         <dt class="col-dt"><i>*</i>长边尺寸范围(mm)：</dt>
                         <dd>
                             <input type="number" style="width:105px" name="txtBathroomLongSizeMin" value="@Bathroom.BathroomLongSizeMin" />
-                            <i> × </i>
+                            <i> - </i>
                             <input type="number" style="width:105px" name="txtBathroomLongSizeMax" value="@Bathroom.BathroomLongSizeMax" />
                         </dd>
                     </dl>

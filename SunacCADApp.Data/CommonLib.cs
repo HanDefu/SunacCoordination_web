@@ -8,6 +8,7 @@ using Common.Utility.Extender;
 using Common.Utility;
 using AFrame.DBUtility;
 using SunacCADApp.Entity;
+using System.Configuration;
 namespace SunacCADApp.Data
 {
     public class CommonLib
@@ -88,7 +89,25 @@ namespace SunacCADApp.Data
            return page;
        }
 
+       public static IList<DataSourceMember> GetBPMStateInfo() 
+       {
+           IList<DataSourceMember> memberList = new List<DataSourceMember>();
+           memberList.Add(new DataSourceMember { DisplayMember = "0", ValueMember = "全部" });
+           memberList.Add(new DataSourceMember { DisplayMember = "1", ValueMember = "待发布" });
+           memberList.Add(new DataSourceMember { DisplayMember = "2", ValueMember = "审批中" });
+           memberList.Add(new DataSourceMember { DisplayMember = "3", ValueMember = "已发布" });
+           return memberList;
+       }
 
+       public static string WebURL 
+       {
+           get 
+           {
+               string URL=string.Empty;
+               URL = System.Configuration.ConfigurationSettings.AppSettings["WebURL"].ConvertToTrim();
+               return URL;
+           }
+       }
         
     }
 }

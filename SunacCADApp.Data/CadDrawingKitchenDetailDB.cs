@@ -7,6 +7,7 @@ using Common.Utility.Extender;
 using Common.Utility;
 using AFrame.DBUtility;
 using SunacCADApp.Entity;
+using System.Configuration;
 namespace SunacCADApp.Data
 {
 
@@ -15,6 +16,8 @@ namespace SunacCADApp.Data
     ///</summary>
     public class CadDrawingKitchenDetailDB
     {
+
+       public static  string URL = ConfigurationSettings.AppSettings["WebURL"].ConvertToTrim();
         ///<summary>
         /// 厨房CAD原型属性表 分页查询
         ///</summary>
@@ -149,6 +152,8 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
 
+   
+
 
         public static CadDrawingKitchenDetail GetCadDrawingKitchenDetailById(int Id) 
         {
@@ -193,6 +198,13 @@ namespace SunacCADApp.Data
             {
                 _str_area += area.AreaName + ",";
             }
+
+             string scopeName = CadDrawingMasterDB.GetScopeNameByMId(kitchenId);
+            if (!string.IsNullOrEmpty(scopeName)) 
+            {
+                _str_area += scopeName + ",";
+            }
+
             _str_area = _str_area.TrimEnd(',');
             kitchen.region = _str_area;
 
@@ -200,7 +212,7 @@ namespace SunacCADApp.Data
             IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
             foreach (Drawing drawing in DWGS)
             {
-                _str_file += string.Format(@"http://10.4.64.91/{0},", drawing.CADPath);
+                _str_file += string.Format(@"{1}/{0},", URL, drawing.CADPath);
             }
             _str_file = _str_file.TrimEnd(',');
             kitchen.filePath = _str_file;
@@ -235,13 +247,20 @@ namespace SunacCADApp.Data
             {
                 _str_area += area.AreaName + ",";
             }
+
+            string scopeName = CadDrawingMasterDB.GetScopeNameByMId(kitchenId);
+            if (!string.IsNullOrEmpty(scopeName))
+            {
+                _str_area += scopeName + ",";
+            }
+   
             _str_area = _str_area.TrimEnd(',');
             kitchen.region = _str_area;
             string _str_file = string.Empty;
             IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
             foreach (Drawing drawing in DWGS)
             {
-                _str_file += string.Format(@"http://10.4.64.91/{0},", drawing.CADPath);
+                _str_file += string.Format(@"{1}/{0},", URL, drawing.CADPath);
             }
             _str_file = _str_file.TrimEnd(',');
             kitchen.filePath = _str_file;

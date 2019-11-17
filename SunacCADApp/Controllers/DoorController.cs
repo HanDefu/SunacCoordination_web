@@ -22,6 +22,7 @@ namespace SunacCADApp.Controllers
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 6;
+            ViewBag.StateList = CommonLib.GetBPMStateInfo();
         }
         // GET: /Door/Index
         public ActionResult Index()
@@ -52,7 +53,6 @@ namespace SunacCADApp.Controllers
                 _search_where += "  AND Scope=1";
                 _url += "&area=" + area;
             }
-
             ViewBag.area = area;
 
             int doortype = HttpUtility.UrlDecode(Request.QueryString["doortype"]).ConvertToInt32(-1);
@@ -61,8 +61,16 @@ namespace SunacCADApp.Controllers
                 _search_where += string.Format(@"  AND b.DoorType={0}", doortype);
                 _url += "&doortype=" + doortype;
             }
-
             ViewBag.doortype = doortype;
+
+            int bpmstate = HttpUtility.UrlDecode(Request.QueryString["bpmstate"]).ConvertToInt32(0);
+            if (bpmstate > 0)
+            {
+                _search_where += " and   a.BillStatus=" + bpmstate;
+                _url += "&bpmstate=" + bpmstate;
+            }
+            ViewBag.bpmstate = bpmstate.ConvertToTrim();
+
             string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
             if (!string.IsNullOrEmpty(keyword))
             {
@@ -246,6 +254,15 @@ namespace SunacCADApp.Controllers
                 door.CreateOn = DateTime.Now;
                 door.ModifiedOn = DateTime.Now;
                 int rtv=  CadDrawingDoorDetailDB.AddHandle(door);
+          
+
+                string operate = Request.Form["hid_operate"].ConventToString(string.Empty);
+                if (operate == "commit")
+                {
+                    int doorID = mId;
+                    string statecode = DynamicType.ConventToString(string.Empty);
+                    return BPMDoorApproval(doorID, statecode);
+                }
                 if (rtv > 0 && mId > 0)
                 {
                     return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
@@ -498,7 +515,21 @@ namespace SunacCADApp.Controllers
         /// </summary>
         /// <returns></returns>
         /// <get>/Door/WriteBPMDoorApproval</get>
-        public ActionResult   WriteBPMDoorApproval()
+        public ActionResult WriteBPMDoorApproval()
+        {
+
+            if (UserId < 1)
+            {
+                return Json(new { code = 100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
+            int doorID = Request.Form["Id"].ConvertToInt32(0);
+            string statecode = Request.Form["State"].ConvertToTrim();
+            return   BPMDoorApproval(doorID, statecode);
+
+        }
+
+
+        private JsonResult BPMDoorApproval(int doorID, string state) 
         {
             try
             {
@@ -507,9 +538,8 @@ namespace SunacCADApp.Controllers
                     return Json(new { code = 100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
                 }
 
-                int doorID = Request.Form["Id"].ConvertToInt32(0);
                 string BOID = doorID.ConventToString("0");
-                string State = Request.Form["State"].ConventToString(string.Empty);
+                string State = state;
                 string BTID = "P21";
                 WeService.BPM.WriteSAP.I_REQUEST request = new WeService.BPM.WriteSAP.I_REQUEST();
                 IList<WeService.BPM.WriteSAP.REQ_ITEM> peq_item = new List<WeService.BPM.WriteSAP.REQ_ITEM>();
@@ -562,8 +592,5 @@ namespace SunacCADApp.Controllers
                 return Json(new { code = -100, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
-        
-        
-
     }
 }

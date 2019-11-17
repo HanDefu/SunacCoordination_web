@@ -20,6 +20,7 @@ namespace SunacCADApp.Controllers
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 7;
+            ViewBag.StateList = CommonLib.GetBPMStateInfo();
         }
         // GET: Handrail
         /// <summary>
@@ -63,8 +64,15 @@ namespace SunacCADApp.Controllers
                 _where += string.Format(@"  AND b.HandrailType={0}", handrailType);
                 _url += "&handrailtype=" + handrailType;
             }
-
             ViewBag.HandrailType = handrailType;
+
+            int bpmstate = HttpUtility.UrlDecode(Request.QueryString["bpmstate"]).ConvertToInt32(0);
+            if (bpmstate > 0)
+            {
+                _where += " and   a.BillStatus=" + bpmstate;
+                _url += "&bpmstate=" + bpmstate;
+            }
+            ViewBag.bpmstate = bpmstate.ConvertToTrim();
 
             string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
             if (!string.IsNullOrEmpty(keyword))
@@ -173,11 +181,14 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
-                caddrawingmaster.CreateOn = DateTime.Now;
                 caddrawingmaster.Reorder = 2;
                 caddrawingmaster.Enabled = 1;
-                caddrawingmaster.CreateUserId = 0;
-                caddrawingmaster.CreateBy = "admin";
+                caddrawingmaster.CreateUserId = UserId;
+                caddrawingmaster.CreateBy = UserName;
+                caddrawingmaster.CreateOn = DateTime.Now;
+                caddrawingmaster.ModifiedUserId = UserId;
+                caddrawingmaster.ModifiedBy = UserName;
+                caddrawingmaster.ModifiedOn = DateTime.Now;
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
                 string[] arr_CADFile = cadFile.Split(',');
                 string[] arr_IMGFile = imgFile.Split(',');
@@ -199,7 +210,7 @@ namespace SunacCADApp.Controllers
                         index++;
                     }
                 }
-                string areaid = Request.Form["checkbox_areaid"];
+                string areaid = Request.Form["checkbox_areaid"].ConventToString(string.Empty);
                 string[] arr_Area = areaid.Split(',');
                 foreach (string area in arr_Area)
                 {
@@ -214,9 +225,18 @@ namespace SunacCADApp.Controllers
                 CadDrawingHandrailDetail handrail = new CadDrawingHandrailDetail();
                 handrail.MId= mId;
                 handrail.HandrailType = Request.Form["HandRailType"].ConvertToInt32(0);
+                handrail.CreateUserId = UserId;
+                handrail.CreateBy = UserName;
                 handrail.CreateOn = DateTime.Now;
+                handrail.ModifiedUserId = UserId;
+                handrail.ModifiedBy = UserName;
                 handrail.ModifiedOn = DateTime.Now;
                 int detailId = CadDrawingHandrailDetailDB.AddHandle(handrail);
+                string operate = Request.Form["hid_operate"].ConventToString(string.Empty);
+                if (operate == "commit")
+                {
+                    return CadBpmHandrailApproval(mId);
+                }
 
                 if (mId > 0 && detailId > 0)
                 {
@@ -301,8 +321,12 @@ namespace SunacCADApp.Controllers
             caddrawingmaster.CreateOn = DateTime.Now;
             caddrawingmaster.Reorder = 2;
             caddrawingmaster.Enabled = 1;
-            caddrawingmaster.CreateUserId = 0;
-            caddrawingmaster.CreateBy = "admin";
+            caddrawingmaster.CreateUserId = UserId;
+            caddrawingmaster.CreateBy = UserName;
+            caddrawingmaster.CreateOn = DateTime.Now;
+            caddrawingmaster.ModifiedUserId = UserId;
+            caddrawingmaster.ModifiedBy = UserName;
+            caddrawingmaster.ModifiedOn = DateTime.Now;
             caddrawingmaster.Id = Id;
             int mId = CadDrawingMasterDB.EditHandle(caddrawingmaster,string.Empty);
             mId = Id;
@@ -344,7 +368,9 @@ namespace SunacCADApp.Controllers
             CadDrawingHandrailDetail handrail = new CadDrawingHandrailDetail();
             handrail.MId = mId;
             handrail.HandrailType = Request.Form["HandRailType"].ConvertToInt32(0);
-            handrail.CreateOn = DateTime.Now;
+            handrail.ModifiedUserId = UserId;
+            handrail.ModifiedBy = UserName;
+            handrail.ModifiedOn = DateTime.Now;
             int detailId = CadDrawingHandrailDetailDB.AddHandle(handrail);
 
             if (mId > 0 && detailId > 0)
@@ -419,6 +445,19 @@ namespace SunacCADApp.Controllers
                 }
                 int Id = Request.Form["Id"].ConvertToInt32(0);
                 int _btid = Request.Form["State"].ConvertToInt32(0);
+                return  CadBpmHandrailApproval(Id);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -100, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        private JsonResult CadBpmHandrailApproval(int handrailId)
+        {
+            try
+            {
+                int Id = handrailId;
                 string BOID = string.Empty,
                           BTID = "P51",
                           Bsxml = string.Empty;
@@ -456,13 +495,11 @@ namespace SunacCADApp.Controllers
                 {
                     return Json(new { code = -100, message = "提交失败" }, JsonRequestBehavior.AllowGet);
                 }
-
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 return Json(new { code = -100, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
-
     }
 }

@@ -20,6 +20,7 @@ namespace SunacCADApp.Controllers
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 8;
+            ViewBag.StateList = CommonLib.GetBPMStateInfo();
         }
         // GET: Kitchen
         public ActionResult Index()
@@ -81,6 +82,13 @@ namespace SunacCADApp.Controllers
             }
             ViewBag.airduct = is_airduct;
 
+            int bpmstate = HttpUtility.UrlDecode(Request.QueryString["bpmstate"]).ConvertToInt32(0);
+            if (bpmstate > 0)
+            {
+                _where += " and   a.BillStatus=" + bpmstate;
+                _url += "&bpmstate=" + bpmstate;
+            }
+            ViewBag.bpmstate = bpmstate.ConvertToTrim();
 
             string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
             if (!string.IsNullOrEmpty(keyword))
@@ -203,9 +211,12 @@ namespace SunacCADApp.Controllers
              
                 caddrawingmaster.Reorder = 2;
                 caddrawingmaster.Enabled = 1;
-                caddrawingmaster.CreateUserId = 0;
-                caddrawingmaster.CreateBy = "admin";
+                caddrawingmaster.CreateUserId = UserId;
+                caddrawingmaster.CreateBy = UserName;
                 caddrawingmaster.CreateOn = DateTime.Now;
+                caddrawingmaster.ModifiedUserId = UserId;
+                caddrawingmaster.ModifiedBy = UserName;
+                caddrawingmaster.ModifiedOn = DateTime.Now;
 
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
                 string[] arr_CADFile = cadFile.Split(',');
@@ -262,7 +273,22 @@ namespace SunacCADApp.Controllers
                     kitchen.KitchenFridgSize = Request.Form["selectKitchenFridgSize"].ConvertToInt32(0);
                     kitchen.KitchenHearthSize = Request.Form["selectKitchenHearthSize"].ConvertToInt32(0);
                 }
+
+                kitchen.CreateUserId = UserId;
+                kitchen.CreateBy = UserName;
+                kitchen.CreateOn = DateTime.Now;
+                kitchen.ModifiedUserId = UserId;
+                kitchen.ModifiedBy = UserName;
+                kitchen.ModifiedOn = DateTime.Now;
                 int kitchenid=   CadDrawingKitchenDetailDB.AddHandle(kitchen);
+
+                string operate = Request.Form["hid_operate"].ConventToString(string.Empty);
+                if (operate == "commit")
+                {
+                    int doorID = mId;
+                    string statecode = DynamicType.ConventToString(string.Empty);
+                    return BPMKitchenApproval(doorID, statecode);
+                }
                 if (kitchenid > 0)
                 {
                     return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
@@ -369,8 +395,9 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.CreateOn = DateTime.Now;
                 caddrawingmaster.Reorder = 2;
                 caddrawingmaster.Enabled = 1;
-                caddrawingmaster.CreateUserId = 0;
-                caddrawingmaster.CreateBy = "admin";
+                caddrawingmaster.ModifiedUserId = UserId;
+                caddrawingmaster.ModifiedBy = UserName;
+                caddrawingmaster.ModifiedOn = DateTime.Now;
                 caddrawingmaster.Id = Id;
                 int mId = CadDrawingMasterDB.EditHandle(caddrawingmaster,string.Empty);
                 mId = Id;
@@ -431,6 +458,13 @@ namespace SunacCADApp.Controllers
                     kitchen.KitchenFridgSize = Request.Form["selectKitchenFridgSize"].ConvertToInt32(0);
                     kitchen.KitchenHearthSize = Request.Form["selectKitchenHearthSize"].ConvertToInt32(0);
                 }
+
+                kitchen.CreateUserId = UserId;
+                kitchen.CreateBy = UserName;
+                kitchen.CreateOn = DateTime.Now;
+                kitchen.ModifiedUserId = UserId;
+                kitchen.ModifiedBy = UserName;
+                kitchen.ModifiedOn = DateTime.Now;
                 int kitchenid = CadDrawingKitchenDetailDB.AddHandle(kitchen);
                 if (kitchenid > 0)
                 {
@@ -504,16 +538,22 @@ namespace SunacCADApp.Controllers
         /// <get>/Door/WriteBPMDoorApproval</get>
         public ActionResult WriteBPMDoorApproval()
         {
+            if (UserId < 1)
+            {
+                return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
+            int kitchenID = Request.Form["Id"].ConvertToInt32(0);
+            string State = Request.Form["State"].ConventToString(string.Empty);
+            return BPMKitchenApproval(kitchenID, State);
+        }
+
+
+        private JsonResult BPMKitchenApproval(int kitchenID, string State) 
+        {
             try
             {
-                if (UserId < 1)
-                {
-                    return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
-                }
-                int kitchenID = Request.Form["Id"].ConvertToInt32(0);
-                string BOID = kitchenID.ConventToString("0");
-                string State = Request.Form["State"].ConventToString(string.Empty);
                 string BTID = "P31";
+                string BOID = kitchenID.ConventToString("0");
                 WeService.BPM.WriteSAP.I_REQUEST request = new WeService.BPM.WriteSAP.I_REQUEST();
                 IList<WeService.BPM.WriteSAP.REQ_ITEM> peq_item = new List<WeService.BPM.WriteSAP.REQ_ITEM>();
                 WeService.BPM.WriteSAP.REQ_ITEM item = new WeService.BPM.WriteSAP.REQ_ITEM();
@@ -521,7 +561,7 @@ namespace SunacCADApp.Controllers
                 if (State == "1")
                 {
 
-                    BPMDynamicKitchen kitchen = CadDrawingKitchenDetailDB.GetBPMDynamicKitchenById(kitchenID);
+                      BPMDynamicKitchen kitchen = CadDrawingKitchenDetailDB.GetBPMDynamicKitchenById(kitchenID);
                     BPMXml = XmlSerializeHelper.XmlSerialize<BPMDynamicKitchen>(kitchen);
                     BTID = "P31";
                 }
@@ -566,6 +606,5 @@ namespace SunacCADApp.Controllers
                 return Json(new { code = -100, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
-
     }
 }

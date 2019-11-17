@@ -119,6 +119,26 @@
         </dd>
     </dl>
 </div>
+
+<div class="row search search-bottom">
+    <dl class="dl_bpmstate">
+        <dt>审核状态：</dt>
+        <dd>
+            @foreach (DataSourceMember member in ViewBag.StateList)
+            {
+                if (member.DisplayMember == ViewBag.bpmstate)
+                {
+                    <a data-val="@member.DisplayMember" class="active">@member.ValueMember</a>
+                }
+                else
+                {
+                    <a data-val="@member.DisplayMember">@member.ValueMember</a>
+                }
+            }
+        </dd>
+    </dl>
+</div>
+
 <div class="row search keywords search-bottom">
     <dl>
         <dt> 关键词搜索：</dt>
@@ -212,6 +232,12 @@
         if (IsRainPipe > -1) {
             param += '&IsRainPipe=' + IsRainPipe;
         }
+
+        let bpmstate = parseInt($(".dl_bpmstate .active").data("val"))
+        if (bpmstate > 0) {
+            param += '&bpmstate=' + bpmstate;
+        }
+
         return param;
     }
 </script>

@@ -29,7 +29,7 @@
     <span class="check-state">
         @if (dMaster.BillStatus == 2)
         {
-            string BTID = dMaster.DynamicType == 1 ? "P11" : "P12";
+            string BTID = dMaster.DynamicType == 1 ? "P21" : "P22";
             <a class="state-a-checked" href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=@BTID&BOID=@dMaster.Id" target="_blank">审批流程查看</a>
         }
     </span>
@@ -197,7 +197,7 @@
                         <dt class="col-dt"><i>*</i>宽度尺寸范围(mm)：</dt>
                         <dd>
                             <input type="text" style="width:105px" name="txtWindowSizeMin" value="@doorDetail.WindowSizeMin" />
-                            <i>  × </i>
+                            <i>  - </i>
                             <input type="text" style="width:105px" name="txtWindowSizeMax" value="@doorDetail.WindowSizeMax" />
                         </dd>
                     </dl>
@@ -318,7 +318,7 @@
                     <dt class="col-dt"><i>*</i>宽度尺寸范围(mm)：</dt>
                     <dd>
                         <input type="number" style="width:105px" name="txtWindowSizeMin" value="@doorDetail.WindowSizeMin" />
-                        <i>  × </i>
+                        <i>  - </i>
                         <input type="number" style="width:105px" name="txtWindowSizeMax" value="@doorDetail.WindowSizeMax" />
                     </dd>
                 </dl>

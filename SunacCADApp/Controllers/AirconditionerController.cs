@@ -20,6 +20,7 @@ namespace SunacCADApp.Controllers
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 10;
+            ViewBag.StateList = CommonLib.GetBPMStateInfo();
         }
         // GET: /airconditioner/Index
         public ActionResult Index()
@@ -82,6 +83,14 @@ namespace SunacCADApp.Controllers
                 _url += "&IsRainPipe=" + IsRainPipe;
             }
             ViewBag.IsRainPipe = IsRainPipe;
+
+            int bpmstate = HttpUtility.UrlDecode(Request.QueryString["bpmstate"]).ConvertToInt32(0);
+            if (bpmstate > 0)
+            {
+                _where += " and   a.BillStatus=" + bpmstate;
+                _url += "&bpmstate=" + bpmstate;
+            }
+            ViewBag.bpmstate = bpmstate.ConvertToTrim();
 
             string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
             if (!string.IsNullOrEmpty(keyword))
@@ -204,11 +213,14 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
-                caddrawingmaster.CreateOn = DateTime.Now;
                 caddrawingmaster.Reorder = 2;
                 caddrawingmaster.Enabled = 1;
-                caddrawingmaster.CreateUserId = 0;
-                caddrawingmaster.CreateBy = "admin";
+                caddrawingmaster.CreateUserId = UserId;
+                caddrawingmaster.CreateBy = UserName;
+                caddrawingmaster.CreateOn = DateTime.Now;
+                caddrawingmaster.ModifiedUserId = UserId;
+                caddrawingmaster.ModifiedBy = UserName;
+                caddrawingmaster.ModifiedOn = DateTime.Now;
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
                 string[] arr_CADFile = cadFile.Split(',');
                 string[] arr_IMGFile = imgFile.Split(',');
@@ -226,11 +238,14 @@ namespace SunacCADApp.Controllers
                         dwg.CADPath = arr_CADFile[index];
                         dwg.FileClass = arr_FileName[index];
                         dwg.CADType = arr_DrawingType[index];
+                        dwg.CreateUserId = UserId;
+                        dwg.CreateBy = UserName;
+                        dwg.CreateOn = DateTime.Now;
                         CadDrawingDWGDB.AddHandle(dwg);
                         index++;
                     }
                 }
-                string areaid = Request.Form["checkbox_areaid"];
+                string areaid = Request.Form["checkbox_areaid"].ConvertToTrim();
                 string[] arr_Area = areaid.Split(',');
                 foreach (string area in arr_Area)
                 {
@@ -239,6 +254,9 @@ namespace SunacCADApp.Controllers
                         CadDrawingByArea byArea = new CadDrawingByArea();
                         byArea.AreaID = area.ConvertToInt32(-1);
                         byArea.MId = mId;
+                        byArea.CreateUserId = UserId;
+                        byArea.CreateBy = UserName;
+                        byArea.CreateOn = DateTime.Now;
                         CadDrawingByAreaDB.AddHandle(byArea);
                     }
                 }
@@ -264,12 +282,24 @@ namespace SunacCADApp.Controllers
                 airconditioner.AirconditionerWidth = AirconditionerWidth;
                 airconditioner.AirconditionerHeight = AirconditionerHeight;
                 airconditioner.AirconditionerDepth = AirconditionerDepth;
-                
+                airconditioner.CreateUserId = UserId;
+                airconditioner.CreateBy = UserName;
+                airconditioner.CreateOn = DateTime.Now;
+                airconditioner.ModifiedUserId = UserId;
+                airconditioner.ModifiedBy = UserName;
+                airconditioner.ModifiedOn = DateTime.Now;
                 if (AirconditionerIsRainPipe == 1) 
                 {
                     airconditioner.AirconditionerRainPipePosition = RainPipePosition;
                 }
                 int rtv = CadDrawingAirconditionerDetailDB.AddHandle(airconditioner);
+                string operate = Request.Form["hid_operate"].ConventToString(string.Empty);
+                if (operate == "commit")
+                {
+                    int airconditionerid= mId;
+                    int statecode = DynamicType;
+                    return CadAirconditionerBPMApproval(airconditionerid, statecode);
+                }
                 if (rtv > 0 && mId > 0)
                 {
                     return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
@@ -370,8 +400,9 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.CreateOn = DateTime.Now;
                 caddrawingmaster.Reorder = 2;
                 caddrawingmaster.Enabled = 1;
-                caddrawingmaster.CreateUserId = 0;
-                caddrawingmaster.CreateBy = "admin";
+                caddrawingmaster.ModifiedUserId = UserId;
+                caddrawingmaster.ModifiedBy = UserName;
+                caddrawingmaster.ModifiedOn = DateTime.Now;
                 caddrawingmaster.Id = Id;
                 CadDrawingMasterDB.EditHandle(caddrawingmaster,string.Empty);
                 int mId = Id;
@@ -393,11 +424,15 @@ namespace SunacCADApp.Controllers
                         dwg.CADPath = arr_CADFile[index];
                         dwg.FileClass = arr_FileName[index];
                         dwg.CADType = arr_DrawingType[index];
+                        dwg.CreateUserId = UserId;
+                        dwg.CreateBy = UserName;
+                        dwg.CreateOn = DateTime.Now;
+
                         CadDrawingDWGDB.AddHandle(dwg);
                         index++;
                     }
                 }
-                string areaid = Request.Form["checkbox_areaid"];
+                string areaid = Request.Form["checkbox_areaid"].ConvertToTrim();
                 string[] arr_Area = areaid.Split(',');
                 CadDrawingByAreaDB.DeleteHandleByParam(_where);
                 foreach (string area in arr_Area)
@@ -407,6 +442,9 @@ namespace SunacCADApp.Controllers
                         CadDrawingByArea byArea = new CadDrawingByArea();
                         byArea.AreaID = area.ConvertToInt32(-1);
                         byArea.MId = mId;
+                        byArea.CreateUserId = UserId;
+                        byArea.CreateBy = UserName;
+                        byArea.CreateOn = DateTime.Now;
                         CadDrawingByAreaDB.AddHandle(byArea);
                     }
                 }
@@ -432,6 +470,12 @@ namespace SunacCADApp.Controllers
                 airconditioner.AirconditionerWidth = AirconditionerWidth;
                 airconditioner.AirconditionerHeight = AirconditionerHeight;
                 airconditioner.AirconditionerDepth = AirconditionerDepth;
+                airconditioner.CreateUserId = UserId;
+                airconditioner.CreateBy = UserName;
+                airconditioner.CreateOn = DateTime.Now;
+                airconditioner.ModifiedUserId = UserId;
+                airconditioner.ModifiedBy = UserName;
+                airconditioner.ModifiedOn = DateTime.Now;
                 if (AirconditionerIsRainPipe == 1)
                 {
                     airconditioner.AirconditionerRainPipePosition = RainPipePosition;
@@ -472,6 +516,24 @@ namespace SunacCADApp.Controllers
                 }
                 int Id = Request.Form["Id"].ConvertToInt32(0);
                 int _btid = Request.Form["State"].ConvertToInt32(0);
+               return   CadAirconditionerBPMApproval(Id, _btid);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -100, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+
+
+
+        }
+
+        private JsonResult CadAirconditionerBPMApproval(int airconditionerId, int state) 
+        {
+            try 
+            {
+                int Id = airconditionerId;
+                int _btid = state;
                 string BOID = string.Empty,
                           BTID = "P61",
                           Bsxml = string.Empty;
@@ -510,17 +572,12 @@ namespace SunacCADApp.Controllers
                 {
                     return Json(new { code = -100, message = "提交失败" }, JsonRequestBehavior.AllowGet);
                 }
-
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 return Json(new { code = -100, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
-
-
-
         }
 
-    
     }
 }

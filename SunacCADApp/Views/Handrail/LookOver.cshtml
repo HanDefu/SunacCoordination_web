@@ -48,6 +48,13 @@
                 <dt class="col-dt"><i>*</i>使用范围：</dt>
                 <dd style="width:500px;">
                     <span style="display:block;padding-top:5px;line-height:35px;">
+                        @if (Drawing.Scope == 1)
+                        {
+                            <span class="online-checkbox">
+                                <label>集团</label>
+                            </span>
+                        }
+
                         @foreach (CadDrawingByArea Area in ByAreas)
                         {
                             <span class="online-checkbox">

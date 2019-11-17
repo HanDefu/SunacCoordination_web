@@ -24,7 +24,7 @@
         @if (@Master.BillStatus == 2)
         {
             string BTID = Master.DynamicType == 1 ? "P31" : "P32";
-            <a class="btn btn-sunac" href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=@BTID&BOID=@Master.Id" target="_blank">BPM查看</a>
+            <a class="state-a-checked" href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=@BTID&BOID=@Master.Id" target="_blank">审批流程查看</a>
         }
     </span>
 </div>
@@ -67,7 +67,7 @@
                             <span class="online-checkbox">
                                 @if (Master.Scope == 1)
                             {
-                                    <input type="checkbox" id="all" name="chk_area" class="select-all" value="1" checked="checked" />
+                                    <input type="checkbox" id="all" name="chk_area" class="select-all checkbox-area" value="1" checked="checked" />
                             }
                             else
                             {
@@ -83,7 +83,7 @@
                             int hasArea = byAreaList.Where(e => e.AreaID == Setting.Id).Count();
                             str_check = hasArea > 0 ? "checked" : string.Empty;
                                 <span class="online-checkbox">
-                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" @str_check />
+                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox checkbox-area" @str_check />
                                     <label for="area_@Setting.Id">@Setting.ArgumentText</label>
                                 </span>
                         }
@@ -145,7 +145,7 @@
                             </span>
                             <span class="online-checkbox">
                                 <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" />
-                                <label for="radio_static_module">静态原型</label>
+                                <label for="radio_static_module">定型原型</label>
                             </span>
                     }
                     else if (Master.DynamicType == 2)
@@ -156,7 +156,7 @@
                         </span>
                             <span class="online-checkbox">
                                 <input type="radio" name="radio_module" id="radio_static_module" value="2" data-model=".static_module" checked />
-                                <label for="radio_static_module">静态原型</label>
+                                <label for="radio_static_module">定型原型</label>
                             </span>
 
                     }
@@ -199,7 +199,7 @@
                         <dt class="col-dt"><i>*</i>开间尺寸范围(mm)：</dt>
                         <dd>
                             <input type="number" style="width:105px" name="txtKitchenOpenSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
-                           <i>×</i>
+                           <i>- </i>
                             <input type="number" style="width:105px" name="txtKitchenOpenSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
                           
                         </dd>
@@ -208,7 +208,7 @@
                         <dt class="col-dt"><i>*</i>进深尺寸范围(mm)：</dt>
                         <dd>
                             <input type="number" style="width:105px" name="txtKitchenDepthsizeMin" value="@Kitchen.KitchenDepthsizeMin" />
-                            <i>×</i>
+                            <i>-</i>
                             <input type="number" style="width:105px" name="txtKitchenDepthsizeMax" value="@Kitchen.KitchenDepthsizeMax" />
                           
                         </dd>
@@ -286,7 +286,7 @@
                         <dt class="col-dt"><i>*</i>开间尺寸范围(mm)：</dt>
                         <dd>
                             <input type="number" style="width:105px" name="txtKitchenOpenSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
-                            <i>×</i>
+                            <i>-</i>
                             <input type="number" style="width:105px" name="txtKitchenOpenSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
                         </dd>
                     </dl>

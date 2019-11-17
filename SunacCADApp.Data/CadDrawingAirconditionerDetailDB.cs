@@ -186,6 +186,12 @@ namespace SunacCADApp.Data
             {
                 _str_area += area.AreaName + ",";
             }
+
+            string scopeName = CadDrawingMasterDB.GetScopeNameByMId(Id);
+            if (string.IsNullOrEmpty(scopeName)) 
+            {
+                _str_area += "集团,";
+            }
             _str_area = _str_area.TrimEnd(',');
             airConditioner.region = _str_area;
             string _str_file = string.Empty;

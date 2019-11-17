@@ -20,6 +20,7 @@ namespace SunacCADApp.Controllers
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 9;
+            ViewBag.StateList = CommonLib.GetBPMStateInfo();
         }
         // GET:  /bathroom/index
         public ActionResult Index()
@@ -82,6 +83,14 @@ namespace SunacCADApp.Controllers
                 _url += "&is_airduct=" + is_airduct;
             }
             ViewBag.airduct = is_airduct;
+
+            int bpmstate = HttpUtility.UrlDecode(Request.QueryString["bpmstate"]).ConvertToInt32(0);
+            if (bpmstate > 0)
+            {
+                _where += " and   a.BillStatus=" + bpmstate;
+                _url += "&bpmstate=" + bpmstate;
+            }
+            ViewBag.bpmstate = bpmstate.ConvertToTrim();
 
             string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
             if (!string.IsNullOrEmpty(keyword))
@@ -199,17 +208,20 @@ namespace SunacCADApp.Controllers
                 string imgFile = Request.Form["hid_drawing_img"].ConventToString(string.Empty);
                 string filenames = Request.Form["txt_filename"].ConventToString(string.Empty);
                 string drawingtype = Request.Form["hid_drawing_type"].ConventToString(string.Empty);
-                int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
+                int DynamicType = Request.Form["radio_module"].ConvertToInt32(1);
                 caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
                 caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
-                caddrawingmaster.CreateOn = DateTime.Now;
                 caddrawingmaster.Reorder = 2;
                 caddrawingmaster.Enabled = 1;
-                caddrawingmaster.CreateUserId = 0;
-                caddrawingmaster.CreateBy = "admin";
+                caddrawingmaster.CreateUserId =UserId;
+                caddrawingmaster.CreateBy = UserName;
+                caddrawingmaster.CreateOn = DateTime.Now;
+                caddrawingmaster.ModifiedUserId = UserId;
+                caddrawingmaster.ModifiedBy = UserName;
+                caddrawingmaster.ModifiedOn = DateTime.Now;
                 
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
                 string[] arr_CADFile = cadFile.Split(',');
@@ -230,11 +242,14 @@ namespace SunacCADApp.Controllers
                         dwg.CADPath = arr_CADFile[index];
                         dwg.FileClass = arr_FileName[index];
                         dwg.CADType = arr_DrawingType[index];
+                        dwg.CreateUserId = UserId;
+                        dwg.CreateBy = UserName;
+                        dwg.CreateOn = DateTime.Now;
                         CadDrawingDWGDB.AddHandle(dwg);
                         index++;
                     }
                 }
-                string areaid = Request.Form["checkbox_areaid"];
+                string areaid = Request.Form["checkbox_areaid"].ConvertToTrim();
                 string[] arr_Area = areaid.Split(',');
                 foreach (string area in arr_Area)
                 {
@@ -243,6 +258,10 @@ namespace SunacCADApp.Controllers
                         CadDrawingByArea byArea = new CadDrawingByArea();
                         byArea.AreaID = area.ConvertToInt32(-1);
                         byArea.MId = mId;
+                        byArea.CreateUserId = UserId;
+                        byArea.CreateBy = UserName;
+                        byArea.CreateOn = DateTime.Now;
+                       
                         CadDrawingByAreaDB.AddHandle(byArea);
                     }
                 }
@@ -268,8 +287,18 @@ namespace SunacCADApp.Controllers
                     bathroom.BathroomBasinSize = Request.Form["selectBathroomBasinSize"].ConvertToInt32(0);
                 }
 
+                bathroom.CreateUserId = UserId;
+                bathroom.CreateBy = UserName;
                 bathroom.CreateOn = DateTime.Now;
                 int detailId = CadDrawingBathroomDetailDB.AddHandle(bathroom);
+                string operate = Request.Form["hid_operate"].ConventToString(string.Empty);
+                if (operate == "commit")
+                {
+                    int bathroomId = mId;
+                    int statecode = DynamicType;
+                    return CadBathroomBPMApproval(bathroomId, statecode);
+                }
+             
 
                 if (mId > 0 && detailId > 0)
                 {
@@ -366,11 +395,14 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
-                caddrawingmaster.CreateOn = DateTime.Now;
                 caddrawingmaster.Reorder = 2;
                 caddrawingmaster.Enabled = 1;
-                caddrawingmaster.CreateUserId = 0;
-                caddrawingmaster.CreateBy = "admin";
+                caddrawingmaster.CreateUserId = UserId;
+                caddrawingmaster.CreateBy = UserName;
+                caddrawingmaster.CreateOn = DateTime.Now;
+                caddrawingmaster.ModifiedUserId = UserId;
+                caddrawingmaster.ModifiedBy = UserName;
+                caddrawingmaster.ModifiedOn = DateTime.Now;
                 caddrawingmaster.Id = Id;
                 CadDrawingMasterDB.EditHandle(caddrawingmaster,string.Empty);
                 int  mId = Id;
@@ -393,11 +425,14 @@ namespace SunacCADApp.Controllers
                         dwg.CADPath = arr_CADFile[index];
                         dwg.FileClass = arr_FileName[index];
                         dwg.CADType = arr_DrawingType[index];
+                        dwg.CreateUserId = UserId;
+                        dwg.CreateBy = UserName;
+                        dwg.CreateOn = DateTime.Now;
                         CadDrawingDWGDB.AddHandle(dwg);
                         index++;
                     }
                 }
-                string areaid = Request.Form["checkbox_areaid"];
+                string areaid = Request.Form["checkbox_areaid"].ConvertToTrim();
                 CadDrawingByAreaDB.DeleteHandleByParam(_where);
                 string[] arr_Area = areaid.Split(',');
 
@@ -408,6 +443,10 @@ namespace SunacCADApp.Controllers
                         CadDrawingByArea byArea = new CadDrawingByArea();
                         byArea.AreaID = area.ConvertToInt32(-1);
                         byArea.MId = mId;
+                        byArea.CreateUserId = UserId;
+                        byArea.CreateBy = UserName;
+                        byArea.CreateOn = DateTime.Now;
+             
                         CadDrawingByAreaDB.AddHandle(byArea);
                     }
                 }
@@ -434,7 +473,8 @@ namespace SunacCADApp.Controllers
                     bathroom.BathroomClosestoolSize = Request.Form["selectClosesToolWidth"].ConvertToInt32(0);
                     bathroom.BathroomBasinSize = Request.Form["selectBathroomBasinSize"].ConvertToInt32(0);
                 }
-
+                bathroom.CreateUserId = UserId;
+                bathroom.CreateBy = UserName;
                 bathroom.CreateOn = DateTime.Now;
                 int detailId = CadDrawingBathroomDetailDB.AddHandle(bathroom);
 
@@ -496,6 +536,20 @@ namespace SunacCADApp.Controllers
                 }
                 int Id = Request.Form["Id"].ConvertToInt32(0);
                 int _btid = Request.Form["State"].ConvertToInt32(0);
+                return CadBathroomBPMApproval(Id, _btid);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -100, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public  JsonResult CadBathroomBPMApproval(int bathroomId,int state) 
+        {
+            try 
+            {
+                int Id = bathroomId;
+                int _btid = state;
                 string BOID = string.Empty,
                           BTID = "P41",
                           Bsxml = string.Empty;
@@ -548,13 +602,10 @@ namespace SunacCADApp.Controllers
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 return Json(new { code = -100, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
-
-
-
         }
 
 

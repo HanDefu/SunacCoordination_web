@@ -50,12 +50,19 @@
                     <dt class="col-dt"><i>*</i>使用范围：</dt>
                     <dd style="width:500px;">
                         <span style="display:block;padding-top:5px;line-height:35px;">
-                            @foreach (CadDrawingByArea Area in ViewBag.ByAreas)
+                        @if (Master.Scope == 1)
+                        {
+                            <span class="online-checkbox">
+                                <label>集团</label>
+                            </span>
+                        }
+
+                        @foreach (CadDrawingByArea Area in ViewBag.ByAreas)
                         {
                                 <span class="online-checkbox">
                                     <label>@Area.AreaName</label>
                                 </span>
-                        }
+                         }
                         </span>
 
                     </dd>
@@ -85,7 +92,7 @@
                     {
                             <span class="online-checkbox">
 
-                                <label for="radio_static_module">静态原型</label>
+                                <label for="radio_static_module">定型原型</label>
                             </span>
                     }
                     </dd>
@@ -107,7 +114,7 @@
                         <dd>
                             @Kitchen.KitchenOpenSizeMin
                             mm
-                            -
+                            <i>-</i>
                             @Kitchen.KitchenOpenSizeMax
                             mm
                         </dd>
@@ -117,7 +124,7 @@
                         <dd>
                             @Kitchen.KitchenDepthsizeMin
                             mm
-                            <i>×</i>
+                            <i>-</i>
                             @Kitchen.KitchenDepthsizeMax
                             mm
                         </dd>
