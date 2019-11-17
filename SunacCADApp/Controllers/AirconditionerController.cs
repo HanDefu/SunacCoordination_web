@@ -194,10 +194,10 @@ namespace SunacCADApp.Controllers
                     return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
                 }
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
-                string cadFile = Request.Form["txt_drawingcad"];
-                string imgFile = Request.Form["hid_drawing_img"];
-                string filenames = Request.Form["txt_filename"];
-                string drawingtype = Request.Form["hid_drawing_type"];
+                string cadFile = Request.Form["txt_drawingcad"].ConventToString(string.Empty);
+                string imgFile = Request.Form["hid_drawing_img"].ConventToString(string.Empty);
+                string filenames = Request.Form["txt_filename"].ConventToString(string.Empty);
+                string drawingtype = Request.Form["hid_drawing_type"].ConventToString(string.Empty);
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
                 caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
@@ -357,10 +357,10 @@ namespace SunacCADApp.Controllers
                 }
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
                 int Id = Request.Form["Id"].ConvertToInt32(0);
-                string cadFile = Request.Form["txt_drawingcad"];
-                string imgFile = Request.Form["hid_drawing_img"];
-                string filenames = Request.Form["txt_filename"];
-                string drawingtype = Request.Form["hid_drawing_type"];
+                string cadFile = Request.Form["txt_drawingcad"].ConventToString(string.Empty);
+                string imgFile = Request.Form["hid_drawing_img"].ConventToString(string.Empty);
+                string filenames = Request.Form["txt_filename"].ConventToString(string.Empty);
+                string drawingtype = Request.Form["hid_drawing_type"].ConventToString(string.Empty);
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
                 caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
