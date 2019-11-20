@@ -66,6 +66,10 @@ namespace SunacCADApp.Entity
         /// </summary>
         public string CompanyName { get; set; }
         /// <summary>
+        /// 组织编码
+        /// </summary>
+        public string UserDeptNo { get; set; }
+        /// <summary>
         /// 角色ID
         /// </summary>
         public int RoleID { get; set; }

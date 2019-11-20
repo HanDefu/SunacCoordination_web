@@ -130,5 +130,43 @@ namespace SunacCADApp.Controllers
                 return Json(new { Code = -100, Message = drawingCode + "系统中已存在,请更换" });
             }
         }
+
+        /// <summary>
+        /// /commonlib/downloadfile
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult DownloadFile() 
+        {
+
+            try 
+            {
+                string pathFile = string.Format(@"\\192.168.7.209\CAD\ProjectFiles\Window_NC2_0.dwg");
+                FileStream fs = new FileStream(pathFile, FileMode.Open);
+                byte[] bytes = new byte[(int)fs.Length];
+                fs.Read(bytes, 0, bytes.Length);
+                fs.Close();
+                Response.ContentType = "application/octet-stream";
+                //通知浏览器下载文件而不是打开
+                Response.AddHeader("Content-Disposition","attachment;  filename=" + HttpUtility.UrlEncode("20190101.dwg", System.Text.Encoding.UTF8));
+                Response.BinaryWrite(bytes);
+                Response.Flush();
+                Response.End();
+                return RedirectToAction("ListForStore");
+               
+            }catch(Exception ex)
+            {
+                return Json(new { Code = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+           
+
+            //Response.ContentType = "application/octet-stream";
+            ////通知浏览器下载文件而不是打开
+            //Response.AddHeader("Content-Disposition",
+            //    "attachment;  filename=" + HttpUtility.UrlEncode("20190101.dwg", System.Text.Encoding.UTF8));
+            //Response.BinaryWrite(bytes);
+            //Response.Flush();
+            //Response.End();
+            //return RedirectToAction("ListForStore");
+        }
     }
 }

@@ -157,6 +157,16 @@ namespace SunacCADApp.Data
             return _basinstitutiondatas;
         }
 
+
+        public static IList<DataSourceMember> GetInnerIdmOrgan() 
+        {
+            IList<DataSourceMember> _basinstitutiondatas = new List<DataSourceMember>();
+            string sql = string.Format(@"SELECT OrganNumber AS ValueMember,OrganName AS DisplayMember FROM dbo.Bas_Idm_Organ WHERE OrganParentNo='0001' AND OrganStatus='Active'");
+
+            _basinstitutiondatas = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<DataSourceMember>(new DataSourceMember());
+            return _basinstitutiondatas;
+        }
+
  
     }
 }

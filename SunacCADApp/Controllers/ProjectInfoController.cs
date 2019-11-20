@@ -6,14 +6,26 @@ using System.Web.Mvc;
 using SunacCADApp.Entity;
 using SunacCADApp.Data;
 using Common.Utility.Extender;
+using Common.Utility;
 
 namespace SunacCADApp.Controllers
 {
     public class ProjectInfoController : Controller
     {
+        private int UserId = 0;
+        private string UserName = string.Empty;
+        public ProjectInfoController() 
+        {
+            UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
+            UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
+        }
         // GET: ProjectInfo
         public ActionResult Index()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string _where = string.Empty;  //查询
             string _orderby = string.Empty;  //排序
             string _url = string.Empty;
@@ -59,7 +71,10 @@ namespace SunacCADApp.Controllers
         /// <returns></returns>
         public ActionResult Item() 
         {
-
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string code = Request.QueryString["code"];
             string where = string.Format(" And POSID='{0}'",code);
             Bas_Idm_Project project = BasIdmProjectDB.GetBasIdmProjectByProjectId(where);

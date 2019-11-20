@@ -10,6 +10,7 @@
     IList<PageNum> pageNumList = ViewBag.PageNumList;
 
     IList<BasInstitutionData> institutionList = ViewBag.InstitutionList;
+    IList<DataSourceMember> idmOrginList = ViewBag.IdmOrginList;
     int pageCount = ViewBag.PageCount;
     int recordCount = ViewBag.RecordCount;
     int current = ViewBag.CurrentPage;
@@ -18,15 +19,14 @@
   
 }
 
-<div id="sunac">
+<div id="sunac" style="min-width:1024px;">
     <div class="row">
         <div class="col-lg-12 panel-search">
             <div class="input-control-group float-left">
                 <dl>
                     <dt class="dt-title">账户类型：</dt>
                     <dd>
-                        <select class="form-control usertype" >
-                            <option value="">账户类型</option>
+                        <select class="form-control usertype select-user-type">
                             @if (ViewBag.isinternal == "1")
                             {
                                 <option value="1" selected="selected">内部账户</option>
@@ -39,10 +39,10 @@
                             }
                             else
                             {
-                                <option value="1">内部账户</option>
+                                <option value="1" selected="selected">内部账户</option>
                                 <option value="2">外部账户</option>
                             }
-                           
+
                         </select>
                     </dd>
                 </dl>
@@ -55,8 +55,8 @@
                             <option value="">选择角色</option>
                             @foreach (Sys_Role role in roles)
                             {
-                               string roleid=role.Id.ConventToString(string.Empty);
-                                if ( roleid== ViewBag.roleid)
+                                string roleid = role.Id.ConventToString(string.Empty);
+                                if (roleid == ViewBag.roleid)
                                 {
                                     <option value="@role.Id" selected="selected">@role.Role_Name</option>
                                 }
@@ -70,7 +70,7 @@
                     </dd>
                 </dl>
             </div>
-            <div class="input-control-group float-left">
+            <div class="input-control-group float-left dl_institution" style="display:none;">
                 <dl>
                     <dt>机构：</dt>
                     <dd>
@@ -83,7 +83,7 @@
                                 data-width="280px">
                             @foreach (BasInstitutionData Ins in institutionList)
                             {
-                                string InsId=Ins.Id.ConventToString(string.Empty);
+                                string InsId = Ins.Id.ConventToString(string.Empty);
                                 if (InsId == ViewBag.institutionid)
                                 {
                                     <option value="@Ins.Id" selected="selected">@Ins.InsName</option>
@@ -94,30 +94,61 @@
                                 }
 
                             }
-
                         </select>
                     </dd>
                 </dl>
             </div>
+            <div class="input-control-group float-left dl_idm_organ">
+                <dl>
+                    <dt>部门：</dt>
+                    <dd>
+                        <select class="form-control select_idm_organ"
+                                name="select_companyid"
+                                data-error="部门不能为空"
+                                title="请选择部门"
+                                data-live-search="true"
+                                data-size="12"
+                                data-width="280px">
+                            @foreach (DataSourceMember orgin in idmOrginList)
+                            {
+                                string InsId = orgin.ValueMember;
+                                if (InsId == ViewBag.OrginNo)
+                                {
+                                    <option value="@orgin.ValueMember" selected="selected">@orgin.DisplayMember</option>
+                                }
+                                else
+                                {
+                                    <option value="@orgin.ValueMember">@orgin.DisplayMember</option>
+                                }
+
+                            }
+                        </select>
+
+                    </dd>
+                </dl>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="row row-margin-top">
+        <div class="col-lg-12 panel-search">
+            <div class="input-control-group search-btn float-left">
+                <dl>
+                    <dt class="dt-title">关键字搜索：</dt>
+                    <dd>
+                        <input type="text" class="form-control keyword" placeholder="搜关键字试试" value="@ViewBag.keyword" />
+                        <strong id="btnSearch"></strong>
+                    </dd>
+                </dl>
+            </div>
+
             <div class="input-control-group float-right" style="margin-right:0px;">
                 <dl>
                     <dd>
                         <button class="btn btn-sunac btn-add">新增外部账户</button>
                         <button class="btn btn-sunac btn-delete">批量删除</button>
                         <button class="btn btn-sunac btn-disabled">批量禁用</button>
-                    </dd>
-                </dl>
-            </div>
-        </div>
-    </div>
-    <div class="row row-margin-top">
-        <div class="col-lg-12 panel-search">
-            <div class="input-control-group search-btn">
-                <dl>
-                    <dt class="dt-title">关键字搜索：</dt>
-                    <dd>
-                        <input type="text" class="form-control keyword" placeholder="搜关键字试试" value="@ViewBag.keyword" />
-                        <strong id="btnSearch"></strong>
                     </dd>
                 </dl>
             </div>
@@ -129,7 +160,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th width="50" class="text-center selected-all" style="cursor:pointer"><input type="checkbox" name="chk_all"/></th>
+                    <th width="50" class="text-center selected-all" style="cursor:pointer"><input type="checkbox" name="chk_all" /></th>
                     <th width="50" class="text-center">序号</th>
                     <th width="100" class="text-center">账户</th>
                     <th width="100" class="text-center">姓名</th>
@@ -147,7 +178,7 @@
                     foreach (Sys_User row in users)
                     {
                         <tr>
-                            <td align="center"><input type="checkbox" class="checkbox"  value="@row.Id"/></td>
+                            <td align="center"><input type="checkbox" class="checkbox" value="@row.Id" /></td>
                             <td class="text-center">@(i++)</td>
                             <td class="text-center">@row.User_Name</td>
                             <td class="text-center">@row.True_Name</td>
@@ -156,16 +187,16 @@
                             <td>@row.Email</td>
                             <td class="text-center">@row.Used_Begin_DateTime.ToShortDateString()</td>
                             <td class="text-center btn-used">
-                            @if (row.Is_Used == "1")
-                            {
-                                <b style="font-weight:normal;cursor:pointer" data-id="@row.Id" data-used="0">启用</b>
-                            }
-                            else
-                            {
-                                <b style="font-weight:normal;color:#666;cursor:pointer" data-id="@row.Id" data-used="1">禁用</b>
-                            }
+                                @if (row.Is_Used == "1")
+                                {
+                                    <b style="font-weight:normal;cursor:pointer" data-id="@row.Id" data-used="0">启用</b>
+                                }
+                                else
+                                {
+                                    <b style="font-weight:normal;color:#666;cursor:pointer" data-id="@row.Id" data-used="1">禁用</b>
+                                }
                             </td>
-                            <td  class="operate text-center">
+                            <td class="operate text-center">
                                 <a href="javascript:void(0)" class="handle-modify" data-id="@row.Id">修改</a> |
                                 <a data-id="@row.Id" title="删除" class="handle-delete" href="javascript:void(0)">删除</a>
                             </td>
@@ -197,7 +228,7 @@
                     }
 
                 }
-              
+
             </select>
         </b>
         @if (ViewBag.PreviousPage < 1)
@@ -208,7 +239,7 @@
         {
             <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PreviousPage"><i class="fa  fa-angle-left fa-lg"></i></a>
         }
-      
+
         @for (int page = ViewBag.StartPage; page <= ViewBag.EndPage; page++)
         {
             if (page == current)
@@ -231,19 +262,16 @@
         {
             <a class="none"><i class="fa  fa-angle-right fa-lg"></i></a>
         }
-       
-       
-       
+
         <strong>
             前往<input type="text" class="form-control" value="@ViewBag.CurrentPage">页
         </strong>
     </div>
-
 </div>
 <script type="text/javascript">
     $(function () {
         $(".select_institution").selectpicker()
-
+        $(".select_idm_organ").selectpicker()
         $(".btn-add").on("click", function () {
             var index = layer.open({
                 type: 2,
@@ -362,9 +390,21 @@
             let usertype = $(".usertype").val();
             let roletype = $(".roletype").val();
             let select_institution = $(".select_institution").selectpicker('val');
+            let select_idm_organ = $(".select_idm_organ").selectpicker('val');
             let keyword = $(".keyword").val();
 
-            window.location.href = "?isinternal=" + usertype + "&roleid=" + roletype + "&institutionid=" + select_institution + "&keyword=" + keyword;
+            window.location.href = "?isinternal=" + usertype + "&roleid=" + roletype + "&institutionid=" + select_institution + "&organ" + select_idm_organ + "&keyword=" + keyword;
+        })
+
+        $('.select-user-type').on("change", function () {
+            let usertype = $(this).val();
+            if (usertype == '1') {
+                $('.dl_idm_organ').css("display", "block");
+                $('.dl_institution').css("display", "none");
+            } else if (usertype == '2') {
+                $('.dl_idm_organ').css("display", "none");
+                $('.dl_institution').css("display", "block");
+            }
         })
 
     })

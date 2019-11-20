@@ -51,7 +51,7 @@ namespace SunacCADApp.Controllers
 
             Sys_User user = Sys_UserDB.GetSingleEntityByparam(" And User_Name='" + username + "'");
           
-            if (user.Is_Internal == 1) {
+            if (user.Is_Internal == 2) {
                 if (user.User_Psd != password)
                 {
                     return Json(new { code = -101, message = "用户密码不能为空" }, JsonRequestBehavior.AllowGet);
@@ -68,7 +68,7 @@ namespace SunacCADApp.Controllers
                     return Json(new { code = 100, message = "内部用户登陆成功" }, JsonRequestBehavior.AllowGet);
                 }
             }
-            else if (user.Is_Internal == 2)
+            else if (user.Is_Internal == 1)
             {
                 WebService932.Header header = new WebService932.Header();
                 header.BIZTRANSACTIONID = "sdfdssdfds";

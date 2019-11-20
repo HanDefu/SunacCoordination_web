@@ -49,6 +49,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\项目\其他项目\MyWorkPlace\ClassLib\json.net\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Net" />
     <Reference Include="System.Runtime.Serialization" />
@@ -188,6 +189,7 @@
     <Content Include="Content\Css\img\icon-folder.png" />
     <Content Include="Content\Css\img\icon-no-image.png" />
     <Content Include="Content\Css\img\icon-project.png" />
+    <Content Include="Content\Css\img\icon-tips-bak.png" />
     <Content Include="Content\Css\img\icon-tips.png" />
     <Content Include="Content\Css\img\icon-topnav-arrows.png" />
     <Content Include="Content\Css\img\icon-user-profile.png" />
@@ -402,6 +404,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Code\IdmPublicService.cs" />
+    <Compile Include="App_Code\TimeTask.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BMPService.asmx.cs">
       <DependentUpon>BMPService.asmx</DependentUpon>
@@ -478,7 +482,6 @@
     <Content Include="Content\Plugins\laydate\theme\default\font\iconfont.woff" />
     <Content Include="Views\Home\UserCenter.cshtml" />
     <Content Include="Views\ArgumentSetting\Index-01.cshtml" />
-    <Content Include="Views\CompanyInfo\Index.bak.cshtml" />
     <Content Include="Content\Plugins\bootstrap\css\bootstrap-theme.css.map" />
     <Content Include="Content\Plugins\bootstrap\css\bootstrap-theme.min.css.map" />
     <Content Include="Content\Plugins\bootstrap\css\bootstrap.css.map" />
@@ -647,10 +650,10 @@
     <None Include="Web References\WebService.IDM.Public\PUBLIC_SUNAC_301_queryIdmOrgData_PS0.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Web References\WebService.IDM.Public\Reference.map">
+    <None Include="Web References\WebService.IDM.Public\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Web References\WebService.Idm.User\PUBLIC_SUNAC_300_queryIdmUserData.wsdl" />
     <None Include="Web References\WebService.Idm.User\PUBLIC_SUNAC_300_queryIdmUserData_PS.xsd">
       <SubType>Designer</SubType>

@@ -264,6 +264,13 @@ namespace SunacCADApp.Data
             {
                 _str_area += area.AreaName + ",";
             }
+
+            string scopeName = CadDrawingMasterDB.GetScopeNameByMId(windowId);
+            if (!string.IsNullOrEmpty(scopeName))
+            {
+                _str_area += "集团,";
+            }
+
             _str_area = _str_area.TrimEnd(',');
 
             string _str_function = "";
@@ -313,6 +320,13 @@ namespace SunacCADApp.Data
             {
                 _str_area += area.AreaName + ",";
             }
+
+            string scopeName = CadDrawingMasterDB.GetScopeNameByMId(windowId);
+            if (!string.IsNullOrEmpty(scopeName)) 
+            {
+                _str_area += "集团,";
+            }
+
             _str_area = _str_area.TrimEnd(',');
 
             string _str_function = "";

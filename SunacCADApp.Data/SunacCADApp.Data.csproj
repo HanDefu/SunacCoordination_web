@@ -88,6 +88,7 @@
     <Compile Include="Sys_ModelDB.cs" />
     <Compile Include="Sys_UserDB.cs" />
     <Compile Include="Sys_User_Area_RelationDB.cs" />
+    <Compile Include="Test_Helper_Db.cs" />
     <Compile Include="XMLCadDrawingAirconditionerDB.cs" />
     <Compile Include="XMLCadDrawingBathroomDB.cs" />
     <Compile Include="XMLCadDrawingDoorDB.cs" />
@@ -105,6 +106,9 @@
       <Project>{3e7513e1-1863-4b37-add7-51a0167ee67a}</Project>
       <Name>SunacCADApp.Library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IDM\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

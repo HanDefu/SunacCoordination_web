@@ -27,7 +27,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>展开图文件：</dt>
                     <dd>
-                        <input type="text" style="width:378px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
+                        <input type="text" style="width:450px" name="txt_filename" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
                         <input type="hidden" name="txt_drawingcad" />
                         <input type="hidden" name="hid_drawing_img" value="" />
                         <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
@@ -40,7 +40,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>立面图文件 ：</dt>
                     <dd>
-                        <input type="text" style="width:378px" name="txt_filename" placeholder="立面图文件" class="required" data-error="立面图文件不能为空" />
+                        <input type="text" style="width:450px" name="txt_filename" placeholder="立面图文件" class="required" data-error="立面图文件不能为空" />
                         <input type="hidden" name="txt_drawingcad" />
                         <input type="hidden" name="hid_drawing_img" value="" />
                         <input type="hidden" name="hid_drawing_type" value="FrontViewFile" />
@@ -53,7 +53,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>平面图文件：</dt>
                     <dd>
-                        <input type="text" style="width:378px" name="txt_filename" placeholder="平面图文件" class="required" data-error="平面图文件不能为空" />
+                        <input type="text" style="width:450px" name="txt_filename" placeholder="平面图文件" class="required" data-error="平面图文件不能为空" />
                         <input type="hidden" name="txt_drawingcad" />
                         <input type="hidden" name="hid_drawing_img" value="" />
                         <input type="hidden" name="hid_drawing_type" value="TopViewFile" />
@@ -66,7 +66,7 @@
                 <dl>
                     <dt class="col-dt"><i></i>侧面图文件：</dt>
                     <dd>
-                        <input type="text" style="width:378px" name="txt_filename" placeholder="侧面图文件" />
+                        <input type="text" style="width:450px" name="txt_filename" placeholder="侧面图文件" />
                         <input type="hidden" name="txt_drawingcad" />
                         <input type="hidden" name="hid_drawing_img" value="" />
                         <input type="hidden" name="hid_drawing_type" value="LeftViewFile" />
@@ -87,7 +87,7 @@
                             @foreach (BasArgumentSetting Setting in ViewBag.Settings)
                         {
                                 <span class="online-checkbox">
-                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" checked />
+                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" />
                                     <label for="area_@Setting.Id">@Setting.ArgumentText</label>
                                 </span>
                         }

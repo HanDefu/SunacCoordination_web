@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using System.Net;
 using System.Web;
 using System.Xml;
+using System.Reflection;
 
 namespace SunacCADApp.Library
 {
@@ -98,5 +99,22 @@ namespace SunacCADApp.Library
 
        
         }
+
+
+        public static T ToXmlTarget<T>(string gogalPath)
+        {
+            var xmlSerializer = new XmlSerializer(typeof(T));
+            using (var xmlStream = new FileStream(gogalPath, FileMode.Open))
+            {
+                var xmlReader = new XmlTextReader(xmlStream);
+                //ignore namespace
+                xmlReader.Namespaces = false;
+                var target = (T)xmlSerializer.Deserialize(xmlReader);
+                return target;
+            }
+        }
+
+
+    
     }
 }

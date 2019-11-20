@@ -96,6 +96,7 @@
     <Compile Include="Drawing.cs" />
     <Compile Include="Function.cs" />
     <Compile Include="Handrail.cs" />
+    <Compile Include="IDM\Org.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="Kitchen.cs" />
     <Compile Include="PageNum.cs" />

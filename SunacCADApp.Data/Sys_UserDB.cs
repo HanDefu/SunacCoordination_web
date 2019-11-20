@@ -23,8 +23,11 @@ namespace SunacCADApp.Data
 
             IList<Sys_User> _sys_users = new List<Sys_User>();
             string sql = string.Format(@"SELECT  * FROM 
-                                                   ( SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber , a.*,b.InsName AS CompanyName
-                                                      FROM    dbo.Sys_User  a left join BasInstitutionData b on a.CompanyID=B.Id
+                                                   ( SELECT   ( ROW_NUMBER() OVER ( ORDER BY a.id DESC ) ) AS RowNumber , a.*,
+                                                                     CASE a.Is_Internal WHEN '1' THEN ISNULL(c.OrganName,'') WHEN '2' THEN ISNULL(b.InsName,'') ELSE '' END  AS CompanyName
+                                                      FROM    dbo.Sys_User  a
+                                                      LEFT JOIN  BasInstitutionData b on a.CompanyID=B.Id
+                                                      LEFT JOIN dbo.Bas_Idm_Organ c ON c.OrganNumber=a.UserDeptNo
                                                       WHERE   {0}
                                                     ) T
                                                    WHERE    T.RowNumber BETWEEN {1} AND {2}  ORDER BY T.Reorder DESC,T.CreateOn DESC {3}", _where, start, end, orderby);
@@ -73,8 +76,8 @@ namespace SunacCADApp.Data
 
 
             string sql = string.Format(@"INSERT INTO dbo.sys_user(User_Name,User_Psd,True_Name,Telephone,Email,Is_Used,Used_Begin_DateTime,Used_End_DateTime,Is_Internal,Orgnazation_Name,CompanyID,RoleID,AreaID,
-                                     Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy,ModifiedOn,ModifiedUserId,ModifiedBy)
-                                     VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}',{10},{11},{12},{13},{14},getdate(),{15},'{16}',getdate(),{17},'{18}');select @@IDENTITY", sys_user.User_Name, sys_user.User_Psd, sys_user.True_Name, sys_user.Telephone, sys_user.Email, sys_user.Is_Used, sys_user.Used_Begin_DateTime, sys_user.Used_End_DateTime, sys_user.Is_Internal, sys_user.Orgnazation_Name, sys_user.CompanyID, sys_user.RoleID, sys_user.AreaID, sys_user.Enabled, sys_user.Reorder, sys_user.CreateUserId, sys_user.CreateBy, sys_user.ModifiedUserId, sys_user.ModifiedBy);
+                                     Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy,ModifiedOn,ModifiedUserId,ModifiedBy,UserDeptNo)
+                                     VALUES ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}',{10},{11},{12},{13},{14},getdate(),{15},'{16}',getdate(),{17},'{18}','{19}');select @@IDENTITY", sys_user.User_Name, sys_user.User_Psd, sys_user.True_Name, sys_user.Telephone, sys_user.Email, sys_user.Is_Used, sys_user.Used_Begin_DateTime, sys_user.Used_End_DateTime, sys_user.Is_Internal, sys_user.Orgnazation_Name, sys_user.CompanyID, sys_user.RoleID, sys_user.AreaID, sys_user.Enabled, sys_user.Reorder, sys_user.CreateUserId, sys_user.CreateBy, sys_user.ModifiedUserId, sys_user.ModifiedBy, sys_user.UserDeptNo);
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(-1);
         }
         ///<summary>
@@ -86,7 +89,7 @@ namespace SunacCADApp.Data
 
 
             string _wh = string.IsNullOrEmpty(editparam) ? " and id=" + sys_user.Id : editparam;
-            string sql = "UPDATE [dbo].[Sys_User] SET [True_Name]='" + sys_user.True_Name + "',[Telephone]='" + sys_user.Telephone + "',[Email]='" + sys_user.Email + "',[Is_Used]='" + sys_user.Is_Used + "',[Used_Begin_DateTime]='" + sys_user.Used_Begin_DateTime + "',[Used_End_DateTime]='" + sys_user.Used_End_DateTime + "',[Is_Internal]='" + sys_user.Is_Internal + "',[Orgnazation_Name]='" + sys_user.Orgnazation_Name + "',[CompanyID]=" + sys_user.CompanyID + ",[RoleID]=" + sys_user.RoleID + ",[AreaID]=" + sys_user.AreaID + ",[Enabled]=" + sys_user.Enabled + ",[Reorder]=" + sys_user.Reorder + ",[ModifiedUserId]=" + sys_user.ModifiedUserId + ",[ModifiedBy]='" + sys_user.ModifiedBy + "'  where 1=1 " + _wh;
+            string sql = "UPDATE [dbo].[Sys_User] SET [True_Name]='" + sys_user.True_Name + "',[Telephone]='" + sys_user.Telephone + "',[Email]='" + sys_user.Email + "',[Is_Used]='" + sys_user.Is_Used + "',[Used_Begin_DateTime]='" + sys_user.Used_Begin_DateTime + "',[Used_End_DateTime]='" + sys_user.Used_End_DateTime + "',[Is_Internal]='" + sys_user.Is_Internal + "',[Orgnazation_Name]='" + sys_user.Orgnazation_Name + "',[CompanyID]=" + sys_user.CompanyID + ",[RoleID]=" + sys_user.RoleID + ",[AreaID]=" + sys_user.AreaID + ",[Enabled]=" + sys_user.Enabled + ",[Reorder]=" + sys_user.Reorder + ",[ModifiedUserId]=" + sys_user.ModifiedUserId + ",[ModifiedBy]='" + sys_user.ModifiedBy + "',[UserDeptNo]='"+sys_user.UserDeptNo+"'  where 1=1 " + _wh;
             return MsSqlHelperEx.Execute(sql);
         }
 
@@ -180,6 +183,12 @@ namespace SunacCADApp.Data
         {
             string sql = string.Format(@"UPDATE dbo.Sys_User SET Is_Used={0} WHERE Id in ({1});", used, ids);
             return MsSqlHelperEx.Execute(sql);
+        }
+
+        public static int GetUserIdByLoginName(string loginName) 
+        {
+            string sql = string.Format(@"SELECT Id FROM dbo.Sys_User WHERE [User_Name] = '{0}'", loginName);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
             
     }

@@ -43,7 +43,7 @@
             <dl>
                 <dt class="col-dt"><i></i>展开图文件：</dt>
                 <dd>
-                    <input style="width:378px" name="txt_filename" disabled="disabled" value="@ExpansionDWG.FileClass" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
+                    <input style="width:auto" name="txt_filename" disabled="disabled" value="@ExpansionDWG.FileClass" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
                     <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="ExpansionView" />
@@ -54,7 +54,7 @@
             <dl>
                 <dt class="col-dt"><i></i>立面图文件：</dt>
                 <dd>
-                    <input style="width:378px" name="txt_filename" disabled="disabled" value="@VerticalDWG.FileClass" placeholder="立面图文件" class="required" data-error="立面图文件不能为空" />
+                    <input style="width:auto" name="txt_filename" disabled="disabled" value="@VerticalDWG.FileClass" placeholder="立面图文件" class="required" data-error="立面图文件不能为空" />
                     <input type="hidden" name="txt_drawingcad" value="@VerticalDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@VerticalDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="VerticalView" />
@@ -65,7 +65,7 @@
             <dl>
                 <dt class="col-dt"><i></i>平面图文件：</dt>
                 <dd>
-                    <input style="width:378px" name="txt_filename" disabled="disabled" value="@PlanDWG.FileClass" placeholder="平面图文件" class="required" data-error="平面图文件不能为空" />
+                    <input style="width:auto" name="txt_filename" disabled="disabled" value="@PlanDWG.FileClass" placeholder="平面图文件" class="required" data-error="平面图文件不能为空" />
                     <input type="hidden" name="txt_drawingcad" value="@PlanDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@PlanDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="PlanView" />
@@ -79,7 +79,7 @@
                     @{
                         string _LeftViewFile = string.IsNullOrEmpty(SideDWG.FileClass) ? "无" : SideDWG.FileClass;
                     }
-                    <input style="width:378px" name="txt_filename" disabled="disabled" value="@SideDWG.FileClass" placeholder="@_LeftViewFile" />
+                    <input style="width:auto" name="txt_filename" disabled="disabled" value="@SideDWG.FileClass" placeholder="@_LeftViewFile" />
                     <input type="hidden" name="txt_drawingcad" value="@SideDWG.CADPath" />
                     <input type="hidden" name="hid_drawing_img" value="@SideDWG.DWGPath" />
                     <input type="hidden" name="hid_drawing_type" value="SideView" />

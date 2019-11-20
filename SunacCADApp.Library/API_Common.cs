@@ -6,6 +6,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using System.Configuration.Internal;
+using System.Collections.Specialized;
 
 namespace SunacCADApp.Library
 {
@@ -31,6 +33,15 @@ namespace SunacCADApp.Library
             }
         }
 
+
+        public static string GlobalSetting
+        {
+            get 
+            {
+
+                return ConfigurationSettings.AppSettings["ExceDateTime"];
+            }
+        }
         public static string SEND_DATETIME
         {
             get

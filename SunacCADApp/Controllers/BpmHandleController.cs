@@ -7,6 +7,7 @@ using SunacCADApp;
 using SunacCADApp.Entity;
 using SunacCADApp.Data;
 using SunacCADApp.Library;
+using SunacCADApp.Entity.IDM;
 
 namespace SunacCADApp.Controllers
 {
@@ -76,20 +77,7 @@ namespace SunacCADApp.Controllers
         /// <returns></returns>
         public ActionResult IDM_User() 
         {
-            WebService.Idm.User.Header header = new WebService.Idm.User.Header();
-            header.ACCOUNT = "idmadmin";
-            header.PASSWORD = "idmpass";
-            header.BIZTRANSACTIONID = "vsheji";
-            WebService.Idm.User.queryDto dto = new WebService.Idm.User.queryDto();
-            dto.beginDate = "2016-12-09 00:00:00.000";
-            dto.endDate = "2016-12-10 00:00:00.000";
-            dto.systemID = "CADSJXTUser";
-            dto.pageNo = "1";
-            dto.pageRowNo = "20";
-            string list="";
-            WebService.Idm.User.PUBLIC_SUNAC_300_queryIdmUserData_pttbindingQSService service = new WebService.Idm.User.PUBLIC_SUNAC_300_queryIdmUserData_pttbindingQSService();
-            service.commonHeader = header;
-            WebService.Idm.User.HEADER head =   service.PUBLIC_SUNAC_300_queryIdmUserData(dto,out list);
+            IdmPublicService.ReaderIDMUser();
             
             return Json(new { Code = 100, Message = "测试成功" }, JsonRequestBehavior.AllowGet);
         }
@@ -101,20 +89,10 @@ namespace SunacCADApp.Controllers
 
         public ActionResult Idm_Public() 
         {
-            WebService.IDM.Public.Header head = new WebService.IDM.Public.Header();
-            head.ACCOUNT = "idmadmin";
-            head.PASSWORD = "idmpass";
-            head.BIZTRANSACTIONID = "vsheji";
-            WebService.IDM.Public.queryDto dto = new WebService.IDM.Public.queryDto();
-            dto.beginDate = "2016-12-09 00:00:00.000";
-            dto.endDate = "2016-12-10 00:00:00.000";
-            dto.systemID = "CADSJXTOrg";
-            dto.pageNo = "1";
-            dto.pageRowNo = "100";
-            string list;
-            WebService.IDM.Public.PUBLIC_SUNAC_301_queryIdmOrgData_pttbindingQSService service = new WebService.IDM.Public.PUBLIC_SUNAC_301_queryIdmOrgData_pttbindingQSService();
-            service.commonHeader = head;
-            service.PUBLIC_SUNAC_301_queryIdmOrgData(dto, out  list);
+            IdmPublicService.ReaderIDMPublic();
+
+ 
+            
             return Json(new { Code = 100, Message = "测试成功" }, JsonRequestBehavior.AllowGet);
         }
 

@@ -69,7 +69,16 @@ namespace SunacCADApp.Controllers
                 _where += " and  a.companyid='" + institutionid + "'";
                 _url += "companyid=" + institutionid + "&";
             }
+
             ViewBag.institutionid = institutionid;
+            string organ = HttpUtility.UrlDecode(Request.QueryString["organ"]);
+            if (!string.IsNullOrEmpty(organ))
+            {
+                _where += " and  a.UserDeptNo='" + organ + "'";
+                _url += "organ=" + organ + "&";
+            }
+
+            ViewBag.organ = organ;
             string roleid = HttpUtility.UrlDecode(Request.QueryString["roleid"]);
             if (!string.IsNullOrEmpty(roleid))
             {
@@ -82,7 +91,10 @@ namespace SunacCADApp.Controllers
 
             IList<BasInstitutionData> InstitutionData = BasInstitutionDataDB.GetTop10InstitutionInit();
             ViewBag.InstitutionList = InstitutionData;
-  
+
+            IList<DataSourceMember> IdmOrginList = BasInstitutionDataDB.GetInnerIdmOrgan();
+            ViewBag.IdmOrginList = IdmOrginList;
+
             IList<Sys_User> lst = Sys_UserDB.GetPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
             recordCount = Sys_UserDB.GetPageCountByParameter(_where);
             pageCount = recordCount % pageSize == 0 ? recordCount / pageSize : ((recordCount / pageSize) + 1);
@@ -162,7 +174,7 @@ namespace SunacCADApp.Controllers
             sys_user.Is_Used = "1";
             sys_user.Used_Begin_DateTime = Request.Form["datetime_used_begin_datetime"].ConverToDataTime();
             sys_user.Used_End_DateTime = Request.Form["datetime_used_end_datetime"].ConverToDataTime();
-            sys_user.Is_Internal = 1;
+            sys_user.Is_Internal = 2;
             sys_user.CompanyID = Request.Form["select_companyid"].ConvertToInt32(0);
             sys_user.RoleID = Request.Form["select_roleid"].ConvertToInt32(0);
             sys_user.Reorder = 0;
@@ -270,7 +282,7 @@ namespace SunacCADApp.Controllers
             sys_user.Is_Used = "1";
             sys_user.Used_Begin_DateTime = Request.Form["datetime_used_begin_datetime"].ConverToDataTime();
             sys_user.Used_End_DateTime = Request.Form["datetime_used_end_datetime"].ConverToDataTime();
-            sys_user.Is_Internal = 1;
+            sys_user.Is_Internal = 2;
             int companyId = Request.Form["select_companyid"].ConvertToInt32(0);
             sys_user.CompanyID = companyId;
             sys_user.RoleID = Request.Form["select_roleid"].ConvertToInt32(0);

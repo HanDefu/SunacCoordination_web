@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
+
+
 namespace SunacCADApp
 {
     public class MvcApplication : System.Web.HttpApplication
@@ -13,6 +15,14 @@ namespace SunacCADApp
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            TimeTask.Instance().ExecuteTask += new System.Timers.ElapsedEventHandler(Global_ExecuteTask);
+            TimeTask.Instance().Interval = 1000 * 60;
+            TimeTask.Instance().Start();
+        }
+
+        protected void Global_ExecuteTask(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            SunacCADApp.Data.Test_Helper_Db.AddHelper();
         }
     }
 }

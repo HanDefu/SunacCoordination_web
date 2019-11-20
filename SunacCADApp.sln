@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunacCADApp.PI", "SunacCADA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunacCADApp.Test", "SunacCADApp.Test\SunacCADApp.Test.csproj", "{C5F30BC6-3110-4ADE-95BC-AE923DEDB3DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SunCADApp.Service", "SunCADApp.Service\SunCADApp.Service.csproj", "{786584F4-D035-4B23-BA86-B75F7F70DF36}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{C5F30BC6-3110-4ADE-95BC-AE923DEDB3DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5F30BC6-3110-4ADE-95BC-AE923DEDB3DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5F30BC6-3110-4ADE-95BC-AE923DEDB3DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{786584F4-D035-4B23-BA86-B75F7F70DF36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{786584F4-D035-4B23-BA86-B75F7F70DF36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{786584F4-D035-4B23-BA86-B75F7F70DF36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{786584F4-D035-4B23-BA86-B75F7F70DF36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -18,7 +18,7 @@ namespace SunacCADApp.Controllers
     {
         private int UserId = 0;
         private string UserName = string.Empty;
-        public WindowController() 
+        public WindowController()
         {
             ViewBag.SelectModel = 5;
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
@@ -50,14 +50,14 @@ namespace SunacCADApp.Controllers
             ViewBag.OpenWindowNums = OpenWindowNums;
             string _search_where = " 1=1 ";
             string _url = "1";
-     
+
             int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(-1);
-            if (area >0)
+            if (area > 0)
             {
                 _search_where += string.Format(@" AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE pa.MId=a.Id AND pa.AreaID={0})", area);
                 _url += "&area=" + area;
             }
-            else if (area == -9999) 
+            else if (area == -9999)
             {
                 _search_where += "  AND Scope=1";
                 _url += "&area=" + area;
@@ -73,7 +73,7 @@ namespace SunacCADApp.Controllers
             ViewBag.action = action;
 
             int opentype = HttpUtility.UrlDecode(Request.QueryString["opentype"]).ConvertToInt32(-1);
-            if (opentype >0)
+            if (opentype > 0)
             {
                 _search_where += " and  b.WindowOpenTypeId='" + opentype + "'";
                 _url += "&opentype=" + opentype;
@@ -81,7 +81,7 @@ namespace SunacCADApp.Controllers
             ViewBag.opentype = opentype;
 
             int openwindownum = HttpUtility.UrlDecode(Request.QueryString["openwindownum"]).ConvertToInt32(-1);
-            if (openwindownum >0)
+            if (openwindownum > 0)
             {
                 _search_where += " and  b.WindowOpenQtyId='" + openwindownum + "'";
                 _url += "&openwindownum=" + openwindownum;
@@ -89,7 +89,7 @@ namespace SunacCADApp.Controllers
             ViewBag.openwindownum = openwindownum;
 
             int bpmstate = HttpUtility.UrlDecode(Request.QueryString["bpmstate"]).ConvertToInt32(0);
-            if (bpmstate > 0) 
+            if (bpmstate > 0)
             {
                 _search_where += " and   a.BillStatus=" + bpmstate;
                 _url += "&bpmstate=" + bpmstate;
@@ -100,14 +100,14 @@ namespace SunacCADApp.Controllers
             _where = _search_where;  //查询
 
             string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
-            if (!string.IsNullOrEmpty(keyword)) 
+            if (!string.IsNullOrEmpty(keyword))
             {
                 _where = string.Format(@" a.DrawingCode like  '%{0}%'", keyword);
             }
             ViewBag.Keyword = keyword;
 
             string _orderby = string.Empty;  //排序
-     
+
             int recordCount = 0;    //记录总数
             int pageSize = 30;      //每页条数
             int currentPage = 0;    //当前页数
@@ -132,15 +132,16 @@ namespace SunacCADApp.Controllers
         /// GET:/Window/LookOver
         /// </summary>
         /// <returns></returns>
-        public ActionResult LookOver(int Id=0)
+        public ActionResult LookOver(int Id = 0)
         {
             if (UserId < 1)
             {
                 return Redirect("/home");
             }
-            if (Id < 1) 
+
+            if (Id < 1)
             {
-               return   Redirect("/Window/Index");
+                return Redirect("/Window/Index");
             }
 
             string _where = string.Empty;
@@ -158,7 +159,7 @@ namespace SunacCADApp.Controllers
             _where = string.Format(@" a.MId={0}", Id);
             CadDrawingWindowDetail windowDetail = CadDrawingWindowDetailDB.GetCadDrawingWindowDetailByWhere(_where);
             ViewBag.WindowDetail = windowDetail;
-            _where=string.Format(@" a.MId={0}",Id);
+            _where = string.Format(@" a.MId={0}", Id);
             IList<CadDrawingParameter> cadDrawingParams = CadDrawingParameterDB.GetCadDrawingParameterByWhereList(_where);
             ViewBag.CadDrawingParams = cadDrawingParams;
             return View();
@@ -226,17 +227,20 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.Scope = 1;
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
-                caddrawingmaster.CreateOn = DateTime.Now;
                 caddrawingmaster.Reorder = 2;
                 caddrawingmaster.Enabled = 1;
-                caddrawingmaster.CreateUserId = 0;
-                caddrawingmaster.CreateBy = "admin";
+                caddrawingmaster.CreateUserId = UserId;
+                caddrawingmaster.CreateBy = UserName;
+                caddrawingmaster.CreateOn = DateTime.Now;
+                caddrawingmaster.ModifiedUserId = UserId;
+                caddrawingmaster.ModifiedBy = UserName;
+                caddrawingmaster.ModifiedOn = DateTime.Now;
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
                 string[] arr_CADFile = cadFile.Split(',');
                 string[] arr_IMGFile = imgFile.Split(',');
                 string[] arr_FileName = filenames.Split(',');
                 string[] arr_DrawingType = drawingtype.Split(',');
-                
+
                 CadDrawingDWG dwg = null;
                 int index = 0;
                 foreach (string cad in arr_CADFile)
@@ -249,6 +253,9 @@ namespace SunacCADApp.Controllers
                         dwg.CADPath = arr_CADFile[index];
                         dwg.FileClass = arr_FileName[index];
                         dwg.CADType = arr_DrawingType[index];
+                        dwg.CreateUserId = UserId;
+                        dwg.CreateBy = UserName;
+                        dwg.CreateOn = DateTime.Now;
                         CadDrawingDWGDB.AddHandle(dwg);
                         index++;
                     }
@@ -263,6 +270,9 @@ namespace SunacCADApp.Controllers
                         CadDrawingByArea byArea = new CadDrawingByArea();
                         byArea.AreaID = area.ConvertToInt32(-1);
                         byArea.MId = mId;
+                        byArea.CreateUserId = UserId;
+                        byArea.CreateBy = UserName;
+                        byArea.CreateOn = DateTime.Now;
                         CadDrawingByAreaDB.AddHandle(byArea);
                     }
 
@@ -276,27 +286,29 @@ namespace SunacCADApp.Controllers
                         CadDrawingFunction function = new CadDrawingFunction();
                         function.MId = mId;
                         function.FunctionId = action.ConvertToInt32(-1);
+                        function.CreateUserId = UserId;
+                        function.CreateBy = UserName;
+                        function.CreateOn = DateTime.Now;
                         CadDrawingFunctionDB.AddHandle(function);
                     }
 
                 }
 
                 int OpenType = Request.Form["OpenType"].ConvertToInt32(0);
-                int OpenWindowNum =Request.Form["OpenWindowNum"].ConvertToInt32(0);
+                int OpenWindowNum = Request.Form["OpenWindowNum"].ConvertToInt32(0);
                 int WindowHasCorner = Request.Form["Radio_WindowHasCorner"].ConvertToInt32(0);
                 int WindowHasSymmetry = Request.Form["Radio_WindowHasSymmetry"].ConvertToInt32(0);
                 decimal WindowSizeMin = Request.Form["txtWindowSizeMin"].ConventToDecimal(0);
                 decimal WindowSizeMax = Request.Form["txtWindowSizeMax"].ConventToDecimal(0);
                 string WindowDesignFormula = Request.Form["txtWindowDesignFormula"].ConventToString(string.Empty);
-                if (DynamicType == 2) 
+                if (DynamicType == 2)
                 {
-                     WindowSizeMin = Request.Form["txt_Window_Width"].ConventToDecimal(0);
-                     WindowSizeMax = Request.Form["txt_Window_Height"].ConventToDecimal(0);
+                    WindowSizeMin = Request.Form["txt_Window_Width"].ConventToDecimal(0);
+                    WindowSizeMax = Request.Form["txt_Window_Height"].ConventToDecimal(0);
                 }
                 int WindowVentilationQuantity = Request.Form["txt_WindowVentilationQuantity"].ConvertToInt32(0);
                 int WindowPlugslotSize = Request.Form["txtWindowPlugslotSize"].ConvertToInt32(0);
                 int WindowAuxiliaryFrame = Request.Form["Checkbox_WindowAuxiliaryFrame"].ConvertToInt32(0);
-
                 CadDrawingWindowDetail window = new CadDrawingWindowDetail();
                 window.MId = mId;
                 window.WindowOpenTypeId = OpenType;
@@ -309,12 +321,15 @@ namespace SunacCADApp.Controllers
                 window.WindowVentilationQuantity = WindowVentilationQuantity;
                 window.WindowPlugslotSize = WindowPlugslotSize;
                 window.WindowAuxiliaryFrame = WindowAuxiliaryFrame;
-                int detail =   CadDrawingWindowDetailDB.AddHandle(window);
+                window.CreateUserId = UserId;
+                window.CreateBy = UserName;
+                window.CreateOn = DateTime.Now;
+                int detail = CadDrawingWindowDetailDB.AddHandle(window);
                 string param = Request.Form["param"].ConventToString(string.Empty);
                 DataTable tableParam = JsonConvert.DeserializeObject<DataTable>(param);
-                if (tableParam != null) 
+                if (tableParam != null)
                 {
-                    foreach (DataRow row in tableParam.Rows) 
+                    foreach (DataRow row in tableParam.Rows)
                     {
                         CadDrawingParameter cadParam = new CadDrawingParameter();
                         cadParam.MId = mId;
@@ -325,61 +340,20 @@ namespace SunacCADApp.Controllers
                         cadParam.MaxValue = row["MaxValue"].ConvertToInt32(0);
                         cadParam.DefaultValue = row["DefaultValue"].ConvertToInt32(0);
                         cadParam.Desc = row["Desc"].ConventToString(string.Empty);
+                        cadParam.CreateUserId = UserId;
+                        cadParam.CreateBy = UserName;
                         cadParam.CreateOn = DateTime.Now;
                         CadDrawingParameterDB.AddHandle(cadParam);
                     }
-                    
+
 
                 }
-
-
                 string operate = Request.Form["hid_operate"].ConventToString(string.Empty);
                 if (operate == "commit")
                 {
-                    int Id = mId;
-                    int _btid = DynamicType;
-                    string BOID = string.Empty,
-                              BTID = "P11",
-                              Bsxml = string.Empty;
-                    if (_btid == 1)
-                    {
-                        BOID = Id.ConventToString(string.Empty);
-                        BTID = "P11";
-                        BPMDynamicWindow window_n = CadDrawingWindowDetailDB.GetBPMDynamicWindowByWhere(Id);
-                        Bsxml = XmlSerializeHelper.XmlSerialize<BPMDynamicWindow>(window_n);
-                    }
-                    else if (_btid == 2)
-                    {
-                        BOID = Id.ConventToString(string.Empty);
-                        BTID = "P12";
-                        BPMStaticWindow window_n = CadDrawingWindowDetailDB.GetBPMStaticWindowByWindowId(Id);
-                        Bsxml = XmlSerializeHelper.XmlSerialize<BPMStaticWindow>(window_n);
-
-                    }
-                    WeService.BPM.WriteSAP.I_REQUEST request = new WeService.BPM.WriteSAP.I_REQUEST();
-                    IList<WeService.BPM.WriteSAP.REQ_ITEM> peq_item = new List<WeService.BPM.WriteSAP.REQ_ITEM>();
-                    WeService.BPM.WriteSAP.REQ_ITEM item = new WeService.BPM.WriteSAP.REQ_ITEM();
-                    item.BSID = "vsheji";
-                    item.BTID = BTID;
-                    item.BOID = BOID;
-                    item.BSXML = Bsxml;
-                    item.procInstID = "0";
-                    item.userid = "zhaoy58";
-                    peq_item.Add(item);
-                    WeService.BPM.WriteSAP.REQ_BASEINFO baseInfo = new WeService.BPM.WriteSAP.REQ_BASEINFO();
-                    baseInfo.REQ_TRACE_ID = API_Common.UUID;
-                    baseInfo.REQ_SEND_TIME = API_Common.SEND_DATETIME;
-                    baseInfo.REQ_SRC_SYS = "BS_CAD_BPM";
-                    baseInfo.REQ_TAR_SYS = "BS_CAD_BPM";
-                    baseInfo.REQ_SERVER_NAME = "CAD_SUNAC_564_WriteSAPXmlToBPM";
-                    baseInfo.REQ_SYN_FLAG = "0";
-                    request.REQ_BASEINFO = baseInfo;
-                    request.MESSAGE = peq_item.ToArray<WeService.BPM.WriteSAP.REQ_ITEM>();
-                    WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService service = new WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService();
-                    WeService.BPM.WriteSAP.E_RESPONSE response = service.CAD_SUNAC_564_WriteSAPXmlToBPM(request);
-                    WeService.BPM.WriteSAP.E_RESPONSERSP_ITEM Message = response.MESSAGE.First();
+                    return CadWindowBPMApproval(mId, DynamicType);
                 }
-                if (mId > 0 && detail>0)
+                if (mId > 0 && detail > 0)
                 {
                     return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
                 }
@@ -388,7 +362,7 @@ namespace SunacCADApp.Controllers
                     return Json(new { code = -100, message = "添加失败" }, JsonRequestBehavior.AllowGet);
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return Json(new { code = -110, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
@@ -401,7 +375,7 @@ namespace SunacCADApp.Controllers
         /// </summary>
         /// <returns></returns>
         /// <url>/Window/Edit</url>
-        public ActionResult Edit(int Id=0)
+        public ActionResult Edit(int Id = 0)
         {
             if (UserId < 1)
             {
@@ -409,7 +383,7 @@ namespace SunacCADApp.Controllers
             }
             if (Id < 1)
             {
-               return  Redirect("/Window/Index");
+                return Redirect("/Window/Index");
             }
 
             string _where = "TypeCode='Area' And ParentID!=0";
@@ -450,13 +424,12 @@ namespace SunacCADApp.Controllers
             return View();
         }
 
-
-          /// <summary>
-       ///   外窗CAD原型属性表-修改方法
-       /// </summary>
-       /// <returns></returns>
-       /// <get>/manage/CadDrawingWindowDetail/edithandle</get> 
-       /// <author>alon<84789887@qq.com></author>  
+        /// <summary>
+        ///   外窗CAD原型属性表-修改方法
+        /// </summary>
+        /// <returns></returns>
+        /// <get>/manage/CadDrawingWindowDetail/edithandle</get> 
+        /// <author>alon<84789887@qq.com></author>  
         [ValidateInput(false)]
         public ActionResult Edithandle()
         {
@@ -480,13 +453,16 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.Scope = Request.Form["chekbox_group"].ConvertToInt32(0);
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
-                caddrawingmaster.CreateOn = DateTime.Now;
                 caddrawingmaster.Reorder = 2;
                 caddrawingmaster.Enabled = 1;
-                caddrawingmaster.CreateUserId = 0;
-                caddrawingmaster.CreateBy = "admin";
+                caddrawingmaster.CreateUserId = UserId;
+                caddrawingmaster.CreateBy = UserName;
+                caddrawingmaster.CreateOn = DateTime.Now;
+                caddrawingmaster.ModifiedUserId = UserId;
+                caddrawingmaster.ModifiedBy = UserName;
+                caddrawingmaster.ModifiedOn = DateTime.Now;
                 caddrawingmaster.Id = Id;
-                int mId = CadDrawingMasterDB.EditHandle(caddrawingmaster,string.Empty);
+                int mId = CadDrawingMasterDB.EditHandle(caddrawingmaster, string.Empty);
                 mId = Id;
                 string[] arr_CADFile = cadFile.Split(',');
                 string[] arr_IMGFile = imgFile.Split(',');
@@ -494,7 +470,7 @@ namespace SunacCADApp.Controllers
                 string[] arr_DrawingType = drawingtype.Split(',');
                 CadDrawingDWG dwg = null;
                 int index = 0;
-                CadDrawingDWGDB.DeleteHandleByParam(string.Format(@" MId={0}",mId));
+                CadDrawingDWGDB.DeleteHandleByParam(string.Format(@" MId={0}", mId));
                 foreach (string cad in arr_CADFile)
                 {
                     if (!string.IsNullOrEmpty(cad))
@@ -505,6 +481,9 @@ namespace SunacCADApp.Controllers
                         dwg.CADPath = arr_CADFile[index];
                         dwg.FileClass = arr_FileName[index];
                         dwg.CADType = arr_DrawingType[index];
+                        dwg.CreateUserId = UserId;
+                        dwg.CreateBy = UserName;
+                        dwg.CreateOn = DateTime.Now;
                         CadDrawingDWGDB.AddHandle(dwg);
                         index++;
                     }
@@ -519,6 +498,9 @@ namespace SunacCADApp.Controllers
                         CadDrawingByArea byArea = new CadDrawingByArea();
                         byArea.AreaID = area.ConvertToInt32(-1);
                         byArea.MId = mId;
+                        byArea.CreateUserId = UserId;
+                        byArea.CreateBy = UserName;
+                        byArea.CreateOn = DateTime.Now;
                         CadDrawingByAreaDB.AddHandle(byArea);
                     }
 
@@ -533,6 +515,9 @@ namespace SunacCADApp.Controllers
                         CadDrawingFunction function = new CadDrawingFunction();
                         function.MId = mId;
                         function.FunctionId = action.ConvertToInt32(-1);
+                        function.CreateUserId = UserId;
+                        function.CreateBy = UserName;
+                        function.CreateOn = DateTime.Now;
                         CadDrawingFunctionDB.AddHandle(function);
                     }
 
@@ -567,6 +552,9 @@ namespace SunacCADApp.Controllers
                 window.WindowVentilationQuantity = WindowVentilationQuantity;
                 window.WindowPlugslotSize = WindowPlugslotSize;
                 window.WindowAuxiliaryFrame = WindowAuxiliaryFrame;
+                window.CreateUserId = UserId;
+                window.CreateBy = UserName;
+                window.CreateOn = DateTime.Now;
                 int detail = CadDrawingWindowDetailDB.AddHandle(window);
                 string param = Request.Form["param"].ConventToString(string.Empty);
                 CadDrawingParameterDB.DeleteHandleByParam(string.Format(@" MId={0}", mId));
@@ -584,6 +572,8 @@ namespace SunacCADApp.Controllers
                         cadParam.MaxValue = row["MaxValue"].ConvertToInt32(0);
                         cadParam.DefaultValue = row["DefaultValue"].ConvertToInt32(0);
                         cadParam.Desc = row["Desc"].ConventToString(string.Empty);
+                        cadParam.CreateUserId = UserId;
+                        cadParam.CreateBy = UserName;
                         cadParam.CreateOn = DateTime.Now;
                         CadDrawingParameterDB.AddHandle(cadParam);
                     }
@@ -615,14 +605,14 @@ namespace SunacCADApp.Controllers
         public ActionResult DeleteHandleById()
         {
             int Id = Request.Form["id"].ConvertToInt32(0);
-            if (Id < 1) 
+            if (Id < 1)
             {
                 return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
             }
-        
+
             string _where = string.Format("  a.MId={0}", Id);
             IList<CadDrawingDWG> Dwgs = CadDrawingDWGDB.GetPageInfoByParameter(_where, string.Empty, 0, 50);
-            foreach (CadDrawingDWG dwg in Dwgs) 
+            foreach (CadDrawingDWG dwg in Dwgs)
             {
                 string cadpath = dwg.CADPath;
                 string mapCadPath = Server.MapPath(cadpath);
@@ -642,42 +632,48 @@ namespace SunacCADApp.Controllers
             }
         }
 
-          /// <summary>
-          ///  BPM提交审核
-          /// </summary>
-          /// <param name="Id">原型ID</param>
-          /// <param name="status">1、动态  2、静态</param>
-          /// <returns></returns>
+        /// <summary>
+        ///  BPM提交审核
+        /// </summary>
+        /// <param name="Id">原型ID</param>
+        /// <param name="status">1、动态  2、静态</param>
+        /// <returns></returns>
         /// <get>/window/CadWirteBPMApproval</get>
-        public ActionResult CadWirteBPMApproval() 
+        public ActionResult CadWirteBPMApproval()
         {
-            try
-            {
                 if (UserId < 1)
                 {
                     return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
                 }
-                int Id   = Request.Form["Id"].ConvertToInt32(0);
+                int Id = Request.Form["Id"].ConvertToInt32(0);
                 int _btid = Request.Form["State"].ConvertToInt32(0);
-                string BOID=string.Empty,
-                          BTID="P11",
-                          Bsxml =string.Empty;
-                if (_btid == 1) 
+                return CadWindowBPMApproval(Id, _btid);
+        }
+
+        public JsonResult CadWindowBPMApproval(int windowId, int statecode)
+        {
+            try
+            {
+                int Id = windowId;
+                int _btid = statecode;
+                string BOID = string.Empty,
+                          BTID = "P11",
+                          Bsxml = string.Empty;
+                if (_btid == 1)
                 {
                     BOID = Id.ConventToString(string.Empty);
                     BTID = "P11";
                     BPMDynamicWindow window = CadDrawingWindowDetailDB.GetBPMDynamicWindowByWhere(Id);
                     Bsxml = XmlSerializeHelper.XmlSerialize<BPMDynamicWindow>(window);
                 }
-                else if (_btid == 2) 
+                else if (_btid == 2)
                 {
                     BOID = Id.ConventToString(string.Empty);
                     BTID = "P12";
                     BPMStaticWindow window = CadDrawingWindowDetailDB.GetBPMStaticWindowByWindowId(Id);
                     Bsxml = XmlSerializeHelper.XmlSerialize<BPMStaticWindow>(window);
-
                 }
-                 WeService.BPM.WriteSAP.I_REQUEST request = new WeService.BPM.WriteSAP.I_REQUEST();
+                WeService.BPM.WriteSAP.I_REQUEST request = new WeService.BPM.WriteSAP.I_REQUEST();
                 IList<WeService.BPM.WriteSAP.REQ_ITEM> peq_item = new List<WeService.BPM.WriteSAP.REQ_ITEM>();
                 WeService.BPM.WriteSAP.REQ_ITEM item = new WeService.BPM.WriteSAP.REQ_ITEM();
                 item.BSID = "vsheji";
@@ -701,22 +697,19 @@ namespace SunacCADApp.Controllers
                 WeService.BPM.WriteSAP.E_RESPONSERSP_ITEM Message = response.MESSAGE.First();
                 if (Message.STATUSCODE == "1")
                 {
-                    CadDrawingMasterDB.ChangeBpmStateusByMId(Id,2);
+                    CadDrawingMasterDB.ChangeBpmStateusByMId(Id, 2);
                     return Json(new { code = 100, message = "提交成功" }, JsonRequestBehavior.AllowGet);
                 }
-                else 
+                else
                 {
                     return Json(new { code = -100, message = "提交失败" }, JsonRequestBehavior.AllowGet);
                 }
-                
+
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return Json(new { code = -100, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
-            
-        
-           
         }
     }
 }
