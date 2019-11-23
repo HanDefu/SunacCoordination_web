@@ -50,6 +50,11 @@ namespace SunacCADApp.Library
             }
         }
 
+        public static string GlobalParam(string Key) 
+        {
+            return ConfigurationSettings.AppSettings[Key];
+        }
+
         public static string GetSOAPReSource(string url, string datastr)
         {
             try
@@ -80,7 +85,30 @@ namespace SunacCADApp.Library
             }
         }
 
+        public static bool DownloadFile(string file,string saveFile) 
+        {
+            try
+            {
+               // string pathFile = string.Format(@"\\192.168.7.209\CAD\ProjectFiles\Window_NC2_0.dwg");
+                string pathFile = file;
+                FileStream fs = new FileStream(pathFile, FileMode.Open);
+                byte[] bytes = new byte[(int)fs.Length];
+                fs.Read(bytes, 0, bytes.Length);
+                fs.Close();
+                string fileName = System.Web.HttpUtility.UrlEncode(saveFile, System.Text.Encoding.UTF8);
+                System.Web.HttpContext.Current.Response.ContentType = "application/octet-stream";
+                System.Web.HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment;  filename=" + fileName);
+                System.Web.HttpContext.Current.Response.BinaryWrite(bytes);
+                System.Web.HttpContext.Current.Response.Flush();
+                System.Web.HttpContext.Current.Response.End();
+                return true;
 
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
    
     }
 }

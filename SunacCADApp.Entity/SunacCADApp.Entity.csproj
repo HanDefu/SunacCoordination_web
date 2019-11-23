@@ -109,6 +109,7 @@
     <Compile Include="Sys_Role_Model_Relation.cs" />
     <Compile Include="Sys_User.cs" />
     <Compile Include="Sys_User_Area_Relation.cs" />
+    <Compile Include="Sys_User_Organization_Relation.cs" />
     <Compile Include="Sys_User_Project_Relation.cs" />
     <Compile Include="ArgumentSetting.cs" />
     <Compile Include="XMLArgumentSetting.cs" />

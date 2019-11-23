@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="BasArgumentSettingDB.cs" />
     <Compile Include="BaseCompanyInfoDB.cs" />
+    <Compile Include="Base\TreeSource.cs" />
     <Compile Include="BasIdmProjectDirectoryDB.cs" />
     <Compile Include="BasIdmProjectFileDB.cs" />
     <Compile Include="BasInstitutionDataDB.cs" />

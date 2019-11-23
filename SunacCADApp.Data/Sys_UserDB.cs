@@ -55,6 +55,25 @@ namespace SunacCADApp.Data
             string sql = string.Format("select top 1 *  from dbo.Sys_User where id={0}", id);
             return MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<Sys_User>(new Sys_User());
         }
+
+
+        ///<summary>
+        /// 用户表 根据ID查询
+        ///</summary>
+        public static Sys_User GetInnerSysUserById(int id)
+        {
+
+            Sys_User sys_user = new Sys_User();
+            string sql = string.Format(@"select TOP 1 a.Id,a.[User_Name],a.Is_Internal,a.UserDeptNo,a.True_Name,a.Telephone,a.Email,
+                                                                  a.Is_Used,b.OrganName AS CompanyName,a.RoleID 
+                                                         from dbo.Sys_User  a LEFT JOIN dbo.Bas_Idm_Organ b ON a.UserDeptNo=b.OrganNumber 
+                                                       where  a.Is_Internal=1 and  a.id={0}", id);
+            return MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<Sys_User>(new Sys_User());
+        }
+
+
+
+
         ///<summary>
         /// 用户表 查询根据条件
         ///</summary>
@@ -90,6 +109,14 @@ namespace SunacCADApp.Data
 
             string _wh = string.IsNullOrEmpty(editparam) ? " and id=" + sys_user.Id : editparam;
             string sql = "UPDATE [dbo].[Sys_User] SET [True_Name]='" + sys_user.True_Name + "',[Telephone]='" + sys_user.Telephone + "',[Email]='" + sys_user.Email + "',[Is_Used]='" + sys_user.Is_Used + "',[Used_Begin_DateTime]='" + sys_user.Used_Begin_DateTime + "',[Used_End_DateTime]='" + sys_user.Used_End_DateTime + "',[Is_Internal]='" + sys_user.Is_Internal + "',[Orgnazation_Name]='" + sys_user.Orgnazation_Name + "',[CompanyID]=" + sys_user.CompanyID + ",[RoleID]=" + sys_user.RoleID + ",[AreaID]=" + sys_user.AreaID + ",[Enabled]=" + sys_user.Enabled + ",[Reorder]=" + sys_user.Reorder + ",[ModifiedUserId]=" + sys_user.ModifiedUserId + ",[ModifiedBy]='" + sys_user.ModifiedBy + "',[UserDeptNo]='"+sys_user.UserDeptNo+"'  where 1=1 " + _wh;
+            return MsSqlHelperEx.Execute(sql);
+        }
+
+
+        public static int InnerEditHandle(Sys_User user) 
+        {
+            string _wh = " and id=" + user.Id;
+            string sql = "UPDATE [dbo].[Sys_User] SET [RoleID]=" + user.RoleID + ",[Enabled]=1 ,[ModifiedUserId]=" + user.ModifiedUserId + ",[ModifiedBy]='" + user.ModifiedBy + "',ModifiedOn=getdate()   where 1=1 " + _wh;
             return MsSqlHelperEx.Execute(sql);
         }
 
@@ -189,6 +216,38 @@ namespace SunacCADApp.Data
         {
             string sql = string.Format(@"SELECT Id FROM dbo.Sys_User WHERE [User_Name] = '{0}'", loginName);
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
+        }
+
+        /// <summary>
+        /// 删除内部用户区域城市
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public static int RemoveUserOrganizationRelationByUserId(int UserId) 
+        {
+            string sql = string.Format(@"DELETE  FROM dbo.Sys_User_Organization_Relation WHERE UserId={0}",UserId);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
+        }
+
+        public static int EditUserOrganizationRelationByOrganization(Sys_User_Organization_Relation sys_user_organization_relation) 
+        {
+          
+          string sql=string.Format(@"INSERT INTO dbo.sys_user_organization_relation(UserId,OrgId,CreateOn ,CreateUserId ,CreateBy,ModifiedOn,ModifiedUserId,ModifiedBy)
+                                     VALUES ({0},{1},getdate(),{2},'{3}',getdate(),{4},'{5}')",sys_user_organization_relation.UserId,sys_user_organization_relation.OrgId,
+                                                                                              sys_user_organization_relation.CreateUserId,sys_user_organization_relation.CreateBy,
+                                                                                              sys_user_organization_relation.ModifiedUserId,sys_user_organization_relation.ModifiedBy);
+          return MsSqlHelperEx.Execute(sql);
+        }
+
+
+        public static IList<Sys_User_Organization_Relation> GetUserOrganizationRelationByUserId(int UserId) 
+        {
+            string sql = string.Format(@"SELECT a.Id,a.UserId, a.OrgId,b.OrgCode,b.OrgName,b.UpOrgCode,c.OrgName AS UpOrgName 
+                                                          FROM dbo.sys_user_organization_relation a 
+                                                        INNER JOIN dbo.Bas_Idm_Organization b ON a.OrgId=b.Id
+                                                        INNER JOIN dbo.Bas_Idm_Organization c ON c.OrgCode=b.UpOrgCode
+                                                      WHERE a.UserId={0}",UserId);
+            return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Sys_User_Organization_Relation>(new Sys_User_Organization_Relation());
         }
             
     }

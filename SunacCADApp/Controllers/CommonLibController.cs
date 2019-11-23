@@ -140,7 +140,7 @@ namespace SunacCADApp.Controllers
 
             try 
             {
-                string pathFile = string.Format(@"\\192.168.7.209\CAD\ProjectFiles\Window_NC2_0.dwg");
+                string pathFile = string.Format(@"ProjectFiles\Window_NC2_0.dwg");
                 FileStream fs = new FileStream(pathFile, FileMode.Open);
                 byte[] bytes = new byte[(int)fs.Length];
                 fs.Read(bytes, 0, bytes.Length);

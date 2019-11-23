@@ -1,0 +1,250 @@
+﻿@using SunacCADApp.Entity
+@using SunacCADApp.Data
+@{
+    IList<Sys_User_Organization_Relation> organizationList = ViewBag.Organizations;
+    Sys_User User = ViewBag.SysUser;
+    SortedList<string, string> OrgSorts = Project_InformationDB.GetAreaSortedList;
+    
+    
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>内部用户设置权限</title>
+    <link href="~/Content/Plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/Css/site.css" rel="stylesheet" />
+    <link href="~/Content/Css/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="~/Content/Plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Content/Js/jquery.form.js"></script>
+    <script src="~/Content/Js/goyeer.validation.js"></script>
+    <script src="~/Content/Plugins/layer/layer.js"></script>
+    <script src="~/Content/Plugins/laydate/laydate.js"></script>
+    <script src="~/Content/Css/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="~/Content/Css/bootstrap-select/js/i18n/defaults-zh_CN.min.js"></script>
+    <style type="text/css">
+        .table .btn-delete-project {
+            cursor: pointer;
+        }
+
+        .btn-form-bottom {
+            z-index: 1000;
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            height: 45px;
+            background: #ffffff;
+        }
+    </style>
+
+</head>
+<body id="sunac" class="inner">
+    <form name="myform" id="myform">
+        <div class="row ">
+            <div class="col-xs-6 uitem">
+                <dl>
+                    <dt><i class="tip-color-rad"></i>账户：</dt>
+                    <dd>
+                        <input type="text" class="form-control required control-len" name="txt_user_name" value="@User.User_Name" placeholder="用户名" readonly="readonly" />
+
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-xs-6 uitem">
+                <dl>
+                    <dt><i class="tip-color-rad"></i>姓名：</dt>
+                    <dd>
+                        <input type="text" class="form-control required control-len" name="txt_true_name" value="@User.True_Name" placeholder="真实姓名" readonly="readonly" />
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 uitem">
+                <dl>
+                    <dt><i class="tip-color-rad"></i>电话：</dt>
+                    <dd>
+                        <input type="text" class="form-control required control-len" name="txt_phone" value="@User.Telephone" placeholder="电话" readonly="readonly" />
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-xs-6 uitem">
+                <dl>
+                    <dt>邮箱：</dt>
+                    <dd>
+                        <input type="text" class="form-control control-len" name="txt_email" placeholder="邮箱" readonly="readonly" value="@User.Email" />
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 uitem">
+
+                <dl>
+                    <dt><i class="tip-color-rad"></i>部门：</dt>
+                    <dd>
+                        <input type="text" class="form-control control-len" name="txt_email" placeholder="部门" readonly="readonly"  value="@User.CompanyName"/>
+                    </dd>
+                </dl>
+
+            </div>
+            <div class="col-xs-6 uitem">
+                <dl>
+                    <dt><i class="tip-color-rad">*</i>角色：</dt>
+                    <dd>
+                        <select class="form-control required control-len" name="select_roleid" data-error="角色不能为空">
+                            <option value="">选择角色</option>
+                            @foreach (Sys_Role Role in ViewBag.SysRoleList)
+                            {
+                                if (User.RoleID == Role.Id)
+                                {
+                                    <option value="@Role.Id" selected="selected">@Role.Role_Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@Role.Id">@Role.Role_Name</option>
+                                }
+
+                            }
+                        </select>
+
+                    </dd>
+                </dl>
+            </div>
+        </div>
+        <input name="hid_id" type="hidden"  value="@User.Id"/>
+        <input name="hid_organiztionId" type="hidden" />
+    </form>
+    <div class="sunac-border-top"></div>
+    <div class="row">
+        <div class="col-xs-6">
+            <div style="margin-left:6px;color:#b58d59;font-weight:bold; line-height:35px">城市公司列表：</div>
+        </div>
+        <div class="col-xs-6">
+            <div style="margin-left:6px; text-align:right;padding-right:5px;line-height:35px">
+                <button class="btn btn-sunac btn-inner btn-add-project"><i class="fa fa-plus"></i>  城市公司添加</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="sunacrow panel-table" style="margin-left:20px; margin-right:20px;margin-top:2px;">
+            <table class="table" id="product-table">
+                <thead>
+                    <tr>
+                        <th>城市公司</th>
+                        <th width="180" class="text-center">区域</th>
+                        <th width="60" class="text-center">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Sys_User_Organization_Relation Organization in organizationList)
+                    {
+                        string UpOrgCode = Organization.UpOrgCode;
+                        string UpOrgName = OrgSorts[UpOrgCode];
+                        <tr data-orgcode="@Organization.OrgCode" data-id="@Organization.Id">
+                            <td>@Organization.OrgName</td>
+                            <td class="text-center">@UpOrgName</td>
+                            <td class="text-center delete delete-style">删除</td>
+                        </tr>
+                    }
+                    
+                    @if (organizationList.Count == 0)
+                    {
+                        <tr id="tr_record_not"><td class="not-record-num" colspan="3">暂未有项目信息</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row sunacrow text-center btn-form-bottom">
+        <button type="button" class="btn btn-sunac" id="btn_save" style="width:120px;margin-right:20px;">确定</button>
+        <button type="button" class="btn btn-sunac" id="btn_cancel" style="width:120px;">取消</button>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+
+    var options = {
+        url: '/sysuser/editInnerUserHandle',
+        type: 'post',
+        data: $("#myform").serialize(),
+        dataType: 'json',
+        beforeSerialize: function () {
+            var arr_area = new Array();
+            let roleid = $("select[name='select_roleid']").val();
+            if (_isNull(roleid)) {
+                layer.alert("内部角色不能为空", { icon: 5, shade: 0 });
+                return false;
+            }
+            let area_ids = $("#product-table tbody tr");
+            $.each(area_ids, function (i,v) {
+                let areaid = $(this).data("id");
+                arr_area.push(areaid);
+            })
+            let areas = arr_area.join(',');
+            if (_isNull(areas)) {
+                layer.alert("城市公司不能为空", { icon: 5, shade: 0 });
+                return false;
+            }
+
+            $("input[name='hid_organiztionId']").val(areas);
+            return true;
+        },
+        success: function (data) {
+            if (data.code == 100) {
+                layer.alert(data.message, { icon: 6, shade: false }, function () {
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(index);
+                    parent.window.location.reload();
+                });
+            } else {
+                layer.alert(data.message, { icon: 5, shade: false });
+            }
+        }
+    }
+    $(function () {
+        $(".btn-add-project").on("click", function () {
+            var index = layer.open({
+                type: 2,
+                skin: 'layer-ext-sunacskin_01',
+                area: ['300px', '480px'],
+                shade: 0,
+                title: '城市公司',
+                content: ['/sysuser/treeprojectinfo', 'yes']
+            });
+        })
+
+
+        $("#btn_cancel").on('click', function () {
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index); //再执行关闭
+        })
+
+        $("#btn_save").on('click', function () {
+            $("#myform").ajaxSubmit(options);
+        })
+
+        $(".table").on('click', '.delete', function () {
+            $(this).parent().remove();
+            let hastr = $('.table  tbody tr');
+            if (hastr.length == 0)
+            {
+                let record_not = " <tr id=\"tr_record_not\">"+
+                                          "    <td class=\"not-record-num\" colspan=\"3\">暂未有项目信息</td>"+
+                                          "</tr>";
+                $(".table tbody").append(record_not);
+            }
+
+           
+        })
+
+
+    })
+
+</script>

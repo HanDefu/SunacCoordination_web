@@ -1,35 +1,53 @@
 ﻿@using SunacCADApp.Entity;
+@using Common.Utility.Extender;
+@using SunacCADApp.Data;
 @{
     Layout = "~/Views/_LayoutPage.cshtml";
     IList<Bas_Idm_Project> Projects = ViewBag.List;
+    IList<PageNum> pageNumList = ViewBag.PageNumList;
+    int pageCount = ViewBag.PageCount;
+    int recordCount = ViewBag.RecordCount;
+    int current = ViewBag.CurrentPage;
+    SortedList<string, string> AreaSortedList = Project_InformationDB.GetAreaSortedList;
 }
 
 <div id="sunac" style="min-width:1024px;">
-    <div class="row">
+    <div class="row" style="margin-top:-28px;">
         <dl class="search-list dl_area" >
             <dt><span>区域：</span></dt>
+            <dd>
             @if (string.IsNullOrEmpty(ViewBag.AreaCode))
             {
-                <dd><span data-areaid="" class="active">全部</span></dd>
-            }
+                <span data-areaid="" class="active">全部</span>
+             }
             else
             {
-                <dd><span data-areaid="">全部</span></dd>
+                <span data-areaid="">全部</span>
             }
             
             @foreach (PArea area in ViewBag.Areas)
             {
+                string areaName=area.AreaName.Replace("集团","").Replace("公司","");
+                if (area.AreaId == "E0109") 
+                {
+                    continue;
+                 }
+
+                if (area.AreaId == "E0107") 
+                {
+                    areaName = "华南区域";
+                }
                 if (area.AreaId == ViewBag.AreaCode)
                 {
-                    <dd><span data-areaid="@area.AreaId" class="active">@area.AreaName</span></dd>
+                    <span data-areaid="@area.AreaId" class="active">@areaName</span>
                 }
                 else
                 {
-                    <dd><span data-areaid="@area.AreaId">@area.AreaName</span></dd>
+                    <span data-areaid="@area.AreaId">@areaName</span>
                 }
 
-            }
-          
+              }
+          </dd>
         </dl>
         <dl class="search-list">
             <dt><span>关键词搜索：</span></dt>
@@ -41,14 +59,14 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th  class="selected-all" style="cursor:pointer;line-height:35px;" >项目名称</th>
-                    <th width="180"  style="line-height:35px;">区域</th>
-                    <th width="200" style="line-height:35px;">城市公司</th>
-                    <th width="180"  style="line-height:35px;">创建时间</th>
-                    <th width="180" style="line-height:35px;">更新时间</th>
+                    <th class="selected-all" style="line-height:35px;cursor:pointer;">项目名称</th>
+                    <th width="180" class="text-center" style="line-height:35px;">区域</th>
+                    <th width="150" class="text-center" style="line-height:35px;">城市公司</th>
+                    <th width="100" class="text-center" style="line-height:35px;">创建时间</th>
+                    <th width="100" class="text-center" style="line-height:35px;">更新时间</th>
 
-                    <th width="80" style="line-height:35px;">设计人员</th>
-                    <th width="120" class="text-center" style="line-height:35px;">操作</th>
+                    <th width="90" style="line-height:35px;">设计人员</th>
+                    <th width="90" class="text-center" style="line-height:35px;">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -56,16 +74,19 @@
                     int i = 1;
                     foreach (Bas_Idm_Project project in Projects)
                     {
+                        string modifiedOn = project.ModifiedOn == null ? "" : project.ModifiedOn.ToString("yyyy-MM-dd");
+                         modifiedOn = modifiedOn == "0001-01-01" ? "" : modifiedOn;
+                         string pareaName = AreaSortedList[project.PAREA_GS_NAME];
                         <tr>
                           
                             <td class="text-left">@project.POST1</td>
-                            <td class="text-left">@project.PAREANAME</td>
-                            <td>@project.MTIMESTAMP</td>
-                            <td>@project.CreateOn</td>
-                            <td>@project.ModifiedOn</td>
-                            <td>@project.ModifiedBy</td>
-                            <td align="center" class="operate">
-                                <a data-code="@project.POSID">查看文件</a>
+                            <td class="text-center">@pareaName</td>
+                            <td class="text-center">@project.PCITYNAME</td>
+                            <td class="text-center">@project.MTIMESTAMP.ToString("yyyy-MM-dd")</td>
+                            <td class="text-center">@modifiedOn</td>
+                            <td class="text-center">@project.ModifiedBy</td>
+                            <td class="operate text-center">
+                                <a data-code="@project.POSID" href="javascript:void(0)">查看文件</a>
                             </td>
                         </tr>
                     }
@@ -74,6 +95,62 @@
          </table>
         </div>
     </div>
+  <div class="row" id="sunac-paging">
+    <b>共<span>@ViewBag.recordCount</span>条</b>
+    <b>
+        <select class="form-control control-page-size">
+            @foreach (PageNum page in pageNumList)
+            {
+                if (page.Code == ViewBag.PageSize)
+                {
+                    <option value="@page.Code" selected="selected">@page.Text</option>
+                }
+                else
+                {
+                    <option value="@page.Code">@page.Text</option>
+                }
+
+            }
+
+        </select>
+    </b>
+    @if (ViewBag.PreviousPage < 1)
+    {
+        <a class="none"><i class="fa  fa-angle-left fa-lg"></i></a>
+    }
+    else
+    {
+        <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PreviousPage&@ViewBag.URL"><i class="fa  fa-angle-left fa-lg"></i></a>
+    }
+
+    @for (int page = ViewBag.StartPage; page <= ViewBag.EndPage; page++)
+    {
+        if (page == current)
+        {
+            <a class="current">@page</a>
+        }
+        else
+        {
+            <a href="?pagesize=@ViewBag.PageSize&page=@page&@ViewBag.URL">@page</a>
+        }
+
+    }
+    @if (ViewBag.EndPage != ViewBag.PageCount)
+    {
+        <a>...</a>
+        <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PageCount">@ViewBag.PageCount</a>
+        <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.NextPage"><i class="fa  fa-angle-right fa-lg"></i></a>
+    }
+    else
+    {
+        <a class="none"><i class="fa  fa-angle-right fa-lg"></i></a>
+    }
+
+    <strong>
+        前往<input type="text" class="form-control" value="@ViewBag.CurrentPage">页
+    </strong>
+</div>
+
 <script type="text/javascript">
     $(function () {
         $(".dl_area span").on("click", function () {
@@ -83,20 +160,23 @@
         })
 
         $("#btnSeach").on("click", function () {
-            window.location.href = "/projectInfo?" + searchparam();
+             window.location.href = "/projectInfo?" + searchparam();
         })
 
         $('.operate  a').on("click", function () {
             let code = $(this).data("code");
-            
             var index = layer.open({
                 type: 2,
                 skin: 'layer-ext-sunacskin',
-                area: ['70%', '80%'],
+                area: ['1024px', '600px'],
                 title: '查看项目文件',
                 shade: 0,
                 content: '/projectInfo/Item?code=' + code
             });
+        })
+
+        $('.control-page-size').on('change', function () {
+            window.location.href = "?pagesize=" + $(this).val();
         })
       
     })
@@ -110,7 +190,7 @@
 
         let keyword = $("input[name='keyword']").val();
         if (!_isNull(keyword)) {
-            param += '&keyword=' + keyword;
+             param += '&keyword=' + keyword;
         }
         return param;
     }

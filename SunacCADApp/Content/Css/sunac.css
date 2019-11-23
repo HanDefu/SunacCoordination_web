@@ -1225,6 +1225,27 @@ body .layui-ext-sunacskin .layui-layer-btn {
         color: #ffffff;
     }
 
+ body .layer-ext-sunacskin_01 .layui-layer-title {
+    background: #b58d59;
+    color: #fff;
+    border: none;
+    text-align: left;
+    font-size: 18px;
+}
+
+body .layui-ext-sunacskin_01 .layui-layer-btn {
+    border-top: 1px solid #E9E7E7;
+}
+
+    body .layui-ext-sunacskin_01 .layui-layer-btn a {
+        background: #ffffff;
+    }
+
+    body .layui-ext-sunacskin_01 .layui-layer-btn .layui-layer-btn1 {
+        background: #ffffff;
+        color: #ffffff;
+    }
+
 
 #sunac .home {
     width: 1200px;
@@ -1328,7 +1349,8 @@ body .layui-ext-sunacskin .layui-layer-btn {
 #sunac dl.search-list {
   display:block;
   clear:both;
-  overflow:hidden
+  overflow:hidden; 
+  border-bottom:solid 1px #efefed;
 
 }
 
@@ -1336,20 +1358,25 @@ body .layui-ext-sunacskin .layui-layer-btn {
       float:left;
       overflow:hidden;
       font-size:14px;
+      color:#333;
+      font-weight:normal;
     }
 
     #sunac dl.search-list dt  span{
          width:100px;
-         line-height:35px;
+         line-height:55px;
          display:inline-block;
          text-align:right;
          padding-right:5px;
     }
         #sunac dl.search-list dd span {
-            line-height:35px;
-            margin-right:10px;
+            line-height:55px;
+            padding-left:15px;
+            padding-right:15px;
             position:relative;
+            display:inline-block;
             cursor:pointer;
+            min-width:60px;
 
         }
             #sunac dl.search-list dd span.active {
@@ -1370,8 +1397,8 @@ body .layui-ext-sunacskin .layui-layer-btn {
 
             #sunac dl.search-list dd span strong {
               position:absolute;
-              right:1px;
-              top:-3px;
+              right:15px;
+              top:15px;
               height:25px;
               width:40px;
               border-top-right-radius:12px;
@@ -1469,7 +1496,10 @@ body .layui-ext-sunacskin .layui-layer-btn {
             #sunac-sub .sub-tbody .item-left dt.cls {
               background-color:#f6f7f2;
             }
-
+        #sunac-sub .sub-tbody .item-left dl {
+            margin-top:0px;
+           margin-bottom:0px;
+        }
 
             
     #sunac-sub .sub-tbody .item-centre {

@@ -3,6 +3,8 @@
     Layout = "~/Views/_SubLayoutPage.cshtml";
     Bas_Idm_Project pro = ViewBag.Project;
     int dirIndex = 0;
+    IList<Bas_Idm_ProjectFile> fileList= ViewBag.ListFile;
+    IList<Bas_Idm_ProjectDirectory> directoryList = ViewBag.ListDir;
     }
 
 <div id="sunac-sub">
@@ -34,8 +36,12 @@
                     }
                 }
                 
-           
+                
             </dl>
+            @if (directoryList.Count == 0)
+            {
+                <div class="no-record" style="text-align:center;color:#bababa;line-height:50px">暂无文件</div>
+            }
         </div>
         <div class="item-centre">
             <div class="item-center-operation">
@@ -49,12 +55,12 @@
                             <tr>
                                 <th width="35"></th>
                                 <th class="selected-all">文件名称</th>
-                                <th width="180">创建人</th>
-                                <th width="200">创建时间</th>
-                                <th width="180">更新人员</th>
-                                <th width="180">更新时间</th>
+                                <th width="90">创建人</th>
+                                <th width="90">创建时间</th>
+                                <th width="90">更新人员</th>
+                                <th width="90">更新时间</th>
                                 <th width="80">文件大小</th>
-                                <th width="120" class="text-center">操作</th>
+                                <th width="90" class="text-center">操作</th>
                             </tr>
                         </thead>
                     </table>
@@ -66,25 +72,34 @@
                             @foreach (Bas_Idm_ProjectFile file in ViewBag.ListFile)
                             {
                                 <tr>
-                                    <td width="35"><input type="checkbox" value="" /></td>
+                                    <td width="35"><input type="checkbox" value=""  data-id="@file.Id"/></td>
                                     <td class="selected-all">@file.FileName</td>
-                                    <td width="180">@file.CreateBy</td>
-                                    <td width="200">@file.CreateOn</td>
-                                    <td width="180">@file.ModifiedBy</td>
-                                    <td width="180">@file.CreateOn</td>
+                                    <td width="90">@file.CreateBy</td>
+                                    <td width="90">@file.CreateOn.ToString("yyyy-MM-dd")</td>
+                                    <td width="90">@file.ModifiedBy</td>
+                                    <td width="90">@file.CreateOn.ToString("yyyy-MM-dd")</td>
                                     <td width="80">200KB</td>
-                                    <td width="120" class="text-center">
-                                        <a>下载</a>|<a>删除</a>
-
+                                    <td width="90" class="text-center">
+                                        <a class="file-download" data-fileid="@file.Id">下载</a>|<a class="">删除</a>
                                     </td>
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
+                @if (fileList.Count == 0) 
+                {
+                    <div class="no-record" style="text-align:center;color:#bababa">暂无文件</div>
+                }
              </div>
         </div>
     </div>
 </div>
-
+<script type="text/javascript">
+    $(function () {
+        $('.item-left.dt,.item-left.dd').on("click", function () {
+            Console.log("hello world");
+        })
+    })
+</script>
 

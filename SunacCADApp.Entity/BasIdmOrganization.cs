@@ -24,6 +24,8 @@ namespace SunacCADApp.Entity
         /// 组织名称
         /// </summary>
         public string OrgName { get; set; }
+
+        public string name { get; set; }
         /// <summary>
         /// 组织类型编号
         /// </summary>

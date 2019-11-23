@@ -84,7 +84,7 @@ namespace SunacCADApp.Entity
         /// <summary>
         /// 时间戳
         /// </summary>
-        public string MTIMESTAMP { get; set; }
+        public DateTime MTIMESTAMP { get; set; }
         /// <summary>
         /// 是否有效
         ///</summary>

@@ -94,16 +94,16 @@
                parent.layer.close(index);  
             })
 
-            $(".table tbody").on("click", "tr", function () {
-                let that = $(this);
-                let _checked = that.find("input[name='productid']").prop("checked");
-                if(_checked==false)
-                {
-                    that.find("input[type='checkbox']").prop("checked", true);
-                } else {
-                    that.find("input[type='checkbox']").prop("checked", false);
-                }
-            })
+            //$(".table tbody").on("click", "tr", function () {
+            //    let that = $(this);
+            //    let _checked = that.find("input[name='productid']").prop("checked");
+            //    if(_checked==false)
+            //    {
+            //        that.find("input[type='checkbox']").prop("checked", true);
+            //    } else {
+            //        that.find("input[type='checkbox']").prop("checked", false);
+            //    }
+            //})
 
             $("#box_all").on("click", function () {
                 let checked = $(this).prop("checked");

@@ -507,7 +507,7 @@ namespace SunacCADApp
                 user = new XMLResultUser() { Code = -100, Message = "登陆名错误" };
                 return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
             }
-            else if(sysUser.Is_Internal==1)
+            else if(sysUser.Is_Internal==2)
             {
                 string _pwd=CommonLib.UserMd5(password);
                 if (sysUser.User_Psd != _pwd)
@@ -526,7 +526,7 @@ namespace SunacCADApp
 
                 }
             }
-            else if (sysUser.Is_Internal == 2) 
+            else if (sysUser.Is_Internal == 1) 
             {
                 WebService932.Header header = new WebService932.Header();
                 header.BIZTRANSACTIONID = "sdfdssdfds";

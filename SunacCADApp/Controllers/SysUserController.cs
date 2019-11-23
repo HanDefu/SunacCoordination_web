@@ -7,6 +7,9 @@ using Common.Utility;
 using Common.Utility.Extender;
 using SunacCADApp.Entity;
 using SunacCADApp.Data;
+using System.Collections;
+using Newtonsoft.Json;
+
 namespace SunacCADApp.Controllers
 {
   
@@ -338,6 +341,169 @@ namespace SunacCADApp.Controllers
                 return Json(new { code = -100, message = "修改失败" }, JsonRequestBehavior.AllowGet);
             }
         }
+
+
+        /// <summary>
+        /// 内部用户权限设置
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <uri>/sysuser/inneredit </uri>
+        public ActionResult InnerEdit(int id=0)
+        {
+            if (UserId < 1 || id<0)
+            {
+                return Redirect("/home");
+            }
+            string _order = string.Empty;
+            IList<Sys_Role> SysRoleList = SysRoleDB.GetSysRoleListById();
+            ViewBag.SysRoleList = SysRoleList;
+            Sys_User User = Sys_UserDB.GetInnerSysUserById(id);
+            ViewBag.SysUser = User;
+            IList<Sys_User_Organization_Relation> organizations = Sys_UserDB.GetUserOrganizationRelationByUserId(id);
+            ViewBag.Organizations = organizations;
+            SortedList<string, string> OrgSorts = Project_InformationDB.GetAreaSortedList;
+            ViewBag.OrgSorted = OrgSorts;
+
+            return View();
+
+        }
+
+        public ActionResult EditInnerUserHandle() 
+        {
+            int rtv = 0;
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
+            int uid = Request.Form["hid_id"].ConvertToInt32(0);
+            int roleid = Request.Form["select_roleid"].ConvertToInt32(0);
+            Sys_User user = new Sys_User();
+            user.Id = uid;
+            user.RoleID = roleid;
+            user.ModifiedBy = UserName;
+            user.ModifiedUserId = UserId;
+            user.ModifiedOn = DateTime.Now;
+            rtv=Sys_UserDB.InnerEditHandle(user);
+
+
+            string organiztionId = Request.Form["hid_organiztionId"].ConvertToTrim();
+            Sys_UserDB.RemoveUserOrganizationRelationByUserId(uid);
+            if (!string.IsNullOrEmpty(organiztionId))
+            {
+                string[] arr_organiztionId = organiztionId.Split(',');
+                foreach (string organiztion in arr_organiztionId)
+                {
+
+                    Sys_User_Organization_Relation organization = new Sys_User_Organization_Relation();
+                    organization.UserId = uid;
+                    organization.OrgId = organiztion.ConvertToInt32(0);
+                    organization.CreateBy = UserName;
+                    organization.CreateUserId = UserId;
+                    organization.ModifiedUserId = UserId;
+                    organization.ModifiedBy = UserName;
+                    Sys_UserDB.EditUserOrganizationRelationByOrganization(organization);
+                }
+            }
+
+
+            if (rtv > 0)
+            {
+                return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { code = -100, message = "修改失败" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// 内部用户权限设置
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <uri>/sysuser/treeprojectinfo </uri>
+        public ActionResult TreeProjectInfo() 
+        {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
+            IList<BasIdmOrganization> _bas_idm_organizations = new List<BasIdmOrganization>();
+            _bas_idm_organizations = IdmCommonLibDB.GetPageInfoByParameter(string.Empty);
+            IList<TreeSource> treeSource = new List<TreeSource>();
+            foreach (BasIdmOrganization institution in _bas_idm_organizations) 
+            {
+
+                string orgCode = institution.OrgCode;
+                
+
+                string orgName = string.Empty;
+                if (Project_InformationDB.GetAreaSortedList.ContainsKey(orgCode))
+                {
+                    orgName = Project_InformationDB.GetAreaSortedList[orgCode];
+                }
+                else 
+                {
+                    continue;
+                }
+             
+                TreeSource tree = new TreeSource();
+                tree.id = institution.Id;
+                tree.name = orgName;
+                tree.isParent = "true";
+                tree.halfCheck = "false";
+                tree.pId = 0;
+                tree.OrgCode = institution.OrgCode;
+                tree.OrgName = orgName;
+                tree.UpOrgName = string.Empty;
+                tree.open = true;
+                IList<BasIdmOrganization> _child_organizations = new List<BasIdmOrganization>();
+                _child_organizations = IdmCommonLibDB.GetAreaCityByArea(institution.OrgCode);
+                IList<TreeSource> treeChild = new List<TreeSource>();
+                foreach(BasIdmOrganization child in  _child_organizations)
+                {
+                    TreeSource ctree = new TreeSource();
+                    ctree.id = child.Id;
+                    ctree.name = child.OrgName;
+                    ctree.isParent = "false";
+                    ctree.halfCheck = "false";
+                    ctree.pId = institution.Id;
+                    ctree.OrgCode = child.OrgCode;
+                    ctree.OrgName = child.OrgName;
+                    ctree.UpOrgName = orgName;
+                    ctree.open = false;
+                    treeChild.Add(ctree);
+                }
+                tree.children = treeChild;
+                treeSource.Add(tree);
+            }
+            string _json=JsonConvert.SerializeObject(treeSource);
+            ViewBag.TreeSource = _json;
+            ViewBag.IdmOrganizations = _bas_idm_organizations;
+            SortedList<string, string> OrgSorts = Project_InformationDB.GetAreaSortedList;
+            ViewBag.OrgSorted = OrgSorts;
+            
+            return View();
+        }
+
+        /// <summary>
+        /// 获取 Tree下面子节点
+        /// </summary>
+        /// <returns></returns>
+        ///SysUser/GetTreeNodeJsonAreaCityByArea</get> 
+        public ActionResult GetTreeNodeJsonAreaCityByArea() 
+        {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
+            string orgCode = Request.Form["orgCode"].ConvertToTrim();
+            IList<BasIdmOrganization> _bas_idm_organizations = new List<BasIdmOrganization>();
+            _bas_idm_organizations = IdmCommonLibDB.GetAreaCityByArea(orgCode);
+            return Json(_bas_idm_organizations, JsonRequestBehavior.AllowGet);
+        }
+        
         /// <summary>
         ///   用户表-删除根据主键
         /// </summary>

@@ -44,5 +44,20 @@ namespace SunacCADApp.Data
             _bas_idm_organizations = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<BasIdmOrganization>(new BasIdmOrganization());
             return _bas_idm_organizations;
         }
+
+        public static IList<BasIdmOrganization> GetAreaCityByArea(string AreaCode)
+        {
+            string _where = string.Empty;
+            if (!string.IsNullOrEmpty(AreaCode))
+            {
+                _where = string.Format(@" AND UpOrgCode='{0}'",AreaCode);
+            }
+            IList<BasIdmOrganization> _bas_idm_organizations = new List<BasIdmOrganization>();
+            string sql = string.Format(@"SELECT Id,OrgCode,OrgName,OrgName as Name,OrgTypeCode,OrgTypeDesc,UpOrgCode,UpOrgName 
+                                                          FROM dbo.Bas_Idm_Organization 
+                                                        WHERE OrgTypeCode='C' {0}", _where);
+            _bas_idm_organizations = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<BasIdmOrganization>(new BasIdmOrganization());
+            return _bas_idm_organizations;
+        }
     }
 }

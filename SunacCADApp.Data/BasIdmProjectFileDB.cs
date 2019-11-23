@@ -33,6 +33,22 @@ namespace SunacCADApp.Data
             return _bas_idm_projectfiles;
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public static IList<Bas_Idm_ProjectFile> GetIdmProjectFileListByParam(string param) 
+        {
+            IList<Bas_Idm_ProjectFile> _bas_idm_projectfiles = new List<Bas_Idm_ProjectFile>();
+            string sql = string.Format(@"SELECT Id,[FileName],SaveName,DirId,DirName,OID,Project_ID,ModifiedOn FROM dbo.Bas_Idm_ProjectFile WHERE {0}",param);
+            _bas_idm_projectfiles = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Bas_Idm_ProjectFile>(new Bas_Idm_ProjectFile());
+            return _bas_idm_projectfiles;
+        }
+
+
+
         ///<summary>
         /// 项目对应CAD文件  分页数据总数量
         ///<summary>
@@ -122,6 +138,13 @@ namespace SunacCADApp.Data
         public static int SetProjectFileEnabledById(int Enabled,int Id) 
         {
             string sql = string.Format("UPDATE [dbo].[Bas_Idm_ProjectFile] SET Enabled={0} WHERE Id={1}", Enabled, Id);
+            return MsSqlHelperEx.Execute(sql);
+        }
+
+
+        public static int SetProjectFileEnabledById(int Enabled, string Ids)
+        {
+            string sql = string.Format("UPDATE [dbo].[Bas_Idm_ProjectFile] SET Enabled={0} WHERE Id in ({1})", Enabled, Ids);
             return MsSqlHelperEx.Execute(sql);
         }
 

@@ -197,7 +197,7 @@
                                 }
                             </td>
                             <td class="operate text-center">
-                                <a href="javascript:void(0)" class="handle-modify" data-id="@row.Id">修改</a> |
+                                <a href="javascript:void(0)" class="handle-modify" data-id="@row.Id" data-internal="@row.Is_Internal">修改</a> |
                                 <a data-id="@row.Id" title="删除" class="handle-delete" href="javascript:void(0)">删除</a>
                             </td>
                         </tr>
@@ -285,15 +285,32 @@
         })
 
         $(".handle-modify").on("click", function () {
-            let id = $(this).data("id");
-            var index = layer.open({
-                type: 2,
-                shade: 0,
-                skin: 'layer-ext-sunacskin',
-                area: ['800px', '580px'],
-                title: '修改外部用户',
-                content: ['/sysuser/edit/' + id, 'yes']
-            });
+            let id          = $(this).data("id");
+            let internal = $(this).data("internal");
+            if (internal == "1")
+            {
+                var index = layer.open({
+                    type: 2,
+                    shade: 0,
+                    skin: 'layer-ext-sunacskin',
+                    area: ['800px', '580px'],
+                    title: '修改内部用户',
+                    content: ['/sysuser/inneredit/' + id, 'yes']
+                });
+            }
+            else if (internal == "2")
+            {
+                var index = layer.open({
+                    type: 2,
+                    shade: 0,
+                    skin: 'layer-ext-sunacskin',
+                    area: ['800px', '580px'],
+                    title: '修改外部用户',
+                    content: ['/sysuser/edit/' + id, 'yes']
+                });
+
+            }
+          
         })
 
         $('.handle-delete').on('click', function () {
@@ -323,7 +340,6 @@
         $('.table input[name="chk_all"]').on('click', function () {
           
             let checked = $(this).prop("checked");
-            console.log(checked);
             $('.table .checkbox').prop('checked', checked);
         })
 

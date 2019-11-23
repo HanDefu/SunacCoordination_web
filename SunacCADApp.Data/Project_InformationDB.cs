@@ -147,6 +147,24 @@ namespace SunacCADApp.Data
         }
 
 
+        public static SortedList<string, string> GetAreaSortedList 
+        {
+            get 
+            {
+                SortedList<string, string> localArea = new SortedList<string, string>();
+                localArea.Add("E0106", "东南区域");
+                localArea.Add("E0109", "海南区域");
+                localArea.Add("E0103", "华北区域");
+                localArea.Add("E0102", "北京区域");
+                localArea.Add("E0105", "西南区域");
+                localArea.Add("E0107", "广深区域");
+                localArea.Add("E0104", "上海区域");
+                localArea.Add("E0108", "华中区域");
+                return localArea;
+            }
+        }
+
+
 
 
     }
