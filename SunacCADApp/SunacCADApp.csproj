@@ -188,6 +188,7 @@
     <Content Include="Content\Css\img\icon-file.png" />
     <Content Include="Content\Css\img\icon-folder.png" />
     <Content Include="Content\Css\img\icon-no-image.png" />
+    <Content Include="Content\Css\img\icon-project-actived.png" />
     <Content Include="Content\Css\img\icon-project.png" />
     <Content Include="Content\Css\img\icon-tips-bak.png" />
     <Content Include="Content\Css\img\icon-tips.png" />

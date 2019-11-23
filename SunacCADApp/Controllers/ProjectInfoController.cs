@@ -19,6 +19,7 @@ namespace SunacCADApp.Controllers
         {
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
+            ViewBag.ParentId = 3;
         }
         // GET: ProjectInfo
         public ActionResult Index()
