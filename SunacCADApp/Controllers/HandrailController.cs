@@ -313,7 +313,7 @@ namespace SunacCADApp.Controllers
             string drawingtype = Request.Form["hid_drawing_type"].ConventToString(string.Empty);
             string areaid = Request.Form["checkbox_areaid"].ConventToString(string.Empty);
             int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
-            caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
+            caddrawingmaster.DrawingCode = Request.Form["hid_drawingcode"].ConventToString(string.Empty);
             caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
             caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
             caddrawingmaster.AreaId = 0;

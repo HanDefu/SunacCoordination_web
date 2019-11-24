@@ -83,16 +83,13 @@ namespace SunacCADApp.Controllers
         }
 
         /// <summary>
-        ///   /bpmhandle/Idm_Public
+        ///   /bpmhandle/Idm_public
         /// </summary>
         /// <returns></returns>
 
         public ActionResult Idm_Public() 
         {
             IdmPublicService.ReaderIDMPublic();
-
- 
-            
             return Json(new { Code = 100, Message = "测试成功" }, JsonRequestBehavior.AllowGet);
         }
 
@@ -109,18 +106,14 @@ namespace SunacCADApp.Controllers
             header.CONSUMER = "";
             header.ACCOUNT = "wdaccount";
             header.PASSWORD = "wdpwd";
-            
-           
             WebService932.user user = new WebService932.user();
             user.username="11";
             user.password = "1234";
             WebService932.IDM_SUNAC_392_validatePwd_pttbindingQSService client = new WebService932.IDM_SUNAC_392_validatePwd_pttbindingQSService();
-
             client.commonHeader = header;
             string LIST = "";
             WebService932.HEADER backheader = client.IDM_SUNAC_392_validatePwd(user, out LIST);
             return Json(new { Code = 100, Message = LIST }, JsonRequestBehavior.AllowGet);
-
         }
 
     }

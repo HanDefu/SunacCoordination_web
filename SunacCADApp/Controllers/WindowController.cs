@@ -448,7 +448,7 @@ namespace SunacCADApp.Controllers
                 string actionType = Request.Form["ActionType"].ConventToString(string.Empty);
                 int Id = Request.Form["Id"].ConvertToInt32(-1);
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
-                caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
+                caddrawingmaster.DrawingCode = Request.Form["hid_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
                 caddrawingmaster.Scope = Request.Form["chekbox_group"].ConvertToInt32(0);
                 caddrawingmaster.AreaId = 0;

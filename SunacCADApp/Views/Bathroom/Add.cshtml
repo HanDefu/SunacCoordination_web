@@ -23,13 +23,16 @@
                     <dt class="col-dt"><i>*</i>原型编号：</dt>
                     <dd>
                         <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" />
-                        <i class="icon-tips" tips="<p>外窗原型编号规则：门窗原型代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗， WC外开窗， WZC外开转角窗，TC推拉窗， TLM推拉门，TSTLM提升推拉门，MLC门连窗， WM外开门；<p>">&nbsp;</i>
+                        <i class="icon-tips" tips="<p>门窗原型编号规则：开启代号+原型代码， 例如： NC1、NC2...<br />
+                                                                       门窗开启代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗、
+                                                                        WZC外开转角窗、TC推拉窗、TLM推拉门、TSTLM提升推拉门、MLC门连窗、WM外开门<p>">&nbsp;</i>
                     </dd>
                 </dl>
                 <dl>
                     <dt class="col-dt"><i>*</i>原型文件：</dt>
                     <dd>
-                        <input type="text" style="width:450px" name="txt_filename" placeholder="原型文件" class="required" data-error="原型文件不能为空" />
+                        <input type="text" style="width:450px" name="readonly_filename" readonly="readonly" />
+                        <input type="hidden" name="txt_filename" class="required" data-error="原型文件不能为空" />
                         <input type="hidden" name="txt_drawingcad" />
                         <input type="hidden" name="hid_drawing_img" value="" />
                         <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
@@ -161,7 +164,7 @@
         <div class="main-column-handle">
             <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save" style="margin-left:10px;">保存</button>
-                <button type="button" class="btn btn-sunac" id="btn_save01" data-value="commit">提交审核</button>
+                <button type="button" class="btn btn-sunac" id="btn_save01" data-value="commit">提交</button>
             </div>
         </div>
     </div>

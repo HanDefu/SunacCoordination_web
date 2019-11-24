@@ -53,15 +53,18 @@
                     <dt class="col-dt"><i>*</i>原型编号：</dt>
                     <dd>
                         <input type="text" style="width:450px" name="dis_drawingcode" class="required" data-error="外窗原型编号不能为空" value="@DrawingMaster.DrawingCode" />
-                        <input type="hidden" name="txt_drawingcode" value="@DrawingMaster.DrawingCode" />
-                        <i class="icon-tips" tips="<p>外窗原型编号规则：门窗原型代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、<br/>NDZC内开内倒转角窗、WC外开窗，<br /> WC外开窗， WZC外开转角窗，TC推拉窗， TLM推拉门，<br />TSTLM提升推拉门，MLC门连窗， WM外开门；</p>">&nbsp;</i>
+                        <input type="hidden" name="hid_drawingcode" value="@DrawingMaster.DrawingCode" />
+                        <i class="icon-tips" tips="<p>门窗原型编号规则：开启代号+原型代码， 例如： NC1、NC2...<br />
+                                                                       门窗开启代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗、
+                                                                        WZC外开转角窗、TC推拉窗、TLM推拉门、TSTLM提升推拉门、MLC门连窗、WM外开门<p>">&nbsp;</i>
                     </dd>
                 </dl>
 
                 <dl>
                     <dt class="col-dt"><i>*</i>展开图文件：</dt>
                     <dd>
-                        <input type="text" style="width:450px" name="txt_filename" placeholder="展开图文件" value="@ExpansionDWG.FileClass" class="required" data-error="展开图文件不能为空" />
+                        <input type="text" style="width:450px" name="readonly_filename"  readonly="readonly" value="@ExpansionDWG.FileClass">
+                        <input type="hidden" name="txt_filename" class="required" data-error="展开图文件不能为空"  value="@ExpansionDWG.FileClass" />
                         <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
                         <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
                         <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
@@ -75,7 +78,8 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>立面图文件 ：</dt>
                     <dd>
-                        <input type="text" style="width:450px" name="txt_filename" placeholder="立面图文件" value="@VerticalDWG.FileClass" class="required" data-error="立面图文件不能为空" />
+                        <input type="text" style="width:450px" name="readonly_filename"  value="@VerticalDWG.FileClass" readonly="readonly" />
+                        <input type="hidden" name="txt_filename" class="required" data-error="立面图文件不能为空"  value="@VerticalDWG.FileClass" />
                         <input type="hidden" name="txt_drawingcad" value="@VerticalDWG.CADPath" />
                         <input type="hidden" name="hid_drawing_img" value="@VerticalDWG.DWGPath" />
                         <input type="hidden" name="hid_drawing_type" value="FrontViewFile" />
@@ -88,7 +92,9 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>平面图文件：</dt>
                     <dd>
-                        <input type="text" style="width:450px" name="txt_filename" placeholder="平面图文件" class="required" value="@PlanDWG.FileClass" data-error="平面图文件不能为空" />
+                        
+                        <input type="text" style="width:450px" name="readonly_filename" readonly="readonly" value="@PlanDWG.FileClass" />
+                        <input type="hidden" name="txt_filename"  class="required" value="@PlanDWG.FileClass" data-error="平面图文件不能为空" />
                         <input type="hidden" name="txt_drawingcad" value="@PlanDWG.CADPath" />
                         <input type="hidden" name="hid_drawing_img" value="@PlanDWG.DWGPath" />
                         <input type="hidden" name="hid_drawing_type" value="TopViewFile" />
@@ -101,7 +107,8 @@
                 <dl>
                     <dt class="col-dt"><i></i>侧面图文件：</dt>
                     <dd>
-                        <input type="text" style="width:450px" name="txt_filename" placeholder="侧面图文件" value="@SideDWG.FileClass" />
+                        <input type="text" style="width:450px" name="readonly_filename" readonly="readonly" value="@SideDWG.FileClass" />
+                        <input type="hidden" name="txt_filename"  value="@SideDWG.FileClass" />
                         <input type="hidden" name="txt_drawingcad" value="@SideDWG.CADPath" />
                         <input type="hidden" name="hid_drawing_img" value="@SideDWG.DWGPath" />
                         <input type="hidden" name="hid_drawing_type" value="LeftViewFile" />
@@ -276,7 +283,7 @@
                         <dt class="col-dt"><i>*</i>宽度尺寸范围（mm）：</dt>
                         <dd>
                             <input type="number" style="width:105px" name="txtWindowSizeMin" value="@Decimal.ToInt32(windowDetail.WindowSizeMin)" />
-                            <i>  × </i>
+                            <i>  - </i>
                             <input type="number" style="width:105px" name="txtWindowSizeMax" value="@Decimal.ToInt32(windowDetail.WindowSizeMax)" />
                         </dd>
                     </dl>
@@ -424,7 +431,7 @@
                         <dt class="col-dt"><i>*</i>宽度尺寸范围（mm）：</dt>
                         <dd>
                             <input type="number" style="width:100px" name="txtWindowSizeMin" value="@windowDetail.WindowSizeMin" />
-                            <i>  × </i>
+                            <i>  - </i>
                             <input type="number" style="width:100px" name="txtWindowSizeMax" value="@windowDetail.WindowSizeMax" />
                         </dd>
                     </dl>
@@ -578,8 +585,9 @@
         <div class="main-column-handle">
             <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
+                <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@DrawingMaster.Id" data-state="@DrawingMaster.DynamicType" data-billstatus="@DrawingMaster.BillStatus">提交</button>
                 <button type="button" class="btn btn-sunac btn-delete" data-id="@DrawingMaster.Id">删除</button>
-                <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@DrawingMaster.Id" data-state="@DrawingMaster.DynamicType" data-billstatus="@DrawingMaster.BillStatus">提交审核</button>
+             
               
             </div>
             

@@ -32,20 +32,24 @@
             <p>@imageName</p>
         </figure>
     </div>
-    <div class="mian-column">
-        <div class="column-tbody">
+    <div class="mian-column" >
+        <div class="column-tbody" style="min-height:256px;">
             <form name="myform" id="myform">
                 <dl>
                     <dt class="col-dt"><i>*</i>原型编号：</dt>
                     <dd>
-                        <input type="text" style="width:450px" disabled="disabled" value="@dMaster.DrawingCode" />
-                        <input type="hidden" name="txt_drawingcode" value="@dMaster.DrawingCode" />
+                        <input type="text" style="width:450px" name="dis_drawingcode" value="@dMaster.DrawingCode" placeholder="原型编号" />
+                        <input type="hidden" name="hid_drawingcode" value="@dMaster.DrawingCode" />
+                        <i class="icon-tips" tips="<p>门窗原型编号规则：开启代号+原型代码， 例如： NC1、NC2...<br />
+                                                                       门窗开启代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗、
+                                                                        WZC外开转角窗、TC推拉窗、TLM推拉门、TSTLM提升推拉门、MLC门连窗、WM外开门</p>">&nbsp;</i>
                     </dd>
                 </dl>
                 <dl>
                     <dt class="col-dt"><i>*</i>原型文件：</dt>
                     <dd>
-                        <input type="text" style="width:450px" name="txt_filename" value="@ExpansionDWG.FileClass" placeholder="原型文件" class="required" data-error="展开图文件不能为空" />
+                        <input type="text" style="width:450px" name="readonly_filename" value="@ExpansionDWG.FileClass" readonly="readonly" />
+                        <input type="hidden" name="txt_filename" value="@ExpansionDWG.FileClass" class="required" data-error="展开图文件不能为空" />
                         <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
                         <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
                         <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
@@ -62,27 +66,27 @@
                         <span style="display:block;padding-top:5px;line-height:35px;">
                             <span class="online-checkbox">
                                 @if (dMaster.Scope == 1)
-                            {
+                                {
                                     <input type="checkbox" id="all" name="chk_area" class="select-all" value="1" checked="checked" />
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
                                     <input type="checkbox" id="all" name="chk_area" class="select-all" value="1" />
-                            }
+                                }
 
                                 <label for="all">集团</label>
                             </span>
 
                             @foreach (BasArgumentSetting Setting in ViewBag.Settings)
-                        {
-                            string str_check = string.Empty;
-                            int hasArea = ByAreas.Where(e => e.AreaID == Setting.Id).Count();
-                            str_check = hasArea > 0 ? "checked" : string.Empty;
+                            {
+                                string str_check = string.Empty;
+                                int hasArea = ByAreas.Where(e => e.AreaID == Setting.Id).Count();
+                                str_check = hasArea > 0 ? "checked" : string.Empty;
                                 <span class="online-checkbox">
                                     <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" @str_check />
                                     <label for="area_@Setting.Id">@Setting.ArgumentText</label>
                                 </span>
-                        }
+                            }
                         </span>
 
                     </dd>
@@ -93,31 +97,31 @@
                     <dd>
                         <select name="HandRailType" class="required" data-error="栏杆类型不能为空">
                             @foreach (BasArgumentSetting HandRailType in ViewBag.HandRails)
-                        {
-                            if (HandRailType.Id == Handrail.HandrailType)
                             {
-                                <option value="@HandRailType.Id" selected="selected">@HandRailType.ArgumentText</option>
-                            }
-                            else
-                            {
-                                <option value="@HandRailType.Id">@HandRailType.ArgumentText</option>
+                                if (HandRailType.Id == Handrail.HandrailType)
+                                {
+                                    <option value="@HandRailType.Id" selected="selected">@HandRailType.ArgumentText</option>
+                                }
+                                else
+                                {
+                                    <option value="@HandRailType.Id">@HandRailType.ArgumentText</option>
+
+                                }
 
                             }
-
-                        }
                         </select>
                     </dd>
                 </dl>
                 <input type="hidden" name="Id" value="@dMaster.Id" />
             </form>
         </div>
-        <div class="main-column-handle" >
+        <div class="main-column-handle">
             <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
+                <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus">提交</button>
                 <button type="button" class="btn btn-sunac btn-delete" data-id="@dMaster.Id">删除</button>
-                <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus">提交审核</button>
             </div>
-            
+
         </div>
     </div>
 

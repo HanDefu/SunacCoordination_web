@@ -29,10 +29,16 @@
     <script src="~/Content/Plugins/mtips/mTips.js" type="text/javascript"></script>
     <script src="~/Content/Css/bootstrap-select/js/bootstrap-select.min.js"></script>
     <script src="~/Content/Css/bootstrap-select/js/i18n/defaults-zh_CN.min.js"></script>
+    <style type="text/css">
+        body {
+            width:100%;
+           min-width:1024px;
+        }
+    </style>
     <script type="text/javascript">
         $(function () {
             let win_height = $(window).height();
-            console.log(win_height);
+            //console.log(win_height);
             //$('.mian-column').css("min-height", (win_height - 130));
             $('.center').css("min-height", (win_height - 70));
             $(".btn-upfile  .upload-cad").on("change", function () {
@@ -62,6 +68,7 @@
                             let cad_file = res.CadPath;
                             let img_file = res.ImgPath;
                             let file_name = res.FileName;
+                            parent.find('input[name="readonly_filename"]').val(file_name);
                             parent.find('input[name="txt_filename"]').val(file_name);
                             parent.find('input[name="txt_drawingcad"]').val(cad_file);
                             parent.find('input[name="hid_drawing_img"]').val(img_file);
@@ -136,11 +143,30 @@
                 });
             });
 
+
+            $('input[name="dis_drawingcode"]').on("focusout", function () {
+                let that = $(this);
+                let drawingcode = $('input[name="hid_drawingcode"]').val();
+                let ndrawingcode = that.val();
+                if (drawingcode != ndrawingcode)
+                {
+                    $.post('/CommonLib/HasDradrawingCode', { code: ndrawingcode }, function (data) {
+                        if (data.Code != 100) {
+                          let layer_index =  layer.alert(data.Message, { icon: 5, shade: 0 }, function () {
+                               that.val(drawingcode);
+                                layer.close(layer_index);
+                            });
+                        } else {
+                            $('input[name="hid_drawingcode"]').val(ndrawingcode);
+                        }
+                    }, 'json')
+                }
+            })
         });
     </script>
 </head>
 <body>
-    <div class="container-fluid bwidth" style="min-width:1024px;">
+    <div class="container-fluid bwidth">
         <header>
             <span class="userinfo">
 
@@ -165,51 +191,51 @@
                 {
                     if (m.Parent_ID == 0 && m.IsPower == "1")
                     {
-                        <dl>
-                            @if (m.Id == 3)
+                <dl>
+                    @if (m.Id == 3)
                             {
 
                                 if (ViewBag.ParentId == 3)
                                 {
-                                    <dt class="@m.Model_ICON actived">
-                                        <a href="@m.Model_URL">@m.Model_Name</a>
-                                    </dt>
+                            <dt class="@m.Model_ICON actived">
+                                <a href="@m.Model_URL">@m.Model_Name</a>
+                            </dt>
                                 }
                                 else
                                 {
-                                    <dt class="@m.Model_ICON">
-                                        <a href="@m.Model_URL">@m.Model_Name</a>
-                                    </dt>
+                            <dt class="@m.Model_ICON">
+                                <a href="@m.Model_URL">@m.Model_Name</a>
+                            </dt>
                                 }
 
                             }
                             else
                             {
-                                <dt class="@m.Model_ICON">
-                                    <a class="down">@m.Model_Name</a>
-                                </dt>
-                                <dd>
-                                    @foreach (Sys_Model sub in models)
+                            <dt class="@m.Model_ICON">
+                                <a class="down">@m.Model_Name</a>
+                            </dt>
+                            <dd>
+                                @foreach (Sys_Model sub in models)
                                     {
                                         if (sub.Parent_ID == m.Id)
                                         {
                                             if (ViewBag.SelectModel == sub.Id)
                                             {
-                                                <a href="@sub.Model_URL" class="selected">@sub.Model_Name</a>
+                                    <a href="@sub.Model_URL" class="selected">@sub.Model_Name</a>
                                             }
                                             else
                                             {
-                                                <a href="@sub.Model_URL">@sub.Model_Name</a>
+                                    <a href="@sub.Model_URL">@sub.Model_Name</a>
                                             }
 
                                         }
                                     }
 
 
-                                </dd>
+                            </dd>
                             }
 
-                        </dl>
+                </dl>
                     }
 
                 }

@@ -2,7 +2,7 @@
     font-family: "Microsoft YaHei",微软雅黑;
 }
 .bwidth {
-  min-width:1024px;
+  min-width:1480px;
 }
 .container-fluid {
     display: block;
@@ -95,10 +95,12 @@ header {
 
 .main {
     display: block;
-    overflow: hidden;
     background: #f8f8f5 url("img/main-bg.png") repeat-x top;
     margin-left: -15px;
     margin-right: -15px;
+    min-width:1480px;
+   
+
 }
 
     .main .leftsidebar {

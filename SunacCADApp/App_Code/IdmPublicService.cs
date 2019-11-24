@@ -18,14 +18,18 @@ namespace SunacCADApp
 
         public static int ReaderIDMPublic()
         {
+
             
+            string beginDate = DateTime.Now.AddDays(-1).ToString("yyyy-mm-dd");
+            string endDate = DateTime.Now.ToString("yyyy-mm-dd");
+
             WebService.IDM.Public.Header head = new WebService.IDM.Public.Header();
             head.ACCOUNT = "idmadmin";
             head.PASSWORD = "idmpass";
             head.BIZTRANSACTIONID = "vsheji";
             WebService.IDM.Public.queryDto dto = new WebService.IDM.Public.queryDto();
-            dto.beginDate = "2016-12-09 00:00:00.000";
-            dto.endDate = "2016-12-10 00:00:00.000";
+            dto.beginDate = string.Format(@"{0} 00:00:00.000",beginDate);
+            dto.endDate = string.Format(@"{0} 00:00:00.000", endDate);
             dto.systemID = "CADSJXTOrg";
             dto.pageNo = "1";
             dto.pageRowNo = "100";

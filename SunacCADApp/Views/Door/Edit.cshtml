@@ -47,17 +47,20 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>原型编号：</dt>
                     <dd>
-                        <input type="text" style="width:450px" disabled="disabled" value="@dMaster.DrawingCode" />
-                      
-                        <i class="icon-tips" tips="<p>外窗原型编号规则：门窗原型代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗， WC外开窗， WZC外开转角窗，TC推拉窗， TLM推拉门，TSTLM提升推拉门，MLC门连窗， WM外开门；</p>">&nbsp;</i>
-                        <input type="hidden" name="txt_drawingcode" value="@dMaster.DrawingCode">
+                        <input type="text" name="dis_drawingcode" style="width:450px" value="@dMaster.DrawingCode" placeholder="原型编号" class="required" data-error="外窗原型编号不能为空" />
+                        <input type="hidden" name="hid_drawingcode" value="@dMaster.DrawingCode"/>
+                        <i class="icon-tips" tips="<p>门窗原型编号规则：开启代号+原型代码， 例如： NC1、NC2...<br />
+                                                                       门窗开启代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗、
+                                                                        WZC外开转角窗、TC推拉窗、TLM推拉门、TSTLM提升推拉门、MLC门连窗、WM外开门</p>">&nbsp;</i>
+                       
                     </dd>
                 </dl>
 
                 <dl>
                     <dt class="col-dt"><i>*</i>展开图文件：</dt>
                     <dd>
-                        <input type="text" style="width:450px" name="txt_filename" value="@ExpansionDWG.FileClass" placeholder="展开图文件" class="required" data-error="展开图文件不能为空" />
+                        <input type="text" style="width:450px" name="readonly_filename" value="@ExpansionDWG.FileClass" readonly="readonly" />
+                        <input type="hidden" name="txt_filename" value="@ExpansionDWG.FileClass"  class="required" data-error="展开图文件不能为空" />
                         <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
                         <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
                         <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />
@@ -71,7 +74,8 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>立面图文件：</dt>
                     <dd>
-                        <input type="text" style="width:450px" name="txt_filename" value="@VerticalDWG.FileClass" placeholder="立面图文件" class="required" data-error="立面图文件不能为空" />
+                        <input type="text" style="width:450px" name="readonly_filename" value="@VerticalDWG.FileClass" readonly="readonly" />
+                        <input type="hidden" name="txt_filename" value="@VerticalDWG.FileClass"  class="required" data-error="立面图文件不能为空" />
                         <input type="hidden" name="txt_drawingcad" value="@VerticalDWG.CADPath" />
                         <input type="hidden" name="hid_drawing_img" value="@VerticalDWG.DWGPath" />
                         <input type="hidden" name="hid_drawing_type" value="FrontViewFile" />
@@ -85,7 +89,8 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>平面图文件：</dt>
                     <dd>
-                        <input type="text" style="width:450px" name="txt_filename" value="@PlanDWG.FileClass" placeholder="平面图文件" class="required" data-error="平面图文件不能为空" />
+                        <input type="text" style="width:450px" name="readonly_filename" value="@PlanDWG.FileClass" readonly="readonly" />
+                        <input type="hidden" name="txt_filename" value="@PlanDWG.FileClass"  class="required" data-error="平面图文件不能为空" />
                         <input type="hidden" name="txt_drawingcad" value="@PlanDWG.CADPath" />
                         <input type="hidden" name="hid_drawing_img" value="@PlanDWG.DWGPath" />
                         <input type="hidden" name="hid_drawing_type" value="TopViewFile" />
@@ -102,7 +107,8 @@
                         @{
                         string _LeftViewFile = string.IsNullOrEmpty(SideDWG.FileClass) ? "无" : SideDWG.FileClass;
                         }
-                        <input type="text" style="width:450px" name="txt_filename" value="@SideDWG.FileClass" placeholder="侧面图文件" />
+                        <input type="text" style="width:450px" name="txt_filename" value="@SideDWG.FileClass" readonly="readonly"/>
+                        <input type="hidden" name="txt_filename" value="@SideDWG.FileClass" />
                         <input type="hidden" name="txt_drawingcad" value="@SideDWG.CADPath" />
                         <input type="hidden" name="hid_drawing_img" value="@SideDWG.DWGPath" />
                         <input type="hidden" name="hid_drawing_type" value="LeftViewFile" />
@@ -439,8 +445,8 @@
         <div class="main-column-handle">
             <div class="column-handle ">
                 <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
+                <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus">提交</button>
                 <button type="button" class="btn btn-sunac btn-delete" data-id="@dMaster.Id">删除</button>
-                <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus">提交审核</button>
             </div>
         </div>
     </div>
