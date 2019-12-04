@@ -34,6 +34,9 @@
             this.button3 = new System.Windows.Forms.Button();
             this.btn_Rework = new System.Windows.Forms.Button();
             this.btnApproveClose = new System.Windows.Forms.Button();
+            this.btn_login = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -96,11 +99,44 @@
             this.btnApproveClose.UseVisualStyleBackColor = true;
             this.btnApproveClose.Click += new System.EventHandler(this.btnApproveClose_Click);
             // 
+            // btn_login
+            // 
+            this.btn_login.Location = new System.Drawing.Point(158, 102);
+            this.btn_login.Name = "btn_login";
+            this.btn_login.Size = new System.Drawing.Size(75, 23);
+            this.btn_login.TabIndex = 6;
+            this.btn_login.Text = "用户登陆测试";
+            this.btn_login.UseVisualStyleBackColor = true;
+            this.btn_login.Click += new System.EventHandler(this.btn_login_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(275, 102);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 7;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(294, 64);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 8;
+            this.button5.Text = "button5";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(433, 277);
+            this.Controls.Add(this.button5);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.btn_login);
             this.Controls.Add(this.btnApproveClose);
             this.Controls.Add(this.btn_Rework);
             this.Controls.Add(this.button3);
@@ -121,6 +157,9 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btn_Rework;
         private System.Windows.Forms.Button btnApproveClose;
+        private System.Windows.Forms.Button btn_login;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
     }
 }
 

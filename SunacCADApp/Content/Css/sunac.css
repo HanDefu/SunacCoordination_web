@@ -27,19 +27,21 @@ header {
     margin-right:20px;
     margin-top:20px;
     position:relative;
+    min-width:150px;
 
  }
 
     header .userinfo .username {
        color:#666666;
        font-size:14px;
-       text-align:center;
-       width:150px;
        height:30px;
+       min-width:80px;
        line-height:30px;
-       background:url("img/icon-user-profile.png") center left no-repeat;
-       background-position-x:25px;
+       background:url("img/icon-user-profile.png") left center no-repeat;
+       background-position-x:5px;
+       padding-left:30px;
        display:block;
+       float:right;
 
     }
 
@@ -496,8 +498,20 @@ header {
                        background-color:#ffffff;
                        border: solid 0px #ffffff;
                        line-height:1.2;
+                       display:inline-block;
+                       width:auto;
+                       padding-left:5px;
+                       padding-right:5px;
 
                     }
+                    .main .center .view .mian-column dl dd .dl-file-disabled {
+                       line-height:1.2;
+                       display:inline-block;
+                       padding-left:0px;
+                       padding-right:5px;
+                       min-width:180px;
+                    }
+
                     .main .center .view .mian-column dl dd input[type="text"],
                     .main .center .view .mian-column dl dd input[type="number"] {
                         display: inline-block;
@@ -1656,19 +1670,7 @@ body .layui-ext-sunacskin_01 .layui-layer-btn {
              outline:none;
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   .layui-layer-btn0 {
+    background-color:#cf9a56;
+    border-color:#cf9a56;
+}

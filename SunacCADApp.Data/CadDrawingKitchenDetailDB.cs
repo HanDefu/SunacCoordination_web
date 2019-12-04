@@ -208,14 +208,8 @@ namespace SunacCADApp.Data
             _str_area = _str_area.TrimEnd(',');
             kitchen.region = _str_area;
 
-            string _str_file = string.Empty;
-            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
-            foreach (Drawing drawing in DWGS)
-            {
-                _str_file += string.Format(@"{1}/{0},", URL, drawing.CADPath);
-            }
-            _str_file = _str_file.TrimEnd(',');
-            kitchen.filePath = _str_file;
+            BPMStaticAttachment attachment = CadDrawingDWGDB.GetStaticAttachment(_where);
+            kitchen.ATTACHMENTS1 = attachment;
 
             return kitchen;
         }
@@ -256,14 +250,8 @@ namespace SunacCADApp.Data
    
             _str_area = _str_area.TrimEnd(',');
             kitchen.region = _str_area;
-            string _str_file = string.Empty;
-            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
-            foreach (Drawing drawing in DWGS)
-            {
-                _str_file += string.Format(@"{1}/{0},", URL, drawing.CADPath);
-            }
-            _str_file = _str_file.TrimEnd(',');
-            kitchen.filePath = _str_file;
+            BPMStaticAttachment attachment = CadDrawingDWGDB.GetStaticAttachment(_where);
+            kitchen.ATTACHMENTS1 = attachment;
             return kitchen;
         }
     }

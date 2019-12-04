@@ -5,18 +5,47 @@
     <title>融创设计协同办公平台</title>
     <meta name="keywords" content="融创设计协同办公平台" />
     <meta name="description" content="融创设计协同办公平台" />
-    <link href="~/Content/Css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/Css/base.css" rel="stylesheet" />
     <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
     <script src="~/Content/Plugins/layer/layer.js"></script>
     <script src="~/Content/Plugins/laydate/laydate.js"></script>
     <script src="~/Content/Js/goyeer.validation.js"></script>
     <script src="~/Content/Js/jquery.form.js"></script>
+    <link href="~/Content/Css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Plugins/layer/theme/default/layer.css" rel="stylesheet" />
+    <link href="~/Content/Css/base.css" rel="stylesheet" />
     <script type="text/javascript">
          $(function () {
 
          })
     </script>
+    <style type="text/css">
+        body .layer-ext-sunacskin .layui-layer-title {
+            background: #ff9f00;
+            color: #fff;
+            border: none;
+            text-align: left;
+            font-size: 18px;
+        }
+
+        body .layui-ext-sunacskin .layui-layer-btn {
+            border-top: 1px solid #E9E7E7;
+        }
+
+            body .layui-ext-sunacskin .layui-layer-btn a {
+                background: #ffffff;
+            }
+
+            body .layui-ext-sunacskin .layui-layer-btn .layui-layer-btn1 {
+                background: #ffffff;
+                color: #ffffff;
+            }
+
+        body .layui-layer-page .layui-layer-content {
+           padding:10px;
+           font-family:Microsoft YaHei;
+           font-size:15px;
+        }
+    </style>
 </head>
 <body>
     <div class="bottom-prompt">
@@ -34,14 +63,14 @@
             </div>
             <form name="myform" id="myform">
                 <div class="login-logo-item " style="margin-top:30px;">
-                    <input type="text" class="required" placeholder="账户" name="username" />
+                    <input type="text" class="required" placeholder="账户" name="username" data-error="用户名不能为空" />
                 </div>
                 <div class="login-logo-item" style="margin-top:15px;">
-                    <input type="password" class="required" placeholder="密码" name="password" />
+                    <input type="password" class="required" placeholder="密码" name="password" data-error="密码不能为空" />
                 </div>
                 </form>
                 <div class="login-logo-item" style="margin-top:8px; text-align:right;">
-                    <a>忘记密码</a>
+                    <a class="btn-password black">忘记密码</a>
                 </div>
                 <div class="login-logo-item" style="margin-top:20px;margin-bottom:20px; text-align:right;">
                     <button id="btn_save">登   陆</button>
@@ -81,6 +110,20 @@
     $(function () {
         $("#btn_save").on('click', function () {
             $("#myform").ajaxSubmit(options);
+        });
+
+        $(".btn-password").on('click', function () {
+            layer.open({
+                type: 1,
+                area: ['280px', '200px'],
+                skin: 'layer-ext-sunacskin', //样式类名
+                closeBtn: 1, //不显示关闭按钮
+                anim: 2,
+                shadeClose: true, //开启遮罩关闭
+                title:'修改密码',
+                content: '<p>修改密码请联系管理员<p>',
+                resize:false,
+            });
         });
     });
 </script>

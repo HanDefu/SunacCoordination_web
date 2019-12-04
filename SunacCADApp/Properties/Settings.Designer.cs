@@ -86,7 +86,7 @@ namespace SunacCADApp.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUN" +
+        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.2.219:8002/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUN" +
             "AC_392_validatePwd_PS")]
         public string SunacCADApp_WebService932_IDM_SUNAC_392_validatePwd_ptt_bindingQSService {
             get {

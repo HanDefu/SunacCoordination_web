@@ -17,7 +17,6 @@ namespace SunacCADApp.Data
             foreach (Window window in xmlWindows) 
             {
                 string _where = string.Format(@" MId={0}",window.Id);
-
                 IList<Drawing> drawingList = CadDrawingDWGDB.GetDrawingByWhere(_where);
                 window.Drawings = drawingList.ToArray<Drawing>();
                 IList<Function> Funs = CadDrawingFunctionDB.GetFunctionByWhereList(_where);
@@ -28,7 +27,6 @@ namespace SunacCADApp.Data
                 window.SizePara = items.ToArray<Item>();
 
             }
-
             return new XMLCadDrawingWindow() { Code = 100, Message = "查询成功", Windows = xmlWindows.ToArray<Window>() };
         }
 
@@ -40,7 +38,6 @@ namespace SunacCADApp.Data
             {
                 if (string.IsNullOrEmpty(drawing.CADPath))
                     return string.Empty;
-
                 string base64Img = XmlSerializeHelper.DecodeImageToBase64(drawing.CADPath);
                 return base64Img;
             }

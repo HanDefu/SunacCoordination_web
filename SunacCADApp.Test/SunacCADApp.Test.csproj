@@ -64,6 +64,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\WebIDMSUNACValidatePwd\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -95,6 +100,20 @@
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\WebBMPService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\WebIDMSUNACValidatePwd\HEADER.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\WebIDMSUNACValidatePwd\IDM_SUNAC_392_validatePwd.wsdl" />
+    <None Include="Web References\WebIDMSUNACValidatePwd\IDM_SUNAC_392_validatePwd_PS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WebIDMSUNACValidatePwd\IDM_SUNAC_392_validatePwd_PS0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WebIDMSUNACValidatePwd\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
@@ -141,6 +160,17 @@
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>SunacCADApp_Test_WebBMPService_BMPService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WebIDMSUNACValidatePwd\</RelPath>
+      <UpdateFromURL>http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SunacCADApp_Test_WebIDMSUNACValidatePwd_IDM_SUNAC_392_validatePwd_ptt_bindingQSService</CachedSettingsPropName>
     </WebReferenceUrl>
     <WebReferenceUrl Include="http://des.sunac.com.cn/SunacCADService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>

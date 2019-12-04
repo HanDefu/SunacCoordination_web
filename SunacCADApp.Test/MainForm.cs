@@ -10,6 +10,11 @@ using System.Windows.Forms;
 using SunacCADApp.Test;
 using SunacCADApp;
 using SunacCADApp.Entity;
+using SunacCADApp.Library;
+using System.Collections;
+using System.Xml;
+using System.Net;
+using System.IO;
 
 
 namespace SunacCADApp.Test
@@ -55,7 +60,7 @@ namespace SunacCADApp.Test
 
         private void btn_ok_Click(object sender, EventArgs e)
         {
-              BMPService service = new BMPService();
+            BMPService service = new BMPService();
             SunacCADApp.Entity.Bpm_Req_CreateResult I_REQUEST = new Entity.Bpm_Req_CreateResult();
             Entity.Bpm_Req_BaseInfo _REQ = new Entity.Bpm_Req_BaseInfo();
             _REQ.REQ_TRACE_ID = "f7ded48d-ce65-41de-a3e3-8ebec0174d72";
@@ -81,13 +86,13 @@ namespace SunacCADApp.Test
             Entity.Bpm_Req_CreateResult_Message message = new Entity.Bpm_Req_CreateResult_Message();
             message.REQ_ITEM = param;
             service.CreateResult(I_REQUEST);
-           
+
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             SunacCadService.ArgumentSettingService service = new SunacCadService.ArgumentSettingService();
-            string xml=  service.GetProjectInfo("14");
+            string xml = service.GetProjectInfo("14");
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -108,7 +113,7 @@ namespace SunacCADApp.Test
             _REQ.BIZTRANSACTIONID = "BPM_SUNAC_568_CreateResult_PS20191030111959022";
             _REQ.COUNT = 1;
             I_REQUEST.REQ_BASEINFO = _REQ;
-           
+
 
 
             Entity.Bpm_Req_Audit_Param param = new Entity.Bpm_Req_Audit_Param();
@@ -120,7 +125,7 @@ namespace SunacCADApp.Test
             Entity.Bpm_Req_Audit_Message message = new Entity.Bpm_Req_Audit_Message();
             message.REQ_ITEM = param;
             I_REQUEST.MESSAGE = message;
-            Bpm_Rsp_Result  rspResult =  service.Audit(I_REQUEST);
+            Bpm_Rsp_Result rspResult = service.Audit(I_REQUEST);
         }
 
         private void btn_Rework_Click(object sender, EventArgs e)
@@ -186,5 +191,135 @@ namespace SunacCADApp.Test
             I_REQUEST.MESSAGE = message;
             Bpm_Rsp_Result rspResult = service.ApproveClose(I_REQUEST);
         }
+
+        private void btn_login_Click(object sender, EventArgs e)
+        {
+            String ServerUrl = "http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS?wsdl";//得到WebServer地址
+
+            string xml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope\" \r\n" +
+                               "    xmlns:v1=\"http://www.ekingwin.com/esb/header/v1\" \r\n" +
+                               "    xmlns:idm=\"http://www.ekingwin.com/esb/IDM_SUNAC_392_validatePwd\"> \r\n" +
+                               "       <soapenv:Header>\r\n" +
+                               "              <v1:commonHeader>\r\n" +
+                               "                  <v1:BIZTRANSACTIONID>dd</v1:BIZTRANSACTIONID>\r\n" +
+                              "                   <v1:COUNT>?</v1:COUNT>\r\n" +
+                              "                   <v1:CONSUMER>?</v1:CONSUMER>\r\n" +
+                              "                   <v1:SRVLEVEL>?</v1:SRVLEVEL>\r\n" +
+                               "                  <v1:ACCOUNT>idmadmin</v1:ACCOUNT>\r\n" +
+                              "                   <v1:PASSWORD>idmpass</v1:PASSWORD>\r\n" +
+                              "               </v1:commonHeader>\r\n" +
+                              "        </soapenv:Header>\r\n" +
+                              "        <soapenv:Body>\r\n" +
+                               "              <idm:IDM_SUNAC_392_validatePwd>\r\n" +
+                               "                    <idm:user>\r\n" +
+                               "                       <idm:password>123423</idm:password>\r\n" +
+                               "                       <idm:username>456546</idm:username>\r\n" +
+                               "                  </idm:user>\r\n" +
+                               "             </idm:IDM_SUNAC_392_validatePwd>\r\n" +
+                               "        </soapenv:Body>\r\n" +
+                               "</soapenv:Envelope>\r\n";
+
+            string rxml = GetSOAPReSource(ServerUrl,xml);
+
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            WebService932.Header header = new WebService932.Header();
+            header.BIZTRANSACTIONID = API_Common.BIZTRANSACTIONIDValidatePwd;
+            header.COUNT = "";
+            header.CONSUMER = "";
+            header.ACCOUNT = "wdaccount";
+            header.PASSWORD = "wdpwd";
+            WebService932.user webUser = new WebService932.user()
+            {
+                username = "hellow",
+                password = "world"
+            };
+            WebService932.IDM_SUNAC_392_validatePwd_pttbindingQSService client = new WebService932.IDM_SUNAC_392_validatePwd_pttbindingQSService();
+            client.commonHeader = header;
+            string LIST = "";
+            WebService932.HEADER backheader = client.IDM_SUNAC_392_validatePwd(webUser, out LIST);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+            string BIZTRANSACTIONID = API_Common.BIZTRANSACTIONIDValidatePwd;
+            String ServerUrl = "http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS";//得到WebServer地址
+
+            string xml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope\">" +
+                               "       <soapenv:Header>" +
+                               "              <v1:commonHeader xmlns:v1=\"http://www.ekingwin.com/esb/header/v1\">" +
+                               "                  <v1:BIZTRANSACTIONID>" + BIZTRANSACTIONID + "</v1:BIZTRANSACTIONID>" +
+                              "                   <v1:COUNT>?</v1:COUNT>" +
+                              "                   <v1:CONSUMER>?</v1:CONSUMER>" +
+                              "                   <v1:SRVLEVEL>?</v1:SRVLEVEL>" +
+                               "                  <v1:ACCOUNT>idmadmin</v1:ACCOUNT>" +
+                              "                   <v1:PASSWORD>idmpass</v1:PASSWORD>" +
+                              "               </v1:commonHeader>" +
+                              "        </soapenv:Header>" +
+                              "        <soapenv:Body>" +
+                               "              <idm:IDM_SUNAC_392_validatePwd xmlns:idm=\"http://www.ekingwin.com/esb/IDM_SUNAC_392_validatePwd\">" +
+                               "                    <idm:user>" +
+                               "                       <idm:password>123423</idm:password>" +
+                               "                       <idm:username>456546</idm:username>" +
+                               "                  </idm:user>" +
+                               "             </idm:IDM_SUNAC_392_validatePwd>" +
+                               "        </soapenv:Body>" +
+                               "</soapenv:Envelope>";
+            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(ServerUrl);
+            myRequest.Method = "POST";
+            myRequest.ContentType = "text/xml; charset=utf-8";
+            //mediate为调用方法
+            myRequest.Headers.Add("SOAPAction", "/IDM_SUNAC_392_validatePwd");
+            myRequest.UserAgent = "Apache-HttpClient/4.1.1";
+            myRequest.ContentLength = xml.Length;
+            byte[] bs = Encoding.UTF8.GetBytes(xml);
+            using (Stream reqStream = myRequest.GetRequestStream())
+            {
+                reqStream.Write(bs, 0, bs.Length);
+            }
+
+            using (HttpWebResponse myResponse = (HttpWebResponse)myRequest.GetResponse())
+            {
+                StreamReader sr = new StreamReader(myResponse.GetResponseStream(), Encoding.UTF8);
+                string res= sr.ReadToEnd();
+                //Console.WriteLine("反馈结果" + responseString);
+            }
+
+        }
+
+        private   string GetSOAPReSource(string url, string datastr)
+         {
+             try
+             {
+                 //request
+                 Uri uri = new Uri(url);
+                 WebRequest webRequest = WebRequest.Create(uri);
+                webRequest.ContentType = "application/soap+xml; charset=utf-8";
+                 webRequest.Method = "POST";
+                 using (Stream requestStream = webRequest.GetRequestStream())
+                 {
+                    byte[] paramBytes = Encoding.UTF8.GetBytes(datastr.ToString());
+                     requestStream.Write(paramBytes, 0, paramBytes.Length);
+                 }
+                 //response
+                 WebResponse webResponse = webRequest.GetResponse();
+                 using (StreamReader myStreamReader = new StreamReader(webResponse.GetResponseStream(), Encoding.UTF8))
+                 {
+                     string result = "";
+                     return result = myStreamReader.ReadToEnd();
+                }
+ 
+             }
+             catch (Exception ex)
+             {
+                 throw ex;
+             }
+ 
+         }
+
     }
 }

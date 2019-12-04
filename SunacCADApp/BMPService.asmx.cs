@@ -90,10 +90,12 @@ namespace SunacCADApp
         [return: System.Xml.Serialization.XmlElement("E_RESPONSE")]
         public Bpm_Rsp_Result Audit(Bpm_Req_Audit I_REQUEST)
         {
+            string BIZTRANSACTIONID = string.Empty;
             Bpm_Rsp_Result _Rsp_Result = new Bpm_Rsp_Result();
             Bpm_Rsp_BaseInfo _Rsp_BaseInfo =new Bpm_Rsp_BaseInfo();
             if (I_REQUEST == null)
             {
+               
                 _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
                 {
                     RSP_ITEM = new Bpm_Rsp_Param { Code = -100, Error = -9999 }
@@ -104,6 +106,7 @@ namespace SunacCADApp
                 Bpm_Req_BaseInfo _Req = I_REQUEST.REQ_BASEINFO;
                 _Rsp_BaseInfo = BpmLibDB.ReqToRspBaseInfo(_Req);
                 _Rsp_Result.RSP_BASEINFO = _Rsp_BaseInfo;
+                BIZTRANSACTIONID = _Req.BIZTRANSACTIONID;
                 Bpm_Req_Audit_Param param = I_REQUEST.MESSAGE.REQ_ITEM;
 
                 if (param.eAction == "1")
@@ -114,9 +117,9 @@ namespace SunacCADApp
                     };
 
                     string ParamInfo = string.Format(@"strBTID      = {0}||strBOID  = {1}||iProcInstID   = {2}||strStepName    = {3}||
-                                                                            strApproverId   = {4}||eAction = {5}||strComment ={6}||dtTime ={7}
+                                                                            strApproverId   = {4}||eAction = {5}||strComment ={6}||dtTime ={7}||BIZTRANSACTIONID={8}
                                                                             ", param.strBTID, param.strBOID, param.iProcInstID, param.strStepName,
-                                                                             param.strApproverId, param.eAction, param.strComment, param.dtTime);
+                                                                             param.strApproverId, param.eAction, param.strComment, param.dtTime,BIZTRANSACTIONID);
                     string ReturnInfo = string.Format(@"Code=100||Success=1111");
                     CadDrawingMasterDB.Insert_BPM_Commit_Log(param.strBTID, param.strBOID, "Audit[流程审批(通过)]", ParamInfo, ReturnInfo);
                    
@@ -124,9 +127,9 @@ namespace SunacCADApp
                 else if (param.eAction == "0")
                 {
                     string ParamInfo = string.Format(@"strBTID      = {0}||strBOID  = {1}||iProcInstID   = {2}||strStepName    = {3}||
-                                                                            strApproverId   = {4}||eAction = {5}||strComment ={6}||dtTime ={7}
+                                                                            strApproverId   = {4}||eAction = {5}||strComment ={6}||dtTime ={7}||BIZTRANSACTIONID={8}
                                                                             ", param.strBTID, param.strBOID, param.iProcInstID, param.strStepName,
-                                                                           param.strApproverId, param.eAction, param.strComment, param.dtTime);
+                                                                           param.strApproverId, param.eAction, param.strComment, param.dtTime,BIZTRANSACTIONID);
                     string ReturnInfo = string.Format(@"Code=-100||Success=2222");
                     CadDrawingMasterDB.Insert_BPM_Commit_Log(param.strBTID, param.strBOID, "Audit[流程审批(通过)]", ParamInfo, ReturnInfo);
                     _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
@@ -139,9 +142,9 @@ namespace SunacCADApp
                 else
                 {
                     string ParamInfo = string.Format(@"strBTID      = {0}||strBOID  = {1}||iProcInstID   = {2}||strStepName    = {3}||
-                                                                            strApproverId   = {4}||eAction = {5}||strComment ={6}||dtTime ={7}
+                                                                            strApproverId   = {4}||eAction = {5}||strComment ={6}||dtTime ={7}||BIZTRANSACTIONID={8}
                                                                             ", param.strBTID, param.strBOID, param.iProcInstID, param.strStepName,
-                                                                           param.strApproverId, param.eAction, param.strComment, param.dtTime);
+                                                                           param.strApproverId, param.eAction, param.strComment, param.dtTime,BIZTRANSACTIONID);
                     string ReturnInfo = string.Format(@"Code=-100||Success=10000");
                     CadDrawingMasterDB.Insert_BPM_Commit_Log(param.strBTID, param.strBOID, "Audit[流程审批(通过)]", ParamInfo, ReturnInfo);
                     _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
@@ -158,6 +161,8 @@ namespace SunacCADApp
         [return: System.Xml.Serialization.XmlElement("E_RESPONSE")]
         public Bpm_Rsp_Result Rework(Bpm_Req_Rework I_REQUEST)
         {
+
+            string BIZTRANSACTIONID = string.Empty;
             Bpm_Rsp_Result _Rsp_Result = new Bpm_Rsp_Result();
             Bpm_Rsp_BaseInfo _Rsp_BaseInfo = new Bpm_Rsp_BaseInfo();
             if (I_REQUEST == null)
@@ -173,6 +178,7 @@ namespace SunacCADApp
                 Bpm_Req_BaseInfo _Req = I_REQUEST.REQ_BASEINFO;
                 _Rsp_BaseInfo = BpmLibDB.ReqToRspBaseInfo(_Req);
                 _Rsp_Result.RSP_BASEINFO = _Rsp_BaseInfo;
+                BIZTRANSACTIONID = _Req.BIZTRANSACTIONID;
                 string _code = "";
                 string _success = "";
                 string _error = "";
@@ -231,9 +237,9 @@ namespace SunacCADApp
                 }
 
                 string ParamInfo = string.Format(@"strBTID      = {0}||strBOID  = {1}||iProcInstID   = {2}||strStepName    = {3}||
-                                                                            strApproverId   = {4}||eAction = {5}||strComment ={6}||dtTime ={7}
+                                                                            strApproverId   = {4}||eAction = {5}||strComment ={6}||dtTime ={7}||BIZTRANSACTIONID={8}
                                                                             ", param.strBTID, param.strBOID, param.iProcInstID, param.strStepName,
-                                                                         param.strApproverId, param.eAction, param.strComment, param.dtTime);
+                                                                         param.strApproverId, param.eAction, param.strComment, param.dtTime,BIZTRANSACTIONID);
                 string ReturnInfo = string.Format(@"Code={0}||Success={1}||Error={2}",_code,_success,_error);
                 CadDrawingMasterDB.Insert_BPM_Commit_Log(param.strBTID, param.strBOID, "Rework[BPM流程审批(退回、发起人取消）]", ParamInfo, ReturnInfo);
             }
@@ -244,7 +250,7 @@ namespace SunacCADApp
          [return: System.Xml.Serialization.XmlElement("E_RESPONSE")]
         public Bpm_Rsp_Result ApproveClose(Bpm_Req_ApproveClose I_REQUEST)
          {
-
+             string BIZTRANSACTIONID = string.Empty;
              Bpm_Rsp_Result _Rsp_Result = new Bpm_Rsp_Result();
              Bpm_Rsp_BaseInfo _Rsp_BaseInfo = new Bpm_Rsp_BaseInfo();
              if (I_REQUEST == null)
@@ -261,6 +267,7 @@ namespace SunacCADApp
                  Bpm_Req_BaseInfo _Req = I_REQUEST.REQ_BASEINFO;
                  _Rsp_BaseInfo = BpmLibDB.ReqToRspBaseInfo(_Req);
                  _Rsp_Result.RSP_BASEINFO = _Rsp_BaseInfo;
+                 BIZTRANSACTIONID = _Req.BIZTRANSACTIONID;
                  string _code = "";
                  string _success = "";
                  string _error = "";
@@ -301,10 +308,9 @@ namespace SunacCADApp
                      status = 7;
 
                  }
-
                  string ParamInfo = string.Format(@"strBTID      = {0}||strBOID  = {1}||iProcInstID   = {2}||eProcessInstanceResult    = {3}||
-                                                                           strComment ={4}||dtTime ={5}
-                                                                            ", param.strBTID, param.strBOID, param.iProcInstID, param.eProcessInstanceResult,param.strComment, param.dtTime);
+                                                                           strComment ={4}||dtTime ={5}||BIZTRANSACTIONID={6}
+                                                                            ", param.strBTID, param.strBOID, param.iProcInstID, param.eProcessInstanceResult,param.strComment, param.dtTime,BIZTRANSACTIONID);
                  string ReturnInfo = string.Format(@"Code={0}||Success={1}||Error={2}", _code, _success, _error);
                  CadDrawingMasterDB.ChangeBpmStateusByMId(boid,status);
                  CadDrawingMasterDB.Insert_BPM_Commit_Log(param.strBTID, param.strBOID, "ApproveCloseBPM[流程审批结束(通过、拒绝、作废)]", ParamInfo, ReturnInfo);

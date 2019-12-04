@@ -10,6 +10,12 @@ using SunacCADApp;
 using Common.Utility;
 using Common.Utility.Extender;
 using SunacCADApp.Library;
+using Common.Utility.Lab;
+using System.Net;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 
 namespace SunacCADApp.Controllers
@@ -42,11 +48,13 @@ namespace SunacCADApp.Controllers
         /// <returns></returns>
         public ActionResult CheckUser()
         {
-            string username = Request.Form["username"];
+            string useName = Request.Form["username"];
+            string username = API_Common.FilterIllegalChar(useName);
+            string pwd = Request.Form["password"].ConvertToTrim();
             string password = CommonLib.UserMd5(Request.Form["password"]);
             if (string.IsNullOrEmpty(username)) 
             {
-                return Json(new { code = -100, message = "用户名不能为空" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = -100, message = "用户名或密码错误" }, JsonRequestBehavior.AllowGet);
             }
 
             Sys_User user = Sys_UserDB.GetSingleEntityByparam(" And User_Name='" + username + "'");
@@ -54,7 +62,7 @@ namespace SunacCADApp.Controllers
             if (user.Is_Internal == 2) {
                 if (user.User_Psd != password)
                 {
-                    return Json(new { code = -101, message = "用户密码不能为空" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = -101, message = "用户名或密码错误" }, JsonRequestBehavior.AllowGet);
                 }
                 else 
                 {
@@ -70,55 +78,47 @@ namespace SunacCADApp.Controllers
             }
             else if (user.Is_Internal == 1)
             {
-                WebService932.Header header = new WebService932.Header();
-                header.BIZTRANSACTIONID = "sdfdssdfds";
-                header.COUNT = "";
-                header.CONSUMER = "";
-                header.ACCOUNT = "wdaccount";
-                header.PASSWORD = "wdpwd";
-                WebService932.user webUser = new WebService932.user();
-                webUser.username = username;
-                webUser.password = password;
-                WebService932.IDM_SUNAC_392_validatePwd_pttbindingQSService client = new WebService932.IDM_SUNAC_392_validatePwd_pttbindingQSService();
-                client.commonHeader = header;
-                string LIST = "";
-                WebService932.HEADER backheader = client.IDM_SUNAC_392_validatePwd(webUser, out LIST);
-                int resultcode = backheader.RESULT.ConvertToInt32(0);
-                if (resultcode == -1)
+                string webURL = "http://192.168.2.219:8002/WP_SUNAC/APP_RYG_SERVICES/Proxy_Services/TA_EOP/RYG_SUNAC_486_ValidatePwd_PS";
+                HttpWebRequest request = WebRequest.Create(webURL) as HttpWebRequest;
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                string data = "{\n\"username\": " + username + ",\n\"password\": " + pwd + "\n}";
+                byte[] byteData = UTF8Encoding.UTF8.GetBytes(data.ToString());
+                request.ContentLength = byteData.Length;
+                using (Stream postStream = request.GetRequestStream())
                 {
-                    return Json(new { code = -101, message = "其他错误" }, JsonRequestBehavior.AllowGet);
-                }
-                else if (resultcode == 0)
-                {
-                    string userid = user.Id.ConventToString(string.Empty);
-                    string roleId = user.RoleID.ConventToString(string.Empty);
-                    string isInternal = user.Is_Internal.ConventToString(string.Empty);
-                    InitUtility.Instance.InitSessionHelper.Add("UserID", userid);
-                    InitUtility.Instance.InitSessionHelper.Add("UserName", user.User_Name);
-                    InitUtility.Instance.InitSessionHelper.Add("RoleId", roleId);
-                    InitUtility.Instance.InitSessionHelper.Add("IsInternal", isInternal);
-                    return Json(new { code = 100, message = "用户名密码验证成功" }, JsonRequestBehavior.AllowGet);
-                }
-                else if (resultcode == 1)
-                {
-                    return Json(new { code = 100, message = "用户名不存在" }, JsonRequestBehavior.AllowGet);
-                }
-                else if (resultcode == 2)
-                {
-                    return Json(new { code = 100, message = "密码错误" }, JsonRequestBehavior.AllowGet);
-                }
-                else if (resultcode == 3)
-                {
-                    return Json(new { code = 100, message = "参数不能为空" }, JsonRequestBehavior.AllowGet);
-                }
-                else {
-                    return Json(new { code = -101, message = "接口异常" }, JsonRequestBehavior.AllowGet);
+                    postStream.Write(byteData, 0, byteData.Length);
                 }
 
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+                    string rescontent = reader.ReadToEnd();
+                    JObject jO = JObject.Parse(rescontent);
+                    string successCode = jO["successCode"].ConventToString(string.Empty);
+                    if (successCode == "Y") 
+                    {
+                        string userid = user.Id.ConventToString(string.Empty);
+                        string roleId = user.RoleID.ConventToString(string.Empty);
+                        string isInternal = user.Is_Internal.ConventToString(string.Empty);
+                        InitUtility.Instance.InitSessionHelper.Add("UserID", userid);
+                        InitUtility.Instance.InitSessionHelper.Add("UserName", user.User_Name);
+                        InitUtility.Instance.InitSessionHelper.Add("RoleId", roleId);
+                        InitUtility.Instance.InitSessionHelper.Add("IsInternal", isInternal);
+                        string errorText = jO["errorText"].ConventToString(string.Empty);
+                        return Json(new { code = 100, message = errorText }, JsonRequestBehavior.AllowGet);
+                    }
+                    else if (successCode == "N") 
+                    {
+                        string errorText= jO["errorText"].ConventToString(string.Empty);
+                        return Json(new { code = -100, message = errorText }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                return Json(new { code = -100, message = "用户名或密码错误" }, JsonRequestBehavior.AllowGet);
             }
             else 
             {
-                return Json(new { code = -100, message = "用户名不能为空" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = -100, message = "用户名或密码错误" }, JsonRequestBehavior.AllowGet);
             }
         }
 

@@ -173,14 +173,9 @@ namespace SunacCADApp.Data
             _str_area = _str_area.TrimEnd(',');
             door.region = _str_area;
 
-            string _str_file = string.Empty;
-            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
-            foreach (Drawing drawing in DWGS)
-            {
-                _str_file += string.Format(@"http://10.4.64.91/{0},", drawing.CADPath);
-            }
-            _str_file = _str_file.TrimEnd(',');
-            door.filePath = _str_file;
+            BPMStaticAttachment attachment = CadDrawingDWGDB.GetStaticAttachment(_where);
+
+            door.ATTACHMENTS1 = attachment;
             return door;
         }
 
@@ -203,14 +198,8 @@ namespace SunacCADApp.Data
             }
             _str_area = _str_area.TrimEnd(',');
             door.region = _str_area;
-            string _str_file = string.Empty;
-            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
-            foreach (Drawing drawing in DWGS)
-            {
-                _str_file += string.Format(@"http://10.4.64.91/{0},", drawing.CADPath);
-            }
-            _str_file = _str_file.TrimEnd(',');
-            door.filePath = _str_file;
+            BPMStaticAttachment attachment = CadDrawingDWGDB.GetStaticAttachment(_where);
+            door.ATTACHMENTS1 = attachment;
             return door;
         }
 

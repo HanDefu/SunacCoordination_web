@@ -8,6 +8,10 @@ using SunacCADApp.Data;
 using SunacCADApp.Library;
 using Common.Utility;
 using Common.Utility.Extender;
+using System.IO;
+using Newtonsoft.Json.Linq;
+using System.Net;
+using System.Text;
 
 namespace SunacCADApp
 {
@@ -22,10 +26,10 @@ namespace SunacCADApp
     public class ArgumentSettingService : System.Web.Services.WebService
     {
 
-        [WebMethod(Description="标准模块属性；1、标准部品库：外窗、门、栏杆;2、厨房、卫生间、空调")]
+        [WebMethod(Description = "标准模块属性；1、标准部品库：外窗、门、栏杆;2、厨房、卫生间、空调")]
         public string StandardDesignAttribute(string AtrributeName)
         {
-            XMLArgumentSetting setting =null;
+            XMLArgumentSetting setting = null;
             try
             {
                 string where = string.Format(" and b.TypeCode='{0}'", AtrributeName);
@@ -56,7 +60,7 @@ namespace SunacCADApp
                     Message = ex.Message
                 };
             }
-            string xml=XmlSerializeHelper.XmlSerialize<XMLArgumentSetting>(setting);
+            string xml = XmlSerializeHelper.XmlSerialize<XMLArgumentSetting>(setting);
             return xml;
         }
 
@@ -66,15 +70,15 @@ namespace SunacCADApp
             string xml = string.Empty;
             try
             {
-               XMLCadDrawingWindow window =  XMLCadDrawingWindowDB.GetXMLCadDrawingWindow();
-               xml = XmlSerializeHelper.XmlSerialize<XMLCadDrawingWindow>(window);
+                XMLCadDrawingWindow window = XMLCadDrawingWindowDB.GetXMLCadDrawingWindow();
+                xml = XmlSerializeHelper.XmlSerialize<XMLCadDrawingWindow>(window);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-              
+
             }
             return xml;
-             
+
         }
 
         /// <summary>
@@ -87,7 +91,7 @@ namespace SunacCADApp
         /// <param name="gongNengQu"></param>
         /// <returns></returns>
         [WebMethod(Description = "标准部品库[外窗]按条件查询")]
-        public string GetWindows(double width = 0, double height = 0, string openType = "", string openNum = "", string gongNengQu = "") 
+        public string GetWindows(double width = 0, double height = 0, string openType = "", string openNum = "", string gongNengQu = "")
         {
             string xml = string.Empty;
             if (width < 1)
@@ -96,34 +100,34 @@ namespace SunacCADApp
             }
             else
             {
-                XMLCadDrawingWindow window = XMLCadDrawingWindowDB.GetXMLCadDrawingWindow(width, height,openType,openNum,gongNengQu);
+                XMLCadDrawingWindow window = XMLCadDrawingWindowDB.GetXMLCadDrawingWindow(width, height, openType, openNum, gongNengQu);
                 xml = XmlSerializeHelper.XmlSerialize<XMLCadDrawingWindow>(window);
             }
             return xml;
 
         }
-           
+
         [WebMethod(Description = "标准部品库[门]所有")]
-        public string GetAllDoor() 
+        public string GetAllDoor()
         {
             string xml = string.Empty;
             try
             {
                 IList<Door> doors = XMLCadDrawingDoorDB.GetCadDrawingDoorsListByWidth(0, string.Empty);
-                var retDoor = new XMLDoor{ Code = 100, Message = "门查询成功", Doors = doors.ToArray() };
+                var retDoor = new XMLDoor { Code = 100, Message = "门查询成功", Doors = doors.ToArray() };
                 xml = XmlSerializeHelper.XmlSerialize<XMLDoor>(retDoor);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                var retDoor = new XMLDoor{ Code = -100, Message = ex.Message };
-                xml = XmlSerializeHelper.XmlSerialize < XMLDoor>(retDoor);
+                var retDoor = new XMLDoor { Code = -100, Message = ex.Message };
+                xml = XmlSerializeHelper.XmlSerialize<XMLDoor>(retDoor);
             }
             return xml;
-           
+
 
         }
         [WebMethod(Description = "标准部品库[门]条件查询")]
-        public string GetAllDoorByParam(double width,string doorType)
+        public string GetAllDoorByParam(double width, string doorType)
         {
             string xml = string.Empty;
             try
@@ -142,8 +146,8 @@ namespace SunacCADApp
 
         }
 
-         [WebMethod(Description = "标准部品库[厨房原型]")]
-        public string GetAllKitchen() 
+        [WebMethod(Description = "标准部品库[厨房原型]")]
+        public string GetAllKitchen()
         {
             string xml = string.Empty;
             try
@@ -161,117 +165,117 @@ namespace SunacCADApp
             return xml;
         }
 
-         [WebMethod(Description = "标准部品库[厨房原型]条件查询")]
-         public string GetAllKitchenParam(double Width, double Height, string KitchenDoorWindowPosition, string KitchenType, string AirVent)
-         {
-             string xml = string.Empty;
-             try
-             {
-                 if (Width < 1) 
-                 {
-                     var retDoor = new XMLKitchen { Code = -100, Message = "Width必须填写"};
-                     xml = XmlSerializeHelper.XmlSerialize<XMLKitchen>(retDoor);
-                 }
+        [WebMethod(Description = "标准部品库[厨房原型]条件查询")]
+        public string GetAllKitchenParam(double Width, double Height, string KitchenDoorWindowPosition, string KitchenType, string AirVent)
+        {
+            string xml = string.Empty;
+            try
+            {
+                if (Width < 1)
+                {
+                    var retDoor = new XMLKitchen { Code = -100, Message = "Width必须填写" };
+                    xml = XmlSerializeHelper.XmlSerialize<XMLKitchen>(retDoor);
+                }
 
-                 IList<Kitchen> kitchens = XMLCadDrawingKitchenDB.GetKitchenListByWidth(Width, Height, KitchenDoorWindowPosition, KitchenType, AirVent);
-                 var retKitchen = new XMLKitchen { Code = 100, Message = "厨房原型查询成功", Kitchens = kitchens.ToArray() };
-                 xml = XmlSerializeHelper.XmlSerialize<XMLKitchen>(retKitchen);
-             }
-             catch (Exception ex)
-             {
-                 var retDoor = new XMLKitchen { Code = -100, Message = ex.Message };
-                 xml = XmlSerializeHelper.XmlSerialize<XMLKitchen>(retDoor);
-             }
-             return xml;
-         }
+                IList<Kitchen> kitchens = XMLCadDrawingKitchenDB.GetKitchenListByWidth(Width, Height, KitchenDoorWindowPosition, KitchenType, AirVent);
+                var retKitchen = new XMLKitchen { Code = 100, Message = "厨房原型查询成功", Kitchens = kitchens.ToArray() };
+                xml = XmlSerializeHelper.XmlSerialize<XMLKitchen>(retKitchen);
+            }
+            catch (Exception ex)
+            {
+                var retDoor = new XMLKitchen { Code = -100, Message = ex.Message };
+                xml = XmlSerializeHelper.XmlSerialize<XMLKitchen>(retDoor);
+            }
+            return xml;
+        }
 
-         [WebMethod(Description = "标准部品库[卫生间原型]")]
-         public string GetAllBathroom() 
-         {
-             string xml = string.Empty;
-             try
-             {
+        [WebMethod(Description = "标准部品库[卫生间原型]")]
+        public string GetAllBathroom()
+        {
+            string xml = string.Empty;
+            try
+            {
 
-                 IList<Bathroom> bathroomList = XMLCadDrawingBathroomDB.GetCadDrawingBathroomListByWidth(0, 0, string.Empty, string.Empty, string.Empty);
-                 var retBathroom = new XMLBathroom { Code = 100, Message = "卫生间查询成功", Bathrooms = bathroomList.ToArray() };
-                 xml = XmlSerializeHelper.XmlSerialize<XMLBathroom>(retBathroom);
-             }
-             catch (Exception ex)
-             {
-                 var retBathroom = new XMLBathroom { Code = -100, Message = ex.Message };
-                 xml = XmlSerializeHelper.XmlSerialize<XMLBathroom>(retBathroom);
-             }
-             return xml;
+                IList<Bathroom> bathroomList = XMLCadDrawingBathroomDB.GetCadDrawingBathroomListByWidth(0, 0, string.Empty, string.Empty, string.Empty);
+                var retBathroom = new XMLBathroom { Code = 100, Message = "卫生间查询成功", Bathrooms = bathroomList.ToArray() };
+                xml = XmlSerializeHelper.XmlSerialize<XMLBathroom>(retBathroom);
+            }
+            catch (Exception ex)
+            {
+                var retBathroom = new XMLBathroom { Code = -100, Message = ex.Message };
+                xml = XmlSerializeHelper.XmlSerialize<XMLBathroom>(retBathroom);
+            }
+            return xml;
 
-         }
+        }
 
-         [WebMethod(Description = "标准部品库[卫生间原型]条件查询")]
-         public string GetAllBathroomByParam(double Width, double Height, string BathroomDoorWindowPosition, string ToiletType, string AirVent) 
-         {
-             string xml = string.Empty;
-             try
-             {
+        [WebMethod(Description = "标准部品库[卫生间原型]条件查询")]
+        public string GetAllBathroomByParam(double Width, double Height, string BathroomDoorWindowPosition, string ToiletType, string AirVent)
+        {
+            string xml = string.Empty;
+            try
+            {
 
-                 IList<Bathroom> bathroomList = XMLCadDrawingBathroomDB.GetCadDrawingBathroomListByWidth(Width, Height, BathroomDoorWindowPosition, ToiletType, AirVent);
-                 var retBathroom = new XMLBathroom { Code = 100, Message = "卫生间查询成功", Bathrooms = bathroomList.ToArray() };
-                 xml = XmlSerializeHelper.XmlSerialize<XMLBathroom>(retBathroom);
-             }
-             catch (Exception ex)
-             {
-                 var retBathroom = new XMLBathroom { Code = -100, Message = ex.Message };
-                 xml = XmlSerializeHelper.XmlSerialize<XMLBathroom>(retBathroom);
-             }
-             return xml;
-         
-         
-         }
+                IList<Bathroom> bathroomList = XMLCadDrawingBathroomDB.GetCadDrawingBathroomListByWidth(Width, Height, BathroomDoorWindowPosition, ToiletType, AirVent);
+                var retBathroom = new XMLBathroom { Code = 100, Message = "卫生间查询成功", Bathrooms = bathroomList.ToArray() };
+                xml = XmlSerializeHelper.XmlSerialize<XMLBathroom>(retBathroom);
+            }
+            catch (Exception ex)
+            {
+                var retBathroom = new XMLBathroom { Code = -100, Message = ex.Message };
+                xml = XmlSerializeHelper.XmlSerialize<XMLBathroom>(retBathroom);
+            }
+            return xml;
 
 
-         [WebMethod(Description = "标准部品库[栏杆原型]条件查询")]
-         public string GetAllHandrailByParam(string RailingType)
-         {
-             string xml = string.Empty;
-             try
-             {
+        }
 
-                 IList<Handrail> handrailList = XMLCadDrawingHandrailDB.GetCadDrawingHandrailListByParam(RailingType);
-                 var retHandrail = new XMLHandrail { Code = 100, Message = "栏杆原型查询成功", Handrails = handrailList.ToArray() };
-                 xml = XmlSerializeHelper.XmlSerialize<XMLHandrail>(retHandrail);
-             }
-             catch (Exception ex)
-             {
-                 var retBathroom = new XMLHandrail { Code = -100, Message = ex.Message };
-                 xml = XmlSerializeHelper.XmlSerialize<XMLHandrail>(retBathroom);
-             }
-             return xml;
-         }
-         [WebMethod(Description = "标准部品库[空调原型]条件查询")]
-         public string GetAllAirconditionerByParam(string AirconditionerPower, string AirconditionerPipePosition, string AirconditionerIsRainpipe, string RainpipePosition)
-         {
-             string xml = string.Empty;
-             try
-             {
 
-                 IList<Airconditioner> airconditionerList = XMLCadDrawingAirconditionerDB.GetCadDrawingAirconditionerListByParam(AirconditionerPower, AirconditionerPipePosition, AirconditionerIsRainpipe, RainpipePosition);
-                 var retAirconditioner = new XMLAirconditioner { Code = 100, Message = "卫生间查询成功", Airconditioners = airconditionerList.ToArray() };
-                 xml = XmlSerializeHelper.XmlSerialize<XMLAirconditioner>(retAirconditioner);
-             }
-             catch (Exception ex)
-             {
-                 var retAirconditioner = new XMLAirconditioner { Code = -100, Message = ex.Message };
-                 xml = XmlSerializeHelper.XmlSerialize<XMLAirconditioner>(retAirconditioner);
-             }
-             return xml;
-         }
+        [WebMethod(Description = "标准部品库[栏杆原型]条件查询")]
+        public string GetAllHandrailByParam(string RailingType)
+        {
+            string xml = string.Empty;
+            try
+            {
+
+                IList<Handrail> handrailList = XMLCadDrawingHandrailDB.GetCadDrawingHandrailListByParam(RailingType);
+                var retHandrail = new XMLHandrail { Code = 100, Message = "栏杆原型查询成功", Handrails = handrailList.ToArray() };
+                xml = XmlSerializeHelper.XmlSerialize<XMLHandrail>(retHandrail);
+            }
+            catch (Exception ex)
+            {
+                var retBathroom = new XMLHandrail { Code = -100, Message = ex.Message };
+                xml = XmlSerializeHelper.XmlSerialize<XMLHandrail>(retBathroom);
+            }
+            return xml;
+        }
+        [WebMethod(Description = "标准部品库[空调原型]条件查询")]
+        public string GetAllAirconditionerByParam(string AirconditionerPower, string AirconditionerPipePosition, string AirconditionerIsRainpipe, string RainpipePosition)
+        {
+            string xml = string.Empty;
+            try
+            {
+
+                IList<Airconditioner> airconditionerList = XMLCadDrawingAirconditionerDB.GetCadDrawingAirconditionerListByParam(AirconditionerPower, AirconditionerPipePosition, AirconditionerIsRainpipe, RainpipePosition);
+                var retAirconditioner = new XMLAirconditioner { Code = 100, Message = "卫生间查询成功", Airconditioners = airconditionerList.ToArray() };
+                xml = XmlSerializeHelper.XmlSerialize<XMLAirconditioner>(retAirconditioner);
+            }
+            catch (Exception ex)
+            {
+                var retAirconditioner = new XMLAirconditioner { Code = -100, Message = ex.Message };
+                xml = XmlSerializeHelper.XmlSerialize<XMLAirconditioner>(retAirconditioner);
+            }
+            return xml;
+        }
 
         [WebMethod(Description = "标准部品库[ CAD文件下载]")]
-        public string CadFileDownload(int Id,string Type="CAD") 
+        public string CadFileDownload(int Id, string Type = "CAD")
         {
             return XMLCadDrawingWindowDB.GetCADFileDownloadByWhere(Id);
         }
 
         [WebMethod(Description = "标准部品库[原型文件缩略图下载]")]
-        public string CadImgDownload(int Id) 
+        public string CadImgDownload(int Id)
         {
             return XMLCadDrawingWindowDB.GeImgFileDownloadByID(Id);
         }
@@ -302,11 +306,11 @@ namespace SunacCADApp
                 int rtv = BasIdmProjectDirectoryDB.AddHandle(directory);
                 if (rtv > 0)
                 {
-                    return XmlSerializeHelper.XmlSerialize<XML_Result>(new XML_Result() { Code = 100, Message = "目录创建成功",KeyId=rtv });
+                    return XmlSerializeHelper.XmlSerialize<XML_Result>(new XML_Result() { Code = 100, Message = "目录创建成功", KeyId = rtv });
                 }
                 else
                 {
-                    return XmlSerializeHelper.XmlSerialize<XML_Result>(new XML_Result() { Code = -100, Message = "目录创建失败",KeyId=rtv });
+                    return XmlSerializeHelper.XmlSerialize<XML_Result>(new XML_Result() { Code = -100, Message = "目录创建失败", KeyId = rtv });
                 }
             }
             else
@@ -382,16 +386,16 @@ namespace SunacCADApp
         /// <param name="UID"></param>
         /// <returns></returns>
         [WebMethod(Description = "项目信息获取")]
-        public string GetProjectInfo(string UID) 
+        public string GetProjectInfo(string UID)
         {
-            try 
+            try
             {
                 XML_IDM_Project project = XML_IDM_ProjectDB.Get_IDM_Project(UID);
                 return XmlSerializeHelper.XmlSerialize<XML_IDM_Project>(project);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                XML_IDM_Project project= new XML_IDM_Project() { Code = -100, Message = ex.Message };
+                XML_IDM_Project project = new XML_IDM_Project() { Code = -100, Message = ex.Message };
                 return XmlSerializeHelper.XmlSerialize<XML_IDM_Project>(project);
             }
         }
@@ -405,17 +409,19 @@ namespace SunacCADApp
         /// <param name="DrawingDirId"></param>
         /// <returns></returns>
         [WebMethod(Description = "项目图纸上传")]
-        public string UpdateCadDrawing(string UID, string OID, string FileSaveName, string DrawingFile, int DrawingDirId) 
+        public string UpdateCadDrawing(string UID, string OID, string FileSaveName, string DrawingFile, int DrawingDirId)
         {
             int hasDrawing = BasIdmProjectFileDB.HasBasIdmProjectFile(OID, FileSaveName, DrawingFile, DrawingDirId);
             string DirName = BasIdmProjectDirectoryDB.GetDirNameByDirID(DrawingDirId);
             int rtnFlag = 0;
+            int fileId = 0;
             int keyid = 0;
             DateTime dateTime = DateTime.Now;
+
             string CadFilePath = string.Concat(API_Common.WebURL, "/upfile/", dateTime.ToString("yyyyMMdd"), "/", FileSaveName);
             if (hasDrawing == 0)
             {
-              
+
                 Bas_Idm_ProjectFile file = new Bas_Idm_ProjectFile();
                 file.OID = OID.ConvertToInt32(0);
                 file.DirId = DrawingDirId;
@@ -426,9 +432,10 @@ namespace SunacCADApp
                 file.CreateOn = dateTime;
                 rtnFlag = BasIdmProjectFileDB.AddHandle(file);
                 keyid = rtnFlag;
+                fileId = rtnFlag;
 
             }
-            else 
+            else
             {
                 Bas_Idm_ProjectFile file = new Bas_Idm_ProjectFile();
                 file.OID = OID.ConvertToInt32(0);
@@ -439,11 +446,14 @@ namespace SunacCADApp
                 file.ModifiedUserId = UID.ConvertToInt32(0);
                 file.ModifiedOn = dateTime;
                 file.Id = hasDrawing;
-                rtnFlag = BasIdmProjectFileDB.EditHandle(file,string.Empty);
+                rtnFlag = BasIdmProjectFileDB.EditHandle(file, string.Empty);
                 keyid = hasDrawing;
+                fileId = hasDrawing;
             }
             if (rtnFlag > 0)
             {
+                string webURL = API_Common.GlobalParam("WebURL");
+                CadFilePath = string.Concat(webURL, "/", "projectInfo/filedownload", "/", fileId);
                 return XmlSerializeHelper.XmlSerialize<XML_Result>(new XML_Result() { Code = 100, Message = "文件上传成功", KeyId = keyid, CadUriPath = CadFilePath });
             }
             else
@@ -452,16 +462,16 @@ namespace SunacCADApp
             }
 
         }
-       /// <summary>
-       /// 项目文件删除
-       /// </summary>
-       /// <param name="UID"></param>
-       /// <param name="OID"></param>
-       /// <param name="DrawingDir"></param>
-       /// <param name="DrawingFile"></param>
-       /// <returns></returns>
+        /// <summary>
+        /// 项目文件删除
+        /// </summary>
+        /// <param name="UID"></param>
+        /// <param name="OID"></param>
+        /// <param name="DrawingDir"></param>
+        /// <param name="DrawingFile"></param>
+        /// <returns></returns>
         [WebMethod(Description = "项目文件删除")]
-        public string DeleteCadDrawing(string UID, string OID, string DrawingDir, string DrawingFile) 
+        public string DeleteCadDrawing(string UID, string OID, string DrawingDir, string DrawingFile)
         {
             int rtnFlag = 0;
             string _where = string.Format(@"  OID='{0}'  AND [FileName]='{1}' AND DirName='{2}'", OID, DrawingFile, DrawingDir);
@@ -481,7 +491,7 @@ namespace SunacCADApp
         /// <param name="FileID">项目ID</param>
         /// <returns></returns>
         [WebMethod(Description = "项目文件删除根据文件ID")]
-        public string DeleteCadDrawingByFileID(int FileID) 
+        public string DeleteCadDrawingByFileID(int FileID)
         {
             int rtnFlag = 0;
             //string _where = string.Format(@"  Id='{0}'", FileID);
@@ -498,7 +508,7 @@ namespace SunacCADApp
         }
 
         [WebMethod(Description = "验证用户登陆")]
-        public string CheckUserInfo(string userName, string password) 
+        public string CheckUserInfo(string userName, string password)
         {
             XMLResultUser user = new XMLResultUser();
             Sys_User sysUser = Sys_UserDB.GetSysUserByUserName(userName);
@@ -507,15 +517,15 @@ namespace SunacCADApp
                 user = new XMLResultUser() { Code = -100, Message = "登陆名错误" };
                 return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
             }
-            else if(sysUser.Is_Internal==2)
+            else if (sysUser.Is_Internal == 2)
             {
-                string _pwd=CommonLib.UserMd5(password);
+                string _pwd = CommonLib.UserMd5(password);
                 if (sysUser.User_Psd != _pwd)
                 {
                     user = new XMLResultUser() { Code = -100, Message = "密码不正确" };
                     return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
                 }
-                else 
+                else
                 {
                     XMLUser xmlUser = new XMLUser();
                     xmlUser.Id = sysUser.Id;
@@ -526,58 +536,52 @@ namespace SunacCADApp
 
                 }
             }
-            else if (sysUser.Is_Internal == 1) 
+            else if (sysUser.Is_Internal == 1)
             {
-                WebService932.Header header = new WebService932.Header();
-                header.BIZTRANSACTIONID = "sdfdssdfds";
-                header.COUNT = "";
-                header.CONSUMER = "";
-                header.ACCOUNT = "wdaccount";
-                header.PASSWORD = "wdpwd";
-                WebService932.user webUser = new WebService932.user();
-                webUser.username = userName;
-                webUser.password = password;
-                WebService932.IDM_SUNAC_392_validatePwd_pttbindingQSService client = new WebService932.IDM_SUNAC_392_validatePwd_pttbindingQSService();
-                client.commonHeader = header;
-                string LIST = "";
-                WebService932.HEADER backheader = client.IDM_SUNAC_392_validatePwd(webUser, out LIST);
-                int  resultcode = backheader.RESULT.ConvertToInt32(0);
-                if (resultcode == -1) 
+                string webURL = "http://192.168.2.219:8002/WP_SUNAC/APP_RYG_SERVICES/Proxy_Services/TA_EOP/RYG_SUNAC_486_ValidatePwd_PS";
+                HttpWebRequest request = WebRequest.Create(webURL) as HttpWebRequest;
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                string data = "{\n\"username\": " + userName + ",\n\"password\": " + password + "\n}";
+                byte[] byteData = UTF8Encoding.UTF8.GetBytes(data.ToString());
+                request.ContentLength = byteData.Length;
+                using (Stream postStream = request.GetRequestStream())
                 {
-                    user = new XMLResultUser() { Code = -100, Message = "其他错误" };
-                    return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
-                }
-                else if (resultcode == 0) 
-                {
-                    XMLUser xmlUser = new XMLUser();
-                    xmlUser.Id = sysUser.Id;
-                    xmlUser.UserName = sysUser.User_Name;
-                    xmlUser.IsInternal = 2;
-                    user = new XMLResultUser() { Code = 100, Message = "用户名密码验证成功", User = xmlUser };
-                    return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
-                }
-                else if (resultcode == 1)
-                {
-                    user = new XMLResultUser() { Code = -100, Message = "用户名不存在" };
-                    return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
-                }
-                else if (resultcode == 2) 
-                {
-                    user = new XMLResultUser() { Code = -100, Message = "密码错误" };
-                    return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
-                }
-                else if (resultcode == 3) 
-                {
-                    user = new XMLResultUser() { Code = -100, Message = "参数不能为空" };
-                    return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
+                    postStream.Write(byteData, 0, byteData.Length);
                 }
 
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+                    string rescontent = reader.ReadToEnd();
+                    JObject jO = JObject.Parse(rescontent);
+                    string successCode = jO["successCode"].ConventToString(string.Empty);
+                    if (successCode == "Y")
+                    {
+                        XMLUser xmlUser = new XMLUser();
+                        xmlUser.Id = sysUser.Id;
+                        xmlUser.UserName = sysUser.User_Name;
+                        xmlUser.IsInternal = 2;
+                        string errorText = jO["errorText"].ConventToString(string.Empty);
+                        user = new XMLResultUser() { Code = 100, Message = errorText, User = xmlUser };
+                        return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
+                    }
+                    else if (successCode == "N")
+                    {
+                        string errorText = jO["errorText"].ConventToString(string.Empty);
+                        user = new XMLResultUser() { Code = 100, Message = errorText, User = null };
+                        return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
+                    }
+
+                }
+                user = new XMLResultUser() { Code = -100, Message = "未知错误" };
+                return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
             }
+
             user = new XMLResultUser() { Code = -100, Message = "未知错误" };
             return XmlSerializeHelper.XmlSerialize<XMLResultUser>(user);
+
         }
+
     }
-
-  
-
 }

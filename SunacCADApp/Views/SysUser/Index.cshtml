@@ -81,6 +81,7 @@
                                 data-live-search="true"
                                 data-size="12"
                                 data-width="280px">
+                            <option value="">请选择机构</option>
                             @foreach (BasInstitutionData Ins in institutionList)
                             {
                                 string InsId = Ins.Id.ConventToString(string.Empty);
@@ -98,7 +99,7 @@
                     </dd>
                 </dl>
             </div>
-            <div class="input-control-group float-left dl_idm_organ">
+            <div class="input-control-group float-left dl_idm_organ" style="display:none">
                 <dl>
                     <dt>部门：</dt>
                     <dd>
@@ -108,7 +109,9 @@
                                 title="请选择部门"
                                 data-live-search="true"
                                 data-size="12"
-                                data-width="280px">
+                                data-width="280px" id="select_idm_organ">
+
+                            <option value="">请选择部门</option>
                             @foreach (DataSourceMember orgin in idmOrginList)
                             {
                                 string InsId = orgin.ValueMember;
@@ -189,11 +192,11 @@
                             <td class="text-center btn-used">
                                 @if (row.Is_Used == "1")
                                 {
-                                    <b style="font-weight:normal;cursor:pointer" data-id="@row.Id" data-used="0">启用</b>
+                                    <b style="font-weight:normal;cursor:pointer;color:#b38e64;" data-id="@row.Id" data-used="0">启用</b>
                                 }
                                 else
                                 {
-                                    <b style="font-weight:normal;color:#666;cursor:pointer" data-id="@row.Id" data-used="1">禁用</b>
+                                    <b style="font-weight:normal;color:#bbbbbb;cursor:pointer" data-id="@row.Id" data-used="1">禁用</b>
                                 }
                             </td>
                             <td class="operate text-center">
@@ -207,7 +210,7 @@
         </table>
         @if (users.Count == 0)
         {
-            <div class="no-record">
+            <div class="no-record" style="padding-top:0px;padding-bottom:0px;">
                 暂无记录信息
             </div>
         }
@@ -270,8 +273,9 @@
 </div>
 <script type="text/javascript">
     $(function () {
-        $(".select_institution").selectpicker()
-        $(".select_idm_organ").selectpicker()
+        $(".select_institution").selectpicker();
+        $(".select_idm_organ").selectpicker();
+        $(".select_idm_organ").selectpicker("val", @ViewBag.OrginNo);
         $(".btn-add").on("click", function () {
             var index = layer.open({
                 type: 2,
@@ -405,22 +409,21 @@
         $('#btnSearch').on('click', function () {
             let usertype = $(".usertype").val();
             let roletype = $(".roletype").val();
-            let select_institution = $(".select_institution").selectpicker('val');
-            let select_idm_organ = $(".select_idm_organ").selectpicker('val');
+            let select_institution = $(".select_institution").val();
+            let select_idm_organ = $("#select_idm_organ").val();
             let keyword = $(".keyword").val();
-
-            window.location.href = "?isinternal=" + usertype + "&roleid=" + roletype + "&institutionid=" + select_institution + "&organ" + select_idm_organ + "&keyword=" + keyword;
+            window.location.href = "?isinternal=" + usertype + "&roleid=" + roletype + "&institutionid=" + select_institution + "&organ=" + select_idm_organ + "&keyword=" + keyword;
         })
 
         $('.select-user-type').on("change", function () {
             let usertype = $(this).val();
-            if (usertype == '1') {
-                $('.dl_idm_organ').css("display", "block");
-                $('.dl_institution').css("display", "none");
-            } else if (usertype == '2') {
-                $('.dl_idm_organ').css("display", "none");
-                $('.dl_institution').css("display", "block");
-            }
+            //if (usertype == '1') {
+            //    $('.dl_idm_organ').css("display", "block");
+            //    $('.dl_institution').css("display", "none");
+            //} else if (usertype == '2') {
+            //    $('.dl_idm_organ').css("display", "none");
+            //    $('.dl_institution').css("display", "block");
+            //}
         })
 
     })

@@ -205,6 +205,7 @@
     <Content Include="Content\Plugins\font-awesome-4.7.0\css\font-awesome.min.css" />
     <Content Include="Content\Plugins\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\Plugins\font-awesome-4.7.0\HELP-US-OUT.txt" />
+    <Content Include="Content\Plugins\layer\theme\default\icon-bak.png" />
     <Content Include="Content\Plugins\mtips\mTips.css" />
     <Content Include="Content\Plugins\mtips\mTips.js" />
     <Content Include="Content\Css\bootstrap-select\css\bootstrap-select.css.map" />
@@ -1216,10 +1217,10 @@
     <None Include="Web References\WebService932\IDM_SUNAC_392_validatePwd_PS0.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Web References\WebService932\Reference.map">
+    <None Include="Web References\WebService932\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Web References\WeService.BPM.WriteSAP\CAD_SUNAC_564_WriteSAPXmlToBPM.wsdl" />
     <None Include="Web References\WeService.BPM.WriteSAP\CAD_SUNAC_564_WriteSAPXmlToBPM_PS.xsd">
       <SubType>Designer</SubType>
@@ -1292,10 +1293,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>SunacCADApp_WebService_UpdataAndApproveFlow_CAD_SUNAC_565_UpdateAndApproveFlow_ptt_bindingQSService</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS%3fwsdl">
+    <WebReferenceUrl Include="http://192.168.2.219:8002/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\WebService932\</RelPath>
-      <UpdateFromURL>http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>http://192.168.2.219:8002/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

@@ -204,14 +204,8 @@ namespace SunacCADApp.Data
             }
             _str_area = _str_area.TrimEnd(',');
             bathroom.region = _str_area;
-            string _str_file = string.Empty;
-            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
-            foreach (Drawing drawing in DWGS)
-            {
-                _str_file += string.Format(@"{1}/{0},", CommonLib.WebURL, drawing.CADPath);
-            }
-            _str_file = _str_file.TrimEnd(',');
-            bathroom.filePath = _str_file;
+            BPMStaticAttachment attachment = CadDrawingDWGDB.GetStaticAttachment(_where);
+            bathroom.ATTACHMENTS1 = attachment;
             return bathroom;
         }
 
@@ -249,14 +243,8 @@ namespace SunacCADApp.Data
             }
             _str_area = _str_area.TrimEnd(',');
             bathroom.region = _str_area;
-            string _str_file = string.Empty;
-            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
-            foreach (Drawing drawing in DWGS)
-            {
-                _str_file += string.Format(@"{1}/{0},",CommonLib.WebURL, drawing.CADPath);
-            }
-            _str_file = _str_file.TrimEnd(',');
-            bathroom.filePath = _str_file;
+            BPMStaticAttachment attachment = CadDrawingDWGDB.GetStaticAttachment(_where);
+            bathroom.ATTACHMENTS1 = attachment;
             return bathroom;
         }
     }

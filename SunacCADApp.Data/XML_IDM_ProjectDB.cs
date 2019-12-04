@@ -7,6 +7,7 @@ using Common.Utility.Extender;
 using Common.Utility;
 using AFrame.DBUtility;
 using SunacCADApp.Entity;
+using SunacCADApp.Library;
 namespace SunacCADApp.Data
 {
     public   class XML_IDM_ProjectDB
@@ -36,9 +37,10 @@ namespace SunacCADApp.Data
 
         public static IList<XML_IDM_File> Get_IDM_File_ListExt(int  DirId, string OID)
         {
-            string sql = string.Format(@"SELECT [Id],[FileName],[SaveName], CONCAT('http://des.sunac.com.cn','/upfile/',CONVERT(NVARCHAR(24), CreateOn,112),'/', SaveName) AS [FileUrl], CONVERT(NVARCHAR(24), CreateOn,112) AS CreateTime,
+            string webURL = API_Common.GlobalParam("WebURL");
+            string sql = string.Format(@"SELECT [Id],[FileName],[SaveName], CONCAT('{2}','/','projectInfo/filedownload','/', Id) AS [FileUrl], CONVERT(NVARCHAR(24), CreateOn,112) AS CreateTime,
                                                                     CreateBy AS [Creator], CONVERT(NVARCHAR(24), ModifiedOn,112) AS UpdateTime,ModifiedBy AS Updator
-                                                          FROM dbo.Bas_Idm_ProjectFile WHERE DirId='{0}' AND [Enabled]!=-1 AND OID='{1}'", DirId, OID);
+                                                          FROM dbo.Bas_Idm_ProjectFile WHERE DirId='{0}' AND [Enabled]!=-1 AND OID='{1}'", DirId, OID, webURL);
             return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<XML_IDM_File>(new XML_IDM_File());
         }
 

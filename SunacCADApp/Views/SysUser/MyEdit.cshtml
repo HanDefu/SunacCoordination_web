@@ -1,5 +1,8 @@
-﻿@{
+﻿@using SunacCADApp.Data;
+@using SunacCADApp.Entity;
+@{
     Layout = null;
+    Sys_User User = ViewBag.User;
     }
 <!DOCTYPE html>
 <html>
@@ -18,23 +21,32 @@
     <script src="~/Content/Plugins/laydate/laydate.js"></script>
     <style type="text/css">
         .sunac-wapper {
-            margin-top: 15px;
+            margin-top: 10px;
+            color: #666666;
         }
 
             .sunac-wapper .title {
-                line-height: 45px;
+                line-height: 55px;
                 text-align: right;
             }
 
+                .sunac-wapper .title em {
+                  font-size:13px;
+                  font-weight:normal;
+                  font-style:normal;
+                  color:#ff0000;
+                  display:inline-block;
+                }
+
             .sunac-wapper .content {
-                width: 180px;
+                width: 330px;
                 display: block;
-                padding-top: 5px;
+                padding-top: 8px;
                 margin-left: -15px;
             }
 
             .sunac-wapper .content-text {
-                line-height: 45px;
+                line-height: 55px;
                 margin-left: -15px;
             }
 
@@ -43,22 +55,43 @@
             bottom: 0px;
             width: 100%;
             background-color: #ffffff;
-            border-top: solid 1px #c3c3c2;
+            border-top: dashed 1px #cccccc;
             text-align: center;
-            padding-top: 8px;
-            padding-bottom: 8px;
+            padding-top: 10px;
+            padding-bottom: 10px;
         }
     </style>
+
     <script type="text/javascript">
+        var options = {
+            url: '/SysUser/myuserhandle',
+            type: 'post',
+            data: $("#myform").serialize(),
+            dataType: 'json',
+            beforeSerialize: function () {
+                var rtv = $("#myform").ValidationInput();
+                return rtv;
+            },
+            success: function (data) {
+                if (data.code == 100) {
+                    layer.alert(data.message, { icon: 6, shade: false }, function () {
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    });
+                } else {
+                    layer.alert(data.message, { icon: 5, shade: false });
+                }
+            }
+        };
         $(function () {
-            $(".btn-default").on("click", function () {
-                $("#myform").resetForm();
-                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                parent.layer.close(index); //再执行关闭
-            });
+            //$(".btn-default").on("click", function () {
+            //    $("#myform").resetForm();
+            //    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            //    parent.layer.close(index); //再执行关闭
+            //});
 
             $(".btn-ok").on("click", function () {
-               // $("#myform").ajaxSubmit(options);
+                $("#myform").ajaxSubmit(options);
             });
         })
     </script>
@@ -67,51 +100,56 @@
     <div class="sunac-wapper">
         <form name="myform" id="myform">
             <div class="row">
-                <span class="col-xs-4 title">账户：</span>
-                <span class="col-xs-8">
-                    <span class="content">
-                        <input type="password" class="form-control" name="txt_password" />
+                <span class="col-xs-3 title"> 账户：</span>
+                <span class="col-xs-9">
+                    <span class="content-text">
+                         @ViewBag.SysUserName
                     </span>
                 </span>
             </div>
             <div class="row">
-                <span class="col-xs-4 title">姓名：</span>
-                <span class="col-xs-8">
+                <span class="col-xs-3 title"><em>*</em>姓名：</span>
+                <span class="col-xs-9">
                     <span class="content">
-                        <input type="password" class="form-control" name="txt_password" />
+                        <input type="text" class="form-control" name="txt_true_name" value="@User.True_Name" />
                     </span>
 
                 </span>
             </div>
             <div class="row">
-                <span class="col-xs-4 title">电话：</span>
-                <span class="col-xs-8">
+                <span class="col-xs-3 title"><em>*</em>电话：</span>
+                <span class="col-xs-9">
                     <span class="content">
-                        <input type="password" class="form-control" name="txt_once_password" />
+                        <input type="text" class="form-control" name="txt_telephone" value="@User.Telephone" />
                     </span>
                 </span>
             </div>
             <div class="row">
-                <span class="col-xs-4 title">邮箱：</span>
-                <span class="col-xs-8">
+                <span class="col-xs-3 title"><em>*</em>邮箱：</span>
+                <span class="col-xs-9">
                     <span class="content">
-                        <input type="password" class="form-control" name="txt_once_password" />
+                        <input type="text" class="form-control" name="txt_email" value="@User.Email" />
                     </span>
                 </span>
             </div>
             <div class="row">
-                <span class="col-xs-4 title">机构：</span>
-                <span class="col-xs-8">
+                <span class="col-xs-3 title">机构：</span>
+                <span class="col-xs-9">
                     <span class="content">
-                        <input type="password" class="form-control" name="txt_once_password" />
+                        <select class="form-control" readonly="readonly">
+                            <option value="">@ViewBag.OrgName</option>
+                        </select>
+                       
                     </span>
                 </span>
             </div>
             <div class="row">
-                <span class="col-xs-4 title">角色：</span>
-                <span class="col-xs-8">
+                <span class="col-xs-3 title">角色：</span>
+                <span class="col-xs-9">
                     <span class="content">
-                        <input type="password" class="form-control" name="txt_once_password" />
+                        <select class="form-control" readonly="readonly">
+                            <option value="">@ViewBag.UserName </option>
+                        </select>
                     </span>
                 </span>
             </div>
@@ -119,8 +157,7 @@
     </div>
 
     <div class="sunac-wapper-operation">
-        <button class="btn btn-sunac btn-ok">修改</button>
-        <button class="btn btn-default">关闭</button>
+        <button class="btn btn-sunac btn-ok" style="width:150px;">确定</button>
     </div>
 </body>
 </html>

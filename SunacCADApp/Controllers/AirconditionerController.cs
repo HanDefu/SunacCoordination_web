@@ -84,7 +84,9 @@ namespace SunacCADApp.Controllers
             }
             ViewBag.IsRainPipe = IsRainPipe;
 
-            int bpmstate = HttpUtility.UrlDecode(Request.QueryString["bpmstate"]).ConvertToInt32(0);
+
+            string _bpmState = Request.QueryString["bpmstate"];
+            int bpmstate = _bpmState == null ? 3 : _bpmState.ConvertToInt32(0);
             if (bpmstate > 0)
             {
                 _where += " and   a.BillStatus=" + bpmstate;
@@ -499,6 +501,32 @@ namespace SunacCADApp.Controllers
 
 
         /// <summary>
+        ///   卫生间CAD原型属性表-删除根据主键
+        /// </summary>
+        /// <returns></returns>
+        /// <get>/manage/CadDrawingBathroomDetail/deleteHandlebyid</get>
+        /// <author>alon<84789887@qq.com></author>  
+        public ActionResult DeleteHandleById()
+        {
+            if (UserId < 1)
+            {
+                return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
+            int Id = Request.Form["id"].ConvertToInt32(0);
+            int rtv = CadDrawingAirconditionerDetailDB.DeleteHandleById(Id);
+            if (rtv > 0)
+            {
+                return Json(new { code = 100, message = "删除成功" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { code = -100, message = "删除失败" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
+        /// <summary>
         ///  BPM提交审核
         /// </summary>
         /// <param name="Id">原型ID</param>
@@ -558,13 +586,21 @@ namespace SunacCADApp.Controllers
                 baseInfo.REQ_TAR_SYS = "BS_CAD_BPM";
                 baseInfo.REQ_SERVER_NAME = "CAD_SUNAC_564_WriteSAPXmlToBPM";
                 baseInfo.REQ_SYN_FLAG = "0";
+                baseInfo.BIZTRANSACTIONID = API_Common.BIZTRANSACTIONID;
                 request.REQ_BASEINFO = baseInfo;
+              
                 request.MESSAGE = peq_item.ToArray<WeService.BPM.WriteSAP.REQ_ITEM>();
                 WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService service = new WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService();
                 WeService.BPM.WriteSAP.E_RESPONSE response = service.CAD_SUNAC_564_WriteSAPXmlToBPM(request);
                 WeService.BPM.WriteSAP.E_RESPONSERSP_ITEM Message = response.MESSAGE.First();
                 if (Message.STATUSCODE == "1")
                 {
+                    string ParamInfo = string.Format(@"BSID      = {0}||BTID  = {1}||BOID   = {2}||BSXML    = {3}||
+                                                                            REQ_TRACE_ID   = {4}||REQ_SEND_TIME = {5}||BIZTRANSACTIONID ={6}
+                                                                            ", item.BSID, item.BTID, item.BOID, item.BSXML,
+                                                                 baseInfo.REQ_TRACE_ID, baseInfo.REQ_SEND_TIME, baseInfo.BIZTRANSACTIONID);
+                    string ReturnInfo = string.Format(@"STATUSCODE={0}||STATUSMESSAGE={1}", Message.STATUSCODE, Message.STATUSMESSAGE);
+                    CadDrawingMasterDB.Insert_BPM_Commit_Log(item.BTID, item.BSID, "空调流程提交", ParamInfo, ReturnInfo);
                     CadDrawingMasterDB.ChangeBpmStateusByMId(Id, 2);
                     return Json(new { code = 100, message = "提交成功" }, JsonRequestBehavior.AllowGet);
                 }

@@ -7,6 +7,7 @@ using Common.Utility.Extender;
 using Common.Utility;
 using AFrame.DBUtility;
 using SunacCADApp.Entity;
+using SunacCADApp.Library;
 namespace SunacCADApp.Data
 {
 
@@ -134,6 +135,43 @@ namespace SunacCADApp.Data
             string sql = string.Format(@"SELECT  ISNULL(Id,0) AS  Id ,ISNULL(DWGPath,'') AS ImgPath, ISNULL(CADPath,'') AS CADPath FROM dbo.CadDrawingDWG WHERE {0}", where);
             _drawing = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<Drawing>(new Drawing());
             return _drawing;
+        }
+
+        public static BPMStaticAttachment GetStaticAttachment(string where) 
+        {
+
+            string webURL = API_Common.GlobalParam("WebURL");
+            string CadFilePath = string.Empty;
+            IList<Drawing> drawing= GetDrawingByWhere(where);
+            IList<BPMStaticFile> files = new List<BPMStaticFile>();
+            BPMStaticAttachment attachment = new BPMStaticAttachment();
+            int num = 1;
+            foreach (Drawing draw in drawing) 
+            {
+               
+                CadFilePath = string.Concat(webURL, "/", "projectInfo/filedownload", "/", draw.Id);
+                string  cadFilePath = string.Concat(webURL,draw.CADPath);
+                string imgFilePath = string.Concat(webURL, draw.ImgPath);
+                BPMStaticFile file = new BPMStaticFile
+                {
+                    FILENAME = draw.FileClass,
+                    URL = cadFilePath,
+                    DESCRIPTION = draw.FileClass,
+                    FILE_ID_DMS = cadFilePath,
+                    FILENUMBER = num++, 
+                    FILESIZE=0
+                    
+                };
+                files.Add(file);
+            }
+
+            attachment.ITEM = files.ToArray<BPMStaticFile>();
+
+
+            return attachment;
+
+
+
         }
 
 

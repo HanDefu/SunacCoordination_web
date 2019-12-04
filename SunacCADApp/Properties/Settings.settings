@@ -18,7 +18,7 @@
       <Value Profile="(Default)">http://192.168.2.219:8001/WP_SUNAC/APP_PUBLIC_SERVICES/Proxy_Services/TA_IDM/PUBLIC_SUNAC_301_queryIdmOrgData_PS</Value>
     </Setting>
     <Setting Name="SunacCADApp_WebService932_IDM_SUNAC_392_validatePwd_ptt_bindingQSService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS</Value>
+      <Value Profile="(Default)">http://192.168.2.219:8002/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS</Value>
     </Setting>
   </Settings>
 </SettingsFile>

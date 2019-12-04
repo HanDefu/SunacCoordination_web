@@ -47,7 +47,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>原型编号：</dt>
                     <dd>
-                        <input type="text" name="dis_drawingcode" style="width:450px" value="@dMaster.DrawingCode" placeholder="原型编号" class="required" data-error="外窗原型编号不能为空" />
+                        <input type="text" name="dis_drawingcode" style="width:450px" value="@dMaster.DrawingCode" placeholder="原型编号" class="required" data-error="外窗原型编号不能为空" readonly="readonly" />
                         <input type="hidden" name="hid_drawingcode" value="@dMaster.DrawingCode"/>
                         <i class="icon-tips" tips="<p>门窗原型编号规则：开启代号+原型代码， 例如： NC1、NC2...<br />
                                                                        门窗开启代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗、
@@ -312,8 +312,8 @@
                     <dl class="static_module" style="display:none">
                         <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
                         <dd>
-                            宽<input type="number" style="width:105px" name="txtSizeMin" value="@doorDetail.WindowSizeMin" />
-                            高<input type="number" style="width:105px" name="txtSizeMax" value="@doorDetail.WindowSizeMax" />
+                            宽： <input type="number" style="width:105px" name="txtSizeMin" value="@doorDetail.WindowSizeMin" />
+                            高： <input type="number" style="width:105px" name="txtSizeMax" value="@doorDetail.WindowSizeMax" />
                         </dd>
                     </dl>
 
@@ -433,8 +433,8 @@
                     <dl class="dynamic_module">
                         <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
                         <dd>
-                            宽<input type="number" style="width:105px" name="txtSizeMin" value="@doorDetail.WindowSizeMin" />
-                            高<input type="number" style="width:105px" name="txtSizeMax" value="@doorDetail.WindowSizeMax" />
+                            宽： <input type="number" style="width:105px" name="txtSizeMin" value="@doorDetail.WindowSizeMin" />
+                            高： <input type="number" style="width:105px" name="txtSizeMax" value="@doorDetail.WindowSizeMax" />
                         </dd>
                     </dl>
             }
@@ -486,9 +486,10 @@
         },
         success: function (data) {
             if (data.code == 100) {
-                layer.msg(data.message, { icon: 6, time: 2000 }, function () {
-                    window.location.href = "/Door/Index"
-                });
+                //layer.msg(data.message, { icon: 6, shade: false }, function () {
+                //   // window.location.href = "/Door/Index"
+                //});
+                layer.alert(data.message, { icon: 6, shade: false });
             } else {
                 layer.alert(data.message, { icon: 5, shade: false });
             }
@@ -578,7 +579,7 @@
             let self = $(this);
             let billstatus = self.data("billstatus");
             if (billstatus == 2) {
-                layer.alert("已提交审核,请不要重复提交", { icon: 6, shade: false });
+                layer.alert("已提交审核，请勿重复提交！", { icon: 6, shade: false });
                 return;
             }
             layer.confirm('是否提交BPM审核', {

@@ -58,6 +58,8 @@ namespace SunacCADApp.Entity
         /// 相关附件地址
         /// </summary>
         public string filePath { get; set; }
+
+        public BPMStaticAttachment ATTACHMENTS1 { get; set; }
          /// <summary>
          /// 尺码属性
          /// </summary>

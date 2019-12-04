@@ -14,16 +14,17 @@
     <title>融创设计协同办公平台-@ViewBag.Title</title>
     <meta name="keywords" content="融创设计协同办公平台" />
     <meta name="description" content="融创设计协同办公平台" />
+    <script src="~/Content/Js/jquery-1.12.4.min.js" type="text/javascript"></script>
+    <script src="~/Content/Plugins/layer/layer.js" type="text/javascript"></script>
     <link href="~/Content/Css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/Css/sunac.css" rel="stylesheet" />
     <link href="~/Content/Plugins/mtips/mTips.css" rel="stylesheet" />
     <link href="~/Content/Plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/Content/Css/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
 
-    <script src="~/Content/Js/jquery-1.12.4.min.js" type="text/javascript"></script>
+   
     <script src="~/Content/Js/jquery.form.js" type="text/javascript"></script>
     <script src="~/Content/Js/goyeer.validation.js" type="text/javascript"></script>
-    <script src="~/Content/Plugins/layer/layer.js" type="text/javascript"></script>
     <script src="~/Content/Plugins/laydate/laydate.js" type="text/javascript"></script>
     <script src="~/Content/Plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="~/Content/Plugins/mtips/mTips.js" type="text/javascript"></script>
@@ -124,7 +125,7 @@
                 var index = layer.open({
                     type: 2,
                     skin: 'layer-ext-sunacskin',
-                    area: ['350px', '270px'],
+                    area: ['520px', '380px'],
                     shade: 0,
                     title: '密码修改',
                     content: ['/sysuser/changepassword', 'no']
@@ -136,7 +137,7 @@
                 var index = layer.open({
                     type: 2,
                     skin: 'layer-ext-sunacskin',
-                    area: ['350px', '400px'],
+                    area: ['520px', '450px'],
                     shade: 0,
                     title: '用户资料修改',
                     content: ['/sysuser/myedit', 'no']

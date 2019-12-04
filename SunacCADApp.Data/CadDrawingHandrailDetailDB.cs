@@ -186,14 +186,8 @@ namespace SunacCADApp.Data
             handrail.region = _str_area;
 
 
-            string _str_file = string.Empty;
-            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
-            foreach (Drawing drawing in DWGS)
-            {
-                _str_file += string.Format(@"http://10.4.64.91/{0},", drawing.CADPath);
-            }
-            _str_file = _str_file.TrimEnd(',');
-            handrail.filePath = _str_file;
+            BPMStaticAttachment attachment = CadDrawingDWGDB.GetStaticAttachment(_where);
+            handrail.ATTACHMENTS1 = attachment;
             return handrail;
         }
 

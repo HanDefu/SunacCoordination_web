@@ -22,6 +22,7 @@ namespace SunacCADApp.Controllers
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 11;
+            ViewBag.SysUserName = UserName;
         }
 
         /// <summary>
@@ -668,6 +669,18 @@ namespace SunacCADApp.Controllers
             {
                 return Redirect("/home");
             }
+            string old_password = Request.Form["txt_old_password"].ConventToString(string.Empty);
+            if (string.IsNullOrEmpty(old_password)) {
+                return Json(new { code = -100, message = "旧密码不能为空" }, JsonRequestBehavior.AllowGet);
+            }
+
+            Sys_User user = Sys_UserDB.GetSingleEntityById(UserId);
+            string old_md5_pwd=CommonLib.UserMd5(old_password);
+            if (user.User_Psd != old_md5_pwd) 
+            {
+                return Json(new { code = -100, message = "旧密码不能正确" }, JsonRequestBehavior.AllowGet);
+            }
+
 
             string password = Request.Form["txt_password"].ConventToString(string.Empty);
             if (string.IsNullOrEmpty(password)) 
@@ -703,6 +716,24 @@ namespace SunacCADApp.Controllers
             {
                 return Redirect("/home");
             }
+
+            Sys_User user = Sys_UserDB.GetSingleEntityById(UserId);
+            ViewBag.User = user;
+            string orgCode = string.Empty;
+            int IsInternal=user.Is_Internal;
+            if (user.Is_Internal == 2) 
+            {
+                orgCode = user.CompanyID.ConvertToTrim();
+            }
+            else if (user.Is_Internal == 1) 
+            {
+                orgCode = user.UserDeptNo;
+            }
+
+            string orgName = Sys_UserDB.GetUseOrganizationByOrgId(orgCode, IsInternal);
+            string userName = Sys_UserDB.GetUserRoleName(user.RoleID);
+            ViewBag.OrgName = orgName;
+            ViewBag.UserName = userName;
             return View();
         }
 
@@ -753,7 +784,29 @@ namespace SunacCADApp.Controllers
             }
         }
 
+        public ActionResult MyUserHandle() 
+        {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
 
+
+            int flag = 0;
+            string truename = Request.Form["txt_true_name"].ConvertToTrim();
+            string telephone = Request.Form["txt_telephone"].ConvertToTrim();
+            string email = Request.Form["txt_email"].ConvertToTrim();
+            flag = Sys_UserDB.EditSysUserByUserId(UserId, truename, telephone, email);
+
+            if (flag > 0)
+            {
+                return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { code = -100, message = "修改失败" }, JsonRequestBehavior.AllowGet);
+            }
+        }
     
     }
 }

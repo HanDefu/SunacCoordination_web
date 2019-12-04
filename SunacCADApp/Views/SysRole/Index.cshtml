@@ -16,7 +16,7 @@
                     查询
                 </button>
             </span>
-            <span class="panel-item panel-button">
+            <span class="panel-item panel-button" style="float:right;margin-right:5px;">
                 <button class="btn btn-sunac btn-add icon-add-extend" type="button">
                     新增
                 </button>
@@ -28,9 +28,8 @@
             <thead>
                 <tr>
                     <th width="60" class="text-center">序号</th>
-                    <th width="120">角色名称</th>
-                    <th width="200">角色描述</th>
-                    <th>权限</th>
+                    <th width="120" class="text-center">角色名称</th>
+                    <th class="text-center">权限</th>
                     <th width="160" class="text-center">创建时间</th>
                     <th width="120" class="text-center">操作</th>
                 </tr>
@@ -42,8 +41,7 @@
                     {
                         <tr>
                             <td class="text-center">@(i++)</td>
-                            <td>@row.Role_Name</td>
-                            <td>@row.Role_Remark</td>
+                            <td class="text-center"><a title="@row.Role_Remark" style="color:#808080;text-decoration:none;">@row.Role_Name</a> </td>
                             <td>
                                 @{
                         IList<Sys_Model> models = Sys_ModelDB.GetSysModeByRoleID(row.Id);

@@ -657,17 +657,7 @@ body .layui-ext-sunacskin_01 .layui-layer-btn {
   font-style:normal;
 }
 
-
-
-
-
-
-
-
-
-  
-
-
-     
-
-
+.layui-layer-btn0 {
+    background-color:#cf9a56;
+    border-color:#cf9a56;
+}

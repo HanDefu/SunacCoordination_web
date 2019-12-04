@@ -7,6 +7,7 @@ using Common.Utility.Extender;
 using Common.Utility;
 using AFrame.DBUtility;
 using SunacCADApp.Entity;
+using SunacCADApp.Library;
 namespace SunacCADApp.Data
 {
 
@@ -281,17 +282,13 @@ namespace SunacCADApp.Data
             }
             _str_function = _str_function.TrimEnd(',');
 
+    
             string _str_file = string.Empty;
-            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
-            foreach (Drawing drawing in DWGS)
-            {
-                _str_file += string.Format(@"{0},", drawing.CADPath);
-            }
-            _str_file = _str_file.TrimEnd(',');
+            BPMStaticAttachment attachment = CadDrawingDWGDB.GetStaticAttachment(_where);
 
             window.region = _str_area;
             window.functionalAreas = _str_function;
-            window.filePath = _str_file;
+            window.ATTACHMENTS1 = attachment;
             window.SizeParas = CadDrawingParameterDB.GetBPMSizeParamList(_where).ToArray<SizePara>();
             return window;
         }
@@ -303,10 +300,12 @@ namespace SunacCADApp.Data
                                                                      CASE m.DynamicType WHEN 1 THEN '动态模块' WHEN 2 THEN '静态模块' END AS dynamicType,
 		                                                             b.ArgumentText AS openType,
                                                                      CONCAT(c.ArgumentText,'扇')  AS openCount,
-		                                                             CASE a.WindowHasCorner WHEN 1 THEN '是' ELSE '否' END AS isCorner, 
-                                                                     CASE a.WindowHasSymmetry WHEN 1 THEN '是' ELSE '否' END AS isMirror,
-                                                                     CONCAT(a.WindowSizeMin,'mm','- ',a.WindowSizeMax,'mm') AS widthRange,
-		                                                             CASE a.WindowAuxiliaryFrame WHEN 1 THEN '是' ELSE '否' END  AS hasAuxiliaryFrame
+		                                                             CASE a.WindowHasCorner WHEN 1 THEN '是' ELSE '否' END AS IsCorner, 
+                                                                     CASE a.WindowHasSymmetry WHEN 1 THEN '是' ELSE '否' END AS IsMirror,
+                                                                     CONCAT(a.WindowSizeMin,'mm',' - ',a.WindowSizeMax,'mm') AS widthHeight,
+		                                                             CASE a.WindowAuxiliaryFrame WHEN 1 THEN '是' ELSE '否' END  AS hasAuxiliaryFrame,
+																	 a.WindowVentilationQuantity AS airVolume,
+																	 a.WindowPlugslotSize AS fillerSize
                                                            FROM dbo.CaddrawingMaster m 
                                                    INNER JOIN  dbo.CadDrawingWindowDetail a ON m.Id=a.MId
                                                       LEFT JOIN dbo.BasArgumentSetting b ON a.WindowOpenTypeId=b.Id AND b.TypeCode='OpenType'
@@ -337,16 +336,10 @@ namespace SunacCADApp.Data
             }
             _str_function = _str_function.TrimEnd(',');
 
-            string _str_file = string.Empty;
-            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
-            foreach (Drawing drawing in DWGS)
-            {
-                _str_file += string.Format(@"{0},", drawing.CADPath);
-            }
-            _str_file = _str_file.TrimEnd(',');
+            BPMStaticAttachment attachment = CadDrawingDWGDB.GetStaticAttachment(_where);
             window.region = _str_area;
-            window.functionAreas = _str_function;
-            window.filePath = _str_file;
+            window.functionalAreas = _str_function;
+            window.ATTACHMENTS1 = attachment;
             return window;
         }
 

@@ -78,6 +78,7 @@
         <div class="main-column-handle">
             <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
+                <button type="button" class="btn btn-sunac" id="btn_cancel">取消</button>
                 <button type="button" class="btn btn-sunac" id="btn_save01" data-value="commit">提交</button>
             </div>
         </div>
@@ -104,9 +105,11 @@
         },
         success: function (data) {
             if (data.code == 100) {
-                layer.msg(data.message, { icon: 6, time: 2000 }, function () {
-                    window.location.href = "/handrail/Index"
-                });
+                //layer.msg(data.message, { icon: 6, time: 2000 }, function () {
+                //    window.location.href = "/handrail/Index"
+                //});
+
+                layer.alert(data.message, { icon: 6, shade: false });
             } else {
                 layer.alert(data.message, { icon: 5, shade: false });
             }

@@ -275,9 +275,9 @@
                 <dl class="static_module">
                     <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
                     <dd>
-                        宽：<input type="number" style="width:105px" name="txtSizeMin" value="0" />
-                        <i>  - </i>
-                        高：<input type="number" style="width:105px" name="txtSizeMax" value="0" />
+                        宽： <input type="number" style="width:105px" name="txtSizeMin" value="0" />
+                        <i> </i>
+                        高： <input type="number" style="width:105px" name="txtSizeMax" value="0" />
                     </dd>
                 </dl>
                 <input type="hidden" name="param" />
@@ -287,6 +287,7 @@
         <div class="main-column-handle">
             <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
+                <button type="button" class="btn btn-sunac" id="btn_cancel">取消</button>
                 <button type="button" class="btn btn-sunac" id="btn_save01" data-value="commit">提交</button>
             </div>
         </div>
@@ -346,9 +347,10 @@
         },
         success: function (data) {
             if (data.code == 100) {
-                layer.msg(data.message, { icon: 6, time: 2000 }, function () {
-                    window.location.href = "/Door/Index"
-                });
+                //layer.msg(data.message, { icon: 6, shade: false }, function () {
+                //   // window.location.href = "/Door/Index"
+                //});
+                layer.alert(data.message, { icon: 6, shade: false });
             } else {
                 layer.alert(data.message, { icon: 5, shade: false });
             }

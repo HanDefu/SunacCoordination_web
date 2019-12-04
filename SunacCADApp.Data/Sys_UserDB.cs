@@ -249,6 +249,41 @@ namespace SunacCADApp.Data
                                                       WHERE a.UserId={0}",UserId);
             return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Sys_User_Organization_Relation>(new Sys_User_Organization_Relation());
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orgId"></param>
+        /// <param name="IsInternal"></param>
+        /// <returns></returns>
+        public static string GetUseOrganizationByOrgId(string orgId, int IsInternal = 1) 
+        {
+            string organization = string.Empty;
+            if (IsInternal == 2) {
+                string sql = string.Format(@"SELECT TOP 1 OrgName FROM Bas_Idm_Organization WHERE Id='{0}'",orgId);
+                organization =   MsSqlHelperEx.ExecuteScalar(sql).ConvertToTrim();
+            } else if (IsInternal == 1) {
+                string sql = string.Format(@"SELECT  TOP 1 OrganName FROM dbo.Bas_Idm_Organ  WHERE OrganNumber='{0}'", orgId);
+                organization = MsSqlHelperEx.ExecuteScalar(sql).ConvertToTrim();
+            }
+            return organization;
+        }
+
+        public static string GetUserRoleName(int  userid)
+        {
+            string sql = string.Format(@"SELECT Top 1 Role_Name FROM dbo.Sys_Role WHERE Id='{0}'", userid);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToTrim();
+        }
+
+        public static int EditSysUserByUserId(int userId,string true_name,string telephone,string email) 
+        {
+            string sql = string.Format(@"UPDATE dbo.Sys_User SET True_Name='{0}',Telephone='{1}',Email='{2}' WHERE Id={3}",true_name,telephone,email,userId);
+            return MsSqlHelperEx.Execute(sql);
+
+        }
+
+        
             
     }
 }

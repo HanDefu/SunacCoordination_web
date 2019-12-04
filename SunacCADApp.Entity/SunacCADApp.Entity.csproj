@@ -58,7 +58,9 @@
     <Compile Include="BPMDrawing\BPMHandrail.cs" />
     <Compile Include="BPMDrawing\BPMStaticBathroom.cs" />
     <Compile Include="BPMDrawing\BPMStaticDoor.cs" />
+    <Compile Include="BPMDrawing\BPMStaticFile.cs" />
     <Compile Include="BPMDrawing\BPMStaticKitchen.cs" />
+    <Compile Include="BPMDrawing\BPMStaticAttachment.cs" />
     <Compile Include="BPMDrawing\BPMStaticWindow.cs" />
     <Compile Include="BPMDrawing\SizePara.cs" />
     <Compile Include="BPMSuccess.cs" />

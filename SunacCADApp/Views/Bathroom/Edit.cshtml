@@ -39,7 +39,7 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>原型编号：</dt>
                     <dd>
-                        <input type="text" style="width:450px" name="dis_drawingcode" class="required" data-error="原型编号不能为空" value="@dMaster.DrawingCode" />
+                        <input type="text" style="width:450px" name="dis_drawingcode" class="required" data-error="原型编号不能为空" value="@dMaster.DrawingCode" readonly="readonly" />
                         <input type="hidden" value="@dMaster.DrawingCode" name="hid_drawingcode" />
                         <i class="icon-tips" tips="<p>门窗原型编号规则：开启代号+原型代码， 例如： NC1、NC2...<br />
                                                                        门窗开启代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗、
@@ -416,9 +416,10 @@
         },
         success: function (data) {
             if (data.code == 100) {
-                layer.msg(data.message, { icon: 6, time: 2000 }, function () {
-                    window.location.href = "/Bathroom/Index"
-                });
+                //layer.alert(data.message, { icon: 6, shade: false }, function () {
+                //    //window.location.href = "/Bathroom/Index"
+                //});
+                layer.alert(data.message, { icon: 6, shade: false });
             } else {
                 layer.alert(data.message, { icon: 5, shade: false });
             }
@@ -468,7 +469,7 @@
 
             let billstatus = self.data("billstatus");
             if (billstatus == 2) {
-                layer.alert("已提交审核,请不要重复提交", { icon: 6, shade: false });
+                layer.alert("已提交审核，请勿重复提交！", { icon: 6, shade: false });
                 return;
             }
             layer.confirm('是否提交BPM审核', {

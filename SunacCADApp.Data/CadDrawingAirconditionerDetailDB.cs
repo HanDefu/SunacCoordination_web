@@ -95,7 +95,10 @@ namespace SunacCADApp.Data
         ///</summary>
         public static int DeleteHandleById(int Id)
         {
-            string sql = string.Format("DELETE FROM dbo.CadDrawingAirconditionerDetail WHERE Id={0}", Id);
+            string sql = string.Format(@"DELETE FROM dbo.CaddrawingMaster WHERE Id={0};
+                                                        DELETE FROM dbo.CadDrawingAirconditionerDetail WHERE MId={0};
+                                                        DELETE FROM dbo.CadDrawingDWG WHERE MId={0};
+                                                        DELETE FROM dbo.CadDrawingByArea WHERE MId={0};", Id);
             return MsSqlHelperEx.Execute(sql);
         }
 
@@ -194,14 +197,8 @@ namespace SunacCADApp.Data
             }
             _str_area = _str_area.TrimEnd(',');
             airConditioner.region = _str_area;
-            string _str_file = string.Empty;
-            IList<Drawing> DWGS = CadDrawingDWGDB.GetDrawingByWhere(_where);
-            foreach (Drawing drawing in DWGS)
-            {
-                _str_file += string.Format(@"http://10.4.64.91{0},", drawing.CADPath);
-            }
-            _str_file = _str_file.TrimEnd(',');
-            airConditioner.filePath = _str_file;
+            BPMStaticAttachment attachment = CadDrawingDWGDB.GetStaticAttachment(_where);
+            airConditioner.ATTACHMENTS1 = attachment;
             return airConditioner;
         }
 

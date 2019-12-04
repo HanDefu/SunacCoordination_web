@@ -111,14 +111,16 @@ namespace SunacCADApp.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// projectInfo/filedownload/
         public ActionResult FileDownload(int id) 
         {
             try
             {
-                if (UserId < 1)
-                {
-                    return Content("非法操作");
-                }
                 Bas_Idm_ProjectFile file = BasIdmProjectFileDB.GetSingleEntityById(id);
                 if (string.IsNullOrEmpty(file.SaveName))
                     return Content("没有找到你要下载的文件");

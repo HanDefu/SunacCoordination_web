@@ -29,7 +29,7 @@ namespace SunacCADApp.Entity
         /// <summary>
         /// 功能区类型
         /// </summary>
-        public string functionAreas { get; set; }
+        public string functionalAreas { get; set; }
         /// <summary>
         /// 开启类型
         /// </summary>
@@ -41,11 +41,11 @@ namespace SunacCADApp.Entity
         /// <summary>
         /// 是否转角窗
         /// </summary>
-        public string isCorner { get; set; }
+        public string IsCorner { get; set; }
         /// <summary>
         /// 是否对称窗型
         /// </summary>
-        public string isMirror { get; set; }
+        public string IsMirror { get; set; }
         /// <summary>
         /// 宽度高度(mm)
         /// </summary>
@@ -66,6 +66,8 @@ namespace SunacCADApp.Entity
         /// 相关附件地址
         /// </summary>
         public string filePath { get; set; }
+
+        public BPMStaticAttachment ATTACHMENTS1 { get; set; }
 
     }
 }

@@ -63,7 +63,9 @@ namespace SunacCADApp.Controllers
             }
             ViewBag.doortype = doortype;
 
-            int bpmstate = HttpUtility.UrlDecode(Request.QueryString["bpmstate"]).ConvertToInt32(0);
+
+            string _bpmState = Request.QueryString["bpmstate"];
+            int bpmstate = _bpmState == null ? 3 : _bpmState.ConvertToInt32(0); 
             if (bpmstate > 0)
             {
                 _search_where += " and   a.BillStatus=" + bpmstate;
@@ -572,12 +574,19 @@ namespace SunacCADApp.Controllers
                 baseInfo.REQ_SERVER_NAME = "CAD_SUNAC_564_WriteSAPXmlToBPM";
                 baseInfo.REQ_SYN_FLAG = "0";
                 request.REQ_BASEINFO = baseInfo;
+                baseInfo.BIZTRANSACTIONID = API_Common.BIZTRANSACTIONID;
                 request.MESSAGE = peq_item.ToArray<WeService.BPM.WriteSAP.REQ_ITEM>();
                 WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService service = new WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService();
                 WeService.BPM.WriteSAP.E_RESPONSE response = service.CAD_SUNAC_564_WriteSAPXmlToBPM(request);
                 WeService.BPM.WriteSAP.E_RESPONSERSP_ITEM Message = response.MESSAGE.First();
                 if (Message.STATUSCODE == "1")
                 {
+                    string ParamInfo = string.Format(@"BSID      = {0}||BTID  = {1}||BOID   = {2}||BSXML    = {3}||
+                                                                            REQ_TRACE_ID   = {4}||REQ_SEND_TIME = {5}||BIZTRANSACTIONID ={6}
+                                                                            ", item.BSID, item.BTID, item.BOID, item.BSXML,
+                                                                   baseInfo.REQ_TRACE_ID, baseInfo.REQ_SEND_TIME, baseInfo.BIZTRANSACTIONID);
+                    string ReturnInfo = string.Format(@"STATUSCODE={0}||STATUSMESSAGE={1}",Message.STATUSCODE,Message.STATUSMESSAGE);
+                    CadDrawingMasterDB.Insert_BPM_Commit_Log(item.BTID, item.BSID, "门流程提交", ParamInfo, ReturnInfo);
                     CadDrawingMasterDB.ChangeBpmStateusByMId(doorID, 2);
                     return Json(new { code = 100, message = "BPM提交成功" }, JsonRequestBehavior.AllowGet);
                 }

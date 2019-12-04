@@ -167,7 +167,7 @@
         }
 
         let bpmstate = parseInt($(".dl_bpmstate .active").data("val"))
-        if (bpmstate > 0) {
+        if (bpmstate >= 0) {
             param += '&bpmstate=' + bpmstate;
         }
 

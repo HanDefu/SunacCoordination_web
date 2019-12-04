@@ -39,7 +39,7 @@
                 <dl>
                     <dt class="col-dt"><i></i>原型文件：</dt>
                     <dd>
-                        <input style="width:auto;padding-right:5px;" name="txt_filename" value="@ExpansionDWG.FileClass" disabled="disabled" data-error="展开图文件不能为空" />
+                        <span class="dl-file-disabled">@(string.IsNullOrEmpty(ExpansionDWG.FileClass) ? "无" : ExpansionDWG.FileClass)</span>
                         <input type="hidden" name="txt_drawingcad" value="@ExpansionDWG.CADPath" />
                         <input type="hidden" name="hid_drawing_img" value="@ExpansionDWG.DWGPath" />
                         <input type="hidden" name="hid_drawing_type" value="ExpandViewFile" />

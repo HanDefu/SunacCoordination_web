@@ -88,7 +88,8 @@ namespace SunacCADApp.Controllers
             }
             ViewBag.openwindownum = openwindownum;
 
-            int bpmstate = HttpUtility.UrlDecode(Request.QueryString["bpmstate"]).ConvertToInt32(0);
+            string _bpmState = Request.QueryString["bpmstate"];
+            int bpmstate = _bpmState == null ? 3 : _bpmState.ConvertToInt32(0);
             if (bpmstate > 0)
             {
                 _search_where += " and   a.BillStatus=" + bpmstate;
@@ -223,8 +224,10 @@ namespace SunacCADApp.Controllers
                 string areaid = Request.Form["checkbox_areaid"].ConventToString(string.Empty);
                 string actionType = Request.Form["ActionType"].ConventToString(string.Empty);
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
+                int Scope  =Request.Form["chekbox_group"].ConvertToInt32(0);
                 caddrawingmaster.DrawingCode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
-                caddrawingmaster.Scope = 1;
+
+                caddrawingmaster.Scope = Scope;
                 caddrawingmaster.AreaId = 0;
                 caddrawingmaster.DynamicType = DynamicType;
                 caddrawingmaster.Reorder = 2;
@@ -690,13 +693,23 @@ namespace SunacCADApp.Controllers
                 baseInfo.REQ_TAR_SYS = "BS_CAD_BPM";
                 baseInfo.REQ_SERVER_NAME = "CAD_SUNAC_564_WriteSAPXmlToBPM";
                 baseInfo.REQ_SYN_FLAG = "0";
+                baseInfo.BIZTRANSACTIONID = API_Common.BIZTRANSACTIONID;
                 request.REQ_BASEINFO = baseInfo;
                 request.MESSAGE = peq_item.ToArray<WeService.BPM.WriteSAP.REQ_ITEM>();
+                
                 WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService service = new WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService();
                 WeService.BPM.WriteSAP.E_RESPONSE response = service.CAD_SUNAC_564_WriteSAPXmlToBPM(request);
-                WeService.BPM.WriteSAP.E_RESPONSERSP_ITEM Message = response.MESSAGE.First();
+                 
+               WeService.BPM.WriteSAP.E_RESPONSERSP_ITEM Message = response.MESSAGE.First();
+               
                 if (Message.STATUSCODE == "1")
                 {
+                    string ParamInfo = string.Format(@"BSID      = {0}||BTID  = {1}||BOID   = {2}||BSXML    = {3}||
+                                                                            REQ_TRACE_ID   = {4}||REQ_SEND_TIME = {5}||BIZTRANSACTIONID ={6}
+                                                                            ", item.BSID, item.BTID, item.BOID, item.BSXML,
+                                                                     baseInfo.REQ_TRACE_ID, baseInfo.REQ_SEND_TIME, baseInfo.BIZTRANSACTIONID);
+                    string ReturnInfo = string.Format(@"STATUSCODE={0}||STATUSMESSAGE={1}", Message.STATUSCODE, Message.STATUSMESSAGE);
+                    CadDrawingMasterDB.Insert_BPM_Commit_Log(item.BTID, item.BSID, "门流程提交", ParamInfo, ReturnInfo);
                     CadDrawingMasterDB.ChangeBpmStateusByMId(Id, 2);
                     return Json(new { code = 100, message = "提交成功" }, JsonRequestBehavior.AllowGet);
                 }
@@ -710,6 +723,32 @@ namespace SunacCADApp.Controllers
             {
                 return Json(new { code = -100, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public JsonResult CadWindowBPMUpdateAndApproveFlow(int windowId, int statecode) 
+        {
+            WebService.UpdataAndApproveFlow.I_REQUEST request = new WebService.UpdataAndApproveFlow.I_REQUEST();
+            IList<WebService.UpdataAndApproveFlow.REQ_ITEM> peq_item = new List<WebService.UpdataAndApproveFlow.REQ_ITEM>();
+            WebService.UpdataAndApproveFlow.REQ_ITEM item = new WebService.UpdataAndApproveFlow.REQ_ITEM();
+            item.userid = "zhaoy58";
+            item.jobid = "";
+            item.procInstId = "";
+            item.comments = "";
+            item.xmldata = "";
+            peq_item.Add(item);
+            WebService.UpdataAndApproveFlow.REQ_BASEINFO baseInfo = new WebService.UpdataAndApproveFlow.REQ_BASEINFO();
+            baseInfo.REQ_TRACE_ID = API_Common.UUID;
+            baseInfo.REQ_SEND_TIME = API_Common.SEND_DATETIME;
+            baseInfo.REQ_SRC_SYS = "BS_CAD_BPM";
+            baseInfo.REQ_TAR_SYS = "BS_CAD_BPM";
+            baseInfo.REQ_SERVER_NAME = "CAD_SUNAC_564_WriteSAPXmlToBPM";
+            baseInfo.REQ_SYN_FLAG = "0";
+            baseInfo.BIZTRANSACTIONID = API_Common.BIZTRANSACTIONID;
+            request.REQ_BASEINFO = baseInfo;
+            request.MESSAGE = peq_item.ToArray<WebService.UpdataAndApproveFlow.REQ_ITEM>();
+            WebService.UpdataAndApproveFlow.CAD_SUNAC_565_UpdateAndApproveFlow_pttbindingQSService service = new WebService.UpdataAndApproveFlow.CAD_SUNAC_565_UpdateAndApproveFlow_pttbindingQSService();
+            WebService.UpdataAndApproveFlow.E_RESPONSE response = service.CAD_SUNAC_565_UpdateAndApproveFlow(request);
+            return Json(new { code = -100, message = "提交失败" }, JsonRequestBehavior.AllowGet);
         }
     }
 }
