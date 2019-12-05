@@ -44,6 +44,41 @@ namespace SunacCADApp.Library
             //getCAD_SUNAC_564_WriteSAPXmlToBPM
         }
 
+
+        /// <summary>
+        ///审批过程中修改BIZTRANSACTIONID
+        /// </summary>
+        public static string BIZTRANSACTIONIDUpdateAndApproveFlow 
+        {
+            get 
+            {
+                return string.Format(@"CAD_SUNAC_565_UpdateAndApproveFlow_PS{0}", DateTime.Now.ToString("yyyyMMddHHmmss"));
+            }
+        }
+
+        /// <summary>
+        /// 流程作废BIZTRANSACTIONID
+        /// </summary>
+        public static string BIZTRANSACTIONIDDoInvalid 
+        {
+            get
+            {
+                return string.Format(@"CAD_SUNAC_566_DoInvalid_PS{0}", DateTime.Now.ToString("yyyyMMddHHmmss"));
+            }
+        }
+
+
+        public static string BIZTRANSACTIONIDGetFlowState 
+        {
+            get
+            {
+                return string.Format(@"CAD_SUNAC_567_GetFlowState_PS{0}", DateTime.Now.ToString("yyyyMMddHHmmss"));
+            }
+        }
+
+
+
+
         public static string WebURL 
         {
             get 

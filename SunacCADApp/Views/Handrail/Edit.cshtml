@@ -118,8 +118,8 @@
         <div class="main-column-handle">
             <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
-                <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus">提交</button>
-                <button type="button" class="btn btn-sunac btn-delete" data-id="@dMaster.Id">删除</button>
+                <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus" data-bpmprocinstid="@dMaster.BPMProcInstID" data-bpmjobid="@dMaster.BPMJobid">提交</button>
+                <button type="button" class="btn btn-sunac btn-delete" data-id="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-bpmprocinstid="@dMaster.BPMProcInstID" data-bpmjobid="@dMaster.BPMJobid">删除</button>
             </div>
 
         </div>
@@ -178,13 +178,16 @@
 
 
         $(".btn-delete").on("click", function () {
-            let Id = $(this).data("id");
+            let self = $(this);
+            let Id = self.data("id");
+            let billstatus = self.data("billstatus");
+            let bpmprocinstid = self.data("bpmprocinstid");
             layer.confirm('是否需要删除', {
                 btn: ['删除', '取消'],
                 shade: false,
                 icon: 3
             }, function () {
-                $.post("/door/deleteHandlebyid", { Id: Id }, function (data) {
+                $.post("/handrail/deleteHandlebyid", { Id: Id, billstatus: billstatus, bpmprocinstid: bpmprocinstid }, function (data) {
                     if (data.code == 100) {
                         layer.alert("删除成功", { icon: 6, shade: false }, function () {
                             window.location.href = "/handrail/index";
@@ -213,10 +216,10 @@
             }, function () {
                 let Id = self.data("id");
                 let State = self.data("state");
-                $.post("/Handrail/CadWirteBPMApproval", { Id: Id, State: State }, function (data) {
+                $.post("/handrail/CadWirteBPMApproval", { Id: Id, State: State }, function (data) {
                     if (data.code == 100) {
                         layer.alert("BPM提交成功", { icon: 6, shade: false }, function () {
-                            window.location.href = "/Handrail/index";
+                            window.location.href = "/handrail/index";
                         })
                     } else {
                         layer.alert(data.message, { icon: 6, shade: false });

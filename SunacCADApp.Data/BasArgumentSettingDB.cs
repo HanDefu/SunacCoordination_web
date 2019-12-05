@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Common.Utility.Extender;
 using Common.Utility;
 using AFrame.DBUtility;
-using AFrame.DBUtility;
 using SunacCADApp.Entity;
 namespace SunacCADApp.Data
 {

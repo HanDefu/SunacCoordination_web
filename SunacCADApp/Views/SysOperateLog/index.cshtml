@@ -1,0 +1,115 @@
+﻿@using SunacCADApp.Entity;
+@using Common.Utility;
+@using Common.Utility.Extender;
+@{
+    Layout = "~/Views/_LayoutPage.cshtml";
+    IList<PageNum> pageNumList = ViewBag.PageNumList;
+    int pageCount = ViewBag.PageCount;
+    int recordCount = ViewBag.RecordCount;
+    int current = ViewBag.CurrentPage;
+}
+
+<div id="sunac" style="min-width:1024px;">
+    <div class="row">
+        <div class="col-lg-12 panel-search">
+            <div class="input-control-group float-left">
+                <dl>
+                    <dt class="dt-title">用户名：</dt>
+                    <dd>
+                     
+                    </dd>
+                </dl>
+            </div>
+            <div class="input-control-group float-left">
+                <dl>
+                    <dt>日期：</dt>
+                    <dd>
+                 
+                    </dd>
+                </dl>
+            </div>
+       
+
+        </div>
+    </div>
+
+    <div class="row panel-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="50" class="text-center selected-all" style="cursor:pointer"><input type="checkbox" name="chk_all" /></th>
+                    <th width="50" class="text-center">序号</th>
+                    <th width="100" class="text-center">用户名</th>
+                    <th class="text-center">信息内容</th>
+                    <th width="120" class="text-center">日期</th>
+                    <th width="120" class="text-center">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+        </table>
+        @*@if (users.Count == 0)
+        {
+            <div class="no-record" style="padding-top:0px;padding-bottom:0px;">
+                暂无记录信息
+            </div>
+        }*@
+    </div>
+    <div class="row" id="sunac-paging">
+        <b>共<span>@ViewBag.recordCount</span>条</b>
+        <b>
+            <select class="form-control control-page-size">
+                @foreach (PageNum page in pageNumList)
+                {
+                    if (page.Code == ViewBag.PageSize)
+                    {
+                        <option value="@page.Code" selected="selected">@page.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@page.Code">@page.Text</option>
+                    }
+
+                }
+
+            </select>
+        </b>
+        @if (ViewBag.PreviousPage < 1)
+        {
+            <a class="none"><i class="fa  fa-angle-left fa-lg"></i></a>
+        }
+        else
+        {
+            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PreviousPage"><i class="fa  fa-angle-left fa-lg"></i></a>
+        }
+
+        @for (int page = ViewBag.StartPage; page <= ViewBag.EndPage; page++)
+        {
+            if (page == current)
+            {
+                <a class="current">@page</a>
+            }
+            else
+            {
+                <a href="?pagesize=@ViewBag.PageSize&page=@page">@page</a>
+            }
+
+        }
+        @if (ViewBag.EndPage != ViewBag.PageCount)
+        {
+            <a>...</a>
+            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PageCount">@ViewBag.PageCount</a>
+            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.NextPage"><i class="fa  fa-angle-right fa-lg"></i></a>
+        }
+        else
+        {
+            <a class="none"><i class="fa  fa-angle-right fa-lg"></i></a>
+        }
+
+        <strong>
+            前往<input type="text" class="form-control" value="@ViewBag.CurrentPage">页
+        </strong>
+    </div>
+</div>
+

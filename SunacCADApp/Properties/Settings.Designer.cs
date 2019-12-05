@@ -86,11 +86,35 @@ namespace SunacCADApp.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.2.219:8002/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUN" +
+        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUN" +
             "AC_392_validatePwd_PS")]
         public string SunacCADApp_WebService932_IDM_SUNAC_392_validatePwd_ptt_bindingQSService {
             get {
                 return ((string)(this["SunacCADApp_WebService932_IDM_SUNAC_392_validatePwd_ptt_bindingQSService"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUN" +
+            "AC_566_DoInvalid_PS")]
+        public string SunacCADApp_WebServiceSunacBPM_DoInvalid_CAD_SUNAC_566_DoInvalid_ptt_bindingQSService {
+            get {
+                return ((string)(this["SunacCADApp_WebServiceSunacBPM_DoInvalid_CAD_SUNAC_566_DoInvalid_ptt_bindingQSSer" +
+                    "vice"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUN" +
+            "AC_567_GetFlowState_PS")]
+        public string SunacCADApp_WebService_GetFlowState_CAD_SUNAC_567_GetFlowState_ptt_bindingQSService {
+            get {
+                return ((string)(this["SunacCADApp_WebService_GetFlowState_CAD_SUNAC_567_GetFlowState_ptt_bindingQSServi" +
+                    "ce"]));
             }
         }
     }

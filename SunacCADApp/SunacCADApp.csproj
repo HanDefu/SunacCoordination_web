@@ -930,6 +930,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Code\BPMOperationCommonLib.cs" />
     <Compile Include="App_Code\IdmPublicService.cs" />
     <Compile Include="App_Code\TimeTask.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -945,6 +946,7 @@
     <Compile Include="Controllers\HandrailController.cs" />
     <Compile Include="Controllers\KitchenController.cs" />
     <Compile Include="Controllers\ProjectInfoController.cs" />
+    <Compile Include="Controllers\SysOperateLogController.cs" />
     <Compile Include="IDMProjectService.asmx.cs">
       <DependentUpon>IDMProjectService.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -973,6 +975,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\WebService.GetFlowState\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="Web References\WebService.IDM.Public\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -989,6 +996,11 @@
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Compile Include="Web References\WebService932\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\WebServiceSunacBPM.DoInvalid\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
@@ -1146,6 +1158,7 @@
     <Content Include="Views\SysUser\ViewProjectUserById.cshtml" />
     <Content Include="Views\SysUser\innerEdit.cshtml" />
     <Content Include="Views\SysUser\TreeProjectInfo.cshtml" />
+    <Content Include="Views\SysOperateLog\index.cshtml" />
     <None Include="Views\_LayoutPage-marster.cshtml.bak" />
     <Content Include="Web References\cn.com.sunac.sappoqas\DT_MDM_Landpublic_RESP.datasource">
       <DependentUpon>Reference.map</DependentUpon>
@@ -1170,6 +1183,20 @@
     </Content>
     <Content Include="Web References\WebService.IDM.Public\HEADER.datasource">
       <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <None Include="Web References\WebService.GetFlowState\CAD_SUNAC_567_GetFlowState.wsdl" />
+    <None Include="Web References\WebService.GetFlowState\CAD_SUNAC_567_GetFlowState_PS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WebService.GetFlowState\CAD_SUNAC_567_GetFlowState_PS0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Web References\WebService.GetFlowState\E_RESPONSE.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\WebService.GetFlowState\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
     <None Include="Web References\WebService.IDM.Public\PUBLIC_SUNAC_301_queryIdmOrgData.wsdl" />
     <None Include="Web References\WebService.IDM.Public\PUBLIC_SUNAC_301_queryIdmOrgData_PS.xsd">
@@ -1221,6 +1248,20 @@
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Web References\WebServiceSunacBPM.DoInvalid\CAD_SUNAC_566_DoInvalid.wsdl" />
+    <None Include="Web References\WebServiceSunacBPM.DoInvalid\CAD_SUNAC_566_DoInvalid_PS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\WebServiceSunacBPM.DoInvalid\CAD_SUNAC_566_DoInvalid_PS0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Web References\WebServiceSunacBPM.DoInvalid\E_RESPONSE.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\WebServiceSunacBPM.DoInvalid\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
     <None Include="Web References\WeService.BPM.WriteSAP\CAD_SUNAC_564_WriteSAPXmlToBPM.wsdl" />
     <None Include="Web References\WeService.BPM.WriteSAP\CAD_SUNAC_564_WriteSAPXmlToBPM_PS.xsd">
       <SubType>Designer</SubType>
@@ -1292,6 +1333,28 @@
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>SunacCADApp_WebService_UpdataAndApproveFlow_CAD_SUNAC_565_UpdateAndApproveFlow_ptt_bindingQSService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_566_DoInvalid_PS%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WebServiceSunacBPM.DoInvalid\</RelPath>
+      <UpdateFromURL>http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_566_DoInvalid_PS%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SunacCADApp_WebServiceSunacBPM_DoInvalid_CAD_SUNAC_566_DoInvalid_ptt_bindingQSService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_567_GetFlowState_PS%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WebService.GetFlowState\</RelPath>
+      <UpdateFromURL>http://192.168.2.219:8001/WP_SUNAC/APP_CAD_SERVICES/Proxy_Services/TA_BPM/CAD_SUNAC_567_GetFlowState_PS%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SunacCADApp_WebService_GetFlowState_CAD_SUNAC_567_GetFlowState_ptt_bindingQSService</CachedSettingsPropName>
     </WebReferenceUrl>
     <WebReferenceUrl Include="http://192.168.2.219:8002/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>

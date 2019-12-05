@@ -21,7 +21,6 @@
     CadDrawingDWG SideDWG = Dwgs.Where(e => e.CADType == "LeftViewFile").SingleOrDefault<CadDrawingDWG>();
     SideDWG = SideDWG == null ? new CadDrawingDWG() : SideDWG;
     string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
-   // string cadName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? string.Empty : ExpansionDWG.FileClass;
     string cadName = DrawingMaster.DrawingCode;
 }
 <div class="row topnav">
@@ -585,8 +584,8 @@
         <div class="main-column-handle">
             <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
-                <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@DrawingMaster.Id" data-state="@DrawingMaster.DynamicType" data-billstatus="@DrawingMaster.BillStatus">提交</button>
-                <button type="button" class="btn btn-sunac btn-delete" data-id="@DrawingMaster.Id">删除</button>
+                <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@DrawingMaster.Id" data-state="@DrawingMaster.DynamicType" data-billstatus="@DrawingMaster.BillStatus" data-bpmprocinstid="@DrawingMaster.BPMProcInstID" data-bpmjobid="@DrawingMaster.BPMJobid">提交</button>
+                <button type="button" class="btn btn-sunac btn-delete" data-id="@DrawingMaster.Id" data-billstatus="@DrawingMaster.BillStatus" data-bpmprocinstid="@DrawingMaster.BPMProcInstID" data-bpmjobid="@DrawingMaster.BPMJobid">删除</button>
              
               
             </div>
@@ -766,13 +765,16 @@
         });
 
         $(".btn-delete").on("click", function () {
-            let Id = $(this).data("id");
+            let self = $(this);
+            let Id = self.data("id");
+            let billstatus = self.data("billstatus");
+            let bpmprocinstid = self.data("bpmprocinstid");
             layer.confirm('是否需要删除', {
                 btn: ['删除', '取消'],
                 shade: false,
                 icon: 3
             }, function () {
-                $.post("/window/deleteHandlebyid", { Id: Id }, function (data) {
+                $.post("/window/deleteHandlebyid", { Id: Id, billstatus: billstatus, bpmprocinstid: bpmprocinstid}, function (data) {
                     if (data.code == 100) {
                         layer.alert("删除成功", { icon: 6, shade: false }, function () {
                             window.location.href = "/window/index";
@@ -786,23 +788,20 @@
         })
 
         $(".btn-bpm-submit").on("click", function () {
-            
             let self = $(this);
-
+            let Id = self.data("id");
+            let state = self.data("state");
             let billstatus = self.data("billstatus");
-            if (billstatus == 2)
-            {
-                layer.alert("已提交审核，请勿重复提交！", { icon: 6, shade: false });
-                return;
-            }
-            layer.confirm('是否提交BPM审核', {
+            let bpmprocinstid = self.data("bpmprocinstid");
+            let bpmjobid = self.data("bpmjobid");
+            let bill_message = billstatus == "2" ? "是否重新提交BPM审核" : "是否提交BPM审核";
+            layer.confirm(bill_message, {
                 btn: ['提交BPM审核', '取消'],
                 shade: false,
                 icon: 3
             }, function () {
-                let Id = self.data("id");
-                let State = self.data("state");
-                $.post("/window/CadWirteBPMApproval", { Id: Id, State: State }, function (data) {
+
+                $.post("/window/CadWirteBPMApproval", { Id: Id, State: state, billstatus: billstatus, bpmprocinstid: bpmprocinstid, bpmjobid: bpmjobid }, function (data) {
                     if (data.code == 100) {
                         layer.alert("BPM提交成功", { icon: 6, shade: false }, function () {
                             window.location.href = "/window/index";

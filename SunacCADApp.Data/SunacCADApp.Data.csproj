@@ -83,6 +83,7 @@
     <Compile Include="MsSqlHelperEx.cs" />
     <Compile Include="Project_InformationDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SysOperateLogDB.cs" />
     <Compile Include="SysRoleDB.cs" />
     <Compile Include="SysRoleModelRelationDB.cs" />
     <Compile Include="SysUserProjectRelationDB.cs" />

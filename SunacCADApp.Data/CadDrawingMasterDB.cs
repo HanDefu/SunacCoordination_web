@@ -153,5 +153,18 @@ namespace SunacCADApp.Data
             string sql = string.Format(@"SELECT CASE WHEN a.Scope=1 THEN '集团' ELSE '' END AS ScopeName FROM dbo.CaddrawingMaster a WHERE  a.Id={0}", mid);
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToTrim();
         }
+
+        /// <summary>
+        ///  BPM更新状态
+        /// </summary>
+        /// <param name="Masterid"></param>
+        /// <param name="ProcInstID"></param>
+        /// <param name="JobID"></param>
+        /// <returns></returns>
+        public static int UpdateBPMProcInst(string ProcInstID, string JobID,string Masterid)
+        {
+            string sql = string.Format(@"UPDATE  dbo.CaddrawingMaster SET BPMProcInstID='{0}' AND BPMJobid='{1}' WHERE Id={2}", ProcInstID, JobID, Masterid);
+            return MsSqlHelperEx.Execute(sql).ConvertToInt32(0);
+        }
     }
 }

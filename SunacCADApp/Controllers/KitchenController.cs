@@ -220,6 +220,7 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.ModifiedUserId = UserId;
                 caddrawingmaster.ModifiedBy = UserName;
                 caddrawingmaster.ModifiedOn = DateTime.Now;
+                caddrawingmaster.BillStatus = 1;
 
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
                 string[] arr_CADFile = cadFile.Split(',');
@@ -402,6 +403,7 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.ModifiedUserId = UserId;
                 caddrawingmaster.ModifiedBy = UserName;
                 caddrawingmaster.ModifiedOn = DateTime.Now;
+                caddrawingmaster.BillStatus = 1;
                 caddrawingmaster.Id = Id;
                 int mId = CadDrawingMasterDB.EditHandle(caddrawingmaster,string.Empty);
                 mId = Id;
@@ -501,6 +503,31 @@ namespace SunacCADApp.Controllers
                 return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
             }
             int Id = Request.Form["id"].ConvertToInt32(0);
+            string billstatus = Request.Form["billstatus"];
+            string bpmprocinstid = Request.Form["bpmprocinstid"];
+            string UserCode = UserName;
+            UserCode = "zhaoy58";
+            string _where = string.Format("  a.MId={0}", Id);
+            IList<CadDrawingDWG> Dwgs = CadDrawingDWGDB.GetPageInfoByParameter(_where, string.Empty, 0, 50);
+            foreach (CadDrawingDWG dwg in Dwgs)
+            {
+                string cadpath = dwg.CADPath;
+                string mapCadPath = Server.MapPath(cadpath);
+                System.IO.File.Delete(mapCadPath);
+                string imgpath = dwg.DWGPath;
+                string mapImgPath = Server.MapPath(imgpath);
+                System.IO.File.Delete(mapImgPath);
+            }
+
+            if (billstatus == "2")
+            {
+                CadDrawingMaster master = CadDrawingMasterDB.GetSingleEntityById(Id);
+                string BOID = master.Id.ConventToString(string.Empty);
+                string BSID = "vsheji";
+                string BTID = master.DynamicType == 1 ? "P31" : "P32";
+
+                BPMOperationCommonLib.CadWindowBPMDoInvalid(UserCode, BOID, BSID, BTID, bpmprocinstid);
+            }
             int rtv = CadDrawingKitchenDetailDB.DeleteHandleById(Id);
             if (rtv > 0)
             {
@@ -548,11 +575,14 @@ namespace SunacCADApp.Controllers
             }
             int kitchenID = Request.Form["Id"].ConvertToInt32(0);
             string State = Request.Form["State"].ConventToString(string.Empty);
-            return BPMKitchenApproval(kitchenID, State);
+            int billstatus = Request.Form["billstatus"].ConvertToInt32(0);
+            string bpmprocinstid = Request.Form["bpmprocinstid"];
+            string bpmjobid = Request.Form["bpmjobid"];
+            return BPMKitchenApproval(kitchenID, State,billstatus,bpmprocinstid,bpmjobid);
         }
 
 
-        private JsonResult BPMKitchenApproval(int kitchenID, string State) 
+        private JsonResult BPMKitchenApproval(int kitchenID, string State, int billstatus = 0, string bpmprocinstid = "", string bpmjobid = "") 
         {
             try
             {
@@ -575,40 +605,25 @@ namespace SunacCADApp.Controllers
                     BPMXml = XmlSerializeHelper.XmlSerialize<BPMStaticKitchen>(kitchen);
                     BTID = "P32";
                 }
-                item.BSID = "vsheji";
-                item.BTID = BTID;
-                item.BOID = BOID;
-                item.BSXML = BPMXml;
-                item.procInstID = "0";
-                item.userid = "zhaoy58";
-                peq_item.Add(item);
-                WeService.BPM.WriteSAP.REQ_BASEINFO baseInfo = new WeService.BPM.WriteSAP.REQ_BASEINFO();
-                baseInfo.REQ_TRACE_ID = API_Common.UUID;
-                baseInfo.REQ_SEND_TIME = API_Common.SEND_DATETIME;
-                baseInfo.REQ_SRC_SYS = "BS_CAD_BPM";
-                baseInfo.REQ_TAR_SYS = "BS_CAD_BPM";
-                baseInfo.REQ_SERVER_NAME = "CAD_SUNAC_564_WriteSAPXmlToBPM";
-                baseInfo.REQ_SYN_FLAG = "0";
-                baseInfo.BIZTRANSACTIONID = API_Common.BIZTRANSACTIONID;
-                request.REQ_BASEINFO = baseInfo;
-                request.MESSAGE = peq_item.ToArray<WeService.BPM.WriteSAP.REQ_ITEM>();
-                WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService service = new WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService();
-                WeService.BPM.WriteSAP.E_RESPONSE response = service.CAD_SUNAC_564_WriteSAPXmlToBPM(request);
-                WeService.BPM.WriteSAP.E_RESPONSERSP_ITEM Message = response.MESSAGE.First();
-                if (Message.STATUSCODE == "1")
+                string BSID = "vsheji";
+                string UserCode = UserName;
+                UserCode = "zhaoy58";
+                int returnValue = -100;
+                if (billstatus == 1)
                 {
-                    string ParamInfo = string.Format(@"BSID      = {0}||BTID  = {1}||BOID   = {2}||BSXML    = {3}||
-                                                                            REQ_TRACE_ID   = {4}||REQ_SEND_TIME = {5}||BIZTRANSACTIONID ={6}
-                                                                            ", item.BSID, item.BTID, item.BOID, item.BSXML,
-                                                         baseInfo.REQ_TRACE_ID, baseInfo.REQ_SEND_TIME, baseInfo.BIZTRANSACTIONID);
-                    string ReturnInfo = string.Format(@"STATUSCODE={0}||STATUSMESSAGE={1}", Message.STATUSCODE, Message.STATUSMESSAGE);
-                    CadDrawingMasterDB.Insert_BPM_Commit_Log(item.BTID, item.BSID, "厨房流程提交", ParamInfo, ReturnInfo);
-                    CadDrawingMasterDB.ChangeBpmStateusByMId(kitchenID, 2);
-                    return Json(new { code = 100, message = "BPM提交成功" }, JsonRequestBehavior.AllowGet);
+                    returnValue = BPMOperationCommonLib.CadWindowBPMWriteSAPXmlToBPM(BSID, BTID, BOID, BPMXml, bpmprocinstid, UserCode);
                 }
                 else
                 {
-                    return Json(new { code = -100, message = "BPM提交失败" }, JsonRequestBehavior.AllowGet);
+                    returnValue = BPMOperationCommonLib.CadWindowBPMUpdateAndApproveFlow(UserCode, bpmjobid, bpmprocinstid, BPMXml, BOID, BSID, BTID);
+                }
+                if (returnValue == 100)
+                {
+                    return Json(new { code = 100, message = "提交成功" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { code = -100, message = "提交失败" }, JsonRequestBehavior.AllowGet);
                 }
 
             }

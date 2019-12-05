@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schema xmlns:base="http://www.ekingwin.com/esb/header/v1" elementFormDefault="unqualified" targetNamespace="http://www.ekingwin.com/esb/header/v1" xmlns="http://www.w3.org/2001/XMLSchema">
+  <complexType name="REQ_BASEINFO">
+    <sequence>
+      <element name="REQ_TRACE_ID" type="string" />
+      <element name="REQ_SEND_TIME" type="string" />
+      <element name="REQ_SRC_SYS" type="string" />
+      <element name="REQ_TAR_SYS" type="string" />
+      <element name="REQ_SERVER_NAME" type="string" />
+      <element name="REQ_SYN_FLAG" type="string" />
+      <element name="REQ_BSN_ID" type="string" />
+      <element name="REQ_RETRY_TIMES" type="string" />
+      <element name="REQ_REPEAT_FLAG" type="string" />
+      <element name="REQ_REPEAT_CYCLE" type="string" />
+      <element name="BIZTRANSACTIONID" type="string" />
+      <element name="COUNT" type="string" />
+    </sequence>
+  </complexType>
+  <element name="REQ_BASEINFO" type="base:REQ_BASEINFO" />
+  <complexType name="RSP_BASEINFO">
+    <sequence>
+      <element name="RSP_TRACE_ID" type="string" />
+      <element name="RSP_REQ_TRACEID" type="string" />
+      <element name="RSP_SEND_TIME" type="string" />
+      <element name="RSP_SRC_SYS" type="string" />
+      <element name="RSP_TAR_SYS" type="string" />
+      <element name="RSP_SERVER_NAME" type="string" />
+      <element name="RSP_BSN_ID" type="string" />
+      <element name="RSP_RETRY_TIMES" type="string" />
+      <element name="RSP_STATUS_CODE" type="string" />
+      <element name="RSP_STATUS_MSG" type="string" />
+      <element name="BIZTRANSACTIONID" type="string" />
+      <element name="RESULT" type="string" />
+    </sequence>
+  </complexType>
+  <element name="RSP_BASEINF" type="base:RSP_BASEINFO" />
+</schema>

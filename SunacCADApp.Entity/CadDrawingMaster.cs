@@ -75,6 +75,14 @@ namespace SunacCADApp.Entity
         /// 修改用户
         ///</summary>
         public string ModifiedBy { get; set; }
+        /// <summary>
+        /// ProcInstID 
+        /// </summary>
+        public string BPMProcInstID { get; set; }
+        /// <summary>
+        /// JobId
+        /// </summary>
+        public string BPMJobid { get; set; }
 
     }
 }
