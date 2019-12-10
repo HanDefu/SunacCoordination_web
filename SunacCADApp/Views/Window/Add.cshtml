@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "~/Views/_LayoutPage.cshtml";
+    int PrototypeAdd = ViewBag.PrototypeAdd;
 }
 @using SunacCADApp.Entity
 <div class="row topnav">
@@ -181,11 +182,12 @@
                     </dd>
                 </dl>
                 <dl class="dynamic_module">
-                    <dt class="col-dt"><i>*</i>宽度尺寸范围（mm）：</dt>
+                    <dt class="col-dt"><i>*</i>宽度尺寸范围：</dt>
                     <dd>
                         <input type="number" style="width:100px" name="txtWindowSizeMin" value="0" />
                         <i>  - </i>
                         <input type="number" style="width:100px" name="txtWindowSizeMax" value="0" />
+                        <i>mm</i>
                     </dd>
                 </dl>
                 <dl class="dynamic_module">
@@ -198,13 +200,14 @@
 
 
                 <dl class="static_module">
-                    <dt class="col-dt"><i>*</i>尺寸（mm）：</dt>
+                    <dt class="col-dt"><i>*</i>尺寸：</dt>
                     <dd>
                         <em>宽</em>
                         <input type="number" style="width:60px" value="0" name="txt_Window_Width" />&nbsp;
                         <i>   </i>
                         <em>高 </em>
                         <input type="number" style="width:60px" value="0" name="txt_Window_Height" />
+                        <i>mm</i>
                     </dd>
                 </dl>
                 <dl class="static_module">
@@ -377,6 +380,8 @@
                 </dl>
             </form>
         </div>
+@if(PrototypeAdd == 1)
+{
         <div class="row main-column-handle">
             <div class="column-handle">
                 <button type="button" class="btn btn-sunac" id="btn_save" data-value="save">保存</button>
@@ -384,6 +389,7 @@
                 <button type="button" class="btn btn-sunac" id="btn_save01" data-value="commit">提交</button>
             </div>
         </div>
+}
     </div>
 
 </div>
@@ -496,6 +502,8 @@
         }
     };
     $(function () {
+       
+        
         $('input[name="radio_module"]').on("change", function () {
             let model = $(this).data("model");
             $(".dynamic_module").css("display", "none");
@@ -576,6 +584,17 @@
     })
 
 </script>
+@if(PrototypeAdd == 0)
+{
+    <script type="text/javascript">
+        $(function () {
+            layer.alert("抱歉，当前用户暂无原型查看权限,请联系管理员开通", { icon: 0, title: "权限提示" }, function () {
+
+                window.location.href = "/window/index";
+            });
+         });
+    </script>         
+}
 
 
 

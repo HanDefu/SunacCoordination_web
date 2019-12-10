@@ -22,6 +22,7 @@
 
     string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
     string cadName = master.DrawingCode;
+    int PrototypeEdit = ViewBag.PrototypeEdit;
 }
 <div class="row topnav">
     <a>标准部品库</a>
@@ -31,15 +32,27 @@
     <a>@master.DrawingCode</a>
     @if (master.BillStatus == 0||master.BillStatus==1)
     {
-        <span class="check-state">草稿</span>
+        <span class="check-state" data-masterid="@master.Id">待提交</span>
     }
-    else if (master.Enabled == 2)
+    else if (master.BillStatus == 2)
     {
-        <span class="check-state state-unchecked">待审核</span>
+        <span class="check-state state-unchecked" data-masterid="@master.Id" data-billstatus="@master.BillStatus" data-procinstid="@master.BPMProcInstID"> 待审核</span>
     }
-    else if (master.Enabled == 3)
+    else if (master.BillStatus == 3)
     {
-
+        <span class="check-state state-unchecked" data-masterid="@master.Id" data-billstatus="@master.BillStatus" data-procinstid="@master.BPMProcInstID">已审核</span>
+    }
+    else if (master.BillStatus == 4)
+    {
+        <span class="check-state state-unchecked" data-masterid="@master.Id" data-billstatus="@master.BillStatus" data-procinstid="@master.BPMProcInstID">退回</span>
+    }
+    else if (master.BillStatus == 5)
+    {
+        <span class="check-state state-unchecked" data-masterid="@master.Id" data-billstatus="@master.BillStatus" data-procinstid="@master.BPMProcInstID">拒绝</span>
+    }
+    else if (master.BillStatus == 6)
+    {
+        <span class="check-state state-unchecked" data-masterid="@master.Id" data-billstatus="@master.BillStatus" data-procinstid="@master.BPMProcInstID">作废</span>
     }
 
 </div>
@@ -138,7 +151,7 @@
                     else
                     {
                         <span class="online-checkbox">
-                            <label for="radio_static_module">动态原型</label>
+                            <label for="radio_static_module"> 定型原型</label>
                         </span>
                     }
 
@@ -191,12 +204,12 @@
             @if (master.DynamicType == 1)
             {
                 <dl>
-                    <dt class="col-dt"><i></i>宽度尺寸范围（mm）：</dt>
+                    <dt class="col-dt"><i></i>宽度尺寸范围：</dt>
                     <dd>
                         @Decimal.ToInt32(windowDetail.WindowSizeMin)
-                        <i>  × </i>
+                        <i>  - </i>
                         @Decimal.ToInt32(windowDetail.WindowSizeMax)
-
+                        <i>mm</i>
                     </dd>
                 </dl>
                 <dl>
@@ -254,11 +267,10 @@
                     <dd>
                         <em>宽:</em>
                         @Decimal.ToInt32(windowDetail.WindowSizeMin)
-                        mm
-                        <i>-&nbsp;</i>
+                        <i>-</i>
                         <em>高 :</em>
                         @Decimal.ToInt32(windowDetail.WindowSizeMax)
-                        mm
+                        <i>mm</i>
                     </dd>
                 </dl>
                 <dl>
@@ -283,11 +295,16 @@
                 </dl>
             }
         </div>
-        <div class="main-column-handle">
-            <div class="column-handle">
-                <a class="btn btn-sunac" id="btn_save" href="/Window/Edit/@master.Id"> 编辑</a>
+
+        @if (PrototypeEdit == 1)
+        {
+            <div class="main-column-handle">
+                <div class="column-handle">
+                    <a class="btn btn-sunac" id="btn_save" href="/Window/Edit/@master.Id"> 编辑</a>
+                </div>
             </div>
-        </div>
+        }
+    
     </div>
 
 </div>

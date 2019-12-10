@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "~/Views/_LayoutPage.cshtml";
+    int PrototypeAdd = ViewBag.PrototypeAdd;
 }
 @using SunacCADApp.Entity
 <div class="row topnav">
@@ -132,11 +133,12 @@
                     </dd>
                 </dl>
                 <dl class="dynamic_module">
-                    <dt class="col-dt"><i>*</i>宽度尺寸范围(mm)：</dt>
+                    <dt class="col-dt"><i>*</i>宽度尺寸范围：</dt>
                     <dd>
                         <input type="number" style="width:105px" name="txtWindowSizeMin" value="0" />
                         <i>  - </i>
                         <input type="number" style="width:105px" name="txtWindowSizeMax" value="0" />
+                        <i>mm</i>
                     </dd>
                 </dl>
                 <dl class="dynamic_module">
@@ -147,7 +149,7 @@
                 </dl>
                 <dl class="dynamic_module">
                     <dt class="col-dt"><i></i>参数取值：</dt>
-                    <dd><i class="icon-tips" tips="<p>参数取值说明：</p><p>取值类型无表示没有此尺寸代号；不限表示取值无限制；<br/>范围表示取值是在最小值、最大值范围内；<br />固定值表示只能用值一栏中的固定值；<br />值系列表示取值可有多个值选项，以逗号分隔，<br />如600,700表示此项可取600或700两个值选项。<p>">&nbsp;</i></dd>
+                    <dd><i class="icon-tips" tips="<p>参数取值说明：</p><p>取值类型无表示没有此尺寸代号；不限表示取值无限制；<br/>范围表示取值是在最小值、最大值范围内；<br />固定值表示只能用值一栏中的固定值；<br />值系列表示取值可有多个值选项，以逗号分隔，<br />如600,700表示此项可取600或700两个值选项。</p>">&nbsp;</i></dd>
                 </dl>
                 <dl class="dynamic_module">
                     <dd>
@@ -273,11 +275,12 @@
                     </dd>
                 </dl>
                 <dl class="static_module">
-                    <dt class="col-dt"><i>*</i>尺寸(mm)：</dt>
+                    <dt class="col-dt"><i>*</i>尺寸：</dt>
                     <dd>
                         宽： <input type="number" style="width:105px" name="txtSizeMin" value="0" />
                         <i> </i>
                         高： <input type="number" style="width:105px" name="txtSizeMax" value="0" />
+                        <i>mm</i>
                     </dd>
                 </dl>
                 <input type="hidden" name="param" />
@@ -437,5 +440,15 @@
 
 </script>
 
+@if (PrototypeAdd == 0)
+{
+    <script type="text/javascript">
+        $(function () {
+            layer.alert("抱歉，当前用户暂无原型查看权限,请联系管理员开通", { icon: 0, title: "权限提示" }, function () {
 
+                window.location.href = "/door/index";
+            });
+        });
+    </script>
+}
 

@@ -13,6 +13,9 @@
     string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
     string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? "" : ExpansionDWG.FileClass;
     string cadName = Master.DrawingCode;
+    int PrototypeEdit = ViewBag.PrototypeEdit;
+    int PrototypeRemove = ViewBag.PrototypeRemove;
+}
 }
 <div class="row topnav">
     <a>标准部品库</a>
@@ -199,30 +202,30 @@
             {
 
                     <dl class="dynamic_module">
-                        <dt class="col-dt"><i>*</i>开间尺寸范围(mm)：</dt>
+                        <dt class="col-dt"><i>*</i>开间尺寸范围：</dt>
                         <dd>
                             <input type="number" style="width:105px" name="txtKitchenOpenSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
                            <i>- </i>
                             <input type="number" style="width:105px" name="txtKitchenOpenSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
-                          
+                            <i>mm</i>
                         </dd>
                     </dl>
                     <dl class="dynamic_module">
-                        <dt class="col-dt"><i>*</i>进深尺寸范围(mm)：</dt>
+                        <dt class="col-dt"><i>*</i>进深尺寸范围：</dt>
                         <dd>
                             <input type="number" style="width:105px" name="txtKitchenDepthsizeMin" value="@Kitchen.KitchenDepthsizeMin" />
                             <i>-</i>
                             <input type="number" style="width:105px" name="txtKitchenDepthsizeMax" value="@Kitchen.KitchenDepthsizeMax" />
-                          
+                            <i>mm</i>
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:none">
-                        <dt class="col-dt"><i>*</i>开间进深(mm)：</dt>
+                        <dt class="col-dt"><i>*</i>开间进深：</dt>
                         <dd>
                             <input type="number" style="width:105px" name="txtWindowSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
                             <i>×</i>
                             <input type="number" style="width:105px" name="txtWindowSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
-                         
+                            <i>mm</i>
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:none">
@@ -286,27 +289,30 @@
             else
             {
                     <dl class="dynamic_module" style="display:none">
-                        <dt class="col-dt"><i>*</i>开间尺寸范围(mm)：</dt>
+                        <dt class="col-dt"><i>*</i>开间尺寸范围：</dt>
                         <dd>
                             <input type="number" style="width:105px" name="txtKitchenOpenSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
                             <i>-</i>
                             <input type="number" style="width:105px" name="txtKitchenOpenSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
+                            <i>mm</i>
                         </dd>
                     </dl>
                     <dl class="dynamic_module" style="display:none">
-                        <dt class="col-dt"><i>*</i>进深尺寸范围(mm)：</dt>
+                        <dt class="col-dt"><i>*</i>进深尺寸范围：</dt>
                         <dd>
                             <input type="number" style="width:105px" name="txtKitchenDepthsizeMin" value="@Kitchen.KitchenDepthsizeMin" />
                             <i>×</i>
                             <input type="number" style="width:105px" name="txtKitchenDepthsizeMax" value="@Kitchen.KitchenDepthsizeMax" />
+                            <i>mm</i>
                         </dd>
                     </dl>
                     <dl class="static_module" style="display:block">
-                        <dt class="col-dt"><i>*</i>开间进深(mm)：</dt>
+                        <dt class="col-dt"><i>*</i>开间进深：</dt>
                         <dd>
                             <input type="number" style="width:105px" name="txtWindowSizeMin" value="@Kitchen.KitchenOpenSizeMin" />
                             <i>×</i>
                             <input type="number" style="width:105px" name="txtWindowSizeMax" value="@Kitchen.KitchenOpenSizeMax" />
+                            <i>mm</i>
                         </dd>
                     </dl>
                     <dl class="static_module">
@@ -375,11 +381,17 @@
         </div>
         <div class="main-column-handle">
             <div class="column-handle">
-                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
-                <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@Master.Id" data-state="@Master.DynamicType" data-billstatus="@Master.BillStatus" data-bpmprocinstid="@Master.BPMProcInstID" data-bpmjobid="@Master.BPMJobid">提交</button>
-                <button type="button" class="btn btn-sunac btn-delete" data-id="@Master.Id" data-billstatus="@Master.BillStatus" data-bpmprocinstid="@Master.BPMProcInstID" data-bpmjobid="@Master.BPMJobid">删除</button>
+                @if (PrototypeEdit == 1)
+                {
+                    <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
+                    <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@Master.Id" data-state="@Master.DynamicType" data-billstatus="@Master.BillStatus" data-bpmprocinstid="@Master.BPMProcInstID" data-bpmjobid="@Master.BPMJobid">提交</button>
+                }
+                @if (PrototypeRemove == 1)
+                {
+                    <button type="button" class="btn btn-sunac btn-delete" data-id="@Master.Id" data-billstatus="@Master.BillStatus" data-bpmprocinstid="@Master.BPMProcInstID" data-bpmjobid="@Master.BPMJobid">删除</button>
+                }
+               
             
-          
             </div>
             
         </div>
@@ -481,5 +493,14 @@
 
 </script>
 
-
+@if (PrototypeEdit == 0)
+{
+    <script type="text/javascript">
+        $(function () {
+            layer.alert("抱歉，当前用户暂无原型编辑权限,请联系管理员开通", { icon: 0, title: "权限提示" }, function () {
+                window.location.href = "/kitchen/index";
+            });
+        });
+    </script>
+}
 

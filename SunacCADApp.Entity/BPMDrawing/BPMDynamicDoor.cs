@@ -14,6 +14,10 @@ namespace SunacCADApp.Entity
     public  class BPMDynamicDoor
     {
         /// <summary>
+        /// 流程主题
+        /// </summary>
+        public string FSubject { get; set; }
+        /// <summary>
         /// 表单编号
         /// </summary>
         public string PageCode { get; set; }

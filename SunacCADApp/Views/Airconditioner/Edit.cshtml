@@ -11,6 +11,8 @@
     string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
     string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? "" : ExpansionDWG.FileClass;
     string drawingCode = dMaster.DrawingCode;
+    int PrototypeEdit = ViewBag.PrototypeEdit;
+    int PrototypeRemove = ViewBag.PrototypeRemove;
 }
 
 <div class="row topnav">
@@ -115,11 +117,11 @@
                 <dl>
                     <dt class="col-dt"><i>*</i>净尺寸：</dt>
                     <dd>
-                        <b style="font-weight:normal">W:</b>
+                        <b style="font-weight:normal;display:inline-block;width:25px;text-align:left;">W:</b>
                         <input type="number" style="width:100px" name="txtAirconditionerWidth" value="@Airconditioner.AirconditionerWidth" />
-                        <b style="font-weight:normal">H:</b>
+                        <b style="font-weight:normal;display:inline-block;width:25px;text-align:left;">H:</b>
                         <input type="number" style="width:100px" name="txtAirconditionerHeight" value="@Airconditioner.AirconditionerHeight" />
-                        <b style="font-weight:normal">D:</b>
+                        <b style="font-weight:normal;display:inline-block;width:25px;text-align:left;">D:</b>
                         <input type="number" style="width:100px" name="txtAirconditionerDepth" value="@Airconditioner.AirconditionerDepth" />
                     </dd>
                 </dl>
@@ -211,9 +213,17 @@
         <div class="main-column-handle">
    
             <div class="column-handle">
-                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
-                <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus" data-bpmprocinstid="@dMaster.BPMProcInstID" data-bpmjobid="@dMaster.BPMJobid">提交</button>
-                <button type="button" class="btn btn-sunac btn-delete" data-id="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-bpmprocinstid="@dMaster.BPMProcInstID" data-bpmjobid="@dMaster.BPMJobid">删除</button>
+                @if (PrototypeEdit == 1)
+                {
+                    <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
+                    <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus" data-bpmprocinstid="@dMaster.BPMProcInstID" data-bpmjobid="@dMaster.BPMJobid">提交</button>
+                }
+                
+                @if (PrototypeRemove == 1)
+                {
+                    <button type="button" class="btn btn-sunac btn-delete" data-id="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-bpmprocinstid="@dMaster.BPMProcInstID" data-bpmjobid="@dMaster.BPMJobid">删除</button>
+                }
+               
              
             </div>
         </div>
@@ -323,5 +333,14 @@
 
 </script>
 
-
+@if (PrototypeEdit == 0)
+{
+    <script type="text/javascript">
+        $(function () {
+            layer.alert("抱歉，当前用户暂无原型编辑权限,请联系管理员开通", { icon: 0, title: "权限提示" }, function () {
+                window.location.href = "/airconditioner/index";
+            });
+        });
+    </script>
+}
 

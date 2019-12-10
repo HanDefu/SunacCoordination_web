@@ -17,12 +17,20 @@ namespace SunacCADApp.Controllers
     {
         private int UserId = 0;
         private string UserName = string.Empty;
+        /// <summary>
+        /// 权限
+        /// </summary>
+       
         public SysUserController() 
         {
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
+           
             ViewBag.SelectModel = 11;
             ViewBag.SysUserName = UserName;
+       
+
+
         }
 
         /// <summary>
@@ -678,7 +686,7 @@ namespace SunacCADApp.Controllers
             string old_md5_pwd=CommonLib.UserMd5(old_password);
             if (user.User_Psd != old_md5_pwd) 
             {
-                return Json(new { code = -100, message = "旧密码不能正确" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = -100, message = "旧密码不正确" }, JsonRequestBehavior.AllowGet);
             }
 
 

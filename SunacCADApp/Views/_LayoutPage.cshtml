@@ -4,7 +4,8 @@
 @using Common.Utility.Extender;
 @{
      int UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
-      string UserName = InitUtility.Instance.InitSessionHelper.Get("UserName").ConventToString(string.Empty);
+     string UserName = InitUtility.Instance.InitSessionHelper.Get("UserName").ConventToString(string.Empty);
+     int IsInternal = InitUtility.Instance.InitSessionHelper.Get("IsInternal").ConvertToInt32(0);
 
 }
 <!DOCTYPE html>
@@ -21,8 +22,6 @@
     <link href="~/Content/Plugins/mtips/mTips.css" rel="stylesheet" />
     <link href="~/Content/Plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/Content/Css/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-
-   
     <script src="~/Content/Js/jquery.form.js" type="text/javascript"></script>
     <script src="~/Content/Js/goyeer.validation.js" type="text/javascript"></script>
     <script src="~/Content/Plugins/laydate/laydate.js" type="text/javascript"></script>
@@ -74,7 +73,8 @@
                             parent.find('input[name="txt_drawingcad"]').val(cad_file);
                             parent.find('input[name="hid_drawing_img"]').val(img_file);
                             $('.icon-drawing-img  img').attr("src", img_file);
-                            $('.icon-drawing-img  p').text(file_name);
+                            let _cadpath = file_name.replace('.DWG', '').replace('.dwg', '');
+                            $('.icon-drawing-img  p').text(_cadpath);
                         } else {
                             layer.alert(res.Message, { icon: 5 })
                         }
@@ -92,7 +92,8 @@
                 let drawing_img = $(this).siblings('input[name="hid_drawing_img"]').val();
                 if (!_isNull(cadpath)) {
                     $('.icon-drawing-img  img').attr("src", drawing_img);
-                    $('.icon-drawing-img  p').text(cadpath);
+                    let _cadpath = cadpath.replace('.DWG', '').replace('.dwg', '');
+                    $('.icon-drawing-img  p').text(_cadpath);
                 }
             })
 
@@ -163,6 +164,27 @@
                     }, 'json')
                 }
             })
+
+            $('.check-state').on('click', function () {
+                let masterid = $(this).data('masterid');
+                let billstatus = $(this).data('billstatus');
+                let procinstid = $(this).data('procinstid');
+                if (billstatus != "1")
+                {
+                    $.post("/CommonLib/ResultBPMGetFlowState", { masterid: masterid, billstatus: billstatus, procinstid: procinstid }, function (data) {
+
+                        if (data.code == 100) {
+                            layer.alert(data.message, { title: "BPM审核信息", shade: 0 });
+                        } else {
+                            layer.alert(data.message, { title: "提示", shade: 0,icon: 5 });
+                        }
+                    }, "json")
+                } 
+            });
+
+            $('.power_none').on('click', function () {
+                layer.alert("抱歉，当前用户暂无原型查看权限,请联系管理员开通", {icon:0,title:"权限提示"});
+            });
         });
     </script>
 </head>
@@ -175,7 +197,16 @@
                 <span class="user-operate">
                     <span class="cnt">
                         <a href="javascript:void(0)" class="border-bottom myedit">个人资料</a>
-                        <a href="javascript:void(0)" class="border-bottom user-change">修改密码</a>
+                        @if (IsInternal == 2)
+                        {
+                            <a href="javascript:void(0)" class="border-bottom user-change">修改密码</a>
+                        }
+                        else
+                        {
+                            <a href="javascript:void(0)" class="border-bottom disabled">修改密码</a>
+
+                        }
+                       
                         <a href="javascript:void(0)" class="loginout">退出</a>
                     </span>
                 </span>

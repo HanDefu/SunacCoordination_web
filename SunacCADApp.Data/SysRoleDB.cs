@@ -143,5 +143,11 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
 
+        public static int HasUserCountByRoleId(int RoleId) 
+        {
+            string sql = string.Format(@"	SELECT COUNT(*) AS CNT FROM dbo.Sys_User WHERE RoleID={0}", RoleId);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
+        }
+
     }
 }

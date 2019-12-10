@@ -321,5 +321,51 @@ namespace SunacCADApp.Test
  
          }
 
+        private void button01_CreateResult_Click(object sender, EventArgs e)
+        {
+            WebBMPService.BMPService service = new WebBMPService.BMPService();
+            WebBMPService.Bpm_Req_ApproveClose I_REQUEST = new WebBMPService.Bpm_Req_ApproveClose();
+            WebBMPService.Bpm_Req_BaseInfo BaseInfo=new WebBMPService.Bpm_Req_BaseInfo();
+            BaseInfo.BIZTRANSACTIONID = API_Common.BIZTRANSACTIONID;
+            BaseInfo.REQ_TRACE_ID = "f7ded48d-ce65-41de-a3e3-8ebec0174d72";
+            BaseInfo.REQ_SEND_TIME = "20191030112004";
+            BaseInfo.REQ_SRC_SYS = "BS-BPM-D";
+            BaseInfo.REQ_TAR_SYS = "BS-CAD-D";
+            BaseInfo.REQ_SERVER_NAME = "BPM_SUNAC_568_CreateResult_PS";
+            BaseInfo.REQ_SYN_FLAG = 0;
+            BaseInfo.REQ_BSN_ID = "170";
+            BaseInfo.REQ_RETRY_TIMES = 3;
+            BaseInfo.REQ_REPEAT_FLAG = 0;
+            BaseInfo.REQ_REPEAT_CYCLE = 0;
+            BaseInfo.BIZTRANSACTIONID = "BPM_SUNAC_568_CreateResult_PS20191030111959022";
+            BaseInfo.COUNT = 1;
+            I_REQUEST.REQ_BASEINFO = BaseInfo;
+
+            //Entity.Bpm_Req_ApproveClose_Param param = new Entity.Bpm_Req_ApproveClose_Param();
+            //param.eProcessInstanceResult = "1";
+            //param.iProcInstID = "2510001555";
+            //param.strBOID = "170";
+            //param.strBTID = "P11";
+            //param.strComment = "流程发起成功";
+            //Entity.Bpm_Req_ApproveClose_Message message = new Entity.Bpm_Req_ApproveClose_Message();
+            //message.REQ_ITEM = param;
+            //I_REQUEST.MESSAGE = message;
+
+
+            WebBMPService.Bpm_Req_ApproveClose_Param param = new WebBMPService.Bpm_Req_ApproveClose_Param();
+            param.eProcessInstanceResult = "1";
+            param.iProcInstID = "2510001555";
+            param.strBOID = "170";
+            param.strBTID = "P11";
+            param.strComment = "流程发起成功";
+            WebBMPService.Bpm_Req_ApproveClose_Message Message = new WebBMPService.Bpm_Req_ApproveClose_Message();
+            Message.REQ_ITEM = param;
+
+            I_REQUEST.MESSAGE = Message;
+
+
+            WebBMPService.Bpm_Rsp_Result result = service.ApproveClose(I_REQUEST);
+        }
+
     }
 }

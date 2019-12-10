@@ -10,21 +10,16 @@ using SunacCADApp.Entity;
 using SunacCADApp.Data;
 using System.Data;
 using SunacCADApp.Library;
-
+using SunacCADApp;
 
 namespace SunacCADApp.Controllers
 {
-    public class WindowController : Controller
+    public class WindowController :MyController
     {
-        private int UserId = 0;
-        private string UserName = string.Empty;
         public WindowController()
         {
             ViewBag.SelectModel = 5;
-            UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
-            UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
-            ViewBag.StateList = CommonLib.GetBPMStateInfo();
-
+         
         }
         // GET: /window/index
         public ActionResult Index()
@@ -36,33 +31,28 @@ namespace SunacCADApp.Controllers
             string _where = "TypeCode='Area' And ParentID!=0";
             IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.Settings = Settings;
-
             _where = "TypeCode='ActionType' And ParentID!=0";
             IList<BasArgumentSetting> ActionTypes = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.ActionTypes = ActionTypes;
-
             _where = "TypeCode='OpenType' And ParentID!=0";
             IList<BasArgumentSetting> OpenTypes = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.OpenTypes = OpenTypes;
-
             _where = "TypeCode='OpenWindowNum' And ParentID!=0";
             IList<BasArgumentSetting> OpenWindowNums = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.OpenWindowNums = OpenWindowNums;
             string _search_where = " 1=1 ";
             string _url = "1";
-
             int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(-1);
             if (area > 0)
             {
-                _search_where += string.Format(@" AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE pa.MId=a.Id AND pa.AreaID={0})", area);
+                _search_where += string.Format(@" AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE  pa.MId=a.Id  AND pa.AreaID={0}  {1})", area,_power_wh);
                 _url += "&area=" + area;
             }
             else if (area == -9999)
             {
-                _search_where += "  AND Scope=1";
+                _search_where += string.Format(@"  AND Scope=1 AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE  pa.MId=a.Id  {0})",_power_wh);
                 _url += "&area=" + area;
             }
-
             ViewBag.area = area;
             int action = HttpUtility.UrlDecode(Request.QueryString["action"]).ConvertToInt32(-1);
             if (action > 0)
@@ -108,7 +98,6 @@ namespace SunacCADApp.Controllers
             ViewBag.Keyword = keyword;
 
             string _orderby = string.Empty;  //排序
-
             int recordCount = 0;    //记录总数
             int pageSize = 30;      //每页条数
             int currentPage = 0;    //当前页数
@@ -355,7 +344,7 @@ namespace SunacCADApp.Controllers
                 string operate = Request.Form["hid_operate"].ConventToString(string.Empty);
                 if (operate == "commit")
                 {
-                    return CadWindowBPMApproval(mId, DynamicType);
+                    return CadWindowBPMApproval(mId, DynamicType,1);
                 }
                 if (mId > 0 && detail > 0)
                 {
@@ -628,7 +617,7 @@ namespace SunacCADApp.Controllers
                 System.IO.File.Delete(mapImgPath);
             }
           
-            if (billstatus == "2") 
+            if (billstatus == "4") 
             {
                 CadDrawingMaster master = CadDrawingMasterDB.GetSingleEntityById(Id);
                 string BOID = master.Id.ConventToString(string.Empty);
@@ -666,7 +655,7 @@ namespace SunacCADApp.Controllers
                 int billstatus = Request.Form["billstatus"].ConvertToInt32(0);
                 string bpmprocinstid = Request.Form["bpmprocinstid"];
                 string bpmjobid = Request.Form["bpmjobid"];
-                return CadWindowBPMApproval(Id, _btid);
+                return CadWindowBPMApproval(Id, _btid, billstatus, bpmprocinstid, bpmjobid);
         }
 
         public JsonResult CadWindowBPMApproval(int windowId, int statecode, int billstatus = 0, string bpmprocinstid="",string bpmjobid="")
@@ -683,6 +672,7 @@ namespace SunacCADApp.Controllers
                     BOID = Id.ConventToString(string.Empty);
                     BTID = "P11";
                     BPMDynamicWindow window = CadDrawingWindowDetailDB.GetBPMDynamicWindowByWhere(Id);
+                    window.FSubject = string.Format(@"动态外窗原型审批-{0}",BOID);
                     Bsxml = XmlSerializeHelper.XmlSerialize<BPMDynamicWindow>(window);
                 }
                 else if (_btid == 2)
@@ -690,11 +680,11 @@ namespace SunacCADApp.Controllers
                     BOID = Id.ConventToString(string.Empty);
                     BTID = "P12";
                     BPMStaticWindow window = CadDrawingWindowDetailDB.GetBPMStaticWindowByWindowId(Id);
+                    window.FSubject = string.Format(@"定态外窗原型审批-{0}", BOID);
                     Bsxml = XmlSerializeHelper.XmlSerialize<BPMStaticWindow>(window);
                 }
-                string BSID = "vsheji";
+                string BSID = API_Common.GetBSID;
                 string UserId = UserName;
-                UserId = "zhaoy58";
                 int returnValue = -100;
                 if (billstatus == 1)
                 {

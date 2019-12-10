@@ -56,6 +56,7 @@ namespace SunacCADApp
                         string ReturnInfo = string.Format(@"Code=100||Success=1111");
                         CadDrawingMasterDB.Insert_BPM_Commit_Log(request.strBTID, request.strBOID, "CreateResult[流程发起结果]", ParamInfo, ReturnInfo);
                         CadDrawingMasterDB.UpdateBPMProcInst(request.iProcInstID, string.Empty, request.strBOID);
+       
                         _createResult.MESSAGE = new Bpm_Rsp_Message()
                         {
                             RSP_ITEM = new Bpm_Rsp_Param { Code = 100, Success = 1111 }
@@ -183,6 +184,8 @@ namespace SunacCADApp
                 string _code = "";
                 string _success = "";
                 string _error = "";
+                int _statecode = 0;
+                 
                 if (param.eAction == "1") 
                 {
                     _code = "100";
@@ -209,6 +212,7 @@ namespace SunacCADApp
                     _code = "100";
                     _success = "1111";
                     _error = "";
+                    _statecode = 4;
                     _Rsp_Result.MESSAGE = new Bpm_Rsp_Message()
                     {
                         RSP_ITEM = new Bpm_Rsp_Param { Code = 100, Success = 1111 }
@@ -243,6 +247,8 @@ namespace SunacCADApp
                                                                             ", param.strBTID, param.strBOID, param.iProcInstID, param.strStepName,
                                                                          param.strApproverId, param.eAction, param.strComment, param.dtTime,BIZTRANSACTIONID);
                 string ReturnInfo = string.Format(@"Code={0}||Success={1}||Error={2}",_code,_success,_error);
+                int boid= param.strBOID.ConvertToInt32(0);
+                CadDrawingMasterDB.ChangeBpmStateusByMId(boid, _statecode);
                 CadDrawingMasterDB.UpdateBPMProcInst(param.iProcInstID, string.Empty, param.strBOID);
                 CadDrawingMasterDB.Insert_BPM_Commit_Log(param.strBTID, param.strBOID, "Rework[BPM流程审批(退回、发起人取消）]", ParamInfo, ReturnInfo);
             }
@@ -286,7 +292,7 @@ namespace SunacCADApp
                       _success = "1111";
                       _error = "";
                       status = 3;
-                      
+            
                  }
                  else if (param.eProcessInstanceResult == "0")
                  {
@@ -315,7 +321,7 @@ namespace SunacCADApp
                                                                            strComment ={4}||dtTime ={5}||BIZTRANSACTIONID={6}
                                                                             ", param.strBTID, param.strBOID, param.iProcInstID, param.eProcessInstanceResult,param.strComment, param.dtTime,BIZTRANSACTIONID);
                  string ReturnInfo = string.Format(@"Code={0}||Success={1}||Error={2}", _code, _success, _error);
-                 CadDrawingMasterDB.ChangeBpmStateusByMId(boid,status);
+                 CadDrawingMasterDB.ChangeBpmStateusByMId(boid, status);
                  CadDrawingMasterDB.Insert_BPM_Commit_Log(param.strBTID, param.strBOID, "ApproveCloseBPM[流程审批结束(通过、拒绝、作废)]", ParamInfo, ReturnInfo);
                  CadDrawingMasterDB.UpdateBPMProcInst(param.iProcInstID, string.Empty, param.strBOID);
              }

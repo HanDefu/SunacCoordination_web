@@ -10,6 +10,8 @@
     string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
     string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? string.Empty : ExpansionDWG.FileClass;
     imageName = dMaster.DrawingCode;
+    int PrototypeEdit = ViewBag.PrototypeEdit;
+    int PrototypeRemove = ViewBag.PrototypeRemove;
 }
 
 <div class="row topnav">
@@ -67,11 +69,11 @@
                             <span class="online-checkbox">
                                 @if (dMaster.Scope == 1)
                                 {
-                                    <input type="checkbox" id="all" name="chk_area" class="select-all" value="1" checked="checked" />
+                                    <input type="checkbox" id="all" name="chk_area" class="select-all select-area" value="1" checked="checked" />
                                 }
                                 else
                                 {
-                                    <input type="checkbox" id="all" name="chk_area" class="select-all" value="1" />
+                                    <input type="checkbox" id="all" name="chk_area" class="select-all select-area" value="1" />
                                 }
 
                                 <label for="all">集团</label>
@@ -83,7 +85,7 @@
                                 int hasArea = ByAreas.Where(e => e.AreaID == Setting.Id).Count();
                                 str_check = hasArea > 0 ? "checked" : string.Empty;
                                 <span class="online-checkbox">
-                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox" @str_check />
+                                    <input type="checkbox" id="area_@Setting.Id" value="@Setting.Id" name="checkbox_areaid" class="single-checkbox select-area" @str_check />
                                     <label for="area_@Setting.Id">@Setting.ArgumentText</label>
                                 </span>
                             }
@@ -117,9 +119,17 @@
         </div>
         <div class="main-column-handle">
             <div class="column-handle">
-                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
-                <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus" data-bpmprocinstid="@dMaster.BPMProcInstID" data-bpmjobid="@dMaster.BPMJobid">提交</button>
-                <button type="button" class="btn btn-sunac btn-delete" data-id="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-bpmprocinstid="@dMaster.BPMProcInstID" data-bpmjobid="@dMaster.BPMJobid">删除</button>
+                @if (PrototypeEdit == 1)
+                {
+                    <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
+                    <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus" data-bpmprocinstid="@dMaster.BPMProcInstID" data-bpmjobid="@dMaster.BPMJobid">提交</button>
+                }
+                
+                @if (PrototypeRemove == 1)
+                {
+                    <button type="button" class="btn btn-sunac btn-delete" data-id="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-bpmprocinstid="@dMaster.BPMProcInstID" data-bpmjobid="@dMaster.BPMJobid">删除</button>
+                }
+            
             </div>
 
         </div>
@@ -137,9 +147,8 @@
             if (rtv == false) {
                 return false;
             }
-            var groupid = $('input[name="chekbox_group"]').is(':checked');
-            var areaid = $('input[name="checkbox_areaid" ]').is(':checked')
-            if (areaid == false && groupid == false) {
+            var areaid = $('.select-area').is(':checked')
+            if (areaid == false) {
                 layer.msg("请选择使用范围");
                 return false;
             }
@@ -231,6 +240,17 @@
     })
 
 </script>
+@if (PrototypeEdit == 0)
+{
+    <script type="text/javascript">
+        $(function () {
+            layer.alert("抱歉，当前用户暂无原型编辑权限,请联系管理员开通", { icon: 0, title: "权限提示" }, function () {
+
+                window.location.href = "/door/index";
+            });
+        });
+    </script>
+}
 
 
 

@@ -11,7 +11,7 @@
     string imagePath = string.IsNullOrEmpty(ExpansionDWG.DWGPath) ? "/Content/Css/img/icon-no-image.png" : ExpansionDWG.DWGPath;
     string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? "" : ExpansionDWG.FileClass;
     string drawingCode = dMaster.DrawingCode;
-
+    int PrototypeEdit = ViewBag.PrototypeEdit;
 }
 
 
@@ -21,6 +21,30 @@
     <a href="/bathroom/index">卫生间</a>
     <i></i>
     <a>@dMaster.DrawingCode</a>
+    @if (dMaster.BillStatus == 0 || dMaster.BillStatus == 1)
+    {
+        <span class="check-state" data-masterid="@dMaster.Id">待提交</span>
+    }
+    else if (dMaster.BillStatus == 2)
+    {
+        <span class="check-state state-unchecked" data-masterid="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-procinstid="@dMaster.BPMProcInstID">待审核</span>
+    }
+    else if (dMaster.BillStatus == 3)
+    {
+        <span class="check-state state-unchecked" data-masterid="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-procinstid="@dMaster.BPMProcInstID">已审核</span>
+    }
+    else if (dMaster.BillStatus == 4)
+    {
+        <span class="check-state state-unchecked" data-masterid="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-procinstid="@dMaster.BPMProcInstID">退回</span>
+    }
+    else if (dMaster.BillStatus == 5)
+    {
+        <span class="check-state state-unchecked" data-masterid="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-procinstid="@dMaster.BPMProcInstID">拒绝</span>
+    }
+    else if (dMaster.BillStatus == 6)
+    {
+        <span class="check-state state-unchecked" data-masterid="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-procinstid="@dMaster.BPMProcInstID">作废</span>
+    }
 </div>
 <div class="row view">
     <div class="left-column">
@@ -100,30 +124,33 @@
                 @if (dMaster.DynamicType == 1)
             {
                     <dl class="dynamic_module">
-                        <dt class="col-dt"><i></i>短边尺寸范围(mm)：</dt>
+                        <dt class="col-dt"><i></i>短边尺寸范围：</dt>
                         <dd>
                             @Bathroom.BathroomShortSideMin
                             <i> - </i>
                             @Bathroom.BathroomShortSideMax
+                            <i>mm</i>
                         </dd>
                     </dl>
                     <dl class="dynamic_module">
-                        <dt class="col-dt"><i></i>长边尺寸范围(mm)：</dt>
+                        <dt class="col-dt"><i></i>长边尺寸范围：</dt>
                         <dd>
                             @Bathroom.BathroomLongSizeMin
                             <i> - </i>
                             @Bathroom.BathroomLongSizeMax
+                            <i>mm</i>
                         </dd>
                     </dl>
             }
             else if (dMaster.DynamicType == 2)
             {
                 <dl class="static_module" style="display:block">
-                    <dt class="col-dt"><i></i>尺寸(mm)：</dt>
+                    <dt class="col-dt"><i></i>尺寸：</dt>
                     <dd>
                         @Bathroom.BathroomShortSideMin
                         <i> × </i>
                         @Bathroom.BathroomShortSideMax
+                        <i>mm</i>
                     </dd>
                 </dl>
                     <dl class="static_module" style="display:block">
@@ -159,12 +186,14 @@
                 </dl>
             </form>
         </div>
-        <div class="main-column-handle" >
-            <div class="column-handle">
-                <a class="btn btn-sunac" href="/bathroom/Edit/@dMaster.Id">编辑</a>
-     
+        @if (PrototypeEdit == 1)
+        {
+            <div class="main-column-handle">
+                <div class="column-handle">
+                    <a class="btn btn-sunac" href="/bathroom/Edit/@dMaster.Id">编辑</a>
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>
 <script type="text/javascript">

@@ -11,16 +11,11 @@ using SunacCADApp.Library;
 
 namespace SunacCADApp.Controllers
 {
-    public class KitchenController : Controller
+    public class KitchenController : MyController
     {
-        private int UserId = 0;
-        private string UserName = string.Empty;
         public KitchenController()
         {
-            UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
-            UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 8;
-            ViewBag.StateList = CommonLib.GetBPMStateInfo();
         }
 
 
@@ -50,12 +45,12 @@ namespace SunacCADApp.Controllers
             int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(0);
             if (area > 0)
             {
-                _where += string.Format(@" AND EXISTS(SELECT pa.Id FROM dbo.CadDrawingByArea pa WHERE pa.MId=a.Id AND pa.AreaID={0})", area);
+                _where += string.Format(@" AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE  pa.MId=a.Id  AND pa.AreaID={0}  {1})", area, _power_wh);
                 _url += "&area=" + area;
             }
             else if (area == -9999)
             {
-                _where += "  AND Scope=1";
+                _where += string.Format(@"  AND Scope=1 AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE  pa.MId=a.Id  {0})", _power_wh);
                 _url += "&area=" + area;
             }
             ViewBag.area = area;
@@ -292,7 +287,7 @@ namespace SunacCADApp.Controllers
                 {
                     int doorID = mId;
                     string statecode = DynamicType.ConventToString(string.Empty);
-                    return BPMKitchenApproval(doorID, statecode);
+                    return BPMKitchenApproval(doorID, statecode,1);
                 }
                 if (kitchenid > 0)
                 {
@@ -595,19 +590,20 @@ namespace SunacCADApp.Controllers
                 if (State == "1")
                 {
 
-                      BPMDynamicKitchen kitchen = CadDrawingKitchenDetailDB.GetBPMDynamicKitchenById(kitchenID);
+                    BPMDynamicKitchen kitchen = CadDrawingKitchenDetailDB.GetBPMDynamicKitchenById(kitchenID);
+                    kitchen.FSubject = string.Format(@"动态厨房原型审批-{0}",kitchenID);
                     BPMXml = XmlSerializeHelper.XmlSerialize<BPMDynamicKitchen>(kitchen);
                     BTID = "P31";
                 }
                 else if (State == "2")
                 {
                     BPMStaticKitchen kitchen = CadDrawingKitchenDetailDB.GetBPMStaticKitchenById(kitchenID);
+                    kitchen.FSubject = string.Format(@"定态厨房原型审批-{0}", kitchenID);
                     BPMXml = XmlSerializeHelper.XmlSerialize<BPMStaticKitchen>(kitchen);
                     BTID = "P32";
                 }
-                string BSID = "vsheji";
+                string BSID = API_Common.GetBSID;
                 string UserCode = UserName;
-                UserCode = "zhaoy58";
                 int returnValue = -100;
                 if (billstatus == 1)
                 {

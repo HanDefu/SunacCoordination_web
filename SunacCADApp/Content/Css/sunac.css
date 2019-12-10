@@ -84,15 +84,25 @@ header {
               font-size:14px;
               color:#505050;
               text-decoration:none;
-
-
             }
+
+
                 header .userinfo .user-operate .cnt a:hover {
                    color:#b58d59;
                 }
                 header .userinfo .user-operate .cnt a.border-bottom {
                    border-bottom:solid 1px #dadada;
                 }
+
+                header .userinfo .user-operate .cnt a.disabled {
+                  color:#c3c3c2;
+                }
+
+                    header .userinfo .user-operate .cnt a.disabled:hover {
+                     color:#c3c3c2;
+                    }
+
+
 
 
 .main {
@@ -736,6 +746,8 @@ header {
             line-height: 50px;
             font-size: 14px;
             margin-right: 5px;
+            color:#b98837;
+            cursor:pointer;
         }
 
         .main .center .topnav .state-unchecked {

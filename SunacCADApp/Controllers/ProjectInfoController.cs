@@ -15,11 +15,23 @@ namespace SunacCADApp.Controllers
     {
         private int UserId = 0;
         private string UserName = string.Empty;
+        private string _project_pow_where = string.Empty;
         public ProjectInfoController() 
         {
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
+            int IsInternal = InitUtility.Instance.InitSessionHelper.Get("IsInternal").ConvertToInt32(0);
             ViewBag.ParentId = 3;
+            if (IsInternal == 1)
+            {
+                _project_pow_where = string.Format(@"   AND EXISTS( SELECT O.OrgCode,O.OrgName  FROM dbo.Sys_User_Organization_Relation R 
+                                                                                        INNER JOIN dbo.Bas_Idm_Organization O ON R.OrgId=O.Id
+                                                                                        WHERE R.UserId='{0}' AND A.PCITY=O.OrgCode)", UserId);
+            }
+            else if (IsInternal == 2)
+            {
+                _project_pow_where = string.Format(@"   AND EXISTS (SELECT R.Id FROM dbo.sys_user_project_relation R WHERE R.Project_ID=A.POSID AND R.[User_ID]='{0}')",UserId);
+            }
         }
         // GET: ProjectInfo
         public ActionResult Index()
@@ -57,6 +69,8 @@ namespace SunacCADApp.Controllers
                 _url += "keyword=" + keyword + "&";
             }
             ViewBag.Keyword = keyword;
+
+            _where += _where + _project_pow_where;
 
             IList<DataSourceMember> IdmOrginList = BasInstitutionDataDB.GetInnerIdmOrgan();
             ViewBag.IdmOrginList = IdmOrginList;

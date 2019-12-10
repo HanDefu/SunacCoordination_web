@@ -11,16 +11,11 @@ using SunacCADApp.Library;
 
 namespace SunacCADApp.Controllers
 {
-    public class BathroomController : Controller
+    public class BathroomController : MyController
     {
-        private int UserId = 0;
-        private string UserName = string.Empty;
         public BathroomController()
         {
-            UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
-            UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 9;
-            ViewBag.StateList = CommonLib.GetBPMStateInfo();
         }
         // GET:  /bathroom/index
         public ActionResult Index()
@@ -48,12 +43,12 @@ namespace SunacCADApp.Controllers
             int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(0);
             if (area > 0)
             {
-                _where += string.Format(@" AND EXISTS(SELECT pa.Id FROM dbo.CadDrawingByArea pa WHERE pa.MId=a.Id AND pa.AreaID={0})", area);
+                _where += string.Format(@" AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE  pa.MId=a.Id  AND pa.AreaID={0}  {1})", area, _power_wh);
                 _url += "&area=" + area;
             }
             else if (area == -9999)
             {
-                _where += "  AND Scope=1";
+                _where += string.Format(@"  AND Scope=1 AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE  pa.MId=a.Id  {0})", _power_wh);
                 _url += "&area=" + area;
             }
 
@@ -299,7 +294,7 @@ namespace SunacCADApp.Controllers
                 {
                     int bathroomId = mId;
                     int statecode = DynamicType;
-                    return CadBathroomBPMApproval(bathroomId, statecode);
+                    return CadBathroomBPMApproval(bathroomId, statecode,1);
                 }
              
 
@@ -400,9 +395,6 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.DynamicType = DynamicType;
                 caddrawingmaster.Reorder = 2;
                 caddrawingmaster.Enabled = 1;
-                caddrawingmaster.CreateUserId = UserId;
-                caddrawingmaster.CreateBy = UserName;
-                caddrawingmaster.CreateOn = DateTime.Now;
                 caddrawingmaster.ModifiedUserId = UserId;
                 caddrawingmaster.ModifiedBy = UserName;
                 caddrawingmaster.ModifiedOn = DateTime.Now;
@@ -591,6 +583,7 @@ namespace SunacCADApp.Controllers
                     BTID = "P41";
 
                     BPMDynamicBathroom bathroom = CadDrawingBathroomDetailDB.GetBPMDynamicBathroomByBathroomId(Id);
+                    bathroom.FSubject = string.Format(@"动态卫生间原型审批-{0}", Id);
                     Bsxml = XmlSerializeHelper.XmlSerialize<BPMDynamicBathroom>(bathroom);
                 }
                 else if (_btid == 2)
@@ -598,6 +591,7 @@ namespace SunacCADApp.Controllers
                     BOID = Id.ConventToString(string.Empty);
                     BTID = "P42";
                     BPMStaticBathroom bathroom = CadDrawingBathroomDetailDB.GetBPMStaticBathroomByBathroomId(Id);
+                    bathroom.FSubject = string.Format(@"定态卫生间原型审批-{0}", Id);
                     Bsxml = XmlSerializeHelper.XmlSerialize<BPMStaticBathroom>(bathroom);
 
                 }

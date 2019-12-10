@@ -11,16 +11,12 @@ using SunacCADApp.Library;
 
 namespace SunacCADApp.Controllers
 {
-    public class AirconditionerController : Controller
+    public class AirconditionerController : MyController
     {
-        private int UserId = 0;
-        private string UserName = string.Empty;
+
         public AirconditionerController() 
         {
-            UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
-            UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 10;
-            ViewBag.StateList = CommonLib.GetBPMStateInfo();
         }
         // GET: /airconditioner/Index
         public ActionResult Index()
@@ -36,7 +32,6 @@ namespace SunacCADApp.Controllers
             _where = "TypeCode='CondensatePipePosition' And ParentID!=0";
             IList<BasArgumentSetting> CondensatePipePositions = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.CondensatePipePositions = CondensatePipePositions;
-
             _where = "TypeCode='AirConditionNumber' And ParentID!=0";
             IList<BasArgumentSetting> AirConditionNumbers = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.AirConditionNumbers = AirConditionNumbers;
@@ -48,12 +43,12 @@ namespace SunacCADApp.Controllers
             int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(0);
             if (area > 0)
             {
-                _where += string.Format(@" AND EXISTS(SELECT pa.Id FROM dbo.CadDrawingByArea pa WHERE pa.MId=a.Id AND pa.AreaID={0})", area);
+                _where += string.Format(@" AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE  pa.MId=a.Id  AND pa.AreaID={0}  {1})", area, _power_wh);
                 _url += "&area=" + area;
             }
-            else if (area == -9999) 
+            else if (area == -9999)
             {
-                _where += "  AND Scope=1";
+                _where += string.Format(@"  AND Scope=1 AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE  pa.MId=a.Id  {0})", _power_wh);
                 _url += "&area=" + area;
             }
 
@@ -301,7 +296,7 @@ namespace SunacCADApp.Controllers
                 {
                     int airconditionerid= mId;
                     int statecode = DynamicType;
-                    return CadAirconditionerBPMApproval(airconditionerid, statecode);
+                    return CadAirconditionerBPMApproval(airconditionerid, statecode,1);
                 }
                 if (rtv > 0 && mId > 0)
                 {
@@ -598,10 +593,10 @@ namespace SunacCADApp.Controllers
                 BOID = Id.ConventToString(string.Empty);
                 BTID = "P61";
                 BPMAirConditioner ariConditoner = CadDrawingAirconditionerDetailDB.GetBPMAirConditionerById(Id);
+                ariConditoner.FSubject= string.Format(@"空调原型审批-{0}",Id);
                 Bsxml = XmlSerializeHelper.XmlSerialize<BPMAirConditioner>(ariConditoner);
-                string BSID = "vsheji";
+                string BSID = API_Common.GetBSID;
                 string UserCode = UserName;
-                UserCode = "zhaoy58";
                 int returnValue = -100;
                 if (billstatus == 1)
                 {

@@ -240,7 +240,14 @@ namespace SunacCADApp.Controllers
             {
                 return Redirect("/home");
             }
+
+           
             int Id = Request.QueryString["id"].ConvertToInt32(0);
+            int UserCount = SysRoleDB.HasUserCountByRoleId(Id);
+            if (UserCount > 0) 
+            {
+                return Json(new { code = -101, message = "角色已存在用户，请先删除用户在删除角色" }, JsonRequestBehavior.AllowGet);
+            }
             int rtv = SysRoleDB.DeleteHandleById(Id);
             string _wh = string.Format(" Role_Id='{0}'",Id);
             SysRoleModelRelationDB.DeleteHandleByParam(_wh);

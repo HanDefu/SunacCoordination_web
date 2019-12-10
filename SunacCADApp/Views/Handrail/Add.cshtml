@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "~/Views/_LayoutPage.cshtml";
+    int PrototypeAdd = ViewBag.PrototypeAdd;
 }
 @using SunacCADApp.Entity
 <div class="row topnav">
@@ -75,13 +76,16 @@
                 <input type="hidden" name="hid_operate" />
             </form>
         </div>
-        <div class="main-column-handle">
-            <div class="column-handle">
-                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
-                <button type="button" class="btn btn-sunac" id="btn_cancel">取消</button>
-                <button type="button" class="btn btn-sunac" id="btn_save01" data-value="commit">提交</button>
+        @if (PrototypeAdd==1)
+        {
+            <div class="main-column-handle">
+                <div class="column-handle">
+                    <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
+                    <button type="button" class="btn btn-sunac" id="btn_cancel">取消</button>
+                    <button type="button" class="btn btn-sunac" id="btn_save01" data-value="commit">提交</button>
+                </div>
             </div>
-        </div>
+        }
     </div>
 
 </div>
@@ -154,6 +158,16 @@
     })
 
 </script>
+@if (PrototypeAdd == 0)
+{
+    <script type="text/javascript">
+        $(function () {
+            layer.alert("抱歉，当前用户暂无原型编辑权限,请联系管理员开通", { icon: 0, title: "权限提示" }, function () {
 
+                window.location.href = "/door/index";
+            });
+        });
+    </script>
+}
 
 

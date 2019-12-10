@@ -11,16 +11,11 @@ using SunacCADApp.Library;
 
 namespace SunacCADApp.Controllers
 {
-    public class HandrailController : Controller
+    public class HandrailController : MyController
     {
-        private int UserId = 0;
-        private string UserName = string.Empty;
         public HandrailController() 
         {
-            UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
-            UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 7;
-            ViewBag.StateList = CommonLib.GetBPMStateInfo();
         }
         // GET: Handrail
         /// <summary>
@@ -45,17 +40,16 @@ namespace SunacCADApp.Controllers
             _where = string.Empty;  //查询
             string _url = string.Empty;
             int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(0);
-            if (area >0)
+            if (area > 0)
             {
-                _where += string.Format(@"  AND  EXISTS(SELECT 1 FROM dbo.CadDrawingByArea ba WHERE a.Id=ba.MId AND ba.AreaID={0})", area);
+                _where += string.Format(@" AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE  pa.MId=a.Id  AND pa.AreaID={0}  {1})", area, _power_wh);
                 _url += "&area=" + area;
             }
             else if (area == -9999)
             {
-                _where += "  AND Scope=1";
+                _where += string.Format(@"  AND Scope=1 AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE  pa.MId=a.Id  {0})", _power_wh);
                 _url += "&area=" + area;
             }
-
             ViewBag.Area = area;
 
             int handrailType = HttpUtility.UrlDecode(Request.QueryString["handrailtype"]).ConvertToInt32(0);
@@ -238,7 +232,7 @@ namespace SunacCADApp.Controllers
                 string operate = Request.Form["hid_operate"].ConventToString(string.Empty);
                 if (operate == "commit")
                 {
-                    return CadBpmHandrailApproval(mId);
+                    return CadBpmHandrailApproval(mId,1);
                 }
 
                 if (mId > 0 && detailId > 0)
@@ -475,7 +469,7 @@ namespace SunacCADApp.Controllers
                 int billstatus = Request.Form["billstatus"].ConvertToInt32(0);
                 string bpmprocinstid = Request.Form["bpmprocinstid"];
                 string bpmjobid = Request.Form["bpmjobid"];
-                return  CadBpmHandrailApproval(Id);
+                return CadBpmHandrailApproval(Id, billstatus, bpmprocinstid, bpmjobid);
             }
             catch (Exception ex)
             {
@@ -494,6 +488,7 @@ namespace SunacCADApp.Controllers
                           Bsxml = string.Empty;
                 BOID = Id.ConventToString(string.Empty);
                 BPMHandrail handrail = CadDrawingHandrailDetailDB.GetBPMHandrailByHandrailId(Id);
+                handrail.FSubject = string.Format(@"栏杆原型审批-{0}", Id);
                 Bsxml = XmlSerializeHelper.XmlSerialize<BPMHandrail>(handrail);
                 string UserCode = UserName;
                 UserCode = "zhaoy58";

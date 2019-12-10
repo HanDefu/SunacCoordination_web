@@ -37,6 +37,7 @@
             this.btn_login = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.button01_CreateResult = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -51,7 +52,7 @@
             // 
             // btn_ok
             // 
-            this.btn_ok.Location = new System.Drawing.Point(71, 102);
+            this.btn_ok.Location = new System.Drawing.Point(71, 64);
             this.btn_ok.Name = "btn_ok";
             this.btn_ok.Size = new System.Drawing.Size(81, 23);
             this.btn_ok.TabIndex = 1;
@@ -101,7 +102,7 @@
             // 
             // btn_login
             // 
-            this.btn_login.Location = new System.Drawing.Point(158, 102);
+            this.btn_login.Location = new System.Drawing.Point(177, 24);
             this.btn_login.Name = "btn_login";
             this.btn_login.Size = new System.Drawing.Size(75, 23);
             this.btn_login.TabIndex = 6;
@@ -111,7 +112,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(275, 102);
+            this.button4.Location = new System.Drawing.Point(177, 64);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 7;
@@ -121,7 +122,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(294, 64);
+            this.button5.Location = new System.Drawing.Point(275, 64);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
             this.button5.TabIndex = 8;
@@ -129,11 +130,22 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // button01_CreateResult
+            // 
+            this.button01_CreateResult.Location = new System.Drawing.Point(73, 112);
+            this.button01_CreateResult.Name = "button01_CreateResult";
+            this.button01_CreateResult.Size = new System.Drawing.Size(277, 23);
+            this.button01_CreateResult.TabIndex = 9;
+            this.button01_CreateResult.Text = "1)\t流程发起成功，向业务系统提交创建结果";
+            this.button01_CreateResult.UseVisualStyleBackColor = true;
+            this.button01_CreateResult.Click += new System.EventHandler(this.button01_CreateResult_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(433, 277);
+            this.Controls.Add(this.button01_CreateResult);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.btn_login);
@@ -160,6 +172,7 @@
         private System.Windows.Forms.Button btn_login;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button01_CreateResult;
     }
 }
 

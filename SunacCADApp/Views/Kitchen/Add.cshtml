@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "~/Views/_LayoutPage.cshtml";
+    int PrototypeAdd = ViewBag.PrototypeAdd;
 }
 @using SunacCADApp.Entity
 <div class="row topnav">
@@ -109,27 +110,30 @@
                     </dd>
                 </dl>
                 <dl class="dynamic_module">
-                    <dt class="col-dt"><i>*</i>开间尺寸范围(mm)：</dt>
+                    <dt class="col-dt"><i>*</i>开间尺寸范围：</dt>
                     <dd>
                         <input type="number" style="width:105px" name="txtKitchenOpenSizeMin" value="0" />
                         <i> - </i>
                         <input type="number" style="width:105px" name="txtKitchenOpenSizeMax" value="0" />
+                        <i>mm</i>
                     </dd>
                 </dl>
                 <dl class="dynamic_module">
-                    <dt class="col-dt"><i>*</i>进深尺寸范围(mm)：</dt>
+                    <dt class="col-dt"><i>*</i>进深尺寸范围：</dt>
                     <dd>
                         <input type="number" style="width:105px" name="txtKitchenDepthsizeMin" value="0" />
                         <i> - </i>
                         <input type="number" style="width:105px" name="txtKitchenDepthsizeMax" value="0" />
+                        <i>mm</i>
                     </dd>
                 </dl>
                 <dl class="static_module">
-                    <dt class="col-dt"><i>*</i>开间进深(mm)：</dt>
+                    <dt class="col-dt"><i>*</i>开间进深：</dt>
                     <dd>
                         <input type="number" style="width:105px" name="txtWindowSizeMin" value="0" />
                         <i>  × </i>
                         <input type="number" style="width:105px" name="txtWindowSizeMax" value="0" />
+                        <i>mm</i>
                     </dd>
                 </dl>
                 <dl class="static_module">
@@ -168,14 +172,17 @@
                 <input type="hidden" name="hid_operate" />
             </form>
         </div>
-        <div class="main-column-handle" >
-            <div class="column-handle">
-                <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
-                <button type="button" class="btn btn-sunac" id="btn_cancel">取消</button>
-                <button type="button" class="btn btn-sunac" id="btn_save01" data-value="commit">提交</button>
+        @if (PrototypeAdd == 1)
+        {
+            <div class="main-column-handle">
+                <div class="column-handle">
+                    <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
+                    <button type="button" class="btn btn-sunac" id="btn_cancel">取消</button>
+                    <button type="button" class="btn btn-sunac" id="btn_save01" data-value="commit">提交</button>
+                </div>
             </div>
-            
-        </div>
+        }
+  
     </div>
 
 </div>
@@ -242,5 +249,15 @@
 
 </script>
 
+@if (PrototypeAdd == 0)
+{
+    <script type="text/javascript">
+        $(function () {
+            layer.alert("抱歉，当前用户暂无原型查看权限,请联系管理员开通", { icon: 0, title: "权限提示" }, function () {
 
+                window.location.href = "/kitchen/index";
+            });
+        });
+    </script>
+}
 

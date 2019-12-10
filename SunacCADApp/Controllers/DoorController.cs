@@ -13,16 +13,12 @@ using SunacCADApp.Library;
 
 namespace SunacCADApp.Controllers
 {
-    public class DoorController : Controller
+    public class DoorController : MyController
     {
-        private int UserId = 0;
-        private string UserName = string.Empty;
+
         public DoorController()
         {
-            UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
-            UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 6;
-            ViewBag.StateList = CommonLib.GetBPMStateInfo();
         }
         // GET: /Door/Index
         public ActionResult Index()
@@ -45,12 +41,12 @@ namespace SunacCADApp.Controllers
             int area = HttpUtility.UrlDecode(Request.QueryString["area"]).ConvertToInt32(-1);
             if (area > 0)
             {
-                _search_where += string.Format(@"  AND  EXISTS(SELECT 1 FROM dbo.CadDrawingByArea ba WHERE a.Id=ba.MId AND ba.AreaID={0})", area);
+                _search_where += string.Format(@" AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE  pa.MId=a.Id  AND pa.AreaID={0}  {1})", area, _power_wh);
                 _url += "&area=" + area;
             }
             else if (area == -9999)
             {
-                _search_where += "  AND Scope=1";
+                _search_where += string.Format(@"  AND Scope=1 AND EXISTS(SELECT * FROM dbo.CadDrawingByArea pa WHERE  pa.MId=a.Id  {0})", _power_wh);
                 _url += "&area=" + area;
             }
             ViewBag.area = area;
@@ -182,6 +178,9 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.CreateUserId = UserId;
                 caddrawingmaster.CreateBy =UserName;
                 caddrawingmaster.CreateOn = DateTime.Now;
+                caddrawingmaster.ModifiedBy = UserName;
+                caddrawingmaster.ModifiedUserId = UserId;
+                caddrawingmaster.ModifiedOn = DateTime.Now;
                 caddrawingmaster.BillStatus = 1;
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
                 string[] arr_CADFile = cadFile.Split(',');
@@ -266,7 +265,7 @@ namespace SunacCADApp.Controllers
                     int doorID = mId;
                     string statecode = DynamicType.ConventToString(string.Empty);
 
-                    return BPMDoorApproval(doorID, statecode);
+                    return BPMDoorApproval(doorID, statecode,1);
                 }
                 if (rtv > 0 && mId > 0)
                 {
@@ -583,18 +582,19 @@ namespace SunacCADApp.Controllers
                 if (State == "1")
                 {
                     BPMDynamicDoor door = CadDrawingDoorDetailDB.GetBPMDynamicDoorById(doorID);
+                    door.FSubject = string.Format(@"动态门原型审批-{0}", doorID);
                     BPMXml = XmlSerializeHelper.XmlSerialize<BPMDynamicDoor>(door);
                     BTID = "P21";
                 }
                 else if (State == "2")
                 {
                     BPMStaticDoor door = CadDrawingDoorDetailDB.GetBPMStaticDoorById(doorID);
+                    door.FSubject = string.Format(@"定态门原型审批-{0}", doorID);
                     BPMXml = XmlSerializeHelper.XmlSerialize<BPMStaticDoor>(door);
                     BTID = "P22";
                 }
-                string BSID = "vsheji";
+                string BSID = API_Common.GetBSID;
                 string UserCode = UserName;
-                UserCode = "zhaoy58";
                 int returnValue = -100;
                 if (billstatus == 1)
                 {

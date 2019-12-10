@@ -1,6 +1,8 @@
 ﻿@{
     Layout = "~/Views/_LayoutPage.cshtml";
     IList<CadDrawingWindowSearch> listCadDrawing = ViewBag.List;
+    int PrototypeView = ViewBag.PrototypeView;
+    int PrototypeAdd = ViewBag.PrototypeAdd;
 }
 @using SunacCADApp.Entity
 <div class="row search search-bottom" style="margin-top:-15px;">
@@ -99,14 +101,18 @@
 
         </dd>
     </dl>
-    <a class="btn-new" href="/door/add" style="margin-right:10px">新增</a>
+    @if (PrototypeAdd == 1)
+    {
+        <a class="btn-new" href="/door/add" style="margin-right:10px">新增</a>
+    }
 </div>
 <div class="row list">
     <ul>
         @foreach (CadDrawingWindowSearch drawing in ViewBag.List)
         {
+            string href = PrototypeView == 1 ? "href=\"/door/lookover/" + drawing.Id + "\"" : " href=\"javascript:void(0)\" class=\"power_none\"";
             <li>
-                <a href="/door/LookOver/@drawing.Id">
+                <a @Html.Raw(href)>
                     <figure>
 
                         <img src="@drawing.DWGPath" />

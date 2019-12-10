@@ -349,6 +349,11 @@
 
         $('.btn-delete').on('click', function () {
             let ids = getObjectId();
+            if(ids.length==0)
+            {
+                layer.alert("请选择删除用户", { icon: 5, shade: false });
+                return false;
+            }
             layer.confirm('是否需批量删除', {
                 btn: ['删除', '取消'],
                 shade: false,
@@ -367,6 +372,12 @@
 
         $('.btn-disabled').on('click',function () {
             let ids = getObjectId();
+            if(ids.length==0)
+            {
+                layer.alert("请选择禁用用户", { icon: 5, shade: false });
+                return false;
+            }
+
             layer.confirm('是否需批量禁用', {
                 btn: ['禁用', '取消'],
                 shade: false,

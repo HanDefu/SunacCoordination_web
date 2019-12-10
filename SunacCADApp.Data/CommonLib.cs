@@ -93,9 +93,9 @@ namespace SunacCADApp.Data
        {
            IList<DataSourceMember> memberList = new List<DataSourceMember>();
            memberList.Add(new DataSourceMember { DisplayMember = "0", ValueMember = "全部" });
-           memberList.Add(new DataSourceMember { DisplayMember = "1", ValueMember = "待发布" });
-           memberList.Add(new DataSourceMember { DisplayMember = "2", ValueMember = "审批中" });
            memberList.Add(new DataSourceMember { DisplayMember = "3", ValueMember = "已发布" });
+           memberList.Add(new DataSourceMember { DisplayMember = "2", ValueMember = "审批中" });
+           memberList.Add(new DataSourceMember { DisplayMember = "1", ValueMember = "待发布" });
            return memberList;
        }
 
@@ -108,6 +108,14 @@ namespace SunacCADApp.Data
                return URL;
            }
        }
-        
+
+
+       public static int HasPowerByModelName(int userid,string modelName) 
+       {
+           string sql = string.Format(@"SELECT COUNT(*) FROM dbo.Sys_Role_Model_Relation a
+                                                         INNER JOIN dbo.Sys_Model b ON a.Model_Id=b.Id  
+                                                               WHERE Role_Id='{0}' AND b.Model_Name='{1}'",userid,modelName);
+           return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
+       }
     }
 }

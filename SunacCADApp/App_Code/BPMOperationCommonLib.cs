@@ -6,11 +6,11 @@ using SunacCADApp.Entity;
 using SunacCADApp.Data;
 using SunacCADApp;
 using SunacCADApp.Library;
-using System.Web;
 using System.Web.Mvc;
 
 using Common.Utility;
 using Common.Utility.Extender;
+using Newtonsoft.Json;
 
 namespace SunacCADApp
 {
@@ -62,18 +62,18 @@ namespace SunacCADApp
                 if (Message.STATUSCODE == "1")
                 {
                     string ParamInfo = string.Format(@"BSID      = {0}||BTID  = {1}||BOID   = {2}||BSXML    = {3}||
-                                                                            REQ_TRACE_ID   = {4}||REQ_SEND_TIME = {5}||BIZTRANSACTIONID ={6}
+                                                                            REQ_TRACE_ID   = {4}||REQ_SEND_TIME = {5}||BIZTRANSACTIONID ={6}||UserId={7}
                                                                             ", item.BSID, item.BTID, item.BOID, item.BSXML,
-                                                                     baseInfo.REQ_TRACE_ID, baseInfo.REQ_SEND_TIME, baseInfo.BIZTRANSACTIONID);
+                                                                     baseInfo.REQ_TRACE_ID, baseInfo.REQ_SEND_TIME, baseInfo.BIZTRANSACTIONID,UserId);
                     string ReturnInfo = string.Format(@"STATUSCODE={0}||STATUSMESSAGE={1}", Message.STATUSCODE, Message.STATUSMESSAGE);
-                    CadDrawingMasterDB.Insert_BPM_Commit_Log(item.BTID, item.BSID, "外窗流程提交", ParamInfo, ReturnInfo);
+                    CadDrawingMasterDB.Insert_BPM_Commit_Log(item.BTID, item.BOID, "外窗流程提交", ParamInfo, ReturnInfo);
                     int MasterId = BOID.ConvertToInt32(0);
                     CadDrawingMasterDB.ChangeBpmStateusByMId(MasterId, 2);
                     return 100;
                 }
                 else
                 {
-                    string loginfo = string.Format(@"{0}||BSID={1}||BTID={2}||BOID={3}||BIZTRANSACTIONID={4}", Message.STATUSMESSAGE, BSID, BTID, BOID, BIZTRANSACTIONID);
+                    string loginfo = string.Format(@"{0}||BSID={1}||BTID={2}||BOID={3}||BIZTRANSACTIONID={4}||UserId={5}", Message.STATUSMESSAGE, BSID, BTID, BOID, BIZTRANSACTIONID,UserId);
                     Sys_Operate_Log log = new Sys_Operate_Log 
                     {
                         SysTypeCode=11,
@@ -142,7 +142,7 @@ namespace SunacCADApp
                 }
                 else
                 {
-                    string loginfo = string.Format(@"{0}||BSID={1}||BTID={2}||BOID={3}||BIZTRANSACTIONID={4}", Message.STATUSMESSAGE, BSID, BTID, BOID, BIZTRANSACTIONID);
+                    string loginfo = string.Format(@"{0}||BSID={1}||BTID={2}||BOID={3}||BIZTRANSACTIONID={4}||ProcInstId={5}||JobId={6}", Message.STATUSMESSAGE, BSID, BTID, BOID, BIZTRANSACTIONID,ProcInstId,JobId);
                     Sys_Operate_Log log = new Sys_Operate_Log
                     {
                         SysTypeCode = 12,
@@ -203,8 +203,8 @@ namespace SunacCADApp
                 if (Message.STATUSCODE == "1")
                 {
                     string ParamInfo = string.Format(@"BSID      = {0}||BTID  = {1}||BOID   = {2}||
-                                                                            REQ_TRACE_ID   = {4}||REQ_SEND_TIME = {5}||BIZTRANSACTIONID ={6}
-                                                                            ", BSID, BTID, BOID, baseInfo.REQ_TRACE_ID, baseInfo.REQ_SEND_TIME, baseInfo.BIZTRANSACTIONID);
+                                                                            REQ_TRACE_ID   = {3}||REQ_SEND_TIME = {4}||BIZTRANSACTIONID ={5}||UserId={6}
+                                                                            ", BSID, BTID, BOID, baseInfo.REQ_TRACE_ID, baseInfo.REQ_SEND_TIME, baseInfo.BIZTRANSACTIONID,UserId);
                     string ReturnInfo = string.Format(@"STATUSCODE={0}||STATUSMESSAGE={1}", Message.STATUSCODE, Message.STATUSMESSAGE);
                     CadDrawingMasterDB.Insert_BPM_Commit_Log(BTID, BSID, "BPM撤销", ParamInfo, ReturnInfo);
                     int masterId = BOID.ConvertToInt32(0);
@@ -213,7 +213,7 @@ namespace SunacCADApp
                 }
                 else 
                 {
-                    string loginfo = string.Format(@"{0}||BSID={1}||BTID={2}||BOID={3}||BIZTRANSACTIONID={4}", Message.STATUSMESSAGE, BSID, BTID, BOID, BIZTRANSACTIONID);
+                    string loginfo = string.Format(@"{0}||BSID={1}||BTID={2}||BOID={3}||BIZTRANSACTIONID={4}||UserId={5}", Message.STATUSMESSAGE, BSID, BTID, BOID, BIZTRANSACTIONID,UserId);
                     Sys_Operate_Log log = new Sys_Operate_Log
                     {
                         SysTypeCode = 13,
@@ -233,7 +233,7 @@ namespace SunacCADApp
             }
         }
 
-        public static int CadWindowBPMGetFlowState(string Userid, string ProcInstID, string BSID, string BTID, string BOID) 
+        public static string CadWindowBPMGetFlowState(string Userid, string ProcInstID, string BSID="", string BTID="", string BOID="") 
         {
             try
             {
@@ -259,24 +259,26 @@ namespace SunacCADApp
                 WebService.GetFlowState.E_RESPONSERSP_ITEM Message = response.MESSAGE.First();
                 if (Message.STATUSCODE == "1")
                 {
-                    string ParamInfo = string.Format(@"BSID      = {0}||BTID  = {1}||BOID   = {2}||
-                                                                            REQ_TRACE_ID   = {4}||REQ_SEND_TIME = {5}||BIZTRANSACTIONID ={6}
-                                                                            ", BSID, BTID, BOID, baseInfo.REQ_TRACE_ID, baseInfo.REQ_SEND_TIME, baseInfo.BIZTRANSACTIONID);
+                    string ParamInfo = string.Format(@"BSID      = {0}||BTID  = {1}||BOID   = {2}||REQ_TRACE_ID   = {3}||REQ_SEND_TIME = {4}||BIZTRANSACTIONID ={5}||Userid={6}
+                                                                            ", BSID, BTID, BOID, baseInfo.REQ_TRACE_ID, baseInfo.REQ_SEND_TIME, baseInfo.BIZTRANSACTIONID,Userid);
                     string ReturnInfo = string.Format(@"STATUSCODE={0}||STATUSMESSAGE={1}", Message.STATUSCODE, Message.STATUSMESSAGE);
                     CadDrawingMasterDB.Insert_BPM_Commit_Log(BTID, BSID, "BPM状态查询", ParamInfo, ReturnInfo);
-                    return 100;
+                    var returnclass = new { STATUSCODE = Message.STATUSCODE, STATUSMESSAGE = Message.STATUSMESSAGE };
+                    return JsonConvert.SerializeObject(returnclass);
                 }
                 else 
                 {
+                    string message = string.Format(@"{0}|||REQ_TRACE_ID   = {1}||REQ_SEND_TIME = {2}||BIZTRANSACTIONID ={3}||ProcInstID={4}||Userid={5}", Message.STATUSMESSAGE, baseInfo.REQ_TRACE_ID, baseInfo.REQ_SEND_TIME, baseInfo.BIZTRANSACTIONID, ProcInstID,Userid);
                     Sys_Operate_Log log = new Sys_Operate_Log
                     {
                         SysTypeCode = 14,
                         SysTypeName = "BPM状态查询",
-                        LogInfo = Message.STATUSMESSAGE,
+                        LogInfo = message,
                         CreateBy = Userid
                     };
                     SysOperateLogDB.AddHandle(log);
-                    return -100;
+                    var returnclass = new { STATUSCODE = Message.STATUSCODE, STATUSMESSAGE = Message.STATUSMESSAGE };
+                    return JsonConvert.SerializeObject(returnclass);
                 }
             }
             catch (Exception ex) 

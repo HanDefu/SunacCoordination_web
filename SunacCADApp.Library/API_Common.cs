@@ -106,6 +106,7 @@ namespace SunacCADApp.Library
 
         public static string GlobalParam(string Key) 
         {
+            
             return ConfigurationSettings.AppSettings[Key];
         }
 
@@ -219,5 +220,14 @@ namespace SunacCADApp.Library
             return sWord;
         }
 
+
+        public static string GetBSID 
+        {
+            get 
+            {
+                string _param = GlobalParam("BPMBSID");
+                return _param;
+            }
+        }
     }
 }

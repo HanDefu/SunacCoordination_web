@@ -10,6 +10,9 @@ using SunacCADApp.Library;
 using Common.Utility.Extender;
 using SunacCADApp.Entity;
 using SunacCADApp.Data;
+using Common.Utility;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SunacCADApp.Controllers
 {
@@ -188,6 +191,37 @@ namespace SunacCADApp.Controllers
                 return Json(new { Code = ex.Message }, JsonRequestBehavior.AllowGet);
             }
            
+        }
+
+
+        /// <summary>
+        /// /CommonLib/ResultBPMGetFlowState
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult ResultBPMGetFlowState() 
+        {
+            try
+            {
+              int   UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
+              string   UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
+              string procinstid = Request.Form["procinstid"];
+              string returnValue = BPMOperationCommonLib.CadWindowBPMGetFlowState(UserName, procinstid);
+               JObject  jReturn=  JsonConvert.DeserializeObject<JObject>(returnValue);
+               string STATUSMESSAGE = jReturn["STATUSMESSAGE"].ConvertToTrim();
+               if (jReturn["STATUSCODE"].ConvertToInt32(0) == 1)
+               {
+                   return Json(new { code = 100, message = STATUSMESSAGE }, JsonRequestBehavior.AllowGet);
+               }
+               else
+               {
+                   return Json(new { code = -100, message = STATUSMESSAGE }, JsonRequestBehavior.AllowGet);
+
+               }
+            }
+            catch (Exception ex) 
+            {
+                return Json(new { code = -110, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

@@ -62,7 +62,7 @@
                         <span>@strName</span>
                                 }
                             </td>
-                            <td class="text-center">@row.ModifiedOn.ToString("yyyy-MM-dd  HH:mm:ss")</td>
+                            <td class="text-center">@row.ModifiedOn.ToString("yyyy-MM-dd")</td>
                             <td align="center" class="operate">
 
                                 @if (row.Id == 22)
@@ -130,7 +130,7 @@
                                 location.reload();
                             });
                         } else {
-                            layer.msg(data.message, { icon: 5, shade: false });
+                            layer.alert(data.message, { icon: 5, shade: false });
                         }
                     }, 'json');
                 });

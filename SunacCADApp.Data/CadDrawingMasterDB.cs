@@ -73,8 +73,8 @@ namespace SunacCADApp.Data
 
 
             string sql = string.Format(@"INSERT INTO dbo.caddrawingmaster(DrawingCode,DrawingName,Scope,AreaId,DrawingType,DynamicType,
-                                     Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy,ModifiedOn,ModifiedUserId,ModifiedBy)
-                                     VALUES ('{0}','{1}','{2}',{3},{4},{5},{6},{7},getdate(),{8},'{9}',getdate(),{10},'{11}');SELECT @@IDENTITY AS ID", caddrawingmaster.DrawingCode, caddrawingmaster.DrawingName, caddrawingmaster.Scope, caddrawingmaster.AreaId, caddrawingmaster.DrawingType, caddrawingmaster.DynamicType, caddrawingmaster.Enabled, caddrawingmaster.Reorder, caddrawingmaster.CreateUserId, caddrawingmaster.CreateBy, caddrawingmaster.ModifiedUserId, caddrawingmaster.ModifiedBy);
+                                     Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy,ModifiedOn,ModifiedUserId,ModifiedBy,BillStatus)
+                                     VALUES ('{0}','{1}','{2}',{3},{4},{5},{6},{7},getdate(),{8},'{9}',getdate(),{10},'{11}','{12}');SELECT @@IDENTITY AS ID", caddrawingmaster.DrawingCode, caddrawingmaster.DrawingName, caddrawingmaster.Scope, caddrawingmaster.AreaId, caddrawingmaster.DrawingType, caddrawingmaster.DynamicType, caddrawingmaster.Enabled, caddrawingmaster.Reorder, caddrawingmaster.CreateUserId, caddrawingmaster.CreateBy, caddrawingmaster.ModifiedUserId, caddrawingmaster.ModifiedBy,caddrawingmaster.BillStatus);
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(-1);
         }
         ///<summary>
@@ -86,7 +86,8 @@ namespace SunacCADApp.Data
 
 
             string _wh = string.IsNullOrEmpty(editparam) ? " and id=" + caddrawingmaster.Id : editparam;
-            string sql = "UPDATE [dbo].[CadDrawingMaster] SET [DrawingCode]='" + caddrawingmaster.DrawingCode + "',[DrawingName]='" + caddrawingmaster.DrawingName + "',[Scope]='" + caddrawingmaster.Scope + "',[AreaId]=" + caddrawingmaster.AreaId + ",[DrawingType]=" + caddrawingmaster.DrawingType + ",[DynamicType]=" + caddrawingmaster.DynamicType + ",[Enabled]=" + caddrawingmaster.Enabled + ",[Reorder]=" + caddrawingmaster.Reorder + ",[ModifiedUserId]=" + caddrawingmaster.ModifiedUserId + ",[ModifiedBy]='" + caddrawingmaster.ModifiedBy + "'  where 1=1 " + _wh;
+            string sql = @"UPDATE [dbo].[CadDrawingMaster] 
+                                     SET [DrawingCode]='" + caddrawingmaster.DrawingCode + "',[DrawingName]='" + caddrawingmaster.DrawingName + "',[Scope]='" + caddrawingmaster.Scope + "',[AreaId]=" + caddrawingmaster.AreaId + ",[DrawingType]=" + caddrawingmaster.DrawingType + ",[DynamicType]=" + caddrawingmaster.DynamicType + ",[Enabled]=" + caddrawingmaster.Enabled + ",[Reorder]=" + caddrawingmaster.Reorder + ",[ModifiedUserId]=" + caddrawingmaster.ModifiedUserId + ",[ModifiedBy]='" + caddrawingmaster.ModifiedBy + "' ,BillStatus='"+caddrawingmaster.BillStatus+"'  where 1=1 " + _wh;
             return MsSqlHelperEx.Execute(sql);
         }
 
@@ -163,7 +164,7 @@ namespace SunacCADApp.Data
         /// <returns></returns>
         public static int UpdateBPMProcInst(string ProcInstID, string JobID,string Masterid)
         {
-            string sql = string.Format(@"UPDATE  dbo.CaddrawingMaster SET BPMProcInstID='{0}' AND BPMJobid='{1}' WHERE Id={2}", ProcInstID, JobID, Masterid);
+            string sql = string.Format(@"UPDATE  dbo.CaddrawingMaster SET BPMProcInstID='{0}',BPMJobid='{1}' WHERE Id={2}", ProcInstID, JobID, Masterid);
             return MsSqlHelperEx.Execute(sql).ConvertToInt32(0);
         }
     }
