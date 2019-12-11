@@ -78,7 +78,7 @@ namespace SunacCADApp.Controllers
                     _url += "&bpmstate=" + bpmstate;
                     break;
                 default:
-                    _where += string.Format(" and  (( a.BillStatus!=3 And CreateUserId={0}) OR a.BillStatus=3)", UserId);
+                    _where += string.Format(" and  (( a.BillStatus!=3 And a.CreateUserId={0}) OR a.BillStatus=3)", UserId);
                     _url += "&bpmstate=" + bpmstate;
                     break;
             }
