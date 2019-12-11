@@ -25,8 +25,8 @@ namespace SunacCADApp.Controllers
             {
                 return Redirect("/home");
             }
-            string _where = "TypeCode='Area' And ParentID!=0";
-            IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
+            string _where = string.Format(@"a.TypeCode='Area' And a.ParentID!=0 {0}", _power_area_where);
+            IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GeBasArgumentSettingAreaByWhere(_where);
             ViewBag.Settings = Settings;
 
             _where = "TypeCode='CondensatePipePosition' And ParentID!=0";
@@ -82,10 +82,24 @@ namespace SunacCADApp.Controllers
 
             string _bpmState = Request.QueryString["bpmstate"];
             int bpmstate = _bpmState == null ? 3 : _bpmState.ConvertToInt32(0);
-            if (bpmstate > 0)
+            switch (bpmstate)
             {
-                _where += " and   a.BillStatus=" + bpmstate;
-                _url += "&bpmstate=" + bpmstate;
+                case 1:
+                    _where += string.Format(" and  ((a.BillStatus=0  OR a.BillStatus=4 OR a.BillStatus=5 OR a.BillStatus=6) and a.CreateUserId={0})", UserId);
+                    _url += "&bpmstate=" + bpmstate;
+                    break;
+                case 2:
+                    _where += string.Format(" and  ((a.BillStatus=1  OR a.BillStatus=2) and a.CreateUserId={0})", UserId);
+                    _url += "&bpmstate=" + bpmstate;
+                    break;
+                case 3:
+                    _where += string.Format(" and   a.BillStatus=3", bpmstate);
+                    _url += "&bpmstate=" + bpmstate;
+                    break;
+                default:
+                    _where += string.Format(" and  (( a.BillStatus!=3 And CreateUserId={0}) OR a.BillStatus=3)", UserId);
+                    _url += "&bpmstate=" + bpmstate;
+                    break;
             }
             ViewBag.bpmstate = bpmstate.ConvertToTrim();
 

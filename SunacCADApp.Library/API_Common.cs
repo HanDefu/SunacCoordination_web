@@ -9,6 +9,8 @@ using System.Configuration;
 using System.Configuration.Internal;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
+using Common.Utility.Extender;
+
 
 namespace SunacCADApp.Library
 {
@@ -228,6 +230,40 @@ namespace SunacCADApp.Library
                 string _param = GlobalParam("BPMBSID");
                 return _param;
             }
+        }
+
+        public static string StateName(string StateCode) 
+        {
+            string stateName = string.Empty;
+            int _stateCode=StateCode.ConvertToInt32(-1);
+            switch (_stateCode) 
+            {
+                case 0:
+                    stateName = " <span class=\"state draft\">草稿</span>";
+                    break;
+                case 1:
+                    stateName = " <span class=\"state\">待发布</span>";
+                    break;
+                case 2:
+                    stateName = "<span class=\"state unchecked\">审核中</span>";
+                    break;
+                case 3:
+                    stateName = "已发布";
+                    break;
+                case 4:
+                    stateName = "<span class=\"state back\">退回</span>";
+                    break;
+                case 5:
+                    stateName = "<span class=\"state reject\">拒绝</span>";
+                    break;
+                case 6:
+                    stateName = "<span class=\"state reject\">作废</span>";
+                    break;
+                default:
+                    stateName = "<span class=\"state\">未知</span>";
+                    break;
+            }
+            return stateName;
         }
     }
 }

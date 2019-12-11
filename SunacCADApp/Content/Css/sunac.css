@@ -402,11 +402,25 @@ header {
                 color: #ffffff;
             }
 
+          .main .center .list ul li .state.draft {
+               background-color: #515151;
+                    color: #ffffff;
+                }
+
+                .main .center .list ul li .state.back {
+                      background-color: #13227a;
+                     color: #ffffff;
+                }
                 .main .center .list ul li .state.unchecked {
                     background-color: #b98837;
                     color: #ffffff;
                 }
 
+     .main .center .list ul li .state.reject {
+                      background-color: #d81e06;
+                     color: #ffffff;
+                }
+                
 
 
     .main .center .view {
@@ -1682,7 +1696,7 @@ body .layui-ext-sunacskin_01 .layui-layer-btn {
              outline:none;
             }
 
-   .layui-layer-btn0 {
-    background-color:#cf9a56;
-    border-color:#cf9a56;
+.layui-layer-btn0 {
+    background-color: #cf9a56;
+    border-color: #cf9a56;
 }

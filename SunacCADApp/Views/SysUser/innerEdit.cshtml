@@ -1,9 +1,11 @@
 ﻿@using SunacCADApp.Entity
 @using SunacCADApp.Data
+@using System.Collections;
 @{
     IList<Sys_User_Organization_Relation> organizationList = ViewBag.Organizations;
     Sys_User User = ViewBag.SysUser;
     SortedList<string, string> OrgSorts = Project_InformationDB.GetAreaSortedList;
+    IList<Sys_User_Area_Relation> UserAreas = ViewBag.UserAreas;
     
     
 }
@@ -117,6 +119,28 @@
                 </dl>
             </div>
         </div>
+        <div class="row">
+             <div class="col-xs-12 uitem">
+                  <dl>
+                      <dt>
+                          <i class="tip-color-rad"></i>
+                            区域：
+                      </dt>
+                     <dd>
+                         <span class="sub-item ">
+                             <input type="checkbox" value="0" id="area_all" name="checkbox_all">
+                             <label for="area_all">全部</label>
+                             @foreach (BasArgumentSetting area in ViewBag.AreaList)
+                             {
+                                 string checked_area = UserAreas.Where(e => e.Area_ID == area.Id).Count() > 0 ? "checked=\"checked\"" : string.Empty;
+                                <input type="checkbox" value="@area.Id" id="area_code_@area.Id" name="checkbox_area"  @Html.Raw(checked_area)/>
+                                <label for="area_code_@area.Id">@area.ArgumentText</label>
+                             }
+                         </span>
+                     </dd>
+                  </dl>
+             </div>
+         </div>
         <input name="hid_id" type="hidden"  value="@User.Id"/>
         <input name="hid_organiztionId" type="hidden" />
     </form>
@@ -145,8 +169,10 @@
                     @foreach (Sys_User_Organization_Relation Organization in organizationList)
                     {
                         string UpOrgCode = Organization.UpOrgCode;
-                        string UpOrgName = OrgSorts[UpOrgCode];
-                        <tr data-orgcode="@Organization.OrgCode" data-id="@Organization.Id">
+                        string UpOrgName = OrgSorts.ContainsKey(UpOrgCode)?OrgSorts[UpOrgCode]:string.Empty;
+                        
+                        
+                        <tr data-orgcode="@Organization.OrgCode" data-id="@Organization.OrgId">
                             <td>@Organization.OrgName</td>
                             <td class="text-center">@UpOrgName</td>
                             <td class="text-center delete delete-style">删除</td>
@@ -220,6 +246,9 @@
             });
         })
 
+        $("input[name='checkbox_all']").on('change', function () {
+            $("input[name='checkbox_area']").prop('checked', $(this).prop('checked'));
+        })
 
         $("#btn_cancel").on('click', function () {
             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

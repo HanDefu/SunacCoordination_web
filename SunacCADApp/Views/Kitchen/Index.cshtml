@@ -1,11 +1,11 @@
-﻿@{
+﻿@using SunacCADApp.Entity
+@{
     Layout = "~/Views/_LayoutPage.cshtml";
     IList<CadDrawingWindowSearch> listCadDrawing = ViewBag.List;
     int PrototypeView = ViewBag.PrototypeView;
     int PrototypeAdd = ViewBag.PrototypeAdd;
 }
-}
-@using SunacCADApp.Entity
+
 <div class="row search search-bottom" style="margin-top:-15px;">
     <dl class="dl_area">
         <dt>区域：</dt>

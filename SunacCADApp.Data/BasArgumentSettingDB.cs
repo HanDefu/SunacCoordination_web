@@ -63,6 +63,18 @@ namespace SunacCADApp.Data
         }
 
 
+
+        public static IList<BasArgumentSetting> GeBasArgumentSettingAreaByWhere(string _where) 
+        {
+            IList<BasArgumentSetting> _basargumentsettings = new List<BasArgumentSetting>();
+            string _sql = string.Format(@"select a.Id,a.ArgumentText,a.TypeCode,a.TypeName,a.ParentID from BasArgumentSetting a 
+                                                          where Enabled=1 and  {0} order by ModifiedOn asc", _where);
+            _basargumentsettings = MsSqlHelperEx.ExecuteDataTable(_sql).ConvertListModel<BasArgumentSetting>(new BasArgumentSetting());
+            return _basargumentsettings;
+        }
+
+
+
         public static IList<ArgumentSetting> GetXMLBasArgumentSettingByWhere(string _where) 
         {
             IList<ArgumentSetting> _basargumentsettings = new List<ArgumentSetting>();

@@ -373,7 +373,12 @@ namespace SunacCADApp.Controllers
             ViewBag.Organizations = organizations;
             SortedList<string, string> OrgSorts = Project_InformationDB.GetAreaSortedList;
             ViewBag.OrgSorted = OrgSorts;
-
+            string  _wh = " TypeCode='area' AND ParentID!=0";
+            IList<BasArgumentSetting> AreaList = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_wh);
+            ViewBag.AreaList = AreaList;
+            _wh = string.Format(@" And [User_ID]={0}", id);
+            IList<Sys_User_Area_Relation> userArea = Sys_User_Area_RelationDB.GetListSysUserAreaRelationByWhere(_wh);
+            ViewBag.UserAreas = userArea;
             return View();
 
         }
@@ -415,7 +420,27 @@ namespace SunacCADApp.Controllers
                 }
             }
 
-
+            string AreaIds = Request.Form["checkbox_area"];
+            string _sub_where = string.Format(@" User_ID={0}", uid);
+            Sys_User_Area_RelationDB.DeleteHandleByParam(_sub_where);
+            if (!string.IsNullOrEmpty(AreaIds))
+            {
+                string[] areas = AreaIds.Split(',');
+                foreach (string areaid in areas)
+                {
+                    Sys_User_Area_Relation userArea = new Sys_User_Area_Relation();
+                    userArea.User_ID = uid;
+                    userArea.Area_ID = areaid.ConvertToInt32(-1);
+                    userArea.Enabled = 1;
+                    userArea.CreateUserId = UserId;
+                    userArea.CreateBy = UserName;
+                    userArea.CreateOn = DateTime.Now;
+                    userArea.ModifiedUserId = UserId;
+                    userArea.ModifiedBy = UserName;
+                    userArea.ModifiedOn = DateTime.Now;
+                    Sys_User_Area_RelationDB.AddHandle(userArea);
+                }
+            }
             if (rtv > 0)
             {
                 return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
