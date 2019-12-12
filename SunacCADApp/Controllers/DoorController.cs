@@ -618,11 +618,11 @@ namespace SunacCADApp.Controllers
                 returnValue = BPMOperationCommonLib.CadWindowBPMWriteSAPXmlToBPM(BSID, BTID, BOID, BPMXml, bpmprocinstid, UserCode);
                 if (returnValue == 100)
                 {
-                    return Json(new { code = 100, message = "提交成功" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = 110, message = "提交成功", BSID = BSID, BTID = BTID, BOID = BOID }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { code = -100, message = "提交失败" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = -110, message = "提交失败", BSID = BSID, BTID = BTID, BOID = BOID }, JsonRequestBehavior.AllowGet);
                 }
                
             }
