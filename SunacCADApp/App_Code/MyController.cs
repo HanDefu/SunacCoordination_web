@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Common.Utility.Extender;
 using SunacCADApp.Entity;
+using SunacCADApp.Library;
 
 namespace SunacCADApp
 {
@@ -16,6 +17,7 @@ namespace SunacCADApp
         protected string UserName = string.Empty;
         protected string _power_wh = string.Empty;
         protected string _power_area_where = string.Empty;
+        
 
         public MyController() 
         {
@@ -26,6 +28,7 @@ namespace SunacCADApp
             int RoleId = InitUtility.Instance.InitSessionHelper.Get("RoleId").ConvertToInt32(0);
             int IsInternal = InitUtility.Instance.InitSessionHelper.Get("IsInternal").ConvertToInt32(0);
             ViewBag.SelectModel = 5;
+            ViewBag.BPMWEBURL = API_Common.BPMWEBURL;
             if (IsInternal == 1)
             {
                 _power_wh = string.Format(@" AND  EXISTS(SELECT 1 FROM dbo.Sys_User_Area_Relation R WHERE R.User_ID ={0} AND R.Area_ID=pa.AreaID) ", UserId);

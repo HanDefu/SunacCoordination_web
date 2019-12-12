@@ -265,5 +265,39 @@ namespace SunacCADApp.Library
             }
             return stateName;
         }
+
+        public static string BPMWEBURL 
+        {
+            get 
+            {
+                string _param = GlobalParam("BPMURL");
+                return _param;
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string GetEnCodeStr(string str) 
+        {
+            string enStr = "";
+            if (str != null && str.Length > 0)
+            {
+                str = (((long.Parse(str) * 33 - 666) + 9999) * 888).ToString();
+                int l = str.ToString().Length;
+                if (l % 2 == 0)//当字符长度为偶数时
+                {
+                    enStr = str.Remove(l / 2, 2);
+                }
+                else
+                {
+                    enStr = str.Remove(l / 2 + 1, 2);//从字符中间+1的位置移除2个字符
+                }
+            }
+            return enStr;
+        }
     }
 }

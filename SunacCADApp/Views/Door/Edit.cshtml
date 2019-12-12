@@ -2,6 +2,7 @@
     Layout = "~/Views/_LayoutPage.cshtml";
 }
 @using SunacCADApp.Entity
+@using SunacCADApp.Library
 @{
     Layout = "~/Views/_LayoutPage.cshtml";
     CadDrawingMaster dMaster = ViewBag.CadDrawingMaster;
@@ -21,6 +22,10 @@
     string drawingCode = dMaster.DrawingCode;
     int PrototypeEdit = ViewBag.PrototypeEdit;
     int PrototypeRemove = ViewBag.PrototypeRemove;
+    string BPMWEBURL = ViewBag.BPMWEBURL;
+    string ProcInstId = dMaster.BPMProcInstID;
+    string ProKeyCode = API_Common.GetEnCodeStr(ProcInstId);
+    string approvalViewURL = string.Format("{0}/Workflow/MTApprovalView.aspx?procInstId={1}&key={2}", BPMWEBURL, ProcInstId, ProKeyCode);
 }
 <div class="row topnav">
     <a>标准部品库</a>
@@ -28,13 +33,12 @@
     <a href="/door/">门</a>
     <i></i>
     <a>@dMaster.DrawingCode</a>
-    <span class="check-state">
-        @if (dMaster.BillStatus == 2)
-        {
-            string BTID = dMaster.DynamicType == 1 ? "P21" : "P22";
-            <a class="state-a-checked" href="http://192.168.2.110/Workflow/MTStart2.aspx?BSID=vsheji&BTID=@BTID&BOID=@dMaster.Id" target="_blank">审批流程查看</a>
-        }
-    </span>
+    @if (dMaster.BillStatus == 2)
+    {
+        <span class="check-state">
+            <a class="state-a-checked" href="@approvalViewURL">审批流程查看</a>
+        </span>
+    }
 </div>
 <div class="row view">
     <div class="left-column">
@@ -612,6 +616,14 @@
                         layer.alert("BPM提交成功", { icon: 6, shade: false }, function () {
                             window.location.reload();
                         })
+                    } else if (data.code == 110) {
+                        let layindex = layer.alert(data.message, { icon: 6, shade: false }, function () {
+                            let BSID = data.BSID;
+                            let BTID = data.BTID;
+                            let BOID = data.BOID;
+                            window.open("@ViewBag.BPMWEBURL/Workflow/MTStart2.aspx?BSID=" + BSID + "&BTID=" + BTID + "&BOID=" + BOID);
+                            layer.close(layer.index);
+                        });
                     } else {
                         layer.alert(data.message, { icon: 6, shade: false });
                     }

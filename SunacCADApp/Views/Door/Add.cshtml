@@ -345,7 +345,7 @@
 
             let json_param = "[" + param.join(',') + "]";
             $('input[name="param"]').val(json_param);
-           
+
             return rtv;
         },
         success: function (data) {
@@ -354,6 +354,14 @@
                 //   // window.location.href = "/Door/Index"
                 //});
                 layer.alert(data.message, { icon: 6, shade: false });
+            } else  if (data.code == 110) {
+                let layindex = layer.alert(data.message, { icon: 6, shade: false }, function () {
+                    let BSID = data.BSID;
+                    let BTID = data.BTID;
+                    let BOID = data.BOID;
+                    window.open("@ViewBag.BPMWEBURL/Workflow/MTStart2.aspx?BSID=" + BSID + "&BTID=" + BTID + "&BOID=" + BOID);
+                    layer.close(layer.index);
+                });
             } else {
                 layer.alert(data.message, { icon: 5, shade: false });
             }

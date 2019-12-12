@@ -207,15 +207,34 @@ namespace SunacCADApp.Controllers
               string procinstid = Request.Form["procinstid"];
               string returnValue = BPMOperationCommonLib.CadWindowBPMGetFlowState(UserName, procinstid);
                JObject  jReturn=  JsonConvert.DeserializeObject<JObject>(returnValue);
+
                string STATUSMESSAGE = jReturn["STATUSMESSAGE"].ConvertToTrim();
+               string _message = string.Empty;
+               switch (STATUSMESSAGE) 
+               {
+                   case "0":
+                       _message="退回修改";
+                       break;
+                   case "1":
+                       _message = "通过";
+                       break;
+                   case "2":
+                       _message = "审批中";
+                       break;
+                   case "3":
+                       _message = "作废";
+                       break;
+                   default:
+                       break;
+               }
+
                if (jReturn["STATUSCODE"].ConvertToInt32(0) == 1)
                {
-                   return Json(new { code = 100, message = STATUSMESSAGE }, JsonRequestBehavior.AllowGet);
+                   return Json(new { code = 100, message = _message }, JsonRequestBehavior.AllowGet);
                }
                else
                {
-                   return Json(new { code = -100, message = STATUSMESSAGE }, JsonRequestBehavior.AllowGet);
-
+                   return Json(new { code = -100, message = _message }, JsonRequestBehavior.AllowGet);
                }
             }
             catch (Exception ex) 

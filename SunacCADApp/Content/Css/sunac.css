@@ -769,7 +769,10 @@ header {
         }
 
         .main .center .topnav .state-a-checked {
-          color:#e1a054;
+          display:inline-block;
+          color:#ad6800;
+          font-size:13px;
+          padding-left:18px;
         }
 
 .btn-sunac {

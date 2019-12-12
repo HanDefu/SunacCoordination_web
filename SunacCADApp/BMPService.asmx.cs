@@ -56,6 +56,7 @@ namespace SunacCADApp
                         string ReturnInfo = string.Format(@"Code=100||Success=1111");
                         CadDrawingMasterDB.Insert_BPM_Commit_Log(request.strBTID, request.strBOID, "CreateResult[流程发起结果]", ParamInfo, ReturnInfo);
                         CadDrawingMasterDB.UpdateBPMProcInst(request.iProcInstID, string.Empty, request.strBOID);
+                        CadDrawingMasterDB.ChangeBpmStateusByMId(boid, 2);
        
                         _createResult.MESSAGE = new Bpm_Rsp_Message()
                         {
@@ -74,6 +75,10 @@ namespace SunacCADApp
                             RSP_ITEM = new Bpm_Rsp_Param { Code = -100, Error = 2222 }
                         };
                     }
+
+
+
+
                 }
 
             }

@@ -53,12 +53,9 @@ namespace SunacCADApp
                 baseInfo.BIZTRANSACTIONID = BIZTRANSACTIONID;
                 request.REQ_BASEINFO = baseInfo;
                 request.MESSAGE = peq_item.ToArray<WeService.BPM.WriteSAP.REQ_ITEM>();
-
                 WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService service = new WeService.BPM.WriteSAP.CAD_SUNAC_564_WriteSAPXmlToBPM_pttbindingQSService();
                 WeService.BPM.WriteSAP.E_RESPONSE response = service.CAD_SUNAC_564_WriteSAPXmlToBPM(request);
-
                 WeService.BPM.WriteSAP.E_RESPONSERSP_ITEM Message = response.MESSAGE.First();
-
                 if (Message.STATUSCODE == "1")
                 {
                     string ParamInfo = string.Format(@"BSID      = {0}||BTID  = {1}||BOID   = {2}||BSXML    = {3}||
@@ -68,7 +65,7 @@ namespace SunacCADApp
                     string ReturnInfo = string.Format(@"STATUSCODE={0}||STATUSMESSAGE={1}", Message.STATUSCODE, Message.STATUSMESSAGE);
                     CadDrawingMasterDB.Insert_BPM_Commit_Log(item.BTID, item.BOID, "外窗流程提交", ParamInfo, ReturnInfo);
                     int MasterId = BOID.ConvertToInt32(0);
-                    CadDrawingMasterDB.ChangeBpmStateusByMId(MasterId, 2);
+                    CadDrawingMasterDB.ChangeBpmStateusByMId(MasterId, 1);
                     return 100;
                 }
                 else
@@ -196,7 +193,6 @@ namespace SunacCADApp
                 baseInfo.BIZTRANSACTIONID = BIZTRANSACTIONID;
                 request.REQ_BASEINFO = baseInfo;
                 request.MESSAGE = peq_item.ToArray<WebServiceSunacBPM.DoInvalid.REQ_ITEM>();
-
                 WebServiceSunacBPM.DoInvalid.CAD_SUNAC_566_DoInvalid_pttbindingQSService service = new WebServiceSunacBPM.DoInvalid.CAD_SUNAC_566_DoInvalid_pttbindingQSService();
                 WebServiceSunacBPM.DoInvalid.E_RESPONSE response = service.CAD_SUNAC_566_DoInvalid(request);
                 WebServiceSunacBPM.DoInvalid.E_RESPONSERSP_ITEM Message = response.MESSAGE.First();

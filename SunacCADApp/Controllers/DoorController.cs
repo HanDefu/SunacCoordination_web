@@ -59,25 +59,24 @@ namespace SunacCADApp.Controllers
             }
             ViewBag.doortype = doortype;
 
-
             string _bpmState = Request.QueryString["bpmstate"];
             int bpmstate = _bpmState == null ? 3 : _bpmState.ConvertToInt32(0);
             switch (bpmstate)
             {
                 case 1:
-                    _where += string.Format(" and  ((a.BillStatus=0  OR a.BillStatus=4 OR a.BillStatus=5 OR a.BillStatus=6) and a.CreateUserId={0})", UserId);
+                    _search_where += string.Format(" and  ((a.BillStatus=0  OR a.BillStatus=4 OR a.BillStatus=5 OR a.BillStatus=6) and a.CreateUserId={0})", UserId);
                     _url += "&bpmstate=" + bpmstate;
                     break;
                 case 2:
-                    _where += string.Format(" and  ((a.BillStatus=1  OR a.BillStatus=2) and a.CreateUserId={0})", UserId);
+                    _search_where += string.Format(" and  ((a.BillStatus=1  OR a.BillStatus=2) and a.CreateUserId={0})", UserId);
                     _url += "&bpmstate=" + bpmstate;
                     break;
                 case 3:
-                    _where += string.Format(" and   a.BillStatus=3", bpmstate);
+                    _search_where += string.Format(" and   a.BillStatus=3", bpmstate);
                     _url += "&bpmstate=" + bpmstate;
                     break;
                 default:
-                    _where += string.Format(" and  (( a.BillStatus!=3 And a.CreateUserId={0}) OR a.BillStatus=3)", UserId);
+                    _search_where += string.Format(" and  (( a.BillStatus!=3 And a.CreateUserId={0}) OR a.BillStatus=3)", UserId);
                     _url += "&bpmstate=" + bpmstate;
                     break;
             }
@@ -175,6 +174,12 @@ namespace SunacCADApp.Controllers
                     return Json(new { code = 100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
                 }
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
+                string drawingcode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
+                string hasDrawingCode = CadDrawingMasterDB.HasDrawingCode(drawingcode);
+                if (!string.IsNullOrEmpty(hasDrawingCode))
+                {
+                    return Json(new { code = -110, message = "原型已增加" }, JsonRequestBehavior.AllowGet);
+                }
                 string cadFile = Request.Form["txt_drawingcad"].ConventToString(string.Empty);
                 string imgFile = Request.Form["hid_drawing_img"].ConventToString(string.Empty);
                 string filenames = Request.Form["txt_filename"].ConventToString(string.Empty);
@@ -195,7 +200,7 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.ModifiedBy = UserName;
                 caddrawingmaster.ModifiedUserId = UserId;
                 caddrawingmaster.ModifiedOn = DateTime.Now;
-                caddrawingmaster.BillStatus = 1;
+                caddrawingmaster.BillStatus = 0;
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
                 string[] arr_CADFile = cadFile.Split(',');
                 string[] arr_IMGFile = imgFile.Split(',');
@@ -610,14 +615,7 @@ namespace SunacCADApp.Controllers
                 string BSID = API_Common.GetBSID;
                 string UserCode = UserName;
                 int returnValue = -100;
-                if (billstatus == 1)
-                {
-                    returnValue = BPMOperationCommonLib.CadWindowBPMWriteSAPXmlToBPM(BSID, BTID, BOID, BPMXml, bpmprocinstid, UserCode);
-                }
-                else
-                {
-                    returnValue = BPMOperationCommonLib.CadWindowBPMUpdateAndApproveFlow(UserCode, bpmjobid, bpmprocinstid, BPMXml, BOID, BSID, BTID);
-                }
+                returnValue = BPMOperationCommonLib.CadWindowBPMWriteSAPXmlToBPM(BSID, BTID, BOID, BPMXml, bpmprocinstid, UserCode);
                 if (returnValue == 100)
                 {
                     return Json(new { code = 100, message = "提交成功" }, JsonRequestBehavior.AllowGet);

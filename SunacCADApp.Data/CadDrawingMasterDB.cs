@@ -123,6 +123,8 @@ namespace SunacCADApp.Data
             return MsSqlHelperEx.ExecuteScalar(sql).ConventToString(string.Empty);
         }
 
+       
+
         /// <summary>
         /// 状态更改
         /// </summary>
