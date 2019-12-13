@@ -114,6 +114,14 @@
                 //});
 
                 layer.alert(data.message, { icon: 6, shade: false });
+            } else if (data.code == 110) {
+                let layindex = layer.alert(data.message, { icon: 6, shade: false }, function () {
+                    let BSID = data.BSID;
+                    let BTID = data.BTID;
+                    let BOID = data.BOID;
+                    window.open("@ViewBag.BPMWEBURL/Workflow/MTStart2.aspx?BSID=" + BSID + "&BTID=" + BTID + "&BOID=" + BOID);
+                    layer.close(layer.index);
+                });
             } else {
                 layer.alert(data.message, { icon: 5, shade: false });
             }
@@ -128,7 +136,7 @@
 
         })
 
-     
+
 
         $("#btn_save").on('click', function () {
             $("#myform").ajaxSubmit(options);
@@ -143,7 +151,8 @@
             $("#myform").resetForm();
         });
 
-        $('input[name="txt_drawingcode"]').on('focusout', function () {
+
+        $('input[name="txt_drawingcode"]').on('focusout', function () {
             let that = $(this);
             let code = that.val();
             $.post('/CommonLib/HasDradrawingCode', { code: code }, function (data) {

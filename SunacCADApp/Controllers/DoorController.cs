@@ -381,7 +381,7 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.ModifiedUserId = UserId;
                 caddrawingmaster.ModifiedBy = UserName;
                 caddrawingmaster.ModifiedOn = DateTime.Now;
-                caddrawingmaster.BillStatus = 1;
+                caddrawingmaster.BillStatus = 0;
                 caddrawingmaster.Id = Id;
                 int mId = CadDrawingMasterDB.EditHandle(caddrawingmaster, string.Format(@" And id={0}",Id));
                 mId = Id;
