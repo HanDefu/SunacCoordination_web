@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "~/Views/_LayoutPage.cshtml";
     int PrototypeAdd = ViewBag.PrototypeAdd;
+    int PrototypeApprove = ViewBag.PrototypeApprove;
 }
 @using SunacCADApp.Entity
 <div class="row topnav">
@@ -178,7 +179,10 @@
                 <div class="column-handle">
                     <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
                     <button type="button" class="btn btn-sunac" id="btn_cancel">取消</button>
-                    <button type="button" class="btn btn-sunac" id="btn_save01" data-value="commit">提交</button>
+                    @if (PrototypeApprove == 1)
+                    {
+                        <button type="button" class="btn btn-sunac" id="btn_save01" data-value="commit">提交</button>
+                    }
                 </div>
             </div>
         }

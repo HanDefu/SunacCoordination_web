@@ -13,6 +13,7 @@
     imageName = dMaster.DrawingCode;
     int PrototypeEdit = ViewBag.PrototypeEdit;
     int PrototypeRemove = ViewBag.PrototypeRemove;
+    int PrototypeApprove = ViewBag.PrototypeApprove;
     string BPMWEBURL = ViewBag.BPMWEBURL;
     string ProcInstId = dMaster.BPMProcInstID;
     string ProKeyCode = API_Common.GetEnCodeStr(ProcInstId);
@@ -129,6 +130,10 @@
                 @if (PrototypeEdit == 1)
                 {
                     <button type="button" class="btn btn-sunac" id="btn_save">保存</button>
+                }
+                
+                @if (PrototypeApprove == 1)
+                {
                     <button type="button" class="btn btn-sunac btn-bpm-submit" data-id="@dMaster.Id" data-state="@dMaster.DynamicType" data-billstatus="@dMaster.BillStatus" data-bpmprocinstid="@dMaster.BPMProcInstID" data-bpmjobid="@dMaster.BPMJobid">提交</button>
                 }
                 

@@ -107,7 +107,9 @@ namespace SunacCADApp.Controllers
             string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
             if (!string.IsNullOrEmpty(keyword))
             {
-                _where = string.Format(@" AND  a.DrawingCode like  '%{0}%'", keyword);
+                _where = string.Format(@" AND  (( a.BillStatus!=3 And a.CreateUserId={0}) OR a.BillStatus=3)", UserId);
+                _where += string.Format(@" AND a.DrawingCode like  '%{0}%'", keyword);
+                ViewBag.bpmstate = "-1";
             }
             ViewBag.Keyword = keyword;
             int recordCount = 0;    //记录总数
@@ -149,6 +151,11 @@ namespace SunacCADApp.Controllers
             string _where = string.Empty;
             CadDrawingMaster master = CadDrawingMasterDB.GetSingleEntityById(Id);
             ViewBag.CadDrawingMaster = master;
+
+            int SeftUserId = master.CreateUserId;
+            int BillStatus = master.BillStatus;
+            HasUserRole(BillStatus, SeftUserId);
+
             _where = "  a.MId=" + Id;
             IList<CadDrawingByArea> ByAreas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
             ViewBag.ByAreas = ByAreas;
@@ -367,6 +374,11 @@ namespace SunacCADApp.Controllers
             _where = string.Empty;
             CadDrawingMaster master = CadDrawingMasterDB.GetSingleEntityById(Id);
             ViewBag.CadDrawingMaster = master;
+
+            int SeftUserId = master.CreateUserId;
+            int BillStatus = master.BillStatus;
+            HasUserRole(BillStatus, SeftUserId);
+
             _where = "  a.MId=" + Id;
             IList<CadDrawingByArea> ByAreas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
             ViewBag.ByAreas = ByAreas;

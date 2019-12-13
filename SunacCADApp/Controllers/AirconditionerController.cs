@@ -106,7 +106,9 @@ namespace SunacCADApp.Controllers
             string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));
             if (!string.IsNullOrEmpty(keyword))
             {
-                _where = string.Format(@" a.DrawingCode like  '%{0}%'", keyword);
+                _where = string.Format(@"  (( a.BillStatus!=3 And a.CreateUserId={0}) OR a.BillStatus=3)", UserId);
+                _where += string.Format(@" AND a.DrawingCode like  '%{0}%'", keyword);
+                ViewBag.bpmstate = "-1";
             }
             ViewBag.Keyword = keyword;
 
@@ -120,7 +122,6 @@ namespace SunacCADApp.Controllers
             currentPage = string.IsNullOrEmpty(Request.QueryString["page"]) ? 1 : Request.QueryString["page"].ConvertToInt32(0);
             startRowNum = ((currentPage - 1) * pageSize) + 1;
             endRowNum = currentPage * pageSize;
-
             IList<CadDrawingWindowSearch> lst = CadDrawingAirconditionerDetailDB.GetSearchPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
             recordCount = CadDrawingAirconditionerDetailDB.GetSearchPageCountByParameter(_where);
             pageCount = recordCount % pageSize == 0 ? recordCount / pageSize : ((recordCount / pageSize) + 1);
@@ -149,6 +150,10 @@ namespace SunacCADApp.Controllers
             string _where = string.Empty;
             CadDrawingMaster master = CadDrawingMasterDB.GetSingleEntityById(Id);
             ViewBag.CadDrawingMaster = master;
+            int SeftUserId = master.CreateUserId;
+            int BillStatus = master.BillStatus;
+            HasUserRole(BillStatus, SeftUserId);
+
             _where = "  a.MId=" + Id;
             IList<CadDrawingByArea> ByAreas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
             ViewBag.ByAreas = ByAreas;
@@ -369,6 +374,11 @@ namespace SunacCADApp.Controllers
             _where = string.Empty;
             CadDrawingMaster master = CadDrawingMasterDB.GetSingleEntityById(Id);
             ViewBag.CadDrawingMaster = master;
+
+            int SeftUserId = master.CreateUserId;
+            int BillStatus = master.BillStatus;
+            HasUserRole(BillStatus, SeftUserId);
+
             _where = "  a.MId=" + Id;
             IList<CadDrawingByArea> ByAreas = CadDrawingByAreaDB.GetCadDrawingByAreasByWhere(_where);
             ViewBag.ByAreas = ByAreas;
