@@ -172,11 +172,11 @@
                         <p>@drawing.DrawingCode</p>
                     </figure>
                 </a>
-                @if (drawing.BillStatus == 0 || drawing.BillStatus == 1)
+                @if (drawing.BillStatus == 0 )
                 {
                     <span class="state">待发布</span>
                 }
-                else if (drawing.BillStatus == 2)
+                else if (drawing.BillStatus == 2 || drawing.BillStatus == 1)
                 {
                     <span class="state unchecked">审核中</span>
                 }

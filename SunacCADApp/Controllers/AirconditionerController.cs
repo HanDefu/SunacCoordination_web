@@ -232,7 +232,7 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.ModifiedUserId = UserId;
                 caddrawingmaster.ModifiedBy = UserName;
                 caddrawingmaster.ModifiedOn = DateTime.Now;
-                caddrawingmaster.BillStatus = 1;
+                caddrawingmaster.BillStatus = 0;
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
                 string[] arr_CADFile = cadFile.Split(',');
                 string[] arr_IMGFile = imgFile.Split(',');
@@ -415,7 +415,7 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.ModifiedUserId = UserId;
                 caddrawingmaster.ModifiedBy = UserName;
                 caddrawingmaster.ModifiedOn = DateTime.Now;
-                caddrawingmaster.BillStatus = 1;
+                caddrawingmaster.BillStatus = 0;
                 caddrawingmaster.Id = Id;
                 CadDrawingMasterDB.EditHandle(caddrawingmaster,string.Empty);
                 int mId = Id;
@@ -612,21 +612,15 @@ namespace SunacCADApp.Controllers
                 string BSID = API_Common.GetBSID;
                 string UserCode = UserName;
                 int returnValue = -100;
-                if (billstatus == 1)
-                {
-                    returnValue = BPMOperationCommonLib.CadWindowBPMWriteSAPXmlToBPM(BSID, BTID, BOID, Bsxml, bpmprocinstid, UserCode);
-                }
-                else
-                {
-                    returnValue = BPMOperationCommonLib.CadWindowBPMUpdateAndApproveFlow(UserCode, bpmjobid, bpmprocinstid, Bsxml, BOID, BSID, BTID);
-                }
+                returnValue = BPMOperationCommonLib.CadWindowBPMWriteSAPXmlToBPM(BSID, BTID, BOID, Bsxml, bpmprocinstid, UserCode);
+              
                 if (returnValue == 100)
                 {
-                    return Json(new { code = 100, message = "提交成功" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = 110, message = "提交成功",BSID = BSID, BTID = BTID, BOID = BOID }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { code = -100, message = "提交失败" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = -110, message = "提交失败", BSID = BSID, BTID = BTID, BOID = BOID}, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex) 

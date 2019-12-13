@@ -1,4 +1,5 @@
 ﻿@using SunacCADApp.Entity
+@using SunacCADApp.Library
 @{
     Layout = "~/Views/_LayoutPage.cshtml";
     CadDrawingMaster dMaster = ViewBag.CadDrawingMaster;
@@ -12,6 +13,10 @@
     string imageName = string.IsNullOrEmpty(ExpansionDWG.FileClass) ? "" : ExpansionDWG.FileClass;
     string drawingCode = dMaster.DrawingCode;
     int PrototypeEdit = ViewBag.PrototypeEdit;
+    string BPMWEBURL = ViewBag.BPMWEBURL;
+    string ProcInstId = dMaster.BPMProcInstID;
+    string ProKeyCode = API_Common.GetEnCodeStr(ProcInstId);
+    string approvalViewURL = string.Format("{0}/Workflow/MTApprovalView.aspx?procInstId={1}&key={2}", BPMWEBURL, ProcInstId, ProKeyCode);
 }
 
 
@@ -21,30 +26,26 @@
     <a href="/bathroom/index">卫生间</a>
     <i></i>
     <a>@dMaster.DrawingCode</a>
-    @if (dMaster.BillStatus == 0 || dMaster.BillStatus == 1)
-    {
-        <span class="check-state" data-masterid="@dMaster.Id">待提交</span>
-    }
-    else if (dMaster.BillStatus == 2)
-    {
-        <span class="check-state state-unchecked" data-masterid="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-procinstid="@dMaster.BPMProcInstID">待审核</span>
-    }
-    else if (dMaster.BillStatus == 3)
-    {
-        <span class="check-state state-unchecked" data-masterid="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-procinstid="@dMaster.BPMProcInstID">已审核</span>
-    }
-    else if (dMaster.BillStatus == 4)
-    {
-        <span class="check-state state-unchecked" data-masterid="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-procinstid="@dMaster.BPMProcInstID">退回</span>
-    }
-    else if (dMaster.BillStatus == 5)
-    {
-        <span class="check-state state-unchecked" data-masterid="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-procinstid="@dMaster.BPMProcInstID">拒绝</span>
-    }
-    else if (dMaster.BillStatus == 6)
-    {
-        <span class="check-state state-unchecked" data-masterid="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-procinstid="@dMaster.BPMProcInstID">作废</span>
-    }
+       @if (dMaster.BillStatus == 2)
+       {
+        <span class="check-state">
+            <a class="state-a-checked" href="@approvalViewURL">审批流程查看</a>
+        </span>
+       }
+
+
+        @if (dMaster.BillStatus == 2)
+        {
+            <span class="check-state state-unchecked  bill-status-view" data-masterid="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-procinstid="@dMaster.BPMProcInstID"> 审核中</span>
+        }
+        else if (dMaster.BillStatus == 3)
+        {
+            <span class="check-state state-unchecked bill-status-view" data-masterid="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-procinstid="@dMaster.BPMProcInstID"> 已发布</span>
+        }
+        else if (dMaster.BillStatus == 4 || dMaster.BillStatus == 5 || dMaster.BillStatus == 6)
+        {
+            <span class="check-state state-unchecked bill-status-view" data-masterid="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-procinstid="@dMaster.BPMProcInstID"> 待发布</span>
+        }
 </div>
 <div class="row view">
     <div class="left-column">
