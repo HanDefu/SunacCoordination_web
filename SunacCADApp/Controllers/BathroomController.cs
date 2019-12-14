@@ -241,7 +241,7 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.ModifiedUserId = UserId;
                 caddrawingmaster.ModifiedBy = UserName;
                 caddrawingmaster.ModifiedOn = DateTime.Now;
-                caddrawingmaster.BillStatus = 0;
+                caddrawingmaster.BillStatus = _OperateBillStatus;
                 
                 int mId = CadDrawingMasterDB.AddHandle(caddrawingmaster);
                 string[] arr_CADFile = cadFile.Split(',');
@@ -425,7 +425,7 @@ namespace SunacCADApp.Controllers
                 caddrawingmaster.ModifiedUserId = UserId;
                 caddrawingmaster.ModifiedBy = UserName;
                 caddrawingmaster.ModifiedOn = DateTime.Now;
-                caddrawingmaster.BillStatus = 0;
+                caddrawingmaster.BillStatus = _OperateBillStatus;
                 caddrawingmaster.Id = Id;
                 CadDrawingMasterDB.EditHandle(caddrawingmaster,string.Empty);
                 int  mId = Id;

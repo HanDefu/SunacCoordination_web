@@ -730,11 +730,11 @@ namespace SunacCADApp.Controllers
             int flag = Sys_UserDB.ChangePassword(password,UserId);
             if (flag > 0)
             {
-                return Json(new { code = 100, message = "密码成功"}, JsonRequestBehavior.AllowGet);
+                return Json(new { code = 100, message = "密码修改成功" }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                return Json(new { code = -100, message = "密码失败" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = -100, message = "密码修改失败" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -767,6 +767,7 @@ namespace SunacCADApp.Controllers
             string userName = Sys_UserDB.GetUserRoleName(user.RoleID);
             ViewBag.OrgName = orgName;
             ViewBag.UserName = userName;
+            ViewBag.Is_Internal = user.Is_Internal;
             return View();
         }
 

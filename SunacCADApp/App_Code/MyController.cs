@@ -18,6 +18,7 @@ namespace SunacCADApp
         protected string _power_wh = string.Empty;
         protected string _power_area_where = string.Empty;
         protected bool _IsSuper = false;
+        protected int   _OperateBillStatus = 0;
         
 
 
@@ -29,11 +30,13 @@ namespace SunacCADApp
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             int RoleId = InitUtility.Instance.InitSessionHelper.Get("RoleId").ConvertToInt32(0);
             int IsInternal = InitUtility.Instance.InitSessionHelper.Get("IsInternal").ConvertToInt32(0);
+           
             ViewBag.SelectModel = 5;
             ViewBag.BPMWEBURL = API_Common.BPMWEBURL;
             if (IsInternal == 1)
             {
-                if (RoleId == 3)
+                int _roleId = API_Common.GlobalParam("RoleId").ConvertToInt32(-1);
+                if (RoleId == _roleId)
                 {
                     _power_wh = string.Format(@" AND  EXISTS(SELECT 1 FROM dbo.Sys_User_Area_Relation R WHERE R.User_ID ={0} AND R.Area_ID=pa.AreaID) ", UserId);
                     _power_area_where = string.Format(@" AND  EXISTS(SELECT 1 FROM dbo.Sys_User_Area_Relation R WHERE R.User_ID ={0} AND R.Area_ID=a.Id)", UserId);
@@ -43,6 +46,7 @@ namespace SunacCADApp
                     ViewBag.PrototypeEdit = CommonLib.HasPowerByModelName(RoleId, "原型修改");
                     ViewBag.PrototypeApprove = 0;
                     StateList = CommonLib.GetBPMStateInfo();
+                    _OperateBillStatus = 3;
                     _IsSuper = true;
                 }
                 else 
