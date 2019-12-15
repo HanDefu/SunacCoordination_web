@@ -39,7 +39,7 @@ namespace SunacCADApp.Data
                                                                    FROM  dbo.CadDrawingBathroomDetail a 
                                                              INNER JOIN dbo.CaddrawingMaster m ON m.Id=a.MId
                                                               LEFT JOIN  dbo.BasArgumentSetting b ON a.BathroomType=b.Id AND b.TypeCode='ToiletType'
-                                                              LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='BathroomDoorWindowPosition'
+                                                              LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='DoorWindowPosition'
                                                               LEFT JOIN  dbo.BasArgumentSetting c ON c.Id=a.BathroomBasinSize AND c.TypeCode='ToiletBasinWidth'
                                                               LEFT JOIN  dbo.BasArgumentSetting d ON d.Id=a.BathroomClosestoolSize AND d.TypeCode='ClosesToolWidth' 
                                                          WHERE {0}", _dynamic_where);
@@ -51,7 +51,7 @@ namespace SunacCADApp.Data
                                                                    FROM  dbo.CadDrawingBathroomDetail a 
                                                              INNER JOIN dbo.CaddrawingMaster m ON m.Id=a.MId
                                                               LEFT JOIN  dbo.BasArgumentSetting b ON a.BathroomType=b.Id AND b.TypeCode='ToiletType'
-                                                              LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='BathroomDoorWindowPosition'
+                                                              LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='DoorWindowPosition'
                                                               LEFT JOIN  dbo.BasArgumentSetting c ON c.Id=a.BathroomBasinSize AND c.TypeCode='ToiletBasinWidth'
                                                               LEFT JOIN  dbo.BasArgumentSetting d ON d.Id=a.BathroomClosestoolSize AND d.TypeCode='ClosesToolWidth' 
                                                          WHERE {0}", _static_where);

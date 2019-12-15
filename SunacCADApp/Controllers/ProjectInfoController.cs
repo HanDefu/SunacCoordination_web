@@ -53,6 +53,8 @@ namespace SunacCADApp.Controllers
             pageSize = string.IsNullOrEmpty(Request.QueryString["pagesize"]) ? pageSize : Request.QueryString["pagesize"].ConvertToInt32(0);
             startRowNum = ((currentPage - 1) * pageSize) + 1;
             endRowNum = currentPage * pageSize;
+ 
+
             IList<PArea> areas = Project_InformationDB.GetProjectAreaByList();
             ViewBag.Areas = areas;
             string areaCode = HttpUtility.UrlDecode(Request.QueryString["area"].ConventToString(string.Empty));

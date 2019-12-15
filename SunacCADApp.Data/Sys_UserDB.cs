@@ -36,6 +36,23 @@ namespace SunacCADApp.Data
             return _sys_users;
         }
 
+
+
+        public static IList<Sys_User> GetPageInfoParameterMax2012(string where, string orderby, int currentpage, int pagesize)
+        {
+            IList<Sys_User> _sys_users = new List<Sys_User>();
+            string sql = string.Format(@"SELECT   a.*,
+                                                                     CASE a.Is_Internal WHEN '1' THEN ISNULL(c.OrganName,'') WHEN '2' THEN ISNULL(b.InsName,'') ELSE '' END  AS CompanyName
+                                                      FROM    dbo.Sys_User  a
+                                                      LEFT JOIN  BasInstitutionData b on a.CompanyID=B.Id
+                                                      LEFT JOIN dbo.Bas_Idm_Organ c ON c.OrganNumber=a.UserDeptNo
+                                                      WHERE   {0}  order by a.Reorder DESC,a.CreateOn DESC {1}  
+													  offset ({2}-1)*{3}  rows fetch next {3} rows ONLY", where, orderby, currentpage, pagesize);
+
+            _sys_users = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Sys_User>(new Sys_User());
+            return _sys_users;
+        }
+
         ///<summary>
         /// 用户表  分页数据总数量
         ///<summary>

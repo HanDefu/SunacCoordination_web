@@ -32,7 +32,7 @@ namespace SunacCADApp.Controllers
             IList<BasArgumentSetting> ToiletType = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.ToiletTypes = ToiletType;
 
-            _where = "TypeCode='BathroomDoorWindowPosition' And ParentID!=0";
+            _where = "TypeCode='DoorWindowPosition' And ParentID!=0";
             IList<BasArgumentSetting> BathroomDoorWindowPositions = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.BathroomDoorWindowPositions = BathroomDoorWindowPositions;
 
@@ -187,7 +187,7 @@ namespace SunacCADApp.Controllers
             IList<BasArgumentSetting> ToiletTypes = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.ToiletTypes = ToiletTypes;
             //卫生间门窗位置
-            _where = "TypeCode='BathroomDoorWindowPosition' And ParentID!=0";
+            _where = "TypeCode='DoorWindowPosition' And ParentID!=0";
             IList<BasArgumentSetting> BathroomDoorWindowPositions = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.BathroomDoorWindowPositions = BathroomDoorWindowPositions;
 
@@ -356,7 +356,7 @@ namespace SunacCADApp.Controllers
             IList<BasArgumentSetting> ToiletTypes = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.ToiletTypes = ToiletTypes;
             //卫生间门窗位置
-            _where = "TypeCode='BathroomDoorWindowPosition' And ParentID!=0";
+            _where = "TypeCode='DoorWindowPosition' And ParentID!=0";
             IList<BasArgumentSetting> BathroomDoorWindowPositions = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.BathroomDoorWindowPositions = BathroomDoorWindowPositions;
 

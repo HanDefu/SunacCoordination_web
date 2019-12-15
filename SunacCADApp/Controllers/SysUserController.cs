@@ -107,7 +107,8 @@ namespace SunacCADApp.Controllers
             IList<DataSourceMember> IdmOrginList = BasInstitutionDataDB.GetInnerIdmOrgan();
             ViewBag.IdmOrginList = IdmOrginList;
 
-            IList<Sys_User> lst = Sys_UserDB.GetPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
+           // IList<Sys_User> lst = Sys_UserDB.GetPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
+            IList<Sys_User> lst = Sys_UserDB.GetPageInfoParameterMax2012(_where, _orderby, currentPage, pageSize);
             recordCount = Sys_UserDB.GetPageCountByParameter(_where);
             pageCount = recordCount % pageSize == 0 ? recordCount / pageSize : ((recordCount / pageSize) + 1);
                       
@@ -736,6 +737,36 @@ namespace SunacCADApp.Controllers
             {
                 return Json(new { code = -100, message = "密码修改失败" }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        /// <summary>
+        /// 重置密码
+        /// </summary>
+        /// <returns></returns>
+        /// <URL>SysUser/ChangeBackPassword</URL>
+        public JsonResult ChangeBackPassword() 
+        {
+            if (UserId < 1)
+            {
+                return Json(new { code = -110, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
+            int userId = Request.Form["uid"].ConvertToInt32(0);
+            if (userId == 0) 
+            {
+                return Json(new { code = -110, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
+            string password = "123456";
+            password = CommonLib.UserMd5(password);
+            int flag = Sys_UserDB.ChangePassword(password, userId);
+            if (flag > 0)
+            {
+                return Json(new { code = 100, message = "密码修改成功" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { code = -100, message = "密码修改失败" }, JsonRequestBehavior.AllowGet);
+            }
+
         }
 
         /// <summary>

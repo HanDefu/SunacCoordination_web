@@ -138,16 +138,17 @@
     @if (ViewBag.EndPage != ViewBag.PageCount)
     {
         <a>...</a>
-        <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PageCount">@ViewBag.PageCount</a>
-        <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.NextPage"><i class="fa  fa-angle-right fa-lg"></i></a>
+       <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PageCount&@ViewBag.URL">@ViewBag.PageCount</a>
+      <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.NextPage&@ViewBag.URL"><i class="fa  fa-angle-right fa-lg"></i></a>
     }
     else
     {
+        
         <a class="none"><i class="fa  fa-angle-right fa-lg"></i></a>
     }
 
     <strong>
-        前往<input type="text" class="form-control" value="@ViewBag.CurrentPage">页
+        前往<input type="text" class="form-control page-goto" value="@ViewBag.CurrentPage">页
     </strong>
 </div>
 
@@ -156,11 +157,11 @@
         $(".dl_area span").on("click", function () {
             $(".dl_area span").removeClass("active");
             $(this).addClass("active");
-            window.location.href = "/projectInfo?"+searchparam();
+            window.location.href = "/projectInfo?" + searchparam();
         })
 
         $("#btnSeach").on("click", function () {
-             window.location.href = "/projectInfo?" + searchparam();
+            window.location.href = "/projectInfo?" + searchparam();
         })
 
         $('.operate  a').on("click", function () {
@@ -176,22 +177,27 @@
         })
 
         $('.control-page-size').on('change', function () {
-            window.location.href = "?pagesize=" + $(this).val();
+            window.location.href = "?pagesize=" + $(this).val() + "&@Html.Raw(ViewBag.URL)";
         })
-      
-    })
 
-    var searchparam = function () {
-        let param = '1';
-        let area = $(".dl_area .active").data("areaid");
-        if (!_isNull(area)) {
-            param += '&area=' + area;
-        }
+            $('.page-goto').on('change', function () {
+                let page = $(this).val();
+                window.location.href = "?page=" + page + "&@Html.Raw(ViewBag.URL)&pagesize=@Html.Raw(ViewBag.PageSize)";
+            });
 
-        let keyword = $("input[name='keyword']").val();
-        if (!_isNull(keyword)) {
-             param += '&keyword=' + keyword;
+        })
+
+        var searchparam = function () {
+            let param = '1';
+            let area = $(".dl_area .active").data("areaid");
+            if (!_isNull(area)) {
+                param += '&area=' + area;
+            }
+
+            let keyword = $("input[name='keyword']").val();
+            if (!_isNull(keyword)) {
+                param += '&keyword=' + keyword;
+            }
+            return param;
         }
-        return param;
-    }
 </script>

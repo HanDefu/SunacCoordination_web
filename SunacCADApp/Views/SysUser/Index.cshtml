@@ -172,7 +172,7 @@
                     <th class="text-center">邮箱</th>
                     <th width="120" class="text-center">有效期</th>
                     <th width="60" class="text-center">状态</th>
-                    <th width="120" class="text-center">操作</th>
+                    <th width="160" class="text-center">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -187,7 +187,7 @@
                             <td class="text-center">@row.True_Name</td>
                             <td>@row.CompanyName</td>
                             <td class="text-center">@row.Telephone</td>
-                            <td>@row.Email</td>
+                            <td >@row.Email</td>
                             <td class="text-center">@row.Used_Begin_DateTime.ToShortDateString()</td>
                             <td class="text-center btn-used">
                                 @if (row.Is_Used == "1")
@@ -201,7 +201,18 @@
                             </td>
                             <td class="operate text-center">
                                 <a href="javascript:void(0)" class="handle-modify" data-id="@row.Id" data-internal="@row.Is_Internal">修改</a> |
-                                <a data-id="@row.Id" title="删除" class="handle-delete" href="javascript:void(0)">删除</a>
+                                <a data-id="@row.Id" title="删除" class="handle-delete" href="javascript:void(0)">删除</a> 
+                                |
+                                
+                                @if (row.Is_Internal == 2)
+                                {
+                                    <a data-id="@row.Id" title="重置密码" class="handle-change-password" href="javascript:void(0)">重置密码</a>
+                                }
+                                else
+                                {
+                                    <a data-id="@row.Id" title="重置密码" class="disabled" href="javascript:void(0)">重置密码</a>
+                                }
+                                
                             </td>
                         </tr>
                     }
@@ -240,7 +251,7 @@
         }
         else
         {
-            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PreviousPage"><i class="fa  fa-angle-left fa-lg"></i></a>
+            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PreviousPage&@Html.Raw(ViewBag.URL)"><i class="fa  fa-angle-left fa-lg"></i></a>
         }
 
         @for (int page = ViewBag.StartPage; page <= ViewBag.EndPage; page++)
@@ -251,23 +262,30 @@
             }
             else
             {
-                <a href="?pagesize=@ViewBag.PageSize&page=@page">@page</a>
+                <a href="?pagesize=@ViewBag.PageSize&page=@page&@Html.Raw(ViewBag.URL)">@page</a>
             }
 
         }
         @if (ViewBag.EndPage != ViewBag.PageCount)
         {
             <a>...</a>
-            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PageCount">@ViewBag.PageCount</a>
-            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.NextPage"><i class="fa  fa-angle-right fa-lg"></i></a>
+            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.PageCount&@Html.Raw(ViewBag.URL)">@ViewBag.PageCount</a>
+            <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.NextPage&@Html.Raw(ViewBag.URL)"><i class="fa  fa-angle-right fa-lg"></i></a>
         }
         else
         {
-            <a class="none"><i class="fa  fa-angle-right fa-lg"></i></a>
+            if (ViewBag.PageCount > current)
+            {
+                <a href="?pagesize=@ViewBag.PageSize&page=@ViewBag.NextPage&@Html.Raw(ViewBag.URL)"><i class="fa  fa-angle-right fa-lg"></i></a>
+            }
+            else
+            {
+                <a class="none"><i class="fa  fa-angle-right fa-lg"></i></a>
+            }
         }
 
         <strong>
-            前往<input type="text" class="form-control" value="@ViewBag.CurrentPage">页
+            前往<input type="text" class="form-control page-goto" value="@ViewBag.CurrentPage" data-pagecount="@ViewBag.PageCount">页
         </strong>
     </div>
 </div>
@@ -314,7 +332,7 @@
                 });
 
             }
-          
+
         })
 
         $('.handle-delete').on('click', function () {
@@ -340,9 +358,9 @@
                 layer.msg('非法操作', { icon: 5, shade: false });
             }
         })
-       
+
         $('.table input[name="chk_all"]').on('click', function () {
-          
+
             let checked = $(this).prop("checked");
             $('.table .checkbox').prop('checked', checked);
         })
@@ -367,14 +385,14 @@
                     }
                 }, 'json')
             });
-           
+
         })
 
         $('.btn-disabled').on('click',function () {
             let ids = getObjectId();
             if(ids.length==0)
             {
-                layer.alert("请选择禁用用户", { icon: 5, shade: false });
+                layer.msg("请选择禁用用户", { icon: 5, shade: false });
                 return false;
             }
 
@@ -392,10 +410,19 @@
                 }, 'json')
             });
         })
-       
+
         $('.control-page-size').on('change', function () {
-            window.location.href = "?pagesize=" + $(this).val();
+            window.location.href = "?pagesize=" + $(this).val()+"&@Html.Raw(ViewBag.URL)";
         })
+
+
+
+        $('.page-goto').on('change', function () {
+            let page = $(this).val();
+            let pagecount=$(this).data("pagecount");
+            let currentpage=parseInt(page)<=parseInt(pagecount)?page:pagecount;
+            window.location.href = "?page=" + currentpage + "&@Html.Raw(ViewBag.URL)&pagesize=@Html.Raw(ViewBag.PageSize)";
+        });
 
         $('.btn-used').on('click','b',function () {
             let id = $(this).data('id');
@@ -426,6 +453,17 @@
             window.location.href = "?isinternal=" + usertype + "&roleid=" + roletype + "&institutionid=" + select_institution + "&organ=" + select_idm_organ + "&keyword=" + keyword;
         })
 
+        $('.select-user-type,.roletype').on('change',function(){
+            let usertype = $(".usertype").val();
+            let roletype = $(".roletype").val();
+            let select_institution = $(".select_institution").val();
+            let select_idm_organ = $("#select_idm_organ").val();
+            let keyword = $(".keyword").val();
+            window.location.href = "?isinternal=" + usertype + "&roleid=" + roletype + "&institutionid=" + select_institution + "&organ=" + select_idm_organ + "&keyword=" + keyword;
+        })
+
+
+
         $('.select-user-type').on("change", function () {
             let usertype = $(this).val();
             //if (usertype == '1') {
@@ -437,16 +475,32 @@
             //}
         })
 
+
+        $('.handle-change-password').on("click",function(){
+            let uid=$(this).data('id');
+            layer.confirm("确认密码重置",{title:'修改密码',shade:0,  btn: ['重置密码', '取消'],icon: 3},function(){
+                $.post("/SysUser/ChangeBackPassword", { uid: uid }, function (data) {
+                    if (data.code == 100) {
+                        layer.msg(data.message, function(){
+                            window.location.reload();
+                        });
+                       
+                    } else {
+                        layer.alert(data.message, { icon: 5, shade: false });
+                    }
+                }, 'json')
+            });
+        })
     })
 
 
     var getObjectId = function () {
         let arr_object = new Array();
-         $('.table .checkbox:checked').each(function (i, v) {
+        $('.table .checkbox:checked').each(function (i, v) {
             let checked = $(this).val();
             arr_object.push(checked);
-         })
-         return arr_object.join(',');
+        })
+        return arr_object.join(',');
 
     }
 </script>

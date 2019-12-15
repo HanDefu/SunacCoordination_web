@@ -42,8 +42,8 @@
                         <tr>
                             <td class="text-center">@(i++)</td>
                             <td class="text-center"><a title="@row.Role_Remark" style="color:#808080;text-decoration:none;">@row.Role_Name</a> </td>
-                            <td>
-                                @{
+                            <td class="text-center">
+                            @{
                         IList<Sys_Model> models = Sys_ModelDB.GetSysModeByRoleID(row.Id);
                         List<string> strList = new List<string>();
                         foreach (Sys_Model model in models)
@@ -67,9 +67,9 @@
 
                                 @if (row.Id == 22)
                                 {
-                                    <a href="javascript:void(0)" style="color:#e9e9e9" title="修改">修改</a>
+                                    <a href="javascript:void(0)"  title="修改">修改</a>
                                     <b style="font-weight:normal">|</b>
-                                    <a title="删除" href="javascript:void(0)" style="color:#e9e9e9">删除</a>
+                                    <a title="删除" href="javascript:void(0)">删除</a>
                                 }
                                 else
                                 {
@@ -130,7 +130,7 @@
                                 location.reload();
                             });
                         } else {
-                            layer.alert(data.message, { icon: 5, shade: false });
+                            layer.alert(data.message, { icon: 2, shade: false });
                         }
                     }, 'json');
                 });

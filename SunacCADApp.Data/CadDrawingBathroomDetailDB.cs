@@ -165,7 +165,7 @@ namespace SunacCADApp.Data
                                                                                          c.ArgumentText AS BathroomBasinSizeName,d.ArgumentText AS BathroomClosestoolSizeName 
                                                                              FROM   dbo.CadDrawingBathroomDetail a 
                                                                         LEFT JOIN  dbo.BasArgumentSetting b ON a.BathroomType=b.Id AND b.TypeCode='ToiletType'
-                                                                        LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='BathroomDoorWindowPosition'
+                                                                        LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='DoorWindowPosition'
                                                                         LEFT JOIN  dbo.BasArgumentSetting c ON c.Id=a.BathroomBasinSize AND c.TypeCode='ToiletBasinWidth'
                                                                         LEFT JOIN  dbo.BasArgumentSetting d ON d.Id=a.BathroomClosestoolSize AND d.TypeCode='ClosesToolWidth'
                                                                       WHERE {0}", _where);
@@ -186,7 +186,7 @@ namespace SunacCADApp.Data
                                                           FROM  dbo.CadDrawingBathroomDetail a 
                                                     INNER JOIN  dbo.CaddrawingMaster m ON m.Id=a.MId
                                                      LEFT JOIN  dbo.BasArgumentSetting b ON a.BathroomType=b.Id AND b.TypeCode='ToiletType'
-                                                     LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='BathroomDoorWindowPosition'
+                                                     LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='DoorWindowPosition'
                                                      WHERE m.Id={0}", bathroomId);
             bathroom = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<BPMDynamicBathroom>(new BPMDynamicBathroom());
             string _where = string.Format(@" MId={0}", bathroomId);
@@ -224,7 +224,7 @@ namespace SunacCADApp.Data
                                                           FROM  dbo.CadDrawingBathroomDetail a 
                                                     INNER JOIN  dbo.CaddrawingMaster m ON m.Id=a.MId
                                                      LEFT JOIN  dbo.BasArgumentSetting b ON a.BathroomType=b.Id AND b.TypeCode='ToiletType'
-                                                     LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='BathroomDoorWindowPosition'
+                                                     LEFT JOIN  dbo.BasArgumentSetting ba ON a.BathroomDoorWindowPosition=ba.Id AND ba.TypeCode='DoorWindowPosition'
                                                      LEFT JOIN  dbo.BasArgumentSetting c ON c.Id=a.BathroomBasinSize AND c.TypeCode='ToiletBasinWidth'
                                                      LEFT JOIN  dbo.BasArgumentSetting d ON d.Id=a.BathroomClosestoolSize AND d.TypeCode='ClosesToolWidth' 
                                                      WHERE m.Id={0}", bathroomId);

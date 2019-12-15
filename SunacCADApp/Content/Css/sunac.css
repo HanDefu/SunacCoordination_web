@@ -1479,6 +1479,19 @@ body .layui-ext-sunacskin_01 .layui-layer-btn {
     
     }
 
+    #sunac .panel-table tr td.operate a.disabled {
+       color:#c3c3c2;
+       text-decoration:none;
+
+    }
+
+   #sunac .panel-table tr td.operate a.disabled:hover {
+       color:#c3c3c2;
+       text-decoration:none;
+   }
+
+
+
 #sunac-sub {
      display:block;
      overflow:hidden;
