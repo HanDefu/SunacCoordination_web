@@ -383,14 +383,24 @@ header {
 
             .main .center .list ul li figure img {
                 width: 100%;
-                height: 100%;
-                border: solid 1px #e3e3e3;
+               
             }
 
             .main .center .list ul li figure p {
                 text-align: center;
                 line-height: 35px;
                 margin-bottom: 0px;
+            }
+
+            .main .center .list ul li figure section {
+               display:table-cell;
+               text-align:center;
+               vertical-align:middle;
+               background-color:#212830;
+                border: solid 1px #e3e3e3;
+                overflow:hidden;
+               height:231px;
+
             }
 
             .main .center .list ul li .state {
@@ -443,7 +453,8 @@ header {
             }
 
                 .main .center .view .left-column figure img {
-                    width: 100%;
+                    width: auto;
+                    height:auto;
                     max-height: 200px;
                 }
 

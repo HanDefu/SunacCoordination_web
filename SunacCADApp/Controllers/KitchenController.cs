@@ -26,7 +26,7 @@ namespace SunacCADApp.Controllers
             {
                 return Redirect("/home");
             }
-            string _where = string.Format(@"a.TypeCode='Area' And a.ParentID!=0 {0}", _power_area_where);
+            string _where = string.Format(" a.TypeCode='Area' And a.ParentID!=0 {0}", _power_area_where);
             IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GeBasArgumentSettingAreaByWhere(_where);
             ViewBag.Settings = Settings;
 
@@ -176,7 +176,7 @@ namespace SunacCADApp.Controllers
             {
                 return Redirect("/home");
             }
-            string _where = "TypeCode='Area' And ParentID!=0";
+            string _where = string.Format(" a.TypeCode='Area' And a.ParentID!=0 {0}", _power_area_where);
             IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.Settings = Settings;
 
@@ -365,7 +365,7 @@ namespace SunacCADApp.Controllers
                return  Redirect("/Kitchen/Index");
                 
             }
-            string _where = "TypeCode='Area' And ParentID!=0";
+            string _where = string.Format(" a.TypeCode='Area' And a.ParentID!=0 {0}", _power_area_where);
             IList<BasArgumentSetting> Settings = BasArgumentSettingDB.GetBasArgumentSettingByWhere(_where);
             ViewBag.Settings = Settings;
 

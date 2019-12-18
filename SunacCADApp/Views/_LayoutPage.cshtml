@@ -185,7 +185,30 @@
             $('.power_none').on('click', function () {
                 layer.alert("抱歉，当前用户暂无原型查看权限,请联系管理员开通", {icon:0,title:"权限提示"});
             });
+
+            $(window).resize(function () {
+                resize_load();
+            });
+            resize_load();
         });
+
+
+        function resize_load() {
+            $("figure > section").each(function () {
+                let width = $("figure > section").width();
+                let imgHeight = $("figure > section >img").height();
+                let height = width * (3 / 4);
+                if (imgHeight > height) {
+                    $("figure > section >img").height(height);
+                } else {
+                    $("figure > section").height(height);
+                }
+                
+            });
+          
+
+           
+        }
     </script>
 </head>
 <body>
@@ -253,11 +276,11 @@
                                         {
                                             if (ViewBag.SelectModel == sub.Id)
                                             {
-                                    <a href="@sub.Model_URL" class="selected">@sub.Model_Name</a>
+                                                <a href="@sub.Model_URL" class="selected">@sub.Model_Name</a>
                                             }
                                             else
                                             {
-                                    <a href="@sub.Model_URL">@sub.Model_Name</a>
+                                                <a href="@sub.Model_URL">@sub.Model_Name</a>
                                             }
 
                                         }

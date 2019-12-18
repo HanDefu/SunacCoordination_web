@@ -30,5 +30,12 @@ namespace SunacCADApp.Entity
         /// 城市公司
         /// </summary>
         public string CityCompany { get; set; }
+
+        public string Creator { get; set; }
+        public DateTime CreateTime { get; set; }
+
+
+        public string Updator { get; set; }
+        public DateTime UpdateTime { get; set; }
     }
 }

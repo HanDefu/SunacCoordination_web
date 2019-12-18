@@ -56,8 +56,8 @@ namespace SunacCADApp.Data
         public static IList<BasArgumentSetting> GetBasArgumentSettingByWhere(string _wh)
         {
             IList<BasArgumentSetting> _basargumentsettings = new List<BasArgumentSetting>();
-            string _sql = string.Format(@"select Id,ArgumentText,TypeCode,TypeName,ParentID from BasArgumentSetting  
-                                                          where Enabled=1 and  {0} order by ModifiedOn asc", _wh);
+            string _sql = string.Format(@"select a.Id,a.ArgumentText,a.TypeCode,a.TypeName,a.ParentID from BasArgumentSetting  a
+                                                          where a.Enabled=1 and  {0} order by a.ModifiedOn asc", _wh);
             _basargumentsettings = MsSqlHelperEx.ExecuteDataTable(_sql).ConvertListModel<BasArgumentSetting>(new BasArgumentSetting());
             return _basargumentsettings;
         }
