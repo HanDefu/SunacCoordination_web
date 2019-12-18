@@ -125,7 +125,7 @@ namespace SunacCADApp.Data
 
 
             string _wh = string.IsNullOrEmpty(editparam) ? " and id=" + sys_user.Id : editparam;
-            string sql = "UPDATE [dbo].[Sys_User] SET [True_Name]='" + sys_user.True_Name + "',[Telephone]='" + sys_user.Telephone + "',[Email]='" + sys_user.Email + "',[Is_Used]='" + sys_user.Is_Used + "',[Used_Begin_DateTime]='" + sys_user.Used_Begin_DateTime + "',[Used_End_DateTime]='" + sys_user.Used_End_DateTime + "',[Is_Internal]='" + sys_user.Is_Internal + "',[Orgnazation_Name]='" + sys_user.Orgnazation_Name + "',[CompanyID]=" + sys_user.CompanyID + ",[RoleID]=" + sys_user.RoleID + ",[AreaID]=" + sys_user.AreaID + ",[Enabled]=" + sys_user.Enabled + ",[Reorder]=" + sys_user.Reorder + ",[ModifiedUserId]=" + sys_user.ModifiedUserId + ",[ModifiedBy]='" + sys_user.ModifiedBy + "',[UserDeptNo]='"+sys_user.UserDeptNo+"'  where 1=1 " + _wh;
+            string sql = "UPDATE [dbo].[Sys_User] SET [True_Name]='" + sys_user.True_Name + "',[Telephone]='" + sys_user.Telephone + "',[Email]='" + sys_user.Email + "',[Is_Used]='" + sys_user.Is_Used + "',[Used_Begin_DateTime]='" + sys_user.Used_Begin_DateTime + "',[Used_End_DateTime]='" + sys_user.Used_End_DateTime + "',[Is_Internal]='" + sys_user.Is_Internal + "',[Orgnazation_Name]='" + sys_user.Orgnazation_Name + "',[CompanyID]=" + sys_user.CompanyID + ",[RoleID]=" + sys_user.RoleID + ",[AreaID]=" + sys_user.AreaID + ",[Enabled]=" + sys_user.Enabled + ",[Reorder]=" + sys_user.Reorder + ",[ModifiedUserId]=" + sys_user.ModifiedUserId + ",[ModifiedBy]='" + sys_user.ModifiedBy + "',[UserDeptNo]='" + sys_user.UserDeptNo + "'  CreateOn=GETDATE(),ModifiedOn=GETDATE() where 1=1 " + _wh;
             return MsSqlHelperEx.Execute(sql);
         }
 

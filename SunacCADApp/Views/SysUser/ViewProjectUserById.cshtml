@@ -58,14 +58,14 @@
                             string _used = int.Parse(IsUsed) == 1 ? "开启" : "禁用";
                             
                             <tr>
-                                <td>@(++i)</td>
+                                <td style="text-align:left;padding-left:8px">@(++i)</td>
                                 <td>@user.User_Name</td>
                                 <td>@user.True_Name</td>
                                 <td>@user.CompanyName</td>
                                 <td>@user.Telephone</td>
                                 <td>@user.Email</td>
                                 <td>@user.Used_End_DateTime.ToShortDateString()</td>
-                                <td>@_used</td>
+                                <td style="text-align:right;padding-left:8px">@_used</td>
                             </tr>
                           
                         }

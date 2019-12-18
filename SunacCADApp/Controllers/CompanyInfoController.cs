@@ -39,7 +39,7 @@ namespace SunacCADApp.Controllers
             string _orderby = string.Empty;  //排序
             string _url = "1";
             int recordCount = 0;    //记录总数
-            int pageSize = 15;      //每页条数
+            int pageSize = 10;      //每页条数
             int currentPage = 0;    //当前页数
             int pageCount = 0;      //总页数
             int startRowNum = 0;    //开始行数
@@ -52,7 +52,7 @@ namespace SunacCADApp.Controllers
             if (!string.IsNullOrEmpty(companyname))
             {
                 _where += " and  InsName like '" + companyname + "%'";
-                _url += "&InsName=" + companyname;
+                _url += "&keyword=" + companyname;
             }
             ViewBag.Keyword = companyname;
             //IList<BaseCompanyInfo> lst = BaseCompanyInfoDB.GetPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);

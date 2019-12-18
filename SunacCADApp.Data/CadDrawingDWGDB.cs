@@ -124,15 +124,17 @@ namespace SunacCADApp.Data
 
         public static IList<Drawing> GetDrawingByWhere(string where) 
         {
+            string webURL = API_Common.GlobalParam("WebURL");
             IList<Drawing> _drawing = new  List<Drawing>();
-            string sql = string.Format(@"SELECT Id,DWGPath AS ImgPath,CADPath,FileClass,CADType FROM dbo.CadDrawingDWG WHERE {0}", where);
+            string sql = string.Format(@"SELECT Id, CONCAT('{0}',DWGPath) AS ImgPath,CONCAT('{0}',CADPath) AS CADPath,  FileClass,CADType FROM dbo.CadDrawingDWG WHERE {1}",webURL, where);
             _drawing = MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<Drawing>(new Drawing());
             return _drawing;
         }
         public static Drawing GetDrawingSingeByWhere(string where)
         {
+            string webURL = API_Common.GlobalParam("WebURL");
             Drawing _drawing = new Drawing();
-            string sql = string.Format(@"SELECT  ISNULL(Id,0) AS  Id ,ISNULL(DWGPath,'') AS ImgPath, ISNULL(CADPath,'') AS CADPath FROM dbo.CadDrawingDWG WHERE {0}", where);
+            string sql = string.Format(@"SELECT  ISNULL(Id,0) AS  Id ,CONCAT('{1}',DWGPath)  AS ImgPath, CONCAT('{1}',CADPath) AS CADPath FROM dbo.CadDrawingDWG WHERE {0}", where,webURL);
             _drawing = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<Drawing>(new Drawing());
             return _drawing;
         }

@@ -20,7 +20,7 @@ namespace SunacCADApp
         {
 
             
-            string beginDate = DateTime.Now.AddDays(-1).ToString("yyyy-mm-dd");
+            string beginDate = DateTime.Now.AddDays(-3).ToString("yyyy-mm-dd");
             string endDate = DateTime.Now.ToString("yyyy-mm-dd");
 
             WebService.IDM.Public.Header head = new WebService.IDM.Public.Header();
@@ -37,6 +37,15 @@ namespace SunacCADApp
             WebService.IDM.Public.PUBLIC_SUNAC_301_queryIdmOrgData_pttbindingQSService service = new WebService.IDM.Public.PUBLIC_SUNAC_301_queryIdmOrgData_pttbindingQSService();
             service.commonHeader = head;
             service.PUBLIC_SUNAC_301_queryIdmOrgData(dto, out  list);
+            string loginfo = string.Empty;
+            Sys_Operate_Log log = new Sys_Operate_Log
+            {
+                SysTypeCode = 10,
+                SysTypeName = string.Format("QueryIdmOrgData接口获取 beginDate={0},endDate={1}",beginDate,endDate),
+                LogInfo = list,
+                CreateBy = " 系统获取",
+            };
+            SysOperateLogDB.AddHandle(log);
             int returnVal = GetOrgPublicList(list);
             return returnVal;
         }
@@ -82,20 +91,31 @@ namespace SunacCADApp
         public static int ReaderIDMUser()
         {
 
+            string beginDate = string.Concat(DateTime.Now.AddDays(-2).ToString("yyyy-MM-dd"), " 00:00:00.000");
+            string endDate = string.Concat(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"), " 00:00:00.000");
             WebService.Idm.User.Header header = new WebService.Idm.User.Header();
             header.ACCOUNT = "idmadmin";
             header.PASSWORD = "idmpass";
             header.BIZTRANSACTIONID = "vsheji";
             WebService.Idm.User.queryDto dto = new WebService.Idm.User.queryDto();
-            dto.beginDate = "2016-12-09 00:00:00.000";
-            dto.endDate = "2016-12-10 00:00:00.000";
+            dto.beginDate = beginDate;
+            dto.endDate = endDate;
             dto.systemID = "CADSJXTUser";
             dto.pageNo = "1";
-            dto.pageRowNo = "20";
+            dto.pageRowNo = "40";
             string list = "";
             WebService.Idm.User.PUBLIC_SUNAC_300_queryIdmUserData_pttbindingQSService service = new WebService.Idm.User.PUBLIC_SUNAC_300_queryIdmUserData_pttbindingQSService();
             service.commonHeader = header;
             WebService.Idm.User.HEADER head = service.PUBLIC_SUNAC_300_queryIdmUserData(dto, out list);
+            string loginfo = string.Empty;
+            Sys_Operate_Log log = new Sys_Operate_Log
+            {
+                SysTypeCode = 10,
+                SysTypeName = string.Format("QueryIdmUserData接口获取 beginDate={0},endDate={1}", beginDate, endDate),
+                LogInfo = list,
+                CreateBy = " 系统获取",
+            };
+            SysOperateLogDB.AddHandle(log);
             return AddSysUser(list);
         }
 
@@ -134,6 +154,7 @@ namespace SunacCADApp
                         Sys_User _user = Sys_UserDB.GetSingleEntityById(userId);
                         user.Used_Begin_DateTime = _user.Used_Begin_DateTime;
                         user.Used_End_DateTime = _user.Used_End_DateTime;
+                        user.CreateOn = DateTime.Now;
                         user.Is_Used = _user.Is_Used;
                         user.Is_Internal = _user.Is_Internal;
                         Sys_UserDB.EditHandle(user,string.Empty);

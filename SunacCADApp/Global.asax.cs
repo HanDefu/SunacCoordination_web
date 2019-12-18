@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using SunacCADApp.Library;
 
 
 
@@ -22,7 +23,13 @@ namespace SunacCADApp
 
         protected void Global_ExecuteTask(object sender, System.Timers.ElapsedEventArgs e)
         {
-            SunacCADApp.Data.Test_Helper_Db.AddHelper();
+            string execute = DateTime.Now.ToString("HH:mm");
+            string exceDateTime = API_Common.GlobalParam("ExceDateTime");
+            if (exceDateTime == execute) 
+            {
+                IdmPublicService.ReaderIDMPublic();
+                IdmPublicService.ReaderIDMUser();
+            }
         }
     }
 }

@@ -74,7 +74,7 @@ namespace SunacCADApp.Controllers
                     InitUtility.Instance.InitSessionHelper.Add("UserName",user.User_Name);
                     InitUtility.Instance.InitSessionHelper.Add("RoleId", roleId);
                     InitUtility.Instance.InitSessionHelper.Add("IsInternal", isInternal);
-                    return Json(new { code = 100, message = "内部用户登陆成功" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { code = 100, message = "外部用户登陆成功" }, JsonRequestBehavior.AllowGet);
                 }
             }
             else if (user.Is_Internal == 1)
@@ -107,7 +107,7 @@ namespace SunacCADApp.Controllers
                         InitUtility.Instance.InitSessionHelper.Add("RoleId", roleId);
                         InitUtility.Instance.InitSessionHelper.Add("IsInternal", isInternal);
                         string errorText = jO["errorText"].ConventToString(string.Empty);
-                        return Json(new { code = 100, message = "外部用户登陆成功" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { code = 100, message = "内部用户登陆成功" }, JsonRequestBehavior.AllowGet);
                     }
                     else if (successCode == "N") 
                     {

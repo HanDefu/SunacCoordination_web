@@ -131,34 +131,26 @@ namespace SunacCADApp.Test
        
         private void btn_login_Click(object sender, EventArgs e)
         {
-            String ServerUrl = "http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUNAC_392_validatePwd_PS?wsdl";//得到WebServer地址
+            string username="v-yuanxz";
+            string pwd = "Vyxz1234";
+           string webURL = "http://192.168.2.219:8002/WP_SUNAC/APP_RYG_SERVICES/Proxy_Services/TA_EOP/RYG_SUNAC_486_ValidatePwd_PS";
+                HttpWebRequest request = WebRequest.Create(webURL) as HttpWebRequest;
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                string data = "{\n\"username\": " + username + ",\n\"password\": " + pwd + "\n}";
+                byte[] byteData = UTF8Encoding.UTF8.GetBytes(data.ToString());
+                request.ContentLength = byteData.Length;
+                using (Stream postStream = request.GetRequestStream())
+                {
+                    postStream.Write(byteData, 0, byteData.Length);
+                }
 
-            string xml = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope\" \r\n" +
-                               "    xmlns:v1=\"http://www.ekingwin.com/esb/header/v1\" \r\n" +
-                               "    xmlns:idm=\"http://www.ekingwin.com/esb/IDM_SUNAC_392_validatePwd\"> \r\n" +
-                               "       <soapenv:Header>\r\n" +
-                               "              <v1:commonHeader>\r\n" +
-                               "                  <v1:BIZTRANSACTIONID>dd</v1:BIZTRANSACTIONID>\r\n" +
-                              "                   <v1:COUNT>?</v1:COUNT>\r\n" +
-                              "                   <v1:CONSUMER>?</v1:CONSUMER>\r\n" +
-                              "                   <v1:SRVLEVEL>?</v1:SRVLEVEL>\r\n" +
-                               "                  <v1:ACCOUNT>idmadmin</v1:ACCOUNT>\r\n" +
-                              "                   <v1:PASSWORD>idmpass</v1:PASSWORD>\r\n" +
-                              "               </v1:commonHeader>\r\n" +
-                              "        </soapenv:Header>\r\n" +
-                              "        <soapenv:Body>\r\n" +
-                               "              <idm:IDM_SUNAC_392_validatePwd>\r\n" +
-                               "                    <idm:user>\r\n" +
-                               "                       <idm:password>123423</idm:password>\r\n" +
-                               "                       <idm:username>456546</idm:username>\r\n" +
-                               "                  </idm:user>\r\n" +
-                               "             </idm:IDM_SUNAC_392_validatePwd>\r\n" +
-                               "        </soapenv:Body>\r\n" +
-                               "</soapenv:Envelope>\r\n";
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+                    string rescontent = reader.ReadToEnd();
 
-            string rxml = GetSOAPReSource(ServerUrl,xml);
-
-
+                }
         }
 
         private void button4_Click(object sender, EventArgs e)

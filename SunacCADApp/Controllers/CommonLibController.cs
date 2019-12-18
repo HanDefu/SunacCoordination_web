@@ -76,11 +76,11 @@ namespace SunacCADApp.Controllers
                 bool ispath = System.IO.File.Exists(imgpath);
                 if (ispath)
                 {
-                    return Json(new { Code = 100, Message = "CAD文件上传成功", CadPath = mycadpath, ImgPath = myimgpath,FileName=cadFileName });
+                    return Json(new { Code = 100, Message = "CAD文件上传成功", CadPath = mycadpath, ImgPath = myimgpath, FileName = cadFileName }, JsonRequestBehavior.AllowGet);
                 }
                 else 
                 {
-                    return Json(new { Code = -100, Message = "CAD生成缩图生成失败"});
+                    return Json(new { Code = -100, Message = "CAD生成缩图生成失败" }, JsonRequestBehavior.AllowGet);
                 }
 
                 
@@ -88,8 +88,40 @@ namespace SunacCADApp.Controllers
             catch (Exception ex) 
             {
                 string exMessage = ex.Message;
-                return Json(new { Code = 100, Message = ex.Message });
+                return Json(new { Code = 100, Message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
+        }
+        
+        /// <summary>
+        ///  /CommonLib/UpFile
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public ActionResult UpFileExt() 
+        {
+            string uploader = Server.MapPath("~/uploader");
+            string year = DateTime.Now.Year.ToString();
+            string date = DateTime.Now.Month.ToString();
+            string day = DateTime.Now.Day.ToString();
+
+            string cadpath = Path.Combine(uploader, "cad", year, date, day);
+            string imgpath = Path.Combine(uploader, "img", year, date, day);
+            string guid = Guid.NewGuid().ToString();
+            string my_image_name = guid + ".jpg";
+
+
+            
+            if(!Directory.Exists(cadpath))
+            {
+                Directory.CreateDirectory(cadpath);
+            }
+            return Json(new { Code = -100, Message = "CAD生成缩图生成失败", cadpath = cadpath, imgpath = imgpath, uploader = uploader }, JsonRequestBehavior.AllowGet);
+            if (!Directory.Exists(imgpath))
+            {
+                Directory.CreateDirectory(imgpath);
+            }
+            return Json(new { Code = -100, Message = "CAD生成缩图生成失败", cadpath = cadpath, imgpath = imgpath }, JsonRequestBehavior.AllowGet);
+            
         }
 
         public ActionResult DownFile(string filepath = "") 
@@ -126,11 +158,11 @@ namespace SunacCADApp.Controllers
             string code = CadDrawingMasterDB.HasDrawingCode(drawingCode);
             if (string.IsNullOrEmpty(code))
             {
-                return Json(new { Code = 100, Message =drawingCode+"系统中不存在" });
+                return Json(new { Code = 100, Message =drawingCode+"系统中不存在" },JsonRequestBehavior.AllowGet);
             }
             else 
             {
-                return Json(new { Code = -100, Message = drawingCode + "系统中已存在,请更换" });
+                return Json(new { Code = -100, Message = drawingCode + "系统中已存在,请更换" }, JsonRequestBehavior.AllowGet);
             }
         }
 
