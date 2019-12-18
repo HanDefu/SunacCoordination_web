@@ -63,13 +63,19 @@ namespace SunacCADApp.Controllers
             
             if (!string.IsNullOrEmpty(keyword))
             {
-                _where += " and  (a.[User_Name] like '" + keyword + "%' OR a.[True_Name] like '" + keyword + "%') ";
+                _where += " and  (a.[User_Name] like '%" + keyword + "%' OR a.[True_Name] like '%" + keyword + "%') ";
                 _url += "keyword=" + keyword + "&";
             }
             ViewBag.keyword = keyword;
             string isinternal = HttpUtility.UrlDecode(Request.QueryString["isinternal"]);
             if (!string.IsNullOrEmpty(isinternal))
             {
+                _where += " and  a.Is_Internal='" + isinternal + "'";
+                _url += "isinternal=" + isinternal + "&";
+            }
+            else 
+            {
+                isinternal = "1";
                 _where += " and  a.Is_Internal='" + isinternal + "'";
                 _url += "isinternal=" + isinternal + "&";
             }

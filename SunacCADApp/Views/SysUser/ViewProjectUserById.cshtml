@@ -39,14 +39,14 @@
             <table class="table" id="product-table">
                 <thead>
                     <tr>
-                        <th width="60">序号</th>
-                        <th width="100">账户</th>
-                        <th width="100">姓名</th>
-                        <th>机构</th>
-                        <th width="100">手机号</th>
-                        <th width="200">邮箱</th>
-                        <th width="90">有效期</th>
-                        <th width="60">状态</th>
+                        <th width="60" class="text-center">序号</th>
+                        <th width="100" class="text-center">账户</th>
+                        <th width="100" class="text-center">姓名</th>
+                        <th class="text-center">机构</th>
+                        <th width="100" class="text-center">手机号</th>
+                        <th width="200" class="text-center">邮箱</th>
+                        <th width="90" class="text-center">有效期</th>
+                        <th width="60" class="text-center">状态</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,14 +58,14 @@
                             string _used = int.Parse(IsUsed) == 1 ? "开启" : "禁用";
                             
                             <tr>
-                                <td style="text-align:left;padding-left:8px">@(++i)</td>
-                                <td>@user.User_Name</td>
-                                <td>@user.True_Name</td>
+                                <td style="text-align:center;padding-left:8px">@(++i)</td>
+                                <td class="text-center">@user.User_Name</td>
+                                <td class="text-center">@user.True_Name</td>
                                 <td>@user.CompanyName</td>
-                                <td>@user.Telephone</td>
+                                <td class="text-center">@user.Telephone</td>
                                 <td>@user.Email</td>
                                 <td>@user.Used_End_DateTime.ToShortDateString()</td>
-                                <td style="text-align:right;padding-left:8px">@_used</td>
+                                <td style="text-align:center;padding-left:8px">@_used</td>
                             </tr>
                           
                         }

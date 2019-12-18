@@ -229,10 +229,26 @@ namespace SunacCADApp.Controllers
                 }
                 CadDrawingMaster caddrawingmaster = new CadDrawingMaster();
                 string drawingcode = Request.Form["txt_drawingcode"].ConventToString(string.Empty);
-                string hasDrawingCode = CadDrawingMasterDB.HasDrawingCode(drawingcode);
-                if (!string.IsNullOrEmpty(hasDrawingCode))
+                string _where = string.Format(@"  And DrawingCode='{0}'",drawingcode);
+                CadDrawingMaster hasMaster = CadDrawingMasterDB.GetSingleEntityByparam(_where);
+                if (hasMaster.Id> 0 && hasMaster.BillStatus==0)
                 {
-                    return Json(new { code = -110, message = "原型已增加" }, JsonRequestBehavior.AllowGet);
+                    string _deletewhere = string.Format("  a.MId={0}", hasMaster.Id);
+                    IList<CadDrawingDWG> CadDwgs = CadDrawingDWGDB.GetPageInfoByParameter(_deletewhere, string.Empty, 0, 50);
+                    foreach (CadDrawingDWG cadDwg in CadDwgs)
+                    {
+                        string cadpath = cadDwg.CADPath;
+                        string mapCadPath = Server.MapPath(cadpath);
+                        System.IO.File.Delete(mapCadPath);
+                        string imgpath = cadDwg.DWGPath;
+                        string mapImgPath = Server.MapPath(imgpath);
+                        System.IO.File.Delete(mapImgPath);
+                    }
+                    CadDrawingWindowDetailDB.DeleteHandleById(hasMaster.Id);
+                }
+                else if (hasMaster.Id > 0 && hasMaster.BillStatus != 0) 
+                {
+                    return Json(new { code = -110, message = "原型已提交审核" }, JsonRequestBehavior.AllowGet);
                 }
 
                 string filenames = Request.Form["txt_filename"].ConventToString(string.Empty);

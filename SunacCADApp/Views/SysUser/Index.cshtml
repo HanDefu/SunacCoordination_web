@@ -185,9 +185,9 @@
                             <td class="text-center">@(i++)</td>
                             <td class="text-center">@row.User_Name</td>
                             <td class="text-center">@row.True_Name</td>
-                            <td>@row.CompanyName</td>
+                            <td  style="padding-left:40px;">@row.CompanyName</td>
                             <td class="text-center">@row.Telephone</td>
-                            <td >@row.Email</td>
+                            <td style="padding-left:100px;">@row.Email</td>
                             <td class="text-center">@row.Used_Begin_DateTime.ToShortDateString()</td>
                             <td class="text-center btn-used">
                                 @if (row.Is_Used == "1")
@@ -481,7 +481,7 @@
             layer.confirm("确认密码重置",{title:'修改密码',shade:0,  btn: ['重置密码', '取消'],icon: 3},function(){
                 $.post("/SysUser/ChangeBackPassword", { uid: uid }, function (data) {
                     if (data.code == 100) {
-                        layer.msg(data.message, function(){
+                        layer.msg(data.message,{isOutAnim:false}, function(){
                             window.location.reload();
                         });
                        

@@ -246,7 +246,7 @@ namespace SunacCADApp.Controllers
             int UserCount = SysRoleDB.HasUserCountByRoleId(Id);
             if (UserCount > 0) 
             {
-                return Json(new { code = -101, message = "角色已存在用户，请先删除用户在删除角色" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = -101, message = "此角色不能删除" }, JsonRequestBehavior.AllowGet);
             }
             int rtv = SysRoleDB.DeleteHandleById(Id);
             string _wh = string.Format(" Role_Id='{0}'",Id);
