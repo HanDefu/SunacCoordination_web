@@ -7,6 +7,7 @@
     int pageCount = ViewBag.PageCount;
     int recordCount = ViewBag.RecordCount;
     int current = ViewBag.CurrentPage;
+    IList<Sys_Operate_Log> logs = ViewBag.List;
 }
 
 <div id="sunac" style="min-width:1024px;">
@@ -41,20 +42,37 @@
                     <th width="50" class="text-center">序号</th>
                     <th width="100" class="text-center">用户名</th>
                     <th class="text-center">信息内容</th>
-                    <th width="120" class="text-center">日期</th>
+                    <th width="180" class="text-center">日期</th>
                     <th width="120" class="text-center">操作</th>
                 </tr>
             </thead>
             <tbody>
-              
+                @{
+                    int i = 1;
+                    foreach (Sys_Operate_Log log in logs)
+                    {
+                      
+                        <tr>
+
+                            <td align="center"><input type="checkbox" class="checkbox" value="@log.Id" /></td>
+                            <td class="text-center">@(i++)</td>
+                            <td class="text-center">@log.CreateBy</td>
+                            <td>@log.LogDesc</td>
+                            <td class="text-center">@log.CreateOn</td>
+                            <td class="operate text-center">
+                                <a data-code="@log.Id" href="javascript:void(0)">删除</a>
+                            </td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
-        @*@if (users.Count == 0)
+        @if (logs.Count == 0)
         {
             <div class="no-record" style="padding-top:0px;padding-bottom:0px;">
                 暂无记录信息
             </div>
-        }*@
+        }
     </div>
     <div class="row" id="sunac-paging">
         <b>共<span>@ViewBag.recordCount</span>条</b>

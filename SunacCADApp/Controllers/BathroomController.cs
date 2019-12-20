@@ -13,8 +13,16 @@ namespace SunacCADApp.Controllers
 {
     public class BathroomController : MyController
     {
+        int logCode = 40;
+        string logName = "卫生间原型";
+        string logInfo = string.Empty;
+        string logDesc = string.Empty;
+        string createBy = string.Empty;
+        int createUserId = 0;
         public BathroomController()
         {
+            createBy = UserName;
+            createUserId = UserId;
             ViewBag.SelectModel = 9;
         }
         // GET:  /bathroom/index
@@ -369,6 +377,9 @@ namespace SunacCADApp.Controllers
 
                 if (mId > 0 && detailId > 0)
                 {
+                    string ipAddress = ClientPublicLib.GetLoginIp();
+                    logDesc = string.Format(@"{0}；DrawingCode:{1};IP:{2};", "卫生间原型添加", drawingcode, ipAddress);
+                    SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                     return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -462,6 +473,7 @@ namespace SunacCADApp.Controllers
                 string drawingtype = Request.Form["hid_drawing_type"].ConventToString(string.Empty);
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
                 int Id = Request.Form["Id"].ConvertToInt32(0);
+                string drawingcode = Request.Form["hid_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingCode = Request.Form["hid_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
                 caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
@@ -550,6 +562,9 @@ namespace SunacCADApp.Controllers
 
                 if (mId > 0 && detailId > 0)
                 {
+                    string ipAddress = ClientPublicLib.GetLoginIp();
+                    logDesc = string.Format(@"{0}；DrawingCode:{1};IP:{2};", "卫生间原型修改", drawingcode, ipAddress);
+                    SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                     return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -605,6 +620,9 @@ namespace SunacCADApp.Controllers
             int rtv = CadDrawingBathroomDetailDB.DeleteHandleById(Id);
             if (rtv > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；DrawingId:{1};IP:{2};", "卫生间原型修改", Id, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "删除成功" }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -675,6 +693,9 @@ namespace SunacCADApp.Controllers
                 returnValue = BPMOperationCommonLib.CadWindowBPMWriteSAPXmlToBPM(BSID, BTID, BOID, Bsxml, bpmprocinstid, UserCode);
                 if (returnValue == 100)
                 {
+                    string ipAddress = ClientPublicLib.GetLoginIp();
+                    logDesc = string.Format(@"{0}；DrawingId:{1};IP:{2};", "卫生间原型提交", Id, ipAddress);
+                    SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                     return Json(new { code = 110, message = "提交成功", BSID = BSID, BTID = BTID, BOID = BOID }, JsonRequestBehavior.AllowGet);
                 }
                 else

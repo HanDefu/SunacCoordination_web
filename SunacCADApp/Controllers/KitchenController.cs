@@ -13,8 +13,16 @@ namespace SunacCADApp.Controllers
 {
     public class KitchenController : MyController
     {
+        int logCode = 30;
+        string logName = "厨房原型";
+        string logInfo = string.Empty;
+        string logDesc = string.Empty;
+        string createBy = string.Empty;
+        int createUserId = 0;
         public KitchenController()
         {
+            createBy = UserName;
+            createUserId = UserId;
             ViewBag.SelectModel = 8;
         }
 
@@ -360,6 +368,9 @@ namespace SunacCADApp.Controllers
                 }
                 if (kitchenid > 0)
                 {
+                    string ipAddress = ClientPublicLib.GetLoginIp();
+                    logDesc = string.Format(@"{0}；DrawingCode:{1};IP:{2};", "厨房原型添加", drawingcode, ipAddress);
+                    SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                     return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else 
@@ -459,6 +470,7 @@ namespace SunacCADApp.Controllers
                 string areaid = Request.Form["checkbox_areaid"].ConventToString(string.Empty);
                 int Id = Request.Form["hid_id"].ConvertToInt32(0);
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
+                string drawingcode = Request.Form["hid_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingCode = Request.Form["hid_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
                 caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
@@ -541,6 +553,9 @@ namespace SunacCADApp.Controllers
                 int kitchenid = CadDrawingKitchenDetailDB.AddHandle(kitchen);
                 if (kitchenid > 0)
                 {
+                    string ipAddress = ClientPublicLib.GetLoginIp();
+                    logDesc = string.Format(@"{0}；DrawingCode:{1};IP:{2};", "厨房原型修改", drawingcode, ipAddress);
+                    SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                     return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -570,6 +585,7 @@ namespace SunacCADApp.Controllers
                 return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
             }
             int Id = Request.Form["id"].ConvertToInt32(0);
+            string drawingcode = Request.Form["id"];
             string billstatus = Request.Form["billstatus"];
             string bpmprocinstid = Request.Form["bpmprocinstid"];
             string UserCode = UserName;
@@ -598,6 +614,9 @@ namespace SunacCADApp.Controllers
             int rtv = CadDrawingKitchenDetailDB.DeleteHandleById(Id);
             if (rtv > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；DrawingCode:{1};IP:{2};", "厨房原型删除", drawingcode, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "删除成功" }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -655,6 +674,7 @@ namespace SunacCADApp.Controllers
             {
                 string BTID = "P31";
                 string BOID = kitchenID.ConventToString("0");
+                string drawingcode = BOID;
                 WeService.BPM.WriteSAP.I_REQUEST request = new WeService.BPM.WriteSAP.I_REQUEST();
                 IList<WeService.BPM.WriteSAP.REQ_ITEM> peq_item = new List<WeService.BPM.WriteSAP.REQ_ITEM>();
                 WeService.BPM.WriteSAP.REQ_ITEM item = new WeService.BPM.WriteSAP.REQ_ITEM();
@@ -680,6 +700,9 @@ namespace SunacCADApp.Controllers
                 returnValue = BPMOperationCommonLib.CadWindowBPMWriteSAPXmlToBPM(BSID, BTID, BOID, BPMXml, bpmprocinstid, UserCode);
                 if (returnValue == 100)
                 {
+                    string ipAddress = ClientPublicLib.GetLoginIp();
+                    logDesc = string.Format(@"{0}；DrawingCode:{1};IP:{2};", "厨房原型提交", drawingcode, ipAddress);
+                    SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                     return Json(new { code = 110, message = "提交成功", BSID = BSID, BTID = BTID, BOID = BOID }, JsonRequestBehavior.AllowGet);
                 }
                 else

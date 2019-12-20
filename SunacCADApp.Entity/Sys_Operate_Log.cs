@@ -28,6 +28,10 @@ namespace SunacCADApp.Entity
         public string LogInfo { get; set; }
 
         /// <summary>
+        /// 日志记录说明
+        /// </summary>
+        public string LogDesc { get; set; }
+        /// <summary>
         /// 是否有效
         ///</summary>
         public int Enabled { get; set; }

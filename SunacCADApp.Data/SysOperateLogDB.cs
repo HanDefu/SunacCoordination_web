@@ -72,11 +72,26 @@ namespace SunacCADApp.Data
         {
 
 
-            string sql = string.Format(@"INSERT INTO dbo.sys_operate_log(SysTypeCode,SysTypeName,LogInfo,
+            string sql = string.Format(@"INSERT INTO dbo.sys_operate_log(SysTypeCode,SysTypeName,LogInfo,LogDesc,
                                                                              Enabled ,CreateOn ,CreateUserId ,CreateBy)  
-                                                                VALUES ({0},'{1}','{2}',{3},getdate(),{4},'{5}')", sys_operate_log.SysTypeCode, sys_operate_log.SysTypeName, 
-                                                                    sys_operate_log.LogInfo, sys_operate_log.Enabled, sys_operate_log.CreateUserId, sys_operate_log.CreateBy);
+                                                                VALUES ({0},'{1}','{2}','{3}',{4},getdate(),{5},'{6}')", sys_operate_log.SysTypeCode, sys_operate_log.SysTypeName,
+                                                                    sys_operate_log.LogInfo, sys_operate_log.LogDesc, sys_operate_log.Enabled, sys_operate_log.CreateUserId, sys_operate_log.CreateBy);
             return MsSqlHelperEx.Execute(sql);
+        }
+
+        public static int SaveLogHandle(int logCode, string logName, string logInfo, string logDesc, string createBy, int CreateUserId)
+        {
+            Sys_Operate_Log log = new Sys_Operate_Log
+            {
+                SysTypeCode=logCode,
+                SysTypeName=logName,
+                LogInfo=logInfo,
+                LogDesc=logDesc,
+                CreateBy=createBy,
+                CreateUserId=CreateUserId
+            };
+           return  AddHandle(log);
+
         }
         ///<summary>
         /// 系统操作日志-修改方法

@@ -14,8 +14,16 @@ namespace SunacCADApp.Controllers
     public class AirconditionerController : MyController
     {
 
+        int logCode = 60;
+        string logName = "空调原型";
+        string logInfo = string.Empty;
+        string logDesc = string.Empty;
+        string createBy = string.Empty;
+        int createUserId = 0;
         public AirconditionerController() 
         {
+            createBy = UserName;
+            createUserId = UserId;
             ViewBag.SelectModel = 10;
         }
         // GET: /airconditioner/Index
@@ -366,6 +374,9 @@ namespace SunacCADApp.Controllers
                 }
                 if (rtv > 0 && mId > 0)
                 {
+                    string ipAddress = ClientPublicLib.GetLoginIp();
+                    logDesc = string.Format(@"{0}；DrawingCode:{1};IP:{2};", "冰箱原型添加",drawingcode,ipAddress);
+                    SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                     return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -461,6 +472,7 @@ namespace SunacCADApp.Controllers
                 string filenames = Request.Form["txt_filename"].ConventToString(string.Empty);
                 string drawingtype = Request.Form["hid_drawing_type"].ConventToString(string.Empty);
                 int DynamicType = Request.Form["radio_module"].ConvertToInt32(0);
+                string drawingcode = Request.Form["hid_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingCode = Request.Form["hid_drawingcode"].ConventToString(string.Empty);
                 caddrawingmaster.DrawingName = Request.Form["txt_drawingname"].ConventToString(string.Empty);
                 caddrawingmaster.Scope = Request.Form["chk_area"].ConvertToInt32(0);
@@ -553,6 +565,9 @@ namespace SunacCADApp.Controllers
                 int rtv = CadDrawingAirconditionerDetailDB.AddHandle(airconditioner);
                 if (rtv > 0 && mId > 0)
                 {
+                    string ipAddress = ClientPublicLib.GetLoginIp();
+                    logDesc = string.Format(@"{0}；DrawingCode:{1};IP:{2};", "空调原型修改", drawingcode, ipAddress);
+                    SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                     return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -609,6 +624,9 @@ namespace SunacCADApp.Controllers
             int rtv = CadDrawingAirconditionerDetailDB.DeleteHandleById(Id);
             if (rtv > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；DrawingId:{1};IP:{2};", "空调原型删除", Id, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "删除成功" }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -640,6 +658,9 @@ namespace SunacCADApp.Controllers
                 int billstatus = Request.Form["billstatus"].ConvertToInt32(0);
                 string bpmprocinstid = Request.Form["bpmprocinstid"];
                 string bpmjobid = Request.Form["bpmjobid"];
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；DrawingId:{1};IP:{2};", "空调原型提交BPM审核", Id, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return CadAirconditionerBPMApproval(Id, _btid, billstatus, bpmprocinstid, bpmjobid);
 
             }

@@ -10,6 +10,7 @@ using System.Configuration.Internal;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using Common.Utility.Extender;
+using SunacCADApp.Entity;
 
 
 namespace SunacCADApp.Library
@@ -299,5 +300,7 @@ namespace SunacCADApp.Library
             }
             return enStr;
         }
+
+
     }
 }

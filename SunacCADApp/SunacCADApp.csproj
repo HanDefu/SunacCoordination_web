@@ -931,6 +931,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Code\BPMOperationCommonLib.cs" />
+    <Compile Include="App_Code\ClientPublicLib.cs" />
     <Compile Include="App_Code\IdmPublicService.cs" />
     <Compile Include="App_Code\MyController.cs" />
     <Compile Include="App_Code\TimeTask.cs" />
