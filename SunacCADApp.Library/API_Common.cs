@@ -215,7 +215,7 @@ namespace SunacCADApp.Library
         public static string  FilterIllegalChar(string sWord)
         {
             var keyWord = @"select|insert|delete|from|count\(|drop table|update|truncate|asc\(|mid\(|char\(|xp_cmdshell|exec master|netlocalgroup administrators|:|net user|""|or|and";
-            string StrRegex = @"[-|;|,|/|\(|\)|\[|\]|}|{|%|\@|*|!|']";
+            string StrRegex = @"[|;|,|/|\(|\)|\[|\]|}|{|%|\@|*|!|']";
             if (Regex.IsMatch(sWord, keyWord, RegexOptions.IgnoreCase) || Regex.IsMatch(sWord, StrRegex))
                 return "";
 

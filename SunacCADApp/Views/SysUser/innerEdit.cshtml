@@ -6,7 +6,7 @@
     Sys_User User = ViewBag.SysUser;
     SortedList<string, string> OrgSorts = Project_InformationDB.GetAreaSortedList;
     IList<Sys_User_Area_Relation> UserAreas = ViewBag.UserAreas;
-    
+    int RoleId = ViewBag.RoleId;
     
 }
 <!DOCTYPE html>
@@ -103,6 +103,10 @@
                             <option value="">选择角色</option>
                             @foreach (Sys_Role Role in ViewBag.SysRoleList)
                             {
+                                if (Role.Id == RoleId && ViewBag.IsSuper != true)
+                                {
+                                    continue;
+                                }
                                 if (User.RoleID == Role.Id)
                                 {
                                     <option value="@Role.Id" selected="selected">@Role.Role_Name</option>

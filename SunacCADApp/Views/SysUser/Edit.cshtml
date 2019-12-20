@@ -4,6 +4,7 @@
     IList<BasInstitutionData> institutionList = ViewBag.InstitutionList;
     Sys_User user = ViewBag.Sys_User;
     IList<SysUserAndProject> projects = ViewBag.UserProjects;
+    int RoleId = ViewBag.RoleId;
 }
 <!DOCTYPE html>
 <html>
@@ -97,6 +98,10 @@
                             <option value="">选择角色</option>
                             @foreach (Sys_Role Role in ViewBag.SysRoleList)
                             {
+                                if (Role.Id == RoleId && ViewBag.IsSuper != true)
+                                {
+                                    continue;
+                                }
                                 if (Role.Id == user.RoleID)
                                 {
                                     <option value="@Role.Id" selected>@Role.Role_Name</option>

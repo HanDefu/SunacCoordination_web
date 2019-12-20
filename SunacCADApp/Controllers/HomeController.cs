@@ -49,7 +49,7 @@ namespace SunacCADApp.Controllers
         /// <returns></returns>
         public ActionResult CheckUser()
         {
-            string useName = Request.Form["username"];
+             string useName = Request.Form["username"];
             string username = API_Common.FilterIllegalChar(useName);
             string pwd = Request.Form["password"].ConvertToTrim();
             string password = CommonLib.UserMd5(Request.Form["password"]);
@@ -112,14 +112,14 @@ namespace SunacCADApp.Controllers
                     else if (successCode == "N") 
                     {
                         string errorText= jO["errorText"].ConventToString(string.Empty);
-                        return Json(new { code = -100, message = errorText }, JsonRequestBehavior.AllowGet);
+                        return Json(new { code = -102, message = errorText }, JsonRequestBehavior.AllowGet);
                     }
                 }
-                return Json(new { code = -100, message = "用户名或密码错误" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = -103, message = "用户名或密码错误" }, JsonRequestBehavior.AllowGet);
             }
             else 
             {
-                return Json(new { code = -100, message = "用户名或密码错误" }, JsonRequestBehavior.AllowGet);
+                return Json(new { code = -104, message = "用户名或密码错误",User=user }, JsonRequestBehavior.AllowGet);
             }
         }
 

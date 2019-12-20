@@ -2,6 +2,8 @@
 @using SunacCADApp.Data
 @{
     IList<BasInstitutionData> institutionList = ViewBag.InstitutionList;
+    int RoleId = ViewBag.RoleId;
+ 
 }
 <!DOCTYPE html>
 <html>
@@ -87,6 +89,10 @@
                             <option value="">选择角色</option>
                             @foreach (Sys_Role Role in ViewBag.SysRoleList)
                             {
+                                if (Role.Id == RoleId && ViewBag.IsSuper!=true) 
+                                {
+                                    continue;
+                                }
                                 <option value="@Role.Id">@Role.Role_Name</option>
                             }
                         </select>

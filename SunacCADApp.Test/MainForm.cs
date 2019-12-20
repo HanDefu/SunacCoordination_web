@@ -379,6 +379,11 @@ namespace SunacCADApp.Test
             Bpm_Rsp_Result rspResult = service.ApproveClose(I_REQUEST);
         }
 
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
 
     }
 }

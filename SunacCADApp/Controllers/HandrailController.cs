@@ -63,24 +63,49 @@ namespace SunacCADApp.Controllers
 
             string _bpmState = Request.QueryString["bpmstate"];
             int bpmstate = _bpmState == null ? 3 : _bpmState.ConvertToInt32(0);
-            switch (bpmstate)
+            if (_IsSuper)
             {
-                case 1:
-                    _where += string.Format(" and  ((a.BillStatus=0  OR a.BillStatus=4 OR a.BillStatus=5 OR a.BillStatus=6) and a.CreateUserId={0})", UserId);
-                    _url += "&bpmstate=" + bpmstate;
-                    break;
-                case 2:
-                    _where += string.Format(" and  ((a.BillStatus=1  OR a.BillStatus=2) and a.CreateUserId={0})", UserId);
-                    _url += "&bpmstate=" + bpmstate;
-                    break;
-                case 3:
-                    _where += string.Format(" and   a.BillStatus=3", bpmstate);
-                    _url += "&bpmstate=" + bpmstate;
-                    break;
-                default:
-                    _where += string.Format(" and  (( a.BillStatus!=3 And a.CreateUserId={0}) OR a.BillStatus=3)", UserId);
-                    _url += "&bpmstate=" + bpmstate;
-                    break;
+                switch (bpmstate)
+                {
+                    case 1:
+                        _where += @"  and  (a.BillStatus=0  OR a.BillStatus=4 OR a.BillStatus=5 OR a.BillStatus=6)";
+                        _url += "&bpmstate=" + bpmstate;
+                        break;
+                    case 2:
+                        _where += @"  and  (a.BillStatus=1  OR a.BillStatus=2)";
+                        _url += "&bpmstate=" + bpmstate;
+                        break;
+                    case 3:
+                        _where += string.Format(" and   a.BillStatus=3", bpmstate);
+                        _url += "&bpmstate=" + bpmstate;
+                        break;
+                    default:
+                        _where += @" and  ( a.BillStatus!=3 OR a.BillStatus=3)";
+                        _url += "&bpmstate=" + bpmstate;
+                        break;
+                }
+            }
+            else
+            {
+                switch (bpmstate)
+                {
+                    case 1:
+                        _where += string.Format(" and  ((a.BillStatus=0  OR a.BillStatus=4 OR a.BillStatus=5 OR a.BillStatus=6) and a.CreateUserId={0})", UserId);
+                        _url += "&bpmstate=" + bpmstate;
+                        break;
+                    case 2:
+                        _where += string.Format(" and  ((a.BillStatus=1  OR a.BillStatus=2) and a.CreateUserId={0})", UserId);
+                        _url += "&bpmstate=" + bpmstate;
+                        break;
+                    case 3:
+                        _where += string.Format(" and   a.BillStatus=3", bpmstate);
+                        _url += "&bpmstate=" + bpmstate;
+                        break;
+                    default:
+                        _where += string.Format(" and  (( a.BillStatus!=3 And a.CreateUserId={0}) OR a.BillStatus=3)", UserId);
+                        _url += "&bpmstate=" + bpmstate;
+                        break;
+                }
             }
             ViewBag.bpmstate = bpmstate.ConvertToTrim();
             string keyword = HttpUtility.UrlDecode(Request.QueryString["keyword"].ConventToString(string.Empty));

@@ -21,7 +21,6 @@ namespace SunacCADApp
         protected int   _OperateBillStatus = 0;
         
 
-
         public MyController()
         {
             //IList<DataSourceMember> StateList = CommonLib.GetBPMStateInfo();
@@ -33,9 +32,10 @@ namespace SunacCADApp
            
             ViewBag.SelectModel = 5;
             ViewBag.BPMWEBURL = API_Common.BPMWEBURL;
+            int _roleId = API_Common.GlobalParam("RoleId").ConvertToInt32(-1);
             if (IsInternal == 1)
             {
-                int _roleId = API_Common.GlobalParam("RoleId").ConvertToInt32(-1);
+               
                 if (RoleId == _roleId)
                 {
                     _power_wh = string.Format(@" AND  EXISTS(SELECT 1 FROM dbo.Sys_User_Area_Relation R WHERE R.User_ID ={0} AND R.Area_ID=pa.AreaID) ", UserId);
@@ -74,7 +74,20 @@ namespace SunacCADApp
                 ViewBag.PrototypeEdit = 0;
                 ViewBag.PrototypeApprove = 0;
                 StateList.Add(new DataSourceMember { DisplayMember = "3", ValueMember = "已发布" });
+
+                if (RoleId == _roleId) 
+                {
+                    ViewBag.PrototypeView = 1;
+                    ViewBag.PrototypeAdd = 1;
+                    ViewBag.PrototypeRemove = 1;
+                    ViewBag.PrototypeEdit = 1;
+                    ViewBag.PrototypeApprove = 0;
+                    StateList = CommonLib.GetBPMStateInfo();
+                    _OperateBillStatus = 3;
+                    _IsSuper = true;
+                }
             }
+            ViewBag.RoleId = _roleId;
             ViewBag.StateList = StateList;
         }
 

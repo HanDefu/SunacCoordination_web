@@ -189,20 +189,20 @@
             $(window).resize(function () {
                 resize_load();
             });
-            resize_load();
+         
         });
 
-
+        resize_load();
         function resize_load() {
             $("figure > section").each(function () {
-                let width = $("figure > section").width();
+                let width = $("figure").width();
+                console.log(width);
                 let imgHeight = $("figure > section >img").height();
                 let height = width * (3 / 4);
-                if (imgHeight > height) {
-                    $("figure > section >img").height(height);
-                } else {
-                    $("figure > section").height(height);
-                }
+                $("figure > section").width(width);
+                console.log(height);
+                $("figure > section >img").height(height);
+                $("figure > section").height(height);
                 
             });
           
@@ -305,3 +305,8 @@
 
 </body>
 </html>
+<script type="text/javascript">
+    $(function () {
+        resize_load();
+    })
+</script>

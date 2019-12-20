@@ -9,6 +9,7 @@ using SunacCADApp.Entity;
 using SunacCADApp.Data;
 using System.Collections;
 using Newtonsoft.Json;
+using SunacCADApp.Library;
 
 namespace SunacCADApp.Controllers
 {
@@ -17,6 +18,7 @@ namespace SunacCADApp.Controllers
     {
         private int UserId = 0;
         private string UserName = string.Empty;
+       
         /// <summary>
         /// 权限
         /// </summary>
@@ -25,10 +27,16 @@ namespace SunacCADApp.Controllers
         {
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
-           
+            int _roleId = API_Common.GlobalParam("RoleId").ConvertToInt32(-1);
+            int RoleId = InitUtility.Instance.InitSessionHelper.Get("RoleId").ConvertToInt32(0);
+            bool IsSuper = false;
+            if (RoleId == _roleId) {
+                IsSuper = true;
+            }
             ViewBag.SelectModel = 11;
             ViewBag.SysUserName = UserName;
-       
+            ViewBag.IsSuper = IsSuper;
+            ViewBag.RoleId = _roleId;
 
 
         }
