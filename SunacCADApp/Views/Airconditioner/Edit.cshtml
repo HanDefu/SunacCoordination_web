@@ -176,7 +176,7 @@
                             <select name="selectRainPipePosition">
                                 @foreach (BasArgumentSetting RainPipePosition in ViewBag.RainPipePositions)
                             {
-                                if (Airconditioner.AirconditionerPipePosition == RainPipePosition.Id)
+                                if (Airconditioner.AirconditionerRainPipePosition == RainPipePosition.Id)
                                 {
                                     <option value="@RainPipePosition.Id" selected="selected">@RainPipePosition.ArgumentText</option>
                                 }

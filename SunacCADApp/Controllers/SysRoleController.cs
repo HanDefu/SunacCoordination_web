@@ -16,12 +16,21 @@ namespace SunacCADApp.Controllers
         private string UserId = string.Empty;
         private string UserName = string.Empty;
         private int IUserId = 0;
+        int logCode = 4;
+        string logName = "角色管理";
+        string logInfo = string.Empty;
+        string logDesc = string.Empty;
+        string createBy = string.Empty;
+        int createUserId = 0;
         public SysRoleController() 
         {
+            
             IUserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID");
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
             ViewBag.SelectModel = 12;
+            createBy = UserName;
+            createUserId = IUserId;
         }
 
         /// <summary>
@@ -106,6 +115,7 @@ namespace SunacCADApp.Controllers
              }
             Sys_Role sys_role = new Sys_Role();
             sys_role.Role_Name = Request.Form["txt_role_name"].ConventToString(string.Empty);
+            string Role_Name = Request.Form["txt_role_name"].ConventToString(string.Empty);
             sys_role.Role_Remark = Request.Form["area_role_remark"].ConventToString(string.Empty);
             sys_role.CreateOn = DateTime.Now;
             sys_role.Reorder = Request.Form["txt_reorder"].ConvertToInt32(0);
@@ -140,6 +150,9 @@ namespace SunacCADApp.Controllers
             }
             if (roleid > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；角色名称:{1};IP:{2};", "角色添加", Role_Name, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -188,6 +201,7 @@ namespace SunacCADApp.Controllers
             int Id = Request.Form["hid_id"].ConvertToInt32(0);
             sys_role.Id = Id;
             sys_role.Role_Name = Request.Form["txt_role_name"].ConventToString(string.Empty);
+            string Role_Name = Request.Form["txt_role_name"].ConventToString(string.Empty);
             sys_role.Role_Remark = Request.Form["area_role_remark"].ConventToString(string.Empty);
             sys_role.CreateOn = DateTime.Now;
             sys_role.Reorder = Request.Form["txt_reorder"].ConvertToInt32(0);
@@ -221,6 +235,9 @@ namespace SunacCADApp.Controllers
 
             if (rtv > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；角色名称:{1};IP:{2};", "角色修改", Role_Name, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -253,6 +270,9 @@ namespace SunacCADApp.Controllers
             SysRoleModelRelationDB.DeleteHandleByParam(_wh);
             if (rtv > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；角色ID:{1};IP:{2};", "角色删除", Id, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "删除成功" }, JsonRequestBehavior.AllowGet);
             }
             else

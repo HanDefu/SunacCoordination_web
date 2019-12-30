@@ -14,10 +14,18 @@ namespace SunacCADApp.Controllers
     {
         private int UserId = 0;
         private string UserName = string.Empty;
+        int logCode = 4;
+        string logName = "机构管理";
+        string logInfo = string.Empty;
+        string logDesc = string.Empty;
+        string createBy = string.Empty;
+        int createUserId = 0;
         public CompanyInfoController() 
         {
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
+            createBy = UserName;
+            createUserId = UserId;
             ViewBag.SelectModel = 14;
             ViewBag.Title = "机构管理";
         }
@@ -111,6 +119,7 @@ namespace SunacCADApp.Controllers
             }
             basecompanyinfo.CompanyID = Request.Form["select_companyname"].ConvertToInt32(0);
             basecompanyinfo.CompanyName = Request.Form["hid_companyname"].ConventToString(string.Empty);
+            string CompanyName = Request.Form["hid_companyname"].ConventToString(string.Empty);
             basecompanyinfo.CompanyCode = "00000";
             basecompanyinfo.CompanyRemark = Request.Form["area_companyremark"].ConventToString(string.Empty);
     
@@ -125,6 +134,9 @@ namespace SunacCADApp.Controllers
             int rtv = BaseCompanyInfoDB.AddHandle(basecompanyinfo);
             if (rtv > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；机构名称:{1};IP:{2};", "机构添加", CompanyName, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -202,6 +214,7 @@ namespace SunacCADApp.Controllers
             basecompanyinfo.Id = Id;
             basecompanyinfo.CompanyID = new_companyid;
             basecompanyinfo.CompanyName = Request.Form["hid_companyname"].ConventToString(string.Empty);
+            string CompanyName = Request.Form["hid_companyname"].ConventToString(string.Empty);
             basecompanyinfo.CompanyCode = "";
             basecompanyinfo.CompanyRemark = Request.Form["area_companyremark"].ConventToString(string.Empty);
             basecompanyinfo.Reorder = 0;
@@ -212,6 +225,9 @@ namespace SunacCADApp.Controllers
             int rtv = BaseCompanyInfoDB.EditHandle(basecompanyinfo, string.Empty);
             if (rtv > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；机构名称:{1};IP:{2};", "机构修改", CompanyName, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -235,6 +251,9 @@ namespace SunacCADApp.Controllers
             int rtv = BaseCompanyInfoDB.DeleteHandleById(Id);
             if (rtv > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；机构ID :{1};IP:{2};", "机构删除", Id, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "删除成功" }, JsonRequestBehavior.AllowGet);
             }
             else

@@ -14,10 +14,18 @@ namespace SunacCADApp.Controllers
     {
         private int UserId = 0;
         private string UserName = string.Empty;
+        int logCode = 3;
+        string logName = "系统参数";
+        string logInfo = string.Empty;
+        string logDesc = string.Empty;
+        string createBy = string.Empty;
+        int createUserId = 0;
         public ArgumentSettingController()
         {
             UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
             UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
+            createBy = UserName;
+            createUserId = UserId;
             ViewBag.SelectModel = 13;
         }
         /// <summary>
@@ -67,6 +75,7 @@ namespace SunacCADApp.Controllers
                 return Json(new { code = 100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
             }
             BasArgumentSetting basargumentsetting = new BasArgumentSetting();
+            string ArgumentText = Request.Form["argumenttext"].ConventToString(string.Empty);
             basargumentsetting.ArgumentText = Request.Form["argumenttext"].ConventToString(string.Empty);
             basargumentsetting.TypeCode = Request.Form["typecode"].ConventToString(string.Empty);
             basargumentsetting.TypeName = Request.Form["typename"].ConventToString(string.Empty);
@@ -80,6 +89,9 @@ namespace SunacCADApp.Controllers
             int rtv = BasArgumentSettingDB.AddHandle(basargumentsetting);
             if (rtv > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；参数名称:{1};IP:{2};", "系统参数添加", ArgumentText, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -115,6 +127,7 @@ namespace SunacCADApp.Controllers
             BasArgumentSetting basargumentsetting = new BasArgumentSetting();
             int Id = Request.Form["hid_id"].ConvertToInt32(0);
             basargumentsetting.Id = Id;
+            string ArgumentText = Request.Form["txt_argumenttext"].ConventToString(string.Empty);
             basargumentsetting.ArgumentText = Request.Form["txt_argumenttext"].ConventToString(string.Empty);
             basargumentsetting.TypeCode = Request.Form["txt_typecode"].ConventToString(string.Empty);
             basargumentsetting.TypeName = Request.Form["txt_typename"].ConventToString(string.Empty);
@@ -127,6 +140,9 @@ namespace SunacCADApp.Controllers
             int rtv = BasArgumentSettingDB.EditHandle(basargumentsetting, string.Empty);
             if (rtv > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；参数名称:{1};IP:{2};", "系统参数修改", ArgumentText, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -150,6 +166,9 @@ namespace SunacCADApp.Controllers
             int rtv = BasArgumentSettingDB.DeleteHandleById(Id);
             if (rtv > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；参数ID:{1};IP:{2};", "系统参数删除", Id, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "删除成功" }, JsonRequestBehavior.AllowGet);
             }
             else

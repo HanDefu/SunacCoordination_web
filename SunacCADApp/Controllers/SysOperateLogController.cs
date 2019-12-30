@@ -7,11 +7,30 @@ using Common.Utility;
 using Common.Utility.Extender;
 using SunacCADApp.Entity;
 using SunacCADApp.Data;
+using SunacCADApp.Library;
 namespace SunacCADApp.Controllers
 {
 
     public class SysOperateLogController : Controller
     {
+        private int UserId = 0;
+        private string UserName = string.Empty;
+        private bool IsSuper = false;
+      
+        public SysOperateLogController() 
+        {
+            UserId = InitUtility.Instance.InitSessionHelper.Get("UserID").ConvertToInt32(0);
+            UserName = InitUtility.Instance.InitSessionHelper.Get("UserName");
+            int _roleId = API_Common.GlobalParam("RoleId").ConvertToInt32(-1);
+            int RoleId = InitUtility.Instance.InitSessionHelper.Get("RoleId").ConvertToInt32(0);
+            ViewBag.SelectModel = 15;
+            if (RoleId == _roleId)
+            {
+                IsSuper = true;
+            }
+
+
+        }
         /// <summary>
         ///   系统操作日志-列表
         /// </summary>
@@ -21,11 +40,15 @@ namespace SunacCADApp.Controllers
         [ValidateInput(false)]
         public ActionResult Index()
         {
+            if (UserId < 1)
+            {
+                return Redirect("/home");
+            }
             string _where = "1=1";  //查询
             string _orderby = string.Empty;  //排序
             string _url = string.Empty;
             int recordCount = 0;    //记录总数
-            int pageSize = 15;      //每页条数
+            int pageSize = 10;      //每页条数
             int currentPage = 0;    //当前页数
             int pageCount = 0;      //总页数
             int startRowNum = 0;    //开始行数
@@ -34,20 +57,21 @@ namespace SunacCADApp.Controllers
             pageSize = string.IsNullOrEmpty(Request.QueryString["pagesize"]) ? pageSize : Request.QueryString["pagesize"].ConvertToInt32(0);
             startRowNum = ((currentPage - 1) * pageSize) + 1;
             endRowNum = currentPage * pageSize;
-            string systypecode = HttpUtility.UrlDecode(Request.QueryString["systypecode"]);
-            if (!string.IsNullOrEmpty(systypecode))
+            string CreateBy = HttpUtility.UrlDecode(Request.QueryString["CreateBy"]);
+            if (!string.IsNullOrEmpty(CreateBy))
             {
-                _where += " and  systypecode='" + systypecode + "'";
-                _url += "systypecode=" + systypecode + "&";
+                _where += " and  CreateBy='" + CreateBy + "'";
+                _url += "CreateBy=" + CreateBy + "&";
             }
-            ViewBag.systypecode = systypecode;
-            string loginfo = HttpUtility.UrlDecode(Request.QueryString["loginfo"]);
-            if (!string.IsNullOrEmpty(loginfo))
+            ViewBag.CreateBy = CreateBy;
+            
+
+            if (!IsSuper) 
             {
-                _where += " and  loginfo='" + loginfo + "'";
-                _url += "loginfo=" + loginfo + "&";
+                ViewBag.CreateBy = UserName;
+                ViewBag.IsSuper = IsSuper;
+                _where += string.Format(@" and   CreateBy='{0}'", UserName);
             }
-            ViewBag.loginfo = loginfo;
             IList<Sys_Operate_Log> lst = SysOperateLogDB.GetPageInfoByParameter(_where, _orderby, startRowNum, endRowNum);
             recordCount = SysOperateLogDB.GetPageCountByParameter(_where);
             pageCount = recordCount % pageSize == 0 ? recordCount / pageSize : ((recordCount / pageSize) + 1);
@@ -157,7 +181,15 @@ namespace SunacCADApp.Controllers
         /// <author>alon<84789887@qq.com></author>  
         public ActionResult DeleteHandleById()
         {
+            if (UserId < 1)
+            {
+                return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
             int Id = Request.QueryString["id"].ConvertToInt32(0);
+            if (Id < 1)
+            {
+                return Json(new { code = -101, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
             int rtv = SysOperateLogDB.DeleteHandleById(Id);
             if (rtv > 0)
             {
@@ -176,7 +208,16 @@ namespace SunacCADApp.Controllers
         /// <author>alon<84789887@qq.com></author> 
         public ActionResult DeleteHandleByIds()
         {
-            string ids = Request.QueryString["ids"].ConventToString(string.Empty);
+            if (UserId < 1)
+            {
+                return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
+            string ids = Request.Form["ids"].ConventToString(string.Empty);
+
+            if (string.IsNullOrEmpty(ids))
+            {
+                return Json(new { code = -100, message = "非法操作" }, JsonRequestBehavior.AllowGet);
+            }
             int rtv = SysOperateLogDB.DeleteHandleByIds(ids);
             if (rtv > 0)
             {

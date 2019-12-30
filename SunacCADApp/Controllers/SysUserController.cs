@@ -18,7 +18,12 @@ namespace SunacCADApp.Controllers
     {
         private int UserId = 0;
         private string UserName = string.Empty;
-       
+        int logCode = 4;
+        string logName = "角色管理";
+        string logInfo = string.Empty;
+        string logDesc = string.Empty;
+        string createBy = string.Empty;
+        int createUserId = 0;
         /// <summary>
         /// 权限
         /// </summary>
@@ -37,7 +42,8 @@ namespace SunacCADApp.Controllers
             ViewBag.SysUserName = UserName;
             ViewBag.IsSuper = IsSuper;
             ViewBag.RoleId = _roleId;
-
+            createBy = UserName;
+            createUserId = UserId;
 
         }
 
@@ -242,7 +248,9 @@ namespace SunacCADApp.Controllers
                         Sys_UserDB.InsertUserAndProjectRelation(_userId, pid,UserId,userName);
                     }
                 }
-                
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；用户名称:{1};IP:{2};", "用户新增", userName, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "添加成功" }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -358,6 +366,9 @@ namespace SunacCADApp.Controllers
             }
             if (rtv > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；用户ID:{1};IP:{2};", "用户修改", _userId, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -745,6 +756,9 @@ namespace SunacCADApp.Controllers
             int flag = Sys_UserDB.ChangePassword(password,UserId);
             if (flag > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；用户名:{1};IP:{2};", "密码修改", user.User_Name, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "密码修改成功" }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -774,6 +788,9 @@ namespace SunacCADApp.Controllers
             int flag = Sys_UserDB.ChangePassword(password, userId);
             if (flag > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；UserId:{1};IP:{2};", "密码重置", userId, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
                 return Json(new { code = 100, message = "密码修改成功" }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -879,6 +896,11 @@ namespace SunacCADApp.Controllers
 
             if (flag > 0)
             {
+                string ipAddress = ClientPublicLib.GetLoginIp();
+                logDesc = string.Format(@"{0}；用户名:{1};IP:{2};", "用户修改", truename, ipAddress);
+                SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
+
+             
                 return Json(new { code = 100, message = "修改成功" }, JsonRequestBehavior.AllowGet);
             }
             else
