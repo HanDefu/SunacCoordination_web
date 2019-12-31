@@ -23,9 +23,9 @@
                     <dt class="col-dt"><i>*</i>原型编号：</dt>
                     <dd>
                         <input type="text" style="width:450px" name="txt_drawingcode" class="required" data-error="原型编号不能为空" />
-                        <i class="icon-tips" tips="<p>门窗原型编号规则：开启代号+原型代码， 例如： NC1、NC2...<br />
-                                                                       门窗开启代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗、
-                                                                        WZC外开转角窗、TC推拉窗、TLM推拉门、TSTLM提升推拉门、MLC门连窗、WM外开门<p>">&nbsp;</i>
+                        <i class="icon-tips" tips="<p>外窗原型编号规则：开启代号+原型代码，例如Window_NC1、Window_NC2...<br/>
+                                                                              外窗开启代码：NC内开窗、NZC内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗、WZC外开转角窗、TC推拉窗
+</p>">&nbsp;</i>
                     </dd>
                 </dl>
                 <dl>
@@ -576,6 +576,8 @@
         });
 
         $("#btn_cancel").on('click', function () {
+
+            resetForm();
             $("#myform").resetForm();
         });
 

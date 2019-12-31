@@ -22,7 +22,6 @@
     string ProKeyCode = API_Common.GetEnCodeStr(ProcInstId);
     string approvalViewURL = string.Format("{0}/Workflow/MTApprovalView.aspx?procInstId={1}&key={2}", BPMWEBURL, ProcInstId, ProKeyCode);
 }
-}
 <div class="row topnav">
     <a>标准部品库</a>
     <i></i>
@@ -51,9 +50,13 @@
                     <dd>
                         <input type="text" style="width:450px" name="dis_drawingcode" class="required" value="@Master.DrawingCode"   readonly="readonly"/>
                         <input type="hidden" value="@Master.DrawingCode" name="hid_drawingcode" />
-                        <i class="icon-tips" tips="<p>门窗原型编号规则：开启代号+原型代码， 例如： NC1、NC2...<br />
-                                                                       门窗开启代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗、
-                                                                        WZC外开转角窗、TC推拉窗、TLM推拉门、TSTLM提升推拉门、MLC门连窗、WM外开门</p>">&nbsp;</i>
+                        <i class="icon-tips" tips="<p>动态厨房原型编号规则：模块名称+布局类型+门窗开启位置+是否含有排气道，例如KUs、KUs_P...<br />
+                                                                       静态厨房原型编号规则: 模块名称+布局类型+模块尺寸<br />
+                                                                       模块名称：K 厨房<br />
+                                                                       布局类型：Uq 浅U、Us深U型、L  L型<br />
+                                                                       门窗开启位置：c 门窗垂直开、d 门窗对开<br />
+                                                                       是否含有排气道：有排气道加_P、无排气道加_N<br />
+                                                                       模块尺寸：开间尺寸*进深尺寸<br /></p>">&nbsp;</i>
                     </dd>
                 </dl>
 
@@ -451,6 +454,7 @@
         });
 
         $("#btn_cancel").on('click', function () {
+            resetForm();
             $("#myform").resetForm();
         });
 

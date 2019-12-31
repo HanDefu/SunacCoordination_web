@@ -50,9 +50,9 @@
                     <dd>
                         <input type="text" style="width:450px" name="dis_drawingcode" value="@dMaster.DrawingCode" placeholder="原型编号"  readonly="readonly"/>
                         <input type="hidden" name="hid_drawingcode" value="@dMaster.DrawingCode" />
-                        <i class="icon-tips" tips="<p>门窗原型编号规则：开启代号+原型代码， 例如： NC1、NC2...<br />
-                                                                       门窗开启代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗、
-                                                                        WZC外开转角窗、TC推拉窗、TLM推拉门、TSTLM提升推拉门、MLC门连窗、WM外开门</p>">&nbsp;</i>
+                        <i class="icon-tips" tips="<p>栏杆原型编号规则：开启代号+原型代码，例如Railing_T1、Railing_T2...<br/>
+                                                                       栏杆开启代码：T铁艺栏杆、B玻璃栏杆<br />
+                                                                 </p>">&nbsp;</i>
                     </dd>
                 </dl>
                 <dl>
@@ -201,6 +201,7 @@
         });
 
         $("#btn_cancel").on('click', function () {
+            resetForm();
             $("#myform").resetForm();
         });
 

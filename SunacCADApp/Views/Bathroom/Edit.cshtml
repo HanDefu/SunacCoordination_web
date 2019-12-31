@@ -49,9 +49,14 @@
                     <dd>
                         <input type="text" style="width:450px" name="dis_drawingcode" class="required" data-error="原型编号不能为空" value="@dMaster.DrawingCode" readonly="readonly" />
                         <input type="hidden" value="@dMaster.DrawingCode" name="hid_drawingcode" />
-                        <i class="icon-tips" tips="<p>门窗原型编号规则：开启代号+原型代码， 例如： NC1、NC2...<br />
-                                                                       门窗开启代码：NC内开窗、NZC 内开转角窗、NDC内开内倒窗、NDZC内开内倒转角窗、WC外开窗、
-                                                                        WZC外开转角窗、TC推拉窗、TLM推拉门、TSTLM提升推拉门、MLC门连窗、WM外开门</p>">&nbsp;</i>
+                        <i class="icon-tips" tips="<p>动态卫生间原型编号规则：模块名称+布局类型+结局套数+干湿分区，例如TL3<br/>
+                                                                       静态卫生间原型编号规则：模块名称+布局类型+结局套数+模块尺寸，例如：TU4-2000*2750<br />
+                                                                       模块名称 ：T 卫生间<br />
+                                                                       布局类型： I型，L型、U型<br />
+                                                                       洁具套数： 3 三件套、 4 四件套<br />
+                                                                       干湿分区：g 干湿分离、其余类型为非干湿区<br />
+                                                                       模块尺寸：短边尺寸*长边尺寸<br />
+                                                                      </p>">&nbsp;</i>
                     </dd>
                 </dl>
                 <dl>
@@ -475,6 +480,7 @@
         });
 
         $("#btn_cancel").on('click', function () {
+            resetForm();
             $("#myform").resetForm();
         });
 

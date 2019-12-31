@@ -38,8 +38,6 @@
     <script type="text/javascript">
         $(function () {
             let win_height = $(window).height();
-            //console.log(win_height);
-            //$('.mian-column').css("min-height", (win_height - 130));
             $('.center').css("min-height", (win_height - 70));
             $(".btn-upfile  .upload-cad").on("change", function () {
                 let file_info = $(this).val();
@@ -82,10 +80,7 @@
                 })
             })
 
-            //$(".select-all").on("change", function () {
-            //    let that = $(this).parent().parent();
-            //    that.find(".single-checkbox").prop("checked", $(this).prop("checked"));
-            //})
+
 
             $('input[name="txt_filename"]').on('click', function () {
                 let cadpath = $(this).val();
@@ -205,9 +200,13 @@
                 $("figure > section").height(height);
                 
             });
-          
+        }
 
-           
+        function resetForm() {
+            let local_src = "/Content/Css/img/icon-no-image.png";
+            let local_name = "";
+            $('.icon-drawing-img  img').attr("src", local_src);
+            $('.icon-drawing-img  p').text(local_name);
         }
     </script>
 </head>

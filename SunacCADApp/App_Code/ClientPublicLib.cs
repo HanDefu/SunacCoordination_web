@@ -39,6 +39,8 @@ namespace SunacCADApp
                 //获取客户端IP
                 loginip = HttpContext.Current.Request.UserHostAddress;
             }
+
+            loginip = HttpContext.Current.Request.UserHostAddress;
             return loginip;
         }
 
