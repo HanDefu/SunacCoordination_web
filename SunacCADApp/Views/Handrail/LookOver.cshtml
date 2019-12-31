@@ -43,6 +43,10 @@ else if (Drawing.BillStatus == 4 || Drawing.BillStatus == 5 || Drawing.BillStatu
 {
     <span class="check-state state-unchecked bill-status-view" data-masterid="@Drawing.Id" data-billstatus="@Drawing.BillStatus" data-procinstid="@Drawing.BPMProcInstID"> 待发布</span>
 }
+else if (Drawing.BillStatus == 0)
+{
+    <span class="state-model ">草稿</span>
+}
 </div>
 <div class="row view">
     <div class="left-column">

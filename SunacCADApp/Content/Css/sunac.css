@@ -786,6 +786,17 @@ header {
           padding-left:18px;
         }
 
+        .main .center .topnav .state-model {
+            float: right;
+            line-height: 50px;
+            font-size: 14px;
+            margin-right: 5px;
+            color:#b98837;
+            cursor:pointer;
+        }
+
+
+
 .btn-sunac {
     color: #fff;
     background-color: #b58d59;

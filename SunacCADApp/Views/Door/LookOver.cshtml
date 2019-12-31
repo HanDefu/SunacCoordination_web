@@ -48,6 +48,10 @@
     {
         <span class="check-state state-unchecked bill-status-view" data-masterid="@dMaster.Id" data-billstatus="@dMaster.BillStatus" data-procinstid="@dMaster.BPMProcInstID"> 待发布</span>
     }
+    else if (dMaster.BillStatus == 0)
+    {
+        <span class="state-model ">草稿</span>
+    }
 </div>
 <div class="row view">
     <div class="left-column">
