@@ -26,10 +26,10 @@
     <i></i>
     <a>@dMaster.DrawingCode</a>
     <span class="check-state">
-        @if (dMaster.BillStatus == 2)
+        @if (dMaster.BillStatus == 2 || dMaster.BillStatus==1)
         {
             <span class="check-state">
-                <a class="state-a-checked" href="@approvalViewURL">审批流程查看</a>
+                <a class="state-a-checked" href="@approvalViewURL" data-billstatus="@dMaster.BillStatus">审批流程查看</a>
             </span>
         }
      </span>

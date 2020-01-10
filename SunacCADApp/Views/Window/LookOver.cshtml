@@ -35,7 +35,7 @@
     <a href="/window">外窗</a>
     <i></i>
     <a>@master.DrawingCode</a>
-    @if (master.BillStatus == 2 || master.BillStatus == 1 || master.BillStatus == 3)
+    @if (master.BillStatus == 2 || master.BillStatus == 1)
     {
        <span class="check-state">
            <a class="state-a-checked" href="@approvalViewURL" data-billstatus="@master.BillStatus">审批流程查看</a>

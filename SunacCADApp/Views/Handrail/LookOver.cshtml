@@ -23,10 +23,10 @@
     <a href="/handrail/index">栏杆</a>
     <i></i>
      <a>@Drawing.DrawingCode</a>
-   @if (Drawing.BillStatus == 2)
+   @if (Drawing.BillStatus == 2 || Drawing.BillStatus == 1)
    {
     <span class="check-state">
-        <a class="state-a-checked" href="@approvalViewURL">审批流程查看</a>
+        <a class="state-a-checked" href="@approvalViewURL" data-billstatus="@Drawing.BillStatus">审批流程查看</a>
     </span>
    }
 
