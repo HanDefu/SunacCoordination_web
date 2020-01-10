@@ -38,7 +38,7 @@
     @if (master.BillStatus == 2 || master.BillStatus == 1 || master.BillStatus == 3)
     {
        <span class="check-state">
-           <a class="state-a-checked" href="@approvalViewURL">审批流程查看</a>
+           <a class="state-a-checked" href="@approvalViewURL" data-billstatus="@master.BillStatus">审批流程查看</a>
        </span>
     }
     

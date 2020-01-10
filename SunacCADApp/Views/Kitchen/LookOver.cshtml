@@ -26,10 +26,10 @@
     <a href="/Kitchen/Index">厨房</a>
     <i></i>
     <a>@Master.DrawingCode</a>
-    @if (Master.BillStatus == 2)
+    @if (Master.BillStatus == 2 || Master.BillStatus == 1 || Master.BillStatus == 3)
     {
         <span class="check-state">
-            <a class="state-a-checked" href="@approvalViewURL">审批流程查看</a>
+            <a class="state-a-checked" href="@approvalViewURL" data-billstatus="@Master.BillStatus">审批流程查看</a>
         </span>
     }
 

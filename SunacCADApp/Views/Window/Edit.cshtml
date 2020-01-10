@@ -40,7 +40,7 @@
     @if (DrawingMaster.BillStatus == 2 && DrawingMaster.BillStatus == 1 || DrawingMaster.BillStatus == 3)
     {
         <span class="check-state">
-            <a class="state-a-checked" href="@approvalViewURL">审批流程查看</a>
+            <a class="state-a-checked" href="@approvalViewURL" data-billstatus="@DrawingMaster.BillStatus">审批流程查看</a>
         </span>
     }
 
