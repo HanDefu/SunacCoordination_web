@@ -3,6 +3,7 @@
     IList<Sys_Model> ModelList = ViewBag.Models;
     Sys_Role sysRole = ViewBag.Sys_Role;
     IList<Sys_Model> myModelList = ViewBag.listModel;
+    
 }
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -124,8 +125,8 @@
                             </tr>
                             <tr>
                                 <td class="text-center tr-row" valign="middle">后台管理</td>
-                                <td class="text-left handle">
-                                    <div class="checkbox-inline back-manage">
+                                <td class="text-left handle back-manage">
+                                    <div class="checkbox-inline ">
                                         <label class="checkbox">
                                             <input type="checkbox" value="0" name="all" />全部
                                         </label>

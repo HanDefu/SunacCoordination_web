@@ -46,8 +46,8 @@
                                 <input type="checkbox" class="checkbox" />
                             </td>
                             <td class="text-center">@(i++)</td>
-                            <td>@Ins.InsEnCode</td>
-                            <td>@Ins.InsName</td>
+                            <td class="text-center">@Ins.InsEnCode</td>
+                            <td class="text-center">@Ins.InsName</td>
                             <td class="text-center">@Ins.ModifiedOn.ToString("yyyy-MM-dd  HH:mm:ss")</td>
                             <td class="viewpersonnel cursor-pointer text-center" data-companyid="@Ins.Id">查看人员</td>
                             <td class="handle-enabled text-center">
@@ -188,7 +188,7 @@
         $('.handle-enabled b,.btn-enabled').on('click', function () {
             let id = $(this).data("id");
             let enabled = $(this).data("enabled");
-            let tip_msg = enabled == 0 ? "是否禁用" : "是否开启";
+            let tip_msg = enabled == 0 ? "是否禁用" : "是否启用";
             layer.confirm(tip_msg, { icon: 3, title: "禁用提示", shade: false }, function (index) {
                 $.post("/companyinfo/ChangeCompanyEnabled", { id: id, enabled: enabled }, function (data) {
                     if (data.code == 100) {

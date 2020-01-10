@@ -35,7 +35,7 @@
     <a href="/window">外窗</a>
     <i></i>
     <a>@master.DrawingCode</a>
-    @if (master.BillStatus == 2)
+    @if (master.BillStatus == 2 || master.BillStatus == 1 || master.BillStatus == 3)
     {
        <span class="check-state">
            <a class="state-a-checked" href="@approvalViewURL">审批流程查看</a>
@@ -58,6 +58,10 @@
    else if (master.BillStatus == 0)
    {
      <span class="state-model ">草稿</span>
+   }
+   else if (master.BillStatus == 1)
+   {
+    <span class="state-model ">审核中</span>
    }
    
 </div>
