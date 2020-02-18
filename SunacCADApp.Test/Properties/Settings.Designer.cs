@@ -36,7 +36,19 @@ namespace SunacCADApp.Test.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://des.sunac.com.cn/SunacCADService.asmx")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUN" +
+            "AC_392_validatePwd_PS")]
+        public string SunacCADApp_Test_WebIDMSUNACValidatePwd_IDM_SUNAC_392_validatePwd_ptt_bindingQSService {
+            get {
+                return ((string)(this["SunacCADApp_Test_WebIDMSUNACValidatePwd_IDM_SUNAC_392_validatePwd_ptt_bindingQSSe" +
+                    "rvice"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://des.sunac.com.cn/BMPService.asmx")]
         public string SunacCADApp_Test_WebBMPService_BMPService {
             get {
                 return ((string)(this["SunacCADApp_Test_WebBMPService_BMPService"]));
@@ -46,12 +58,10 @@ namespace SunacCADApp.Test.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.2.219:8001/WP_SUNAC/APP_IDM_SERVICES/Proxy_Services/TA_EOP/IDM_SUN" +
-            "AC_392_validatePwd_PS")]
-        public string SunacCADApp_Test_WebIDMSUNACValidatePwd_IDM_SUNAC_392_validatePwd_ptt_bindingQSService {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://ades.sunac.com.cn/SunacCADService.asmx")]
+        public string SunacCADApp_Test_adesService_ArgumentSettingService {
             get {
-                return ((string)(this["SunacCADApp_Test_WebIDMSUNACValidatePwd_IDM_SUNAC_392_validatePwd_ptt_bindingQSSe" +
-                    "rvice"]));
+                return ((string)(this["SunacCADApp_Test_adesService_ArgumentSettingService"]));
             }
         }
     }

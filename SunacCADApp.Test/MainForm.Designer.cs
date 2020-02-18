@@ -39,6 +39,8 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button01_CreateResult = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.btn_sentinfo = new System.Windows.Forms.Button();
+            this.btnCommit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -147,7 +149,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(71, 273);
+            this.button3.Location = new System.Drawing.Point(71, 263);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(279, 23);
             this.button3.TabIndex = 10;
@@ -155,11 +157,33 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
+            // btn_sentinfo
+            // 
+            this.btn_sentinfo.Location = new System.Drawing.Point(73, 305);
+            this.btn_sentinfo.Name = "btn_sentinfo";
+            this.btn_sentinfo.Size = new System.Drawing.Size(277, 23);
+            this.btn_sentinfo.TabIndex = 11;
+            this.btn_sentinfo.Text = "6.融创项目";
+            this.btn_sentinfo.UseVisualStyleBackColor = true;
+            this.btn_sentinfo.Click += new System.EventHandler(this.btn_sentinfo_Click);
+            // 
+            // btnCommit
+            // 
+            this.btnCommit.Location = new System.Drawing.Point(73, 336);
+            this.btnCommit.Name = "btnCommit";
+            this.btnCommit.Size = new System.Drawing.Size(277, 23);
+            this.btnCommit.TabIndex = 12;
+            this.btnCommit.Text = "项目提交";
+            this.btnCommit.UseVisualStyleBackColor = true;
+            this.btnCommit.Click += new System.EventHandler(this.btnCommit_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(432, 398);
+            this.Controls.Add(this.btnCommit);
+            this.Controls.Add(this.btn_sentinfo);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button01_CreateResult);
             this.Controls.Add(this.button5);
@@ -190,6 +214,8 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button01_CreateResult;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btn_sentinfo;
+        private System.Windows.Forms.Button btnCommit;
     }
 }
 

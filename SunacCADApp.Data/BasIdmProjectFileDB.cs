@@ -89,11 +89,11 @@ namespace SunacCADApp.Data
 
 
             string sql = string.Format(@"INSERT INTO dbo.bas_idm_projectfile(FileName,SaveName,FileUrl,DirName,OID,Project_ID,
-                                     Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy,ModifiedOn,ModifiedUserId,ModifiedBy,DirId)
-                                     VALUES ('{0}','{1}','{2}','{3}',{4},'{5}',{6},{7},getdate(),{8},'{9}',getdate(),{10},'{11}',{12});SELECT @@IDENTITY", bas_idm_projectfile.FileName, bas_idm_projectfile.SaveName, bas_idm_projectfile.FileUrl,
+                                     Enabled ,Reorder ,CreateOn ,CreateUserId ,CreateBy,ModifiedOn,ModifiedUserId,ModifiedBy,DirId,FileSize)
+                                     VALUES ('{0}','{1}','{2}','{3}',{4},'{5}',{6},{7},getdate(),{8},'{9}',getdate(),{10},'{11}',{12},'{13}');SELECT @@IDENTITY", bas_idm_projectfile.FileName, bas_idm_projectfile.SaveName, bas_idm_projectfile.FileUrl,
                                       bas_idm_projectfile.DirName, bas_idm_projectfile.OID, bas_idm_projectfile.Project_ID, bas_idm_projectfile.Enabled, 
                                       bas_idm_projectfile.Reorder, bas_idm_projectfile.CreateUserId, bas_idm_projectfile.CreateBy, 
-                                      bas_idm_projectfile.ModifiedUserId, bas_idm_projectfile.ModifiedBy,bas_idm_projectfile.DirId);
+                                      bas_idm_projectfile.ModifiedUserId, bas_idm_projectfile.ModifiedBy,bas_idm_projectfile.DirId,bas_idm_projectfile.FileSize);
             return MsSqlHelperEx.ExecuteScalar(sql).ConvertToInt32(0);
         }
         ///<summary>
@@ -105,7 +105,7 @@ namespace SunacCADApp.Data
 
 
             string _wh = string.IsNullOrEmpty(editparam) ? " and id=" + bas_idm_projectfile.Id : editparam;
-            string sql = "UPDATE [dbo].[Bas_Idm_ProjectFile] SET [FileName]='" + bas_idm_projectfile.FileName + "',[SaveName]='" + bas_idm_projectfile.SaveName + "',[FileUrl]='" + bas_idm_projectfile.FileUrl + "',[DirName]='" + bas_idm_projectfile.DirName + "',[OID]=" + bas_idm_projectfile.OID + ",[Project_ID]='" + bas_idm_projectfile.Project_ID + "',[Enabled]=" + bas_idm_projectfile.Enabled + ",[Reorder]=" + bas_idm_projectfile.Reorder + ",[ModifiedUserId]=" + bas_idm_projectfile.ModifiedUserId + ",[ModifiedBy]='" + bas_idm_projectfile.ModifiedBy + "' ,[DirId]='" + bas_idm_projectfile.DirId + "'    where 1=1 " + _wh;
+            string sql = "UPDATE [dbo].[Bas_Idm_ProjectFile] SET [FileName]='" + bas_idm_projectfile.FileName + "',[SaveName]='" + bas_idm_projectfile.SaveName + "',[FileUrl]='" + bas_idm_projectfile.FileUrl + "',[DirName]='" + bas_idm_projectfile.DirName + "',[OID]=" + bas_idm_projectfile.OID + ",[Project_ID]='" + bas_idm_projectfile.Project_ID + "',[Enabled]=" + bas_idm_projectfile.Enabled + ",[Reorder]=" + bas_idm_projectfile.Reorder + ",[ModifiedUserId]=" + bas_idm_projectfile.ModifiedUserId + ",[ModifiedBy]='" + bas_idm_projectfile.ModifiedBy + "' ,[DirId]='" + bas_idm_projectfile.DirId + "',[FileSize]='"+bas_idm_projectfile.FileSize+"'    where 1=1 " + _wh;
             return MsSqlHelperEx.Execute(sql);
         }
 

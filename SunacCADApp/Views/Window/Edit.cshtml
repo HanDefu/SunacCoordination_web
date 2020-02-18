@@ -30,6 +30,13 @@
     string ProcInstId = DrawingMaster.BPMProcInstID;
     string ProKeyCode = API_Common.GetEnCodeStr(ProcInstId);
     string approvalViewURL = string.Format("{0}/Workflow/MTApprovalView.aspx?procInstId={1}&key={2}", BPMWEBURL, ProcInstId, ProKeyCode);
+    if (DrawingMaster.BillStatus == 1)
+    {
+        string BSID = "vsheji";
+        string BTID = DrawingMaster.DynamicType == 1 ? "P11" : "P12";
+        int BOID = DrawingMaster.Id;
+        approvalViewURL = string.Format("{0}/Workflow/MTStart2.aspx?BSID={1}&BTID={2}&BOID={3}", BPMWEBURL, BSID, BTID, BOID);
+    }
 }
 <div class="row topnav">
     <a>标准部品库</a>
@@ -83,7 +90,7 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt class="col-dt"><i>*</i>立面图文件 ：</dt>
+                    <dt class="col-dt"><i>*</i>立面图文件：</dt>
                     <dd>
                         <input type="text" style="width:450px" name="readonly_filename"  value="@VerticalDWG.FileClass" readonly="readonly" />
                         <input type="hidden" name="txt_filename" class="required" data-error="立面图文件不能为空"  value="@VerticalDWG.FileClass" />
@@ -307,15 +314,14 @@
                     </dl>
                     <dl class="dynamic_module">
                         <dd>
-                            <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:750px;">
+                            <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:605px;">
                                 <thead>
                                     <tr>
-                                        <th width="80" class="text-center">尺寸代码</th>
-                                        <th width="70" class="text-center">值类型</th>
+                                        <th width="75" class="text-center">尺寸代码</th>
+                                        <th width="75" class="text-center">值类型</th>
                                         <th width="70" class="text-center">最小值</th>
                                         <th width="70" class="text-center">最大值</th>
-
-                                        <th width="200" class="text-center">值</th>
+                                        <th width="150" class="text-center">值</th>
                                         <th width="60" class="text-center">默认值</th>
                                         <th class="text-center">说明</th>
                                     </tr>
@@ -458,14 +464,14 @@
                     </dl>
                     <dl class="dynamic_module" style="display:none">
                         <dd>
-                            <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:750px;">
+                            <table class="table table-bordered param" style="margin-left:60px;margin-right:60px; width:605px;">
                                 <thead>
                                     <tr>
-                                        <th width="80" class="text-center">尺寸代码</th>
-                                        <th width="70" class="text-center">值类型</th>
+                                        <th width="75" class="text-center">尺寸代码</th>
+                                        <th width="75" class="text-center">值类型</th>
                                         <th width="70" class="text-center">最小值</th>
                                         <th width="70" class="text-center">最大值</th>
-                                        <th width="200" class="text-center">值</th>
+                                        <th width="150" class="text-center">值</th>
                                         <th width="60" class="text-center">默认值</th>
                                         <th class="text-center">说明</th>
                                     </tr>

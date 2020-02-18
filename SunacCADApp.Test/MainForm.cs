@@ -384,6 +384,18 @@ namespace SunacCADApp.Test
 
         }
 
+        private void btn_sentinfo_Click(object sender, EventArgs e)
+        {
+            adesService.ArgumentSettingService service = new adesService.ArgumentSettingService();
+            string xml=   service.GetProjectInfo("18");
+        }
+
+        private void btnCommit_Click(object sender, EventArgs e)
+        {
+            adesService.ArgumentSettingService service = new adesService.ArgumentSettingService();
+            string xml = service.UpdateCadDrawing("18", "29190", "1e1e8654-78e9-435a-b0c9-b992b2329b0b.jpg", "项目A.dwg", 50);
+        }
+
 
     }
 }

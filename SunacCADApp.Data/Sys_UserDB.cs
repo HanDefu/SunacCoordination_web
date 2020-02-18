@@ -300,6 +300,12 @@ namespace SunacCADApp.Data
 
         }
 
+        public static string GetUserNameByUId(string uid) 
+        {
+            string sql = string.Format(@"SELECT [User_Name] FROM dbo.Sys_User WHERE Id={0}", uid);
+            return MsSqlHelperEx.ExecuteScalar(sql).ConvertToTrim();
+        }
+
         
             
     }

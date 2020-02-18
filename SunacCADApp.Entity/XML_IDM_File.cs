@@ -25,10 +25,14 @@ namespace SunacCADApp.Entity
          /// 文件路径
          /// </summary>
          public string FileUrl { get; set; }
+         /// <summary>
+         /// 文件大小
+         /// </summary>
+         public string FileSize { get; set; }
           /// <summary>
           /// 创建人
           /// </summary>
-         public string Creator { get; set; }
+         public string Creator{ get; set; }
          /// <summary>
          /// 创建时间
          /// </summary>

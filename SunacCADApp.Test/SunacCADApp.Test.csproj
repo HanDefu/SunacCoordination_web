@@ -35,6 +35,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -54,6 +56,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Web References\adesService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="Web References\SunacCadService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -90,6 +97,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Web References\adesService\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\adesService\SunacCADService.wsdl" />
     <None Include="Web References\SunacCadService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -172,6 +184,17 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>SunacCADApp_Test_WebIDMSUNACValidatePwd_IDM_SUNAC_392_validatePwd_ptt_bindingQSService</CachedSettingsPropName>
     </WebReferenceUrl>
+    <WebReferenceUrl Include="http://ades.sunac.com.cn/SunacCADService.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\adesService\</RelPath>
+      <UpdateFromURL>http://ades.sunac.com.cn/SunacCADService.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SunacCADApp_Test_adesService_ArgumentSettingService</CachedSettingsPropName>
+    </WebReferenceUrl>
     <WebReferenceUrl Include="http://des.sunac.com.cn/SunacCADService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\SunacCadService\</RelPath>
@@ -189,6 +212,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Web References\SunacCadService\SunacCADService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\adesService\SunacCADService.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

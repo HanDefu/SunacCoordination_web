@@ -12,6 +12,7 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text;
+using System.IO;
 
 namespace SunacCADApp
 {
@@ -413,12 +414,26 @@ namespace SunacCADApp
         {
             int hasDrawing = BasIdmProjectFileDB.HasBasIdmProjectFile(OID, FileSaveName, DrawingFile, DrawingDirId);
             string DirName = BasIdmProjectDirectoryDB.GetDirNameByDirID(DrawingDirId);
+            string userName = Sys_UserDB.GetUserNameByUId(UID);
+            if (string.IsNullOrEmpty(userName)) 
+            {
+                return XmlSerializeHelper.XmlSerialize<XML_Result>(new XML_Result() { Code = -110, Message = "用户名不存在" });
+            }
             int rtnFlag = 0;
             int fileId = 0;
             int keyid = 0;
             DateTime dateTime = DateTime.Now;
-
+            long fileSize = 0;
             string CadFilePath = string.Concat(API_Common.WebURL, "/upfile/", dateTime.ToString("yyyyMMdd"), "/", FileSaveName);
+            string localFilePathURL = string.Concat(API_Common.GlobalParam("projectFilePath"),"\\", dateTime.ToString("yyyyMMdd"), "\\", FileSaveName);
+            if (File.Exists(localFilePathURL))
+            {
+                fileSize = new FileInfo(localFilePathURL).Length;
+            }
+            else 
+            {
+                return XmlSerializeHelper.XmlSerialize<XML_Result>(new XML_Result() { Code = -100, Message = "服务器文件不存在" });
+            }
             if (hasDrawing == 0)
             {
 
@@ -430,6 +445,8 @@ namespace SunacCADApp
                 file.SaveName = FileSaveName;
                 file.CreateUserId = UID.ConvertToInt32(0);
                 file.CreateOn = dateTime;
+                file.CreateBy = userName;
+                file.FileSize = fileSize.ConventToString("0");
                 rtnFlag = BasIdmProjectFileDB.AddHandle(file);
                 keyid = rtnFlag;
                 fileId = rtnFlag;
@@ -445,6 +462,8 @@ namespace SunacCADApp
                 file.SaveName = FileSaveName;
                 file.ModifiedUserId = UID.ConvertToInt32(0);
                 file.ModifiedOn = dateTime;
+                file.ModifiedBy = userName;
+                file.FileSize = fileSize.ConventToString("0");
                 file.Id = hasDrawing;
                 rtnFlag = BasIdmProjectFileDB.EditHandle(file, string.Empty);
                 keyid = hasDrawing;

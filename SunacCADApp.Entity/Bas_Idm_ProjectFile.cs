@@ -46,6 +46,10 @@ namespace SunacCADApp.Entity
         public string Project_ID { get; set; }
 
         /// <summary>
+        /// 文件大小
+        /// </summary>
+        public string FileSize { get; set; }
+        /// <summary>
         /// 是否有效
         ///</summary>
         public int Enabled { get; set; }

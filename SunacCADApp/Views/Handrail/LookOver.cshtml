@@ -16,6 +16,13 @@
     string ProcInstId = Drawing.BPMProcInstID;
     string ProKeyCode = API_Common.GetEnCodeStr(ProcInstId);
     string approvalViewURL = string.Format("{0}/Workflow/MTApprovalView.aspx?procInstId={1}&key={2}", BPMWEBURL, ProcInstId, ProKeyCode);
+    if (Drawing.BillStatus == 1)
+    {
+        string BSID = "vsheji";
+        string BTID = Drawing.DynamicType == 1 ? "P51" : "P52";
+        int BOID = Drawing.Id;
+        approvalViewURL = string.Format("{0}/Workflow/MTStart2.aspx?BSID={1}&BTID={2}&BOID={3}", BPMWEBURL, BSID, BTID, BOID);
+    }
 }
 <div class="row topnav">
      <a>标准部品库</a>

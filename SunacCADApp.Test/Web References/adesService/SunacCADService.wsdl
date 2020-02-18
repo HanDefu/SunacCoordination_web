@@ -1,0 +1,988 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="StandardDesignAttribute">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AtrributeName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="StandardDesignAttributeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="StandardDesignAttributeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllWindows">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAllWindowsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllWindowsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWindows">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="width" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="height" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="openType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="openNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="gongNengQu" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetWindowsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetWindowsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllDoor">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAllDoorResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllDoorResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllDoorByParam">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="width" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="doorType" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllDoorByParamResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllDoorByParamResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllKitchen">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAllKitchenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllKitchenResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllKitchenParam">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Width" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="Height" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="KitchenDoorWindowPosition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="KitchenType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirVent" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllKitchenParamResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllKitchenParamResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllBathroom">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAllBathroomResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllBathroomResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllBathroomByParam">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Width" type="s:double" />
+            <s:element minOccurs="1" maxOccurs="1" name="Height" type="s:double" />
+            <s:element minOccurs="0" maxOccurs="1" name="BathroomDoorWindowPosition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ToiletType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirVent" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllBathroomByParamResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllBathroomByParamResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllHandrailByParam">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RailingType" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllHandrailByParamResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllHandrailByParamResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllAirconditionerByParam">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AirconditionerPower" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirconditionerPipePosition" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AirconditionerIsRainpipe" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="RainpipePosition" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllAirconditionerByParamResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllAirconditionerByParamResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CadFileDownload">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CadFileDownloadResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CadFileDownloadResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CadImgDownload">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CadImgDownloadResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CadImgDownloadResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewCadFileDir">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DrawingDir" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ParentDirId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="NewCadFileDirResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="NewCadFileDirResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteCadFileDir">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DrawingDir" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ParentDir" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteCadFileDirResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DeleteCadFileDirResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteCadFileDirByDirId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="DirId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteCadFileDirByDirIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DeleteCadFileDirByDirIdResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RenameCadFileDir">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DrawingDir" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="ParentDirId" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="NewDrawingDir" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RenameCadFileDirResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RenameCadFileDirResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetProjectInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetProjectInfoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateCadDrawing">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="FileSaveName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DrawingFile" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="DrawingDirId" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateCadDrawingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateCadDrawingResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteCadDrawing">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="OID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DrawingDir" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="DrawingFile" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteCadDrawingResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DeleteCadDrawingResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteCadDrawingByFileID">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="FileID" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeleteCadDrawingByFileIDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DeleteCadDrawingByFileIDResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckUserInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckUserInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CheckUserInfoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="StandardDesignAttributeSoapIn">
+    <wsdl:part name="parameters" element="tns:StandardDesignAttribute" />
+  </wsdl:message>
+  <wsdl:message name="StandardDesignAttributeSoapOut">
+    <wsdl:part name="parameters" element="tns:StandardDesignAttributeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllWindowsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllWindows" />
+  </wsdl:message>
+  <wsdl:message name="GetAllWindowsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllWindowsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetWindowsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetWindows" />
+  </wsdl:message>
+  <wsdl:message name="GetWindowsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetWindowsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllDoorSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllDoor" />
+  </wsdl:message>
+  <wsdl:message name="GetAllDoorSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllDoorResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllDoorByParamSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllDoorByParam" />
+  </wsdl:message>
+  <wsdl:message name="GetAllDoorByParamSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllDoorByParamResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllKitchenSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllKitchen" />
+  </wsdl:message>
+  <wsdl:message name="GetAllKitchenSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllKitchenResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllKitchenParamSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllKitchenParam" />
+  </wsdl:message>
+  <wsdl:message name="GetAllKitchenParamSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllKitchenParamResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllBathroomSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllBathroom" />
+  </wsdl:message>
+  <wsdl:message name="GetAllBathroomSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllBathroomResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllBathroomByParamSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllBathroomByParam" />
+  </wsdl:message>
+  <wsdl:message name="GetAllBathroomByParamSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllBathroomByParamResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllHandrailByParamSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllHandrailByParam" />
+  </wsdl:message>
+  <wsdl:message name="GetAllHandrailByParamSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllHandrailByParamResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllAirconditionerByParamSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllAirconditionerByParam" />
+  </wsdl:message>
+  <wsdl:message name="GetAllAirconditionerByParamSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllAirconditionerByParamResponse" />
+  </wsdl:message>
+  <wsdl:message name="CadFileDownloadSoapIn">
+    <wsdl:part name="parameters" element="tns:CadFileDownload" />
+  </wsdl:message>
+  <wsdl:message name="CadFileDownloadSoapOut">
+    <wsdl:part name="parameters" element="tns:CadFileDownloadResponse" />
+  </wsdl:message>
+  <wsdl:message name="CadImgDownloadSoapIn">
+    <wsdl:part name="parameters" element="tns:CadImgDownload" />
+  </wsdl:message>
+  <wsdl:message name="CadImgDownloadSoapOut">
+    <wsdl:part name="parameters" element="tns:CadImgDownloadResponse" />
+  </wsdl:message>
+  <wsdl:message name="NewCadFileDirSoapIn">
+    <wsdl:part name="parameters" element="tns:NewCadFileDir" />
+  </wsdl:message>
+  <wsdl:message name="NewCadFileDirSoapOut">
+    <wsdl:part name="parameters" element="tns:NewCadFileDirResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCadFileDirSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteCadFileDir" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCadFileDirSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteCadFileDirResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCadFileDirByDirIdSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteCadFileDirByDirId" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCadFileDirByDirIdSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteCadFileDirByDirIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="RenameCadFileDirSoapIn">
+    <wsdl:part name="parameters" element="tns:RenameCadFileDir" />
+  </wsdl:message>
+  <wsdl:message name="RenameCadFileDirSoapOut">
+    <wsdl:part name="parameters" element="tns:RenameCadFileDirResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetProjectInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetProjectInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetProjectInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCadDrawingSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateCadDrawing" />
+  </wsdl:message>
+  <wsdl:message name="UpdateCadDrawingSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateCadDrawingResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCadDrawingSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteCadDrawing" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCadDrawingSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteCadDrawingResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCadDrawingByFileIDSoapIn">
+    <wsdl:part name="parameters" element="tns:DeleteCadDrawingByFileID" />
+  </wsdl:message>
+  <wsdl:message name="DeleteCadDrawingByFileIDSoapOut">
+    <wsdl:part name="parameters" element="tns:DeleteCadDrawingByFileIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckUserInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckUserInfo" />
+  </wsdl:message>
+  <wsdl:message name="CheckUserInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckUserInfoResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ArgumentSettingServiceSoap">
+    <wsdl:operation name="StandardDesignAttribute">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">标准模块属性；1、标准部品库：外窗、门、栏杆;2、厨房、卫生间、空调</wsdl:documentation>
+      <wsdl:input message="tns:StandardDesignAttributeSoapIn" />
+      <wsdl:output message="tns:StandardDesignAttributeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllWindows">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">标准部品库[外窗]所有</wsdl:documentation>
+      <wsdl:input message="tns:GetAllWindowsSoapIn" />
+      <wsdl:output message="tns:GetAllWindowsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWindows">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">标准部品库[外窗]按条件查询</wsdl:documentation>
+      <wsdl:input message="tns:GetWindowsSoapIn" />
+      <wsdl:output message="tns:GetWindowsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDoor">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">标准部品库[门]所有</wsdl:documentation>
+      <wsdl:input message="tns:GetAllDoorSoapIn" />
+      <wsdl:output message="tns:GetAllDoorSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDoorByParam">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">标准部品库[门]条件查询</wsdl:documentation>
+      <wsdl:input message="tns:GetAllDoorByParamSoapIn" />
+      <wsdl:output message="tns:GetAllDoorByParamSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllKitchen">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">标准部品库[厨房原型]</wsdl:documentation>
+      <wsdl:input message="tns:GetAllKitchenSoapIn" />
+      <wsdl:output message="tns:GetAllKitchenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllKitchenParam">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">标准部品库[厨房原型]条件查询</wsdl:documentation>
+      <wsdl:input message="tns:GetAllKitchenParamSoapIn" />
+      <wsdl:output message="tns:GetAllKitchenParamSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllBathroom">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">标准部品库[卫生间原型]</wsdl:documentation>
+      <wsdl:input message="tns:GetAllBathroomSoapIn" />
+      <wsdl:output message="tns:GetAllBathroomSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllBathroomByParam">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">标准部品库[卫生间原型]条件查询</wsdl:documentation>
+      <wsdl:input message="tns:GetAllBathroomByParamSoapIn" />
+      <wsdl:output message="tns:GetAllBathroomByParamSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllHandrailByParam">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">标准部品库[栏杆原型]条件查询</wsdl:documentation>
+      <wsdl:input message="tns:GetAllHandrailByParamSoapIn" />
+      <wsdl:output message="tns:GetAllHandrailByParamSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllAirconditionerByParam">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">标准部品库[空调原型]条件查询</wsdl:documentation>
+      <wsdl:input message="tns:GetAllAirconditionerByParamSoapIn" />
+      <wsdl:output message="tns:GetAllAirconditionerByParamSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CadFileDownload">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">标准部品库[ CAD文件下载]</wsdl:documentation>
+      <wsdl:input message="tns:CadFileDownloadSoapIn" />
+      <wsdl:output message="tns:CadFileDownloadSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CadImgDownload">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">标准部品库[原型文件缩略图下载]</wsdl:documentation>
+      <wsdl:input message="tns:CadImgDownloadSoapIn" />
+      <wsdl:output message="tns:CadImgDownloadSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="NewCadFileDir">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">项目分类文件夹新建</wsdl:documentation>
+      <wsdl:input message="tns:NewCadFileDirSoapIn" />
+      <wsdl:output message="tns:NewCadFileDirSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCadFileDir">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">项目分类文件夹删除</wsdl:documentation>
+      <wsdl:input message="tns:DeleteCadFileDirSoapIn" />
+      <wsdl:output message="tns:DeleteCadFileDirSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCadFileDirByDirId">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">项目分类文件夹删除[根据文件夹ID]</wsdl:documentation>
+      <wsdl:input message="tns:DeleteCadFileDirByDirIdSoapIn" />
+      <wsdl:output message="tns:DeleteCadFileDirByDirIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RenameCadFileDir">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">项目分类文件夹重命名</wsdl:documentation>
+      <wsdl:input message="tns:RenameCadFileDirSoapIn" />
+      <wsdl:output message="tns:RenameCadFileDirSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">项目信息获取</wsdl:documentation>
+      <wsdl:input message="tns:GetProjectInfoSoapIn" />
+      <wsdl:output message="tns:GetProjectInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCadDrawing">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">项目图纸上传</wsdl:documentation>
+      <wsdl:input message="tns:UpdateCadDrawingSoapIn" />
+      <wsdl:output message="tns:UpdateCadDrawingSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCadDrawing">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">项目文件删除</wsdl:documentation>
+      <wsdl:input message="tns:DeleteCadDrawingSoapIn" />
+      <wsdl:output message="tns:DeleteCadDrawingSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCadDrawingByFileID">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">项目文件删除根据文件ID</wsdl:documentation>
+      <wsdl:input message="tns:DeleteCadDrawingByFileIDSoapIn" />
+      <wsdl:output message="tns:DeleteCadDrawingByFileIDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckUserInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">验证用户登陆</wsdl:documentation>
+      <wsdl:input message="tns:CheckUserInfoSoapIn" />
+      <wsdl:output message="tns:CheckUserInfoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ArgumentSettingServiceSoap" type="tns:ArgumentSettingServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="StandardDesignAttribute">
+      <soap:operation soapAction="http://tempuri.org/StandardDesignAttribute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllWindows">
+      <soap:operation soapAction="http://tempuri.org/GetAllWindows" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWindows">
+      <soap:operation soapAction="http://tempuri.org/GetWindows" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDoor">
+      <soap:operation soapAction="http://tempuri.org/GetAllDoor" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDoorByParam">
+      <soap:operation soapAction="http://tempuri.org/GetAllDoorByParam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllKitchen">
+      <soap:operation soapAction="http://tempuri.org/GetAllKitchen" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllKitchenParam">
+      <soap:operation soapAction="http://tempuri.org/GetAllKitchenParam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllBathroom">
+      <soap:operation soapAction="http://tempuri.org/GetAllBathroom" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllBathroomByParam">
+      <soap:operation soapAction="http://tempuri.org/GetAllBathroomByParam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllHandrailByParam">
+      <soap:operation soapAction="http://tempuri.org/GetAllHandrailByParam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllAirconditionerByParam">
+      <soap:operation soapAction="http://tempuri.org/GetAllAirconditionerByParam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CadFileDownload">
+      <soap:operation soapAction="http://tempuri.org/CadFileDownload" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CadImgDownload">
+      <soap:operation soapAction="http://tempuri.org/CadImgDownload" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewCadFileDir">
+      <soap:operation soapAction="http://tempuri.org/NewCadFileDir" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCadFileDir">
+      <soap:operation soapAction="http://tempuri.org/DeleteCadFileDir" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCadFileDirByDirId">
+      <soap:operation soapAction="http://tempuri.org/DeleteCadFileDirByDirId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RenameCadFileDir">
+      <soap:operation soapAction="http://tempuri.org/RenameCadFileDir" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectInfo">
+      <soap:operation soapAction="http://tempuri.org/GetProjectInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCadDrawing">
+      <soap:operation soapAction="http://tempuri.org/UpdateCadDrawing" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCadDrawing">
+      <soap:operation soapAction="http://tempuri.org/DeleteCadDrawing" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCadDrawingByFileID">
+      <soap:operation soapAction="http://tempuri.org/DeleteCadDrawingByFileID" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckUserInfo">
+      <soap:operation soapAction="http://tempuri.org/CheckUserInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ArgumentSettingServiceSoap12" type="tns:ArgumentSettingServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="StandardDesignAttribute">
+      <soap12:operation soapAction="http://tempuri.org/StandardDesignAttribute" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllWindows">
+      <soap12:operation soapAction="http://tempuri.org/GetAllWindows" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetWindows">
+      <soap12:operation soapAction="http://tempuri.org/GetWindows" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDoor">
+      <soap12:operation soapAction="http://tempuri.org/GetAllDoor" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDoorByParam">
+      <soap12:operation soapAction="http://tempuri.org/GetAllDoorByParam" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllKitchen">
+      <soap12:operation soapAction="http://tempuri.org/GetAllKitchen" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllKitchenParam">
+      <soap12:operation soapAction="http://tempuri.org/GetAllKitchenParam" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllBathroom">
+      <soap12:operation soapAction="http://tempuri.org/GetAllBathroom" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllBathroomByParam">
+      <soap12:operation soapAction="http://tempuri.org/GetAllBathroomByParam" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllHandrailByParam">
+      <soap12:operation soapAction="http://tempuri.org/GetAllHandrailByParam" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllAirconditionerByParam">
+      <soap12:operation soapAction="http://tempuri.org/GetAllAirconditionerByParam" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CadFileDownload">
+      <soap12:operation soapAction="http://tempuri.org/CadFileDownload" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CadImgDownload">
+      <soap12:operation soapAction="http://tempuri.org/CadImgDownload" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="NewCadFileDir">
+      <soap12:operation soapAction="http://tempuri.org/NewCadFileDir" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCadFileDir">
+      <soap12:operation soapAction="http://tempuri.org/DeleteCadFileDir" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCadFileDirByDirId">
+      <soap12:operation soapAction="http://tempuri.org/DeleteCadFileDirByDirId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RenameCadFileDir">
+      <soap12:operation soapAction="http://tempuri.org/RenameCadFileDir" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectInfo">
+      <soap12:operation soapAction="http://tempuri.org/GetProjectInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCadDrawing">
+      <soap12:operation soapAction="http://tempuri.org/UpdateCadDrawing" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCadDrawing">
+      <soap12:operation soapAction="http://tempuri.org/DeleteCadDrawing" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteCadDrawingByFileID">
+      <soap12:operation soapAction="http://tempuri.org/DeleteCadDrawingByFileID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckUserInfo">
+      <soap12:operation soapAction="http://tempuri.org/CheckUserInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ArgumentSettingService">
+    <wsdl:port name="ArgumentSettingServiceSoap" binding="tns:ArgumentSettingServiceSoap">
+      <soap:address location="http://ades.sunac.com.cn/SunacCADService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ArgumentSettingServiceSoap12" binding="tns:ArgumentSettingServiceSoap12">
+      <soap12:address location="http://ades.sunac.com.cn/SunacCADService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

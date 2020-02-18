@@ -17,6 +17,13 @@
     string ProcInstId = dMaster.BPMProcInstID;
     string ProKeyCode = API_Common.GetEnCodeStr(ProcInstId);
     string approvalViewURL = string.Format("{0}/Workflow/MTApprovalView.aspx?procInstId={1}&key={2}", BPMWEBURL, ProcInstId, ProKeyCode);
+    if (dMaster.BillStatus == 1)
+    {
+        string BSID = "vsheji";
+        string BTID = dMaster.DynamicType == 1 ? "P41" : "P42";
+        int BOID = dMaster.Id;
+        approvalViewURL = string.Format("{0}/Workflow/MTStart2.aspx?BSID={1}&BTID={2}&BOID={3}", BPMWEBURL, BSID, BTID, BOID);
+    }
 }
 
 

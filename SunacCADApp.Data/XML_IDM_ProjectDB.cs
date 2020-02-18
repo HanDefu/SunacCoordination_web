@@ -20,7 +20,7 @@ namespace SunacCADApp.Data
                                                         INNER JOIN dbo.Bas_Idm_Organization C ON C.OrgCode=b.PAREA_GS_NAME
                                                         INNER JOIN dbo.Bas_Idm_Organization d ON d.OrgCode=b.PCITY
                                                         WHERE a.[User_ID]='{0}'",uid);
-            return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<XML_IDM_ProjectBase>(new XML_IDM_ProjectBase());
+             return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<XML_IDM_ProjectBase>(new XML_IDM_ProjectBase());
 
         }
 
@@ -38,9 +38,15 @@ namespace SunacCADApp.Data
         public static IList<XML_IDM_File> Get_IDM_File_ListExt(int  DirId, string OID)
         {
             string webURL = API_Common.GlobalParam("WebURL");
-            string sql = string.Format(@"SELECT [Id],[FileName],[SaveName], CONCAT('{2}','/','projectInfo/filedownload','/', Id) AS [FileUrl], CONVERT(NVARCHAR(24), CreateOn,112) AS CreateTime,
-                                                                    CreateBy AS [Creator], CONVERT(NVARCHAR(24), ModifiedOn,112) AS UpdateTime,ModifiedBy AS Updator
-                                                          FROM dbo.Bas_Idm_ProjectFile WHERE DirId='{0}' AND [Enabled]!=-1 AND OID='{1}'", DirId, OID, webURL);
+            string sql = string.Format(@"SELECT a.[Id],a.[FileName],a.[SaveName], 
+                                                                    CONCAT('{2}','/','projectInfo/filedownload','/', a.Id) AS [FileUrl],
+                                                                    CONVERT(NVARCHAR(24), a.CreateOn,120) AS CreateTime,
+                                                                    ISNULL(a.CreateBy,'') as Creator ,
+	                                                                CONVERT(NVARCHAR(24), a.ModifiedOn,120) AS UpdateTime,
+	                                                                ISNULL(a.ModifiedBy,'') as Updator,
+                                                                    ISNULL(a.FileSize,0) AS FileSize
+                                                             FROM dbo.Bas_Idm_ProjectFile a 
+                                                             WHERE a.DirId='{0}' AND a.[Enabled]!=-1 AND a.OID='{1}'", DirId, OID, webURL);
             return MsSqlHelperEx.ExecuteDataTable(sql).ConvertListModel<XML_IDM_File>(new XML_IDM_File());
         }
 

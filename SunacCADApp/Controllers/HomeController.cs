@@ -130,7 +130,7 @@ namespace SunacCADApp.Controllers
                         string errorText = jO["errorText"].ConventToString(string.Empty);
                         logDesc = string.Format(@"{1}；IP:{0}", ipAddress, errorText);
                         SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
-                        
+                        errorText = errorText == "密码错误" ? "用户名或密码错误" : errorText;
                         return Json(new { code = -102, message = errorText }, JsonRequestBehavior.AllowGet);
                     }
                 }

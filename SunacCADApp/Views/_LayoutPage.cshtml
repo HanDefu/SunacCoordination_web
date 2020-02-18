@@ -169,7 +169,11 @@
                     $.post("/CommonLib/ResultBPMGetFlowState", { masterid: masterid, billstatus: billstatus, procinstid: procinstid }, function (data) {
 
                         if (data.code == 100) {
-                            layer.alert(data.message, { title: "BPM审核信息", shade: 0 });
+                            let _m = data.message;
+                            if (!_isNull(_m))
+                            {
+                                layer.alert(data.message, { title: "BPM审核信息", shade: 0 });
+                            }
                         } else {
                             layer.alert(data.message, { title: "提示", shade: 0,icon: 5 });
                         }
