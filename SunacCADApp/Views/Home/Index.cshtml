@@ -99,8 +99,9 @@
         },
         success: function (data) {
             if (data.code == 100) {
+                let redirectURL = data.redirectURL;
                 layer.msg(data.message, { icon: 6, time: 2000 }, function () {
-                    window.location.href = "/window"
+                    window.location.href = redirectURL
                 });
             } else {
                 layer.alert(data.message, { icon: 5, shade: false });

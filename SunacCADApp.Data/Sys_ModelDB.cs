@@ -134,5 +134,24 @@ namespace SunacCADApp.Data
             return _sys_models;
         }
 
+
+        public static Sys_Model GetFirstModelByRole(int roleId=-8888) 
+        {
+            Sys_Model _sys_model = new Sys_Model();
+            if (roleId == -8888)
+            {
+                string sql = string.Format(@"SELECT Top 1 *  FROM dbo.Sys_Model where 1=1 and parent_id!=0  ORDER BY b.Id ASC", roleId);
+                _sys_model = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<Sys_Model>(new Sys_Model());
+            }
+            else 
+            {
+                string sql = string.Format(@"select Top 1 b.*  from dbo.Sys_Role_Model_Relation a 
+                                                       inner join Sys_Model b on a.Model_Id=b.Id where a.Role_Id='{0}' and parent_id!=0 ORDER BY b.Id ASC", roleId);
+                _sys_model = MsSqlHelperEx.ExecuteDataTable(sql).ConverToModel<Sys_Model>(new Sys_Model());
+            }
+            return _sys_model;
+        }
+
+
     }
 }

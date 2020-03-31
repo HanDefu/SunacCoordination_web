@@ -453,7 +453,7 @@ header {
             }
 
                 .main .center .view .left-column figure img {
-                    width: auto;
+                    width: 100%;
                     height:auto;
                     max-height: 200px;
                 }

@@ -82,13 +82,15 @@ namespace SunacCADApp.Controllers
                     string userid = user.Id.ConventToString(string.Empty);
                     string roleId=user.RoleID.ConventToString(string.Empty);
                     string isInternal=user.Is_Internal.ConventToString(string.Empty);
+                    Sys_Model model = Sys_ModelDB.GetFirstModelByRole(roleId.ConvertToInt32(0));
                     InitUtility.Instance.InitSessionHelper.Add("UserID", userid);
                     InitUtility.Instance.InitSessionHelper.Add("UserName",user.User_Name);
                     InitUtility.Instance.InitSessionHelper.Add("RoleId", roleId);
                     InitUtility.Instance.InitSessionHelper.Add("IsInternal", isInternal);
                     logDesc = string.Format(@"外部用户登陆成功；IP:{0}", ipAddress);
                     SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
-                    return Json(new { code = 100, message = "外部用户登陆成功" }, JsonRequestBehavior.AllowGet);
+
+                    return Json(new { code = 100, message = "外部用户登陆成功", redirectURL=model.Model_URL }, JsonRequestBehavior.AllowGet);
                 }
             }
             else if (user.Is_Internal == 1)
@@ -120,10 +122,11 @@ namespace SunacCADApp.Controllers
                         InitUtility.Instance.InitSessionHelper.Add("UserName", user.User_Name);
                         InitUtility.Instance.InitSessionHelper.Add("RoleId", roleId);
                         InitUtility.Instance.InitSessionHelper.Add("IsInternal", isInternal);
+                        Sys_Model model = Sys_ModelDB.GetFirstModelByRole(roleId.ConvertToInt32(0));
                         string errorText = jO["errorText"].ConventToString(string.Empty);
                         logDesc = string.Format(@"内部用户登陆成功；IP:{0}", ipAddress);
                         SysOperateLogDB.SaveLogHandle(logCode, logName, logInfo, logDesc, createBy, createUserId);
-                        return Json(new { code = 100, message = "内部用户登陆成功" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { code = 100, message = "内部用户登陆成功", redirectURL = model.Model_URL }, JsonRequestBehavior.AllowGet);
                     }
                     else if (successCode == "N")
                     {
